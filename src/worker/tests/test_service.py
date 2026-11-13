@@ -167,3 +167,61 @@ def test_deterministic_terminology_strength_matching():
     assert res_creat.status == "exact_match"
     assert res_creat.matched_code == "LAB-CREAT"
     assert res_creat.loinc_num == "2160-0"
+
+
+def test_foundry_adapter_api_mode_validation(monkeypatch: pytest.MonkeyPatch):
+    from openai import AzureOpenAI, OpenAI
+
+    from cx_worker.pipeline.adapter import FoundryModelAdapter
+
+    # 1. Mode azure_openai with valid root endpoint succeeds
+    monkeypatch.setenv("FOUNDRY_API_MODE", "azure_openai")
+    adapter_az = FoundryModelAdapter(
+        endpoint="https://myresource.openai.azure.com/",
+        api_key="mock_secret_key",
+    )
+    assert isinstance(adapter_az._client, AzureOpenAI)
+
+    # 2. Mode azure_openai with /openai/v1 raises ConfigurationError
+    with pytest.raises(ConfigurationError, match="ENDPOINT_MODE_MISMATCH"):
+        FoundryModelAdapter(
+            endpoint="https://myresource.openai.azure.com/openai/v1",
+            api_key="mock_secret_key",
+        )
+
+    # 3. Mode openai_v1 with bare resource root raises ConfigurationError
+    monkeypatch.setenv("FOUNDRY_API_MODE", "openai_v1")
+    with pytest.raises(ConfigurationError, match="ENDPOINT_MODE_MISMATCH"):
+        FoundryModelAdapter(
+            endpoint="https://myresource.openai.azure.com",
+            api_key="mock_secret_key",
+        )
+
+    # 4. Mode openai_v1 with /openai/v1 succeeds
+    adapter_v1 = FoundryModelAdapter(
+        endpoint="https://myresource.openai.azure.com/openai/v1",
+        api_key="mock_secret_key",
+    )
+    assert isinstance(adapter_v1._client, OpenAI)
+
+    # 5. Invalid mode raises ConfigurationError
+    monkeypatch.setenv("FOUNDRY_API_MODE", "unsupported_protocol")
+    with pytest.raises(ConfigurationError, match="INVALID_FOUNDRY_API_MODE"):
+        FoundryModelAdapter(
+            endpoint="https://myresource.openai.azure.com",
+            api_key="mock_secret_key",
+        )
+
+
+def test_configuration_diagnostics_never_leaks_api_key(monkeypatch: pytest.MonkeyPatch):
+    from cx_worker.config import get_configuration_diagnostics
+
+    secret_key = "super_confidential_secret_key_12345"
+    monkeypatch.setenv("AZURE_AI_FOUNDRY_API_KEY", secret_key)
+    monkeypatch.setenv("AZURE_AI_FOUNDRY_ENDPOINT", "https://test-hosp.openai.azure.com/?token=secret")
+
+    diag = get_configuration_diagnostics()
+    assert diag["api_key_configured"] is True
+    assert secret_key not in str(diag)
+    assert "token=secret" not in diag["endpoint_sanitized"]
+

@@ -13,9 +13,9 @@ import time
 from abc import ABC, abstractmethod
 from typing import Any, ClassVar
 
-from dotenv import load_dotenv
 from openai import APIError, APITimeoutError, AzureOpenAI, OpenAI, RateLimitError
 
+from cx_worker.config import load_environment
 from cx_worker.models import (
     ExtractedInvestigation,
     ExtractedMedication,
@@ -24,8 +24,8 @@ from cx_worker.models import (
     MedicationAssertion,
 )
 
-# Load environment variables from .env if present
-load_dotenv()
+# Reliably load .env from worker directory or repository root
+load_environment()
 
 logger = logging.getLogger(__name__)
 
@@ -287,42 +287,86 @@ Output strictly valid JSON conforming to the schema."""
                 "environment variables (or explicit credentials). Silent fallback is disabled."
             )
 
-        # Intelligent endpoint normalization:
-        # 1. OpenAI v1 Base URL (e.g. https://.../openai/v1, https://.../v1, or models.ai.azure.com)
-        # 2. Azure Resource-Root Endpoint (e.g. https://<resource>.openai.azure.com or https://<resource>.cognitiveservices.azure.com)
+        api_mode = os.getenv("FOUNDRY_API_MODE", "auto").strip().lower()
         clean_endpoint = self._endpoint.strip().rstrip("/")
-        is_openai_v1 = (
-            clean_endpoint.endswith(("/openai/v1", "/v1"))
-            or "models.ai.azure.com" in clean_endpoint
-            or "inference.ai.azure.com" in clean_endpoint
-        )
+        client_instance: AzureOpenAI | OpenAI
 
-        self._client: AzureOpenAI | OpenAI
-        if is_openai_v1:
-            logger.info("Initializing OpenAI SDK client with v1 base_url: %s", clean_endpoint)
-            self._client = OpenAI(
-                base_url=clean_endpoint,
-                api_key=self._api_key,
-                timeout=self._timeout_seconds,
-            )
-        else:
-            # Azure Resource-Root Endpoint
-            # Strip accidental /openai suffix if present to prevent double-pathing (e.g. /openai/openai/deployments)
+        # Determine target client type with strict validation
+        if api_mode == "azure_openai":
+            if clean_endpoint.endswith(("/openai/v1", "/v1")):
+                raise ConfigurationError(
+                    f"ENDPOINT_MODE_MISMATCH: FOUNDRY_API_MODE is set to 'azure_openai', but the endpoint ends with "
+                    f"'{clean_endpoint.split('/')[-1]}'. The 'azure_openai' mode requires an Azure resource-root "
+                    "(e.g. 'https://<resource>.openai.azure.com/'). Either change FOUNDRY_API_MODE to 'openai_v1' "
+                    "or remove '/openai/v1' from the endpoint."
+                )
             clean_endpoint = clean_endpoint.removesuffix("/openai")
-
             api_version = os.getenv("AZURE_OPENAI_API_VERSION", "2024-10-21")
             logger.info(
-                "Initializing AzureOpenAI SDK client with resource-root: %s (api_version=%s, deployment=%s)",
+                "Initializing AzureOpenAI client (mode=azure_openai, resource-root=%s, api_version=%s, deployment=%s)",
                 clean_endpoint,
                 api_version,
                 self._model_deployment,
             )
-            self._client = AzureOpenAI(
+            client_instance = AzureOpenAI(
                 azure_endpoint=clean_endpoint,
                 api_key=self._api_key,
                 api_version=api_version,
                 timeout=self._timeout_seconds,
             )
+
+        elif api_mode == "openai_v1":
+            # For openai_v1 mode, verify endpoint doesn't look like a bare Azure resource root
+            if ("openai.azure.com" in clean_endpoint or "cognitiveservices.azure.com" in clean_endpoint) and not clean_endpoint.endswith(("/openai/v1", "/v1")):
+                raise ConfigurationError(
+                    "ENDPOINT_MODE_MISMATCH: FOUNDRY_API_MODE is set to 'openai_v1', but the endpoint appears to be a bare Azure "
+                    f"resource-root ('{clean_endpoint}'). Azure OpenAI requires '/openai/v1' for standard OpenAI SDK compatibility. "
+                    "Either append '/openai/v1' to the endpoint or set FOUNDRY_API_MODE to 'azure_openai'."
+                )
+            logger.info("Initializing OpenAI SDK client (mode=openai_v1, base_url=%s)", clean_endpoint)
+            client_instance = OpenAI(
+                base_url=clean_endpoint,
+                api_key=self._api_key,
+                timeout=self._timeout_seconds,
+            )
+
+        elif api_mode == "auto":
+            # Auto-detect client based on endpoint structure
+            is_openai_v1 = (
+                clean_endpoint.endswith(("/openai/v1", "/v1"))
+                or "models.ai.azure.com" in clean_endpoint
+                or "inference.ai.azure.com" in clean_endpoint
+            )
+            if is_openai_v1:
+                logger.info("Auto-detected OpenAI v1 client mode (base_url=%s)", clean_endpoint)
+                client_instance = OpenAI(
+                    base_url=clean_endpoint,
+                    api_key=self._api_key,
+                    timeout=self._timeout_seconds,
+                )
+            else:
+                clean_endpoint = clean_endpoint.removesuffix("/openai")
+                api_version = os.getenv("AZURE_OPENAI_API_VERSION", "2024-10-21")
+                logger.info(
+                    "Auto-detected AzureOpenAI client mode (resource-root=%s, api_version=%s, deployment=%s)",
+                    clean_endpoint,
+                    api_version,
+                    self._model_deployment,
+                )
+                client_instance = AzureOpenAI(
+                    azure_endpoint=clean_endpoint,
+                    api_key=self._api_key,
+                    api_version=api_version,
+                    timeout=self._timeout_seconds,
+                )
+
+        else:
+            raise ConfigurationError(
+                f"INVALID_FOUNDRY_API_MODE: FOUNDRY_API_MODE='{api_mode}' is unrecognized. "
+                "Valid options are: 'auto', 'azure_openai', or 'openai_v1'."
+            )
+
+        self._client: AzureOpenAI | OpenAI = client_instance
 
     @property
     def adapter_type(self) -> str:

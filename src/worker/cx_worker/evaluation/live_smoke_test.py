@@ -14,8 +14,7 @@ import os
 import time
 from typing import Any
 
-from dotenv import load_dotenv
-
+from cx_worker.config import get_configuration_diagnostics, load_environment
 from cx_worker.evaluation.held_out_dataset import build_held_out_dataset
 from cx_worker.pipeline.adapter import (
     FoundryModelAdapter,
@@ -25,15 +24,17 @@ from cx_worker.pipeline.normalize import ProductionTerminologyNormalizer
 from cx_worker.pipeline.preprocess import ClinicalPreprocessor
 from cx_worker.pipeline.validate import ClinicalValidator
 
-# Load environment configuration (.env)
-load_dotenv()
+# Reliably load .env from worker directory or repository root
+load_environment()
 
 
 def run_live_smoke_test() -> dict[str, Any]:
-    provider = os.getenv("EXTRACTION_MODEL_PROVIDER", "").strip().lower()
+    diag = get_configuration_diagnostics()
+    provider = diag["provider"]
     endpoint = os.getenv("AZURE_AI_FOUNDRY_ENDPOINT") or os.getenv("AZURE_OPENAI_ENDPOINT")
     api_key = os.getenv("AZURE_AI_FOUNDRY_API_KEY") or os.getenv("AZURE_OPENAI_API_KEY")
-    deployment = os.getenv("FOUNDRY_MODEL_DEPLOYMENT", "gpt-4.1-mini")
+    deployment = diag["deployment"]
+    api_mode = diag["api_mode"]
 
     report: dict[str, Any] = {
         "timestamp": time.strftime("%Y-%m-%d %H:%M:%S UTC", time.gmtime()),
@@ -42,8 +43,11 @@ def run_live_smoke_test() -> dict[str, Any]:
         "model_version": "2025-04-14",
         "deployment_name": deployment,
         "deployment_type": "Global Standard",
+        "env_file_loaded": diag["env_file_loaded"],
         "provider_env": provider or "(unset)",
+        "api_mode": api_mode,
         "endpoint_configured": bool(endpoint),
+        "endpoint_sanitized": diag["endpoint_sanitized"],
         "api_key_configured": bool(api_key),
         "live_call_executed": False,
         "smoke_test_passed": False,
@@ -296,8 +300,11 @@ if __name__ == "__main__":
     print("=== LIVE FOUNDRY SMOKE TEST REPORT ===")
     print(f"Target Platform: {res['target_platform']}")
     print(f"Deployment: {res['deployment_name']} ({res['deployment_type']})")
+    print(f"Loaded .env File: {res['env_file_loaded'] or '(None found)'}")
     print(f"Provider Setting: {res['provider_env']}")
+    print(f"API Mode: {res['api_mode']}")
     print(f"Endpoint Configured: {res['endpoint_configured']}")
+    print(f"Endpoint Host: {res.get('endpoint_sanitized') or '(none)'}")
     print(f"API Key Configured: {res['api_key_configured']}")
     print(f"Live Call Executed: {res['live_call_executed']}")
 
