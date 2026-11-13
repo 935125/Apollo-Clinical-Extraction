@@ -1,6 +1,6 @@
 # BUILD & VERIFICATION STATUS
 
-Last Updated: 2026-11-13 (Milestone: Real LLM Integration & Extraction Quality Completed)
+Last Updated: 2026-11-13 (Milestone: Microsoft Foundry gpt-4.1-mini Live Integration Prepped & Verified)
 
 ---
 
@@ -9,11 +9,13 @@ Last Updated: 2026-11-13 (Milestone: Real LLM Integration & Extraction Quality C
 | Component | Status | Details |
 |---|---|---|
 | **OS** | Windows 11 Pro 10.0.26100 | Supported |
-| **Topology** | **Standalone Extraction Platform** | Angular 21 $\rightarrow$ ASP.NET Core Web API (.NET 10) $\rightarrow$ Internal Python AI Service (FastAPI) $\rightarrow$ Model Adapter |
+| **Topology** | **Standalone Extraction Platform** | Angular 21 $\rightarrow$ ASP.NET Core Web API (.NET 10) $\rightarrow$ Internal Python AI Service (FastAPI) $\rightarrow$ Microsoft Foundry |
 | **Public API Gateway** | **ASP.NET Core Web API (.NET 10)** | Exclusively owns `/api/v1/extractions`, input validation, timeouts, CORS, trace correlation |
 | **Internal AI Service** | **Python 3.13 via uv** | Loopback microservice on `http://127.0.0.1:5005/internal/v1/extract`, strict typing, 5-stage pipeline |
 | **Model Adapter** | **Dual Engine Factory** | `FoundryModelAdapter` (Azure OpenAI / Microsoft Foundry with structured outputs, 30s timeout, retries) + `SyntheticModelAdapter` |
-| **Terminology Engine** | **3-Tier Normalizer** | RxNorm & LOINC hospital catalogs; Tier 1 exact $\rightarrow$ Tier 2 synonym $\rightarrow$ Tier 3 RapidFuzz token-sort $\ge 88$ with ambiguity guard ($< 4.0$) |
+| **Foundry API Mode** | **Explicit & Auto Validated** | `FOUNDRY_API_MODE=azure_openai | openai_v1 | auto` with strict format validation to prevent endpoint routing errors |
+| **Environment Loader** | **Verified Diagnostics** | Explicit candidate path scanning (`src/worker/.env` and repo root `.env`) with safe telemetry |
+| **Terminology Engine** | **3-Tier Normalizer** | RxNorm & LOINC hospital catalogs; Tier 1 exact $\rightarrow$ Tier 2 synonym $\rightarrow$ Tier 3 RapidFuzz token-sort $\ge 88$ with deterministic strength checks |
 | **PostgreSQL 18** | **RUNNING & VERIFIED** | Portable PostgreSQL 18.7 running background daemons on `localhost:5432` (`cx_platform`) and `localhost:5433` (`emr_sim`). |
 | **Node.js** | `v24.12.0` | Angular 21.2 LTS (`21.2.30`) with Angular Material 21 |
 
@@ -21,52 +23,32 @@ Last Updated: 2026-11-13 (Milestone: Real LLM Integration & Extraction Quality C
 
 ## 2. Test Execution Summary
 
-### Total Automated Tests Executed: **73 Passed, 0 Failed** across 3 Stacks
+### Total Automated Tests Executed: **81 Passed, 0 Failed** across 3 Stacks
 
 ---
 
 ### Backend (.NET 10 LTS) — **31 Passed, 0 Failed**
 - **Cx.PlatformApi.Tests**: **10 Passed, 0 Failed**
-  - `VerticalSlice_RealLiveRoundTrip_DotNetToPython_ExtractsClinicalEntities`: **Live end-to-end integration test** verifying full HTTP round-trip from ASP.NET Core to running Python AI microservice on `127.0.0.1:5005`, extracting medications (`Metformin`, `Atorvastatin`), investigations (`Serum Creatinine`, `HbA1c`), verbatim quotes, and offset indices.
-  - `Extract_EmptyNoteText_Returns400BadRequest`: Verified request validation rejects empty text with `EMPTY_NOTE_TEXT`.
-  - `Extract_NoteExceeds64KiB_Returns400BadRequest`: Verified request validation enforces 64 KiB ceiling with `NOTE_EXCEEDS_64KIB_LIMIT`.
-  - `Extract_PropagatesCorrelationIdHeader`: Verified header `X-Correlation-ID` round-trip propagation.
-  - `Extract_SuccessfulExtraction_ReturnsStructuredResults`: Verified mapping of medications, investigations, and safety flags.
-  - `Extract_InternalAiTimeout_Returns504GatewayTimeout`: Verified 504 ProblemDetails with `AI_MODEL_TIMEOUT`.
-  - `Extract_InternalAiServiceUnavailable_Returns503`: Verified 503 ProblemDetails with `AI_SERVICE_UNAVAILABLE`.
-  - `Extract_InternalAiMalformedOutput_Returns502BadGateway`: Verified 502 ProblemDetails with `MALFORMED_MODEL_OUTPUT`.
-  - `HealthLive_ReturnsOkWithHealthyStatus`: Liveness endpoint verification.
-  - `HealthReady_ReturnsOkWithReadyStatus`: Readiness endpoint verification.
 - **Cx.Domain.Tests**: **5 Passed, 0 Failed**
-  - Enum parity with `contracts/enums.v1.json`.
-  - Clinical safety write-back rules.
-- **Cx.EmrSimulator.Tests**: **11 Passed, 0 Failed** (Preserved in repo for interoperability reference)
-  - Fault injection rollback, optimistic concurrency, and Care Team access checks.
-- **Cx.OutboxPublisher.Tests**: **5 Passed, 0 Failed** (Preserved in repo)
-  - Crash recovery, multi-publisher `SKIP LOCKED` claiming, and backoff scheduling.
+- **Cx.EmrSimulator.Tests**: **11 Passed, 0 Failed**
+- **Cx.OutboxPublisher.Tests**: **5 Passed, 0 Failed**
 
 ---
 
-### AI Worker & Internal Service (Python 3.13 via uv) — **33 Passed, 0 Failed**
-- **tests/test_evaluation.py**: **3 Passed, 0 Failed** (Accuracy Benchmark Suite)
-  - `test_evaluation_dataset_completeness`: Validates 120 synthetic notes across all 16 required clinical variation categories.
-  - `test_evaluator_benchmark_metrics`: Verifies Precision $\ge 90\%$, Recall $\ge 85\%$, F1 $\ge 87.5\%$, Attribute Accuracy $\ge 85\%$, Intent Accuracy $\ge 85\%$, and Unsupported Rate $\le 2\%$.
-  - `test_run_evaluation_generates_report`: Validates generation of comprehensive Markdown audit report.
-- **tests/test_service.py**: **5 Passed, 0 Failed** (Internal AI Microservice Suite)
-  - `test_internal_service_health`: Verified `/internal/v1/health` endpoint.
-  - `test_internal_service_successful_extraction`: Verified `/internal/v1/extract` 5-stage synchronous pipeline.
-  - `test_internal_service_model_timeout_maps_to_504`: Verified model timeout error mapping.
-  - `test_internal_service_malformed_output_maps_to_502`: Verified malformed model output mapping.
-  - `test_internal_service_empty_note_rejected_with_422_or_400`: Verified Pydantic request schema validation.
+### AI Worker & Internal Service (Python 3.13 via uv) — **41 Passed, 0 Failed**
+- **tests/test_evaluation.py**: **4 Passed, 0 Failed** (Accuracy Benchmark Suite & Report Generation)
+- **tests/test_service.py**: **12 Passed, 0 Failed** (Health, 5-stage pipeline, API mode validation, deterministic strength checks, non-leaking diagnostics)
 - **tests/test_clinical_extraction.py**: **18 Passed, 0 Failed** (Mandatory 17-Case Clinical Test Matrix)
-  - All 17 clinical edge cases (new orders, historical, negated, discontinued, conditional, multiple doses, ambiguous abbreviations, missing frequency/duration, contradictory instructions, repeated entities, timeouts, malformed JSON, out-of-order versions, duplicate events, fencing tokens, prompt injection, and Unicode edge cases).
-- **tests/test_consumer.py**: **5 Passed, 0 Failed**
-  - Monotonic versioning, dedup keys, poison messages, and lease expiration fencing.
-- **tests/test_models.py**: **2 Passed, 0 Failed**
-  - Schema parity with `llm-extraction-output.v1.schema.json`.
+- **tests/test_consumer.py**: **5 Passed, 0 Failed** (Versioning, dedup keys, poison messages, lease fencing)
+- **tests/test_models.py**: **2 Passed, 0 Failed** (Pydantic schema parity)
 - **Static Analysis**:
-  - `ruff check cx_worker`: All checks passed.
-  - `mypy cx_worker`: Success: no issues found in 12 source files.
+  - `ruff check`: All checks passed.
+  - `mypy`: Success: no issues found in 19 source files.
+
+---
+
+### Frontend (Angular 21 + Vitest) — **9 Passed, 0 Failed**
+- Full smoke tests: note input, extraction results, evidence quote highlighting, terminology codes, safety warnings, and token usage telemetry.
 
 ---
 
