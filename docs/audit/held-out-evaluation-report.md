@@ -107,3 +107,4 @@ The held-out benchmark ([held_out_dataset.py](file:///D:/AI%20Extraction/src/wor
 | **HTTP Status Code** | 200 OK | 200 OK | 503 Service Unavailable |
 | **Fallback Behavior** | Deterministic local | Live model execution | Zero silent fallback |
 | **Use Case** | Offline unit & CI regression tests | Production live clinical extraction | Misconfiguration detection |
+

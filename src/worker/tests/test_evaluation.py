@@ -5,7 +5,6 @@ and evaluator achieves required clinical quality and safety thresholds.
 """
 
 from pathlib import Path
-import pytest
 
 from cx_worker.evaluation.dataset import build_evaluation_dataset
 from cx_worker.evaluation.evaluator import ExtractionEvaluator, run_evaluation
@@ -63,7 +62,7 @@ def test_evaluator_benchmark_metrics():
 
 def test_run_evaluation_generates_report(tmp_path: Path):
     report_file = tmp_path / "test-accuracy-report.md"
-    report = run_evaluation(output_file=report_file)
+    run_evaluation(output_file=report_file)
     assert report_file.exists()
     content = report_file.read_text(encoding="utf-8")
     assert "# Clinical AI Extraction Accuracy Evaluation Report" in content

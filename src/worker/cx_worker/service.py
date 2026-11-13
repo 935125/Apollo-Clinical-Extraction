@@ -7,8 +7,12 @@ Conforms to contracts/internal/internal-ai-extraction.v1.schema.json.
 import time
 from typing import Any
 
+from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException, status
 from pydantic import BaseModel, Field
+
+# Load environment configuration (.env)
+load_dotenv()
 
 from cx_worker.pipeline.adapter import (
     ConfigurationError,

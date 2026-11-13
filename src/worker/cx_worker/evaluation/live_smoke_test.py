@@ -14,6 +14,8 @@ import os
 import time
 from typing import Any
 
+from dotenv import load_dotenv
+
 from cx_worker.evaluation.held_out_dataset import build_held_out_dataset
 from cx_worker.pipeline.adapter import (
     FoundryModelAdapter,
@@ -22,6 +24,9 @@ from cx_worker.pipeline.adapter import (
 from cx_worker.pipeline.normalize import ProductionTerminologyNormalizer
 from cx_worker.pipeline.preprocess import ClinicalPreprocessor
 from cx_worker.pipeline.validate import ClinicalValidator
+
+# Load environment configuration (.env)
+load_dotenv()
 
 
 def run_live_smoke_test() -> dict[str, Any]:

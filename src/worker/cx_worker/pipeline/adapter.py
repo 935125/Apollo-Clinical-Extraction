@@ -13,6 +13,7 @@ import time
 from abc import ABC, abstractmethod
 from typing import Any, ClassVar
 
+from dotenv import load_dotenv
 from openai import APIError, APITimeoutError, AzureOpenAI, OpenAI, RateLimitError
 
 from cx_worker.models import (
@@ -22,6 +23,9 @@ from cx_worker.models import (
     LlmExtractionOutput,
     MedicationAssertion,
 )
+
+# Load environment variables from .env if present
+load_dotenv()
 
 logger = logging.getLogger(__name__)
 
@@ -283,19 +287,40 @@ Output strictly valid JSON conforming to the schema."""
                 "environment variables (or explicit credentials). Silent fallback is disabled."
             )
 
-        # Initialize client based on endpoint type
+        # Intelligent endpoint normalization:
+        # 1. OpenAI v1 Base URL (e.g. https://.../openai/v1, https://.../v1, or models.ai.azure.com)
+        # 2. Azure Resource-Root Endpoint (e.g. https://<resource>.openai.azure.com or https://<resource>.cognitiveservices.azure.com)
+        clean_endpoint = self._endpoint.strip().rstrip("/")
+        is_openai_v1 = (
+            clean_endpoint.endswith(("/openai/v1", "/v1"))
+            or "models.ai.azure.com" in clean_endpoint
+            or "inference.ai.azure.com" in clean_endpoint
+        )
+
         self._client: AzureOpenAI | OpenAI
-        if "openai.azure.com" in self._endpoint:
-            self._client = AzureOpenAI(
-                azure_endpoint=self._endpoint,
+        if is_openai_v1:
+            logger.info("Initializing OpenAI SDK client with v1 base_url: %s", clean_endpoint)
+            self._client = OpenAI(
+                base_url=clean_endpoint,
                 api_key=self._api_key,
-                api_version="2024-08-01-preview",
                 timeout=self._timeout_seconds,
             )
         else:
-            self._client = OpenAI(
-                base_url=self._endpoint,
+            # Azure Resource-Root Endpoint
+            # Strip accidental /openai suffix if present to prevent double-pathing (e.g. /openai/openai/deployments)
+            clean_endpoint = clean_endpoint.removesuffix("/openai")
+
+            api_version = os.getenv("AZURE_OPENAI_API_VERSION", "2024-10-21")
+            logger.info(
+                "Initializing AzureOpenAI SDK client with resource-root: %s (api_version=%s, deployment=%s)",
+                clean_endpoint,
+                api_version,
+                self._model_deployment,
+            )
+            self._client = AzureOpenAI(
+                azure_endpoint=clean_endpoint,
                 api_key=self._api_key,
+                api_version=api_version,
                 timeout=self._timeout_seconds,
             )
 

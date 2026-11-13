@@ -1,11 +1,9 @@
-import os
-from fastapi.testclient import TestClient
 import pytest
+from fastapi.testclient import TestClient
 
 import cx_worker.service as srv
 from cx_worker.pipeline.adapter import (
     ConfigurationError,
-    FoundryModelAdapter,
     SyntheticModelAdapter,
     create_model_adapter,
 )
