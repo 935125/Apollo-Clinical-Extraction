@@ -60,6 +60,7 @@ public class ExtractionEndpointTests : IClassFixture<WebApplicationFactory<Progr
                         CorrelationId: correlationId,
                         ExtractedAt: DateTime.UtcNow,
                         ExecutionDurationMs: 45.2,
+                        ModelMetadata: new ModelMetadataDto("synthetic_mock", "synthetic-engine", "v1.0"),
                         Preprocessed: new PreprocessedDto(50, new List<SectionSpanDto>()),
                         Medications: new List<ExtractedMedicationDto>(),
                         Investigations: new List<ExtractedInvestigationDto>(),
@@ -95,8 +96,7 @@ public class ExtractionEndpointTests : IClassFixture<WebApplicationFactory<Progr
             Evidence: new EvidenceDto("Metformin 500mg PO BD", true, 10, 31),
             QualityFlags: new List<string>(),
             Findings: new List<FindingDto>(),
-            WritebackEligible: true,
-            NormalizationStatus: "unmatched"
+            Normalization: new NormalizationDto("exact_match", "RX-MET-500", "Metformin 500mg", 1.0)
         );
 
         var client = _factory.WithWebHostBuilder(builder =>
@@ -109,6 +109,7 @@ public class ExtractionEndpointTests : IClassFixture<WebApplicationFactory<Progr
                         CorrelationId: "test-corr",
                         ExtractedAt: DateTime.UtcNow,
                         ExecutionDurationMs: 82.5,
+                        ModelMetadata: new ModelMetadataDto("synthetic_mock", "synthetic-engine", "v1.0"),
                         Preprocessed: new PreprocessedDto(100, new List<SectionSpanDto>()),
                         Medications: new List<ExtractedMedicationDto> { testMed },
                         Investigations: new List<ExtractedInvestigationDto>(),
@@ -127,7 +128,8 @@ public class ExtractionEndpointTests : IClassFixture<WebApplicationFactory<Progr
         result.Medications.Count.ShouldBe(1);
         result.Medications[0].Name.ShouldBe("Metformin");
         result.Medications[0].Strength.ShouldBe("500mg");
-        result.Medications[0].WritebackEligible.ShouldBeTrue();
+        result.Medications[0].Normalization.Status.ShouldBe("exact_match");
+        result.Medications[0].Normalization.MatchedCode.ShouldBe("RX-MET-500");
     }
 
     [Fact]

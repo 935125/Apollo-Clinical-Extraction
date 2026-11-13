@@ -10,8 +10,14 @@ from typing import Any
 from fastapi import FastAPI, HTTPException, status
 from pydantic import BaseModel, Field
 
-from cx_worker.pipeline.adapter import IExtractionModelAdapter, SyntheticModelAdapter
-from cx_worker.pipeline.normalize import MockTerminologyNormalizer
+from cx_worker.pipeline.adapter import (
+    IExtractionModelAdapter,
+    create_model_adapter,
+)
+from cx_worker.pipeline.normalize import (
+    ITerminologyNormalizer,
+    ProductionTerminologyNormalizer,
+)
 from cx_worker.pipeline.preprocess import ClinicalPreprocessor
 from cx_worker.pipeline.validate import ClinicalValidator, ValidationSummary
 
@@ -21,8 +27,9 @@ app = FastAPI(
     version="1.0.0",
 )
 
-# Global adapter instance (defaults to SyntheticModelAdapter; can be swapped or configured)
-active_adapter: IExtractionModelAdapter = SyntheticModelAdapter()
+# Active adapter (dynamically switches between SyntheticModelAdapter and FoundryModelAdapter via environment)
+active_adapter: IExtractionModelAdapter = create_model_adapter()
+active_normalizer: ITerminologyNormalizer = ProductionTerminologyNormalizer()
 
 
 class InternalExtractionRequest(BaseModel):
@@ -30,15 +37,15 @@ class InternalExtractionRequest(BaseModel):
         ..., min_length=1, max_length=65536, description="Raw clinical note narrative"
     )
     correlation_id: str = Field(..., description="Distributed tracing correlation ID")
-    model_deployment: str = Field(default="synthetic", description="Target model deployment")
+    model_deployment: str = Field(default="auto", description="Target model deployment")
     options: dict[str, Any] | None = Field(default=None, description="Optional pipeline flags")
 
 
 class EvidenceDto(BaseModel):
     quote: str
     verified: bool
-    start: int | None = None
-    end: int | None = None
+    start: int | None = Field(default=None, description="0-based UTF-16 code unit start offset")
+    end: int | None = Field(default=None, description="0-based UTF-16 code unit end offset")
 
 
 class FindingDto(BaseModel):
@@ -46,6 +53,13 @@ class FindingDto(BaseModel):
     severity: str
     field: str | None = None
     message: str
+
+
+class NormalizationDto(BaseModel):
+    status: str
+    matched_code: str | None = None
+    display_name: str | None = None
+    confidence: float = 0.0
 
 
 class ExtractedMedicationDto(BaseModel):
@@ -61,8 +75,7 @@ class ExtractedMedicationDto(BaseModel):
     evidence: EvidenceDto
     quality_flags: list[str] = Field(default_factory=list)
     findings: list[FindingDto] = Field(default_factory=list)
-    writeback_eligible: bool = False
-    normalization_status: str = "unmatched"
+    normalization: NormalizationDto
 
 
 class ExtractedInvestigationDto(BaseModel):
@@ -73,8 +86,7 @@ class ExtractedInvestigationDto(BaseModel):
     evidence: EvidenceDto
     quality_flags: list[str] = Field(default_factory=list)
     findings: list[FindingDto] = Field(default_factory=list)
-    writeback_eligible: bool = False
-    normalization_status: str = "unmatched"
+    normalization: NormalizationDto
 
 
 class ValidationSummaryDto(BaseModel):
@@ -95,9 +107,16 @@ class PreprocessedDto(BaseModel):
     sections: list[SectionSpanDto] = Field(default_factory=list)
 
 
+class ModelMetadataDto(BaseModel):
+    adapter_type: str
+    model_deployment: str
+    prompt_version: str
+
+
 class InternalExtractionResponse(BaseModel):
     schema_version: str = "1.0"
     correlation_id: str
+    model_metadata: ModelMetadataDto
     preprocessed: PreprocessedDto
     medications: list[ExtractedMedicationDto]
     investigations: list[ExtractedInvestigationDto]
@@ -107,7 +126,12 @@ class InternalExtractionResponse(BaseModel):
 
 @app.get("/internal/v1/health")
 def health_check() -> dict[str, str]:
-    return {"status": "healthy", "service": "internal-ai-extraction"}
+    return {
+        "status": "healthy",
+        "service": "internal-ai-extraction",
+        "adapter": active_adapter.adapter_type,
+        "model": active_adapter.model_name,
+    }
 
 
 @app.post("/internal/v1/extract", response_model=InternalExtractionResponse)
@@ -148,7 +172,7 @@ def extract_clinical_information(request: InternalExtractionRequest) -> Internal
     )
 
     # Stage 4: Terminology Normalization Hook
-    normalizer = MockTerminologyNormalizer()
+    normalizer = active_normalizer
 
     # Build response DTOs
     med_dtos: list[ExtractedMedicationDto] = []
@@ -178,8 +202,12 @@ def extract_clinical_information(request: InternalExtractionRequest) -> Internal
                     FindingDto(code=f.code, severity=f.severity, field=f.field, message=f.message)
                     for f in v_med.findings
                 ],
-                writeback_eligible=v_med.writeback_eligible,
-                normalization_status=norm.status,
+                normalization=NormalizationDto(
+                    status=norm.status,
+                    matched_code=norm.matched_code,
+                    display_name=norm.matched_name,
+                    confidence=norm.confidence,
+                ),
             )
         )
 
@@ -203,8 +231,12 @@ def extract_clinical_information(request: InternalExtractionRequest) -> Internal
                     FindingDto(code=f.code, severity=f.severity, field=f.field, message=f.message)
                     for f in v_inv.findings
                 ],
-                writeback_eligible=v_inv.writeback_eligible,
-                normalization_status=norm_inv.status,
+                normalization=NormalizationDto(
+                    status=norm_inv.status,
+                    matched_code=norm_inv.matched_code,
+                    display_name=norm_inv.matched_name,
+                    confidence=norm_inv.confidence,
+                ),
             )
         )
 
@@ -223,6 +255,11 @@ def extract_clinical_information(request: InternalExtractionRequest) -> Internal
     return InternalExtractionResponse(
         schema_version="1.0",
         correlation_id=request.correlation_id,
+        model_metadata=ModelMetadataDto(
+            adapter_type=active_adapter.adapter_type,
+            model_deployment=active_adapter.model_name,
+            prompt_version=active_adapter.prompt_version,
+        ),
         preprocessed=PreprocessedDto(
             char_length=preprocessed.char_length,
             sections=[

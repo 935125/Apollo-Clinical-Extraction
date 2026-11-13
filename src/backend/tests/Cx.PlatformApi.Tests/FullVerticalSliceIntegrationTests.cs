@@ -55,17 +55,22 @@ public class FullVerticalSliceIntegrationTests : IClassFixture<WebApplicationFac
         metformin.Frequency.ShouldBe("BD");
         metformin.AssertionStatus.ShouldBe("new_order");
         metformin.Evidence.Verified.ShouldBeTrue();
-        metformin.WritebackEligible.ShouldBeTrue();
+        metformin.Normalization.Status.ShouldBe("exact_match");
+        metformin.Normalization.MatchedCode.ShouldBe("RX-MET-500");
 
         var atorvastatin = result.Medications.FirstOrDefault(m => m.Name == "Atorvastatin");
         atorvastatin.ShouldNotBeNull();
         atorvastatin.Strength.ShouldBe("20mg");
         atorvastatin.Evidence.Verified.ShouldBeTrue();
+        atorvastatin.Normalization.Status.ShouldBe("exact_match");
+        atorvastatin.Normalization.MatchedCode.ShouldBe("RX-ATO-20");
 
         // Verify extracted investigations
         result.Investigations.Count.ShouldBeGreaterThanOrEqualTo(2);
-        result.Investigations.ShouldContain(i => i.Name == "Serum Creatinine");
-        result.Investigations.ShouldContain(i => i.Name == "HbA1c");
+        var creat = result.Investigations.FirstOrDefault(i => i.Name == "Serum Creatinine");
+        creat.ShouldNotBeNull();
+        creat.Normalization.Status.ShouldBe("exact_match");
+        creat.Normalization.MatchedCode.ShouldBe("LAB-CREAT");
 
         // Verify validation summary
         result.ValidationSummary.HasErrors.ShouldBeFalse();

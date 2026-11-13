@@ -93,6 +93,18 @@ $danger: #dc2626;
     background: #0284c7;
     color: #ffffff;
   }
+
+  &.badge-model {
+    background: #1e1b4b;
+    color: #e0e7ff;
+    border: 1px solid #6366f1;
+
+    &.badge-live {
+      background: #047857;
+      color: #ffffff;
+      border: 1px solid #10b981;
+    }
+  }
 }
 
 .workspace-grid {
@@ -127,10 +139,40 @@ $danger: #dc2626;
   align-items: center;
   margin-bottom: 0.875rem;
 
-  h2 {
-    font-size: 1.05rem;
-    font-weight: 700;
-    margin: 0;
+  .header-mode-toggle {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
+    h2 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin: 0;
+    }
+
+    .mode-chips {
+      display: flex;
+      background: #f1f5f9;
+      border-radius: 6px;
+      padding: 0.15rem;
+
+      .chip-toggle {
+        border: none;
+        background: transparent;
+        font-size: 0.6875rem;
+        font-weight: 600;
+        padding: 0.25rem 0.5rem;
+        border-radius: 4px;
+        cursor: pointer;
+        color: $text-muted;
+
+        &.active {
+          background: #ffffff;
+          color: $primary;
+          box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+        }
+      }
+    }
   }
 
   .char-count {
@@ -190,10 +232,11 @@ $danger: #dc2626;
   }
 }
 
-.textarea-wrapper {
+.narrative-body-container {
   flex: 1;
   display: flex;
   margin-bottom: 1rem;
+  min-height: 380px;
 
   .clinical-textarea {
     width: 100%;
@@ -212,6 +255,63 @@ $danger: #dc2626;
       border-color: $accent;
       background: #ffffff;
       box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
+    }
+  }
+
+  .highlight-display-box {
+    width: 100%;
+    border: 1px solid $border;
+    border-radius: 8px;
+    background: #ffffff;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+
+    .highlight-banner {
+      background: #eff6ff;
+      border-bottom: 1px solid #bfdbfe;
+      padding: 0.5rem 0.75rem;
+      font-size: 0.75rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: #1e40af;
+
+      &.hint {
+        background: #f8fafc;
+        border-bottom-color: $border;
+        color: $text-muted;
+      }
+
+      .btn-text-sm {
+        background: none;
+        border: none;
+        color: $accent;
+        cursor: pointer;
+        font-weight: 600;
+        text-decoration: underline;
+        padding: 0;
+      }
+    }
+
+    .narrative-text-flow {
+      padding: 0.875rem;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.875rem;
+      line-height: 1.6;
+      white-space: pre-wrap;
+      overflow-y: auto;
+      flex: 1;
+      color: #334155;
+
+      .evidence-highlight {
+        background: #fef08a;
+        color: #854d0e;
+        border-bottom: 2px solid #ca8a04;
+        font-weight: 700;
+        padding: 0.1rem 0.2rem;
+        border-radius: 2px;
+      }
     }
   }
 }
@@ -299,35 +399,73 @@ $danger: #dc2626;
   }
 }
 
-/* Metrics Bar */
-.metrics-bar {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 0.75rem;
-  background: #f8fafc;
-  border: 1px solid $border;
-  border-radius: 8px;
-  padding: 0.75rem 1rem;
+/* Results Top Bar & Metrics */
+.results-top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
   margin-bottom: 1rem;
+  flex-wrap: wrap;
 
-  .metric-item {
+  .metrics-bar {
     display: flex;
-    flex-direction: column;
+    gap: 1.25rem;
+    background: #f8fafc;
+    border: 1px solid $border;
+    border-radius: 8px;
+    padding: 0.6rem 1rem;
+    flex: 1;
 
-    .metric-label {
-      font-size: 0.6875rem;
-      color: $text-muted;
-      text-transform: uppercase;
-      font-weight: 600;
+    .metric-item {
+      display: flex;
+      flex-direction: column;
+
+      .metric-label {
+        font-size: 0.6875rem;
+        color: $text-muted;
+        text-transform: uppercase;
+        font-weight: 600;
+      }
+
+      .metric-val {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: $text-main;
+
+        &.highlight-val { color: $accent; }
+        &.metric-warning { color: $warning; }
+      }
     }
+  }
 
-    .metric-val {
-      font-size: 1.15rem;
-      font-weight: 700;
-      color: $text-main;
+  .export-actions {
+    display: flex;
+    gap: 0.5rem;
 
-      &.highlight-val { color: $accent; }
-      &.metric-warning { color: $warning; }
+    .btn-outline-sm {
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      color: #334155;
+      padding: 0.45rem 0.75rem;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      transition: all 0.15s ease;
+
+      .btn-icon-sm {
+        width: 14px;
+        height: 14px;
+      }
+
+      &:hover {
+        background: #f1f5f9;
+        border-color: #94a3b8;
+      }
     }
   }
 }
@@ -336,7 +474,7 @@ $danger: #dc2626;
 .tabs-nav {
   display: flex;
   border-bottom: 1px solid $border;
-  margin-bottom: 1rem;
+  margin-bottom: 0.75rem;
 
   .tab-btn {
     background: transparent;
@@ -352,6 +490,50 @@ $danger: #dc2626;
     &.active {
       color: $primary;
       border-bottom-color: $primary;
+    }
+  }
+}
+
+/* Filters */
+.filter-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.875rem;
+  flex-wrap: wrap;
+
+  .filter-label {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    color: $text-muted;
+    text-transform: uppercase;
+  }
+
+  .filter-pills {
+    display: flex;
+    gap: 0.35rem;
+    flex-wrap: wrap;
+
+    .pill-btn {
+      background: #f1f5f9;
+      border: 1px solid transparent;
+      padding: 0.2rem 0.5rem;
+      border-radius: 9999px;
+      font-size: 0.6875rem;
+      font-weight: 500;
+      color: #475569;
+      cursor: pointer;
+
+      &:hover {
+        background: #e2e8f0;
+      }
+
+      &.active {
+        background: #e0f2fe;
+        color: #0369a1;
+        border-color: #7dd3fc;
+        font-weight: 700;
+      }
     }
   }
 }
@@ -372,6 +554,19 @@ $danger: #dc2626;
   padding: 1rem;
   background: #ffffff;
   border-left: 4px solid $accent;
+  cursor: pointer;
+  transition: all 0.15s ease;
+
+  &:hover {
+    border-color: #cbd5e1;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  }
+
+  &.selected {
+    border-color: #3b82f6;
+    background: #f8fafc;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.25);
+  }
 
   &.card-negated { border-left-color: $danger; background: #fffbfb; }
   &.card-discontinued { border-left-color: $warning; }
@@ -381,13 +576,14 @@ $danger: #dc2626;
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.4rem;
   }
 
   .entity-title-block {
     display: flex;
     align-items: baseline;
     gap: 0.5rem;
+    flex-wrap: wrap;
 
     .entity-name {
       margin: 0;
@@ -400,11 +596,22 @@ $danger: #dc2626;
       color: $text-muted;
       font-weight: 500;
     }
+
+    .missing-badge {
+      background: #fef2f2;
+      color: #b91c1c;
+      border: 1px solid #fecaca;
+      font-size: 0.625rem;
+      font-weight: 600;
+      padding: 0.15rem 0.4rem;
+      border-radius: 4px;
+    }
   }
 
   .card-badges {
     display: flex;
     gap: 0.35rem;
+    align-items: center;
   }
 
   .assertion-badge {
@@ -422,7 +629,7 @@ $danger: #dc2626;
     &[data-status="conditional"] { background: #ede9fe; color: #6d28d9; }
   }
 
-  .eligibility-badge {
+  .norm-badge {
     font-size: 0.625rem;
     font-weight: 600;
     padding: 0.2rem 0.5rem;
@@ -430,9 +637,25 @@ $danger: #dc2626;
     background: #f1f5f9;
     color: #64748b;
 
-    &.eligible {
-      background: #ecfdf5;
-      color: #059669;
+    &.norm-matched {
+      background: #f0fdf4;
+      color: #166534;
+      border: 1px solid #bbf7d0;
+    }
+  }
+
+  .missing-row {
+    display: flex;
+    gap: 0.35rem;
+    margin-bottom: 0.4rem;
+
+    .missing-pill {
+      font-size: 0.625rem;
+      color: #b45309;
+      background: #fffbeb;
+      border: 1px solid #fef3c7;
+      padding: 0.1rem 0.35rem;
+      border-radius: 3px;
     }
   }
 
@@ -441,7 +664,7 @@ $danger: #dc2626;
     flex-wrap: wrap;
     gap: 0.5rem 1rem;
     font-size: 0.8125rem;
-    margin: 0.5rem 0;
+    margin: 0.4rem 0;
 
     .attr-item {
       .k { color: $text-muted; font-weight: 500; }
@@ -464,6 +687,7 @@ $danger: #dc2626;
 
       .verified-tag { color: $success; font-weight: 600; }
       .unverified-tag { color: $danger; font-weight: 600; }
+      .inspect-hint { font-size: 0.6875rem; color: $accent; }
     }
 
     .evidence-quote {
@@ -558,4 +782,3 @@ $danger: #dc2626;
     }
   }
 }
-

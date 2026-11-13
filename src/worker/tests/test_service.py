@@ -10,7 +10,9 @@ client = TestClient(app)
 def test_internal_service_health():
     response = client.get("/internal/v1/health")
     assert response.status_code == 200
-    assert response.json() == {"status": "healthy", "service": "internal-ai-extraction"}
+    data = response.json()
+    assert data["status"] == "healthy"
+    assert data["service"] == "internal-ai-extraction"
 
 
 def test_internal_service_successful_extraction():
@@ -28,13 +30,19 @@ def test_internal_service_successful_extraction():
 
     assert data["schema_version"] == "1.0"
     assert data["correlation_id"] == "test-corr-service-01"
+    assert data["model_metadata"]["adapter_type"] == "synthetic_mock"
     assert data["preprocessed"]["char_length"] > 0
     assert len(data["medications"]) >= 1
     assert data["medications"][0]["name"] == "Metformin"
     assert data["medications"][0]["strength"] == "500mg"
     assert data["medications"][0]["evidence"]["verified"] is True
+    assert data["medications"][0]["normalization"]["status"] == "exact_match"
+    assert data["medications"][0]["normalization"]["matched_code"] == "RX-MET-500"
+
     assert len(data["investigations"]) >= 1
     assert data["investigations"][0]["name"] == "Serum Creatinine"
+    assert data["investigations"][0]["normalization"]["status"] == "exact_match"
+    assert data["investigations"][0]["normalization"]["matched_code"] == "LAB-CREAT"
     assert data["execution_duration_ms"] > 0
 
 

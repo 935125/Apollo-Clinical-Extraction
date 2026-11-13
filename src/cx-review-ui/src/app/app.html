@@ -9,24 +9,50 @@
       </div>
       <div>
         <h1 class="app-title">Clinical AI Extraction Platform</h1>
-        <p class="app-subtitle">Standalone Architecture — ASP.NET Core Public API & Internal Python AI Engine</p>
+        <p class="app-subtitle">Healthcare Intelligence Studio — ASP.NET Core API & Internal Python AI Extraction</p>
       </div>
     </div>
     <div class="header-badges">
-      <span class="badge badge-net">ASP.NET Core .NET 10</span>
-      <span class="badge badge-py">Python 3.13 NLP Service</span>
-      <span class="badge badge-online">Verified Pipeline</span>
+      @if (result(); as res) {
+        <span class="badge badge-model" [class.badge-live]="res.modelMetadata.adapterType.includes('live')">
+          Model: {{ res.modelMetadata.modelDeployment }} ({{ res.modelMetadata.adapterType }})
+        </span>
+      } @else {
+        <span class="badge badge-net">ASP.NET Core .NET 10</span>
+        <span class="badge badge-py">Python 3.13 NLP</span>
+      }
+      <span class="badge badge-online">Verified Clean Stack</span>
     </div>
   </header>
 
   <!-- Main Workspace Layout -->
   <main class="workspace-grid">
-    <!-- Left Column: Input Clinical Note & Presets -->
+    <!-- Left Column: Input Clinical Note & Evidence Visualizer -->
     <section class="panel input-panel">
       <div class="panel-header">
-        <h2>Unstructured Clinical Note</h2>
+        <div class="header-mode-toggle">
+          <h2>Clinical Narrative</h2>
+          <div class="mode-chips">
+            <button
+              type="button"
+              class="chip-toggle"
+              [class.active]="editorMode() === 'edit'"
+              (click)="clearSelection()"
+            >
+              Editor View
+            </button>
+            <button
+              type="button"
+              class="chip-toggle"
+              [class.active]="editorMode() === 'inspect'"
+              (click)="editorMode.set('inspect')"
+            >
+              Evidence Highlight View
+            </button>
+          </div>
+        </div>
         <span class="char-count" [class.char-limit-warning]="noteText().length > 60000">
-          {{ noteText().length | number }} / 65,536 chars
+          {{ wordCount() | number }} words | {{ characterCount() | number }} chars
         </span>
       </div>
 
@@ -43,16 +69,40 @@
         </div>
       </div>
 
-      <!-- Clinical Narrative Textarea -->
-      <div class="textarea-wrapper">
-        <textarea
-          class="clinical-textarea"
-          [ngModel]="noteText()"
-          (ngModelChange)="noteText.set($event)"
-          placeholder="Paste or write unstructured outpatient clinical note here..."
-          rows="18"
-          [disabled]="isExtracting()"
-        ></textarea>
+      <!-- Left View Body: Either Textarea Editor or Highlighted Narrative -->
+      <div class="narrative-body-container">
+        @if (editorMode() === 'edit') {
+          <textarea
+            class="clinical-textarea"
+            [ngModel]="noteText()"
+            (ngModelChange)="noteText.set($event)"
+            placeholder="Paste or write unstructured outpatient clinical note here..."
+            rows="18"
+            [disabled]="isExtracting()"
+          ></textarea>
+        } @else {
+          <div class="highlight-display-box">
+            @if (selectedEntity(); as ent) {
+              <div class="highlight-banner">
+                <span>Inspecting Evidence for <strong>{{ ent.name }}</strong> ({{ ent.assertionStatus }}):</span>
+                <button type="button" class="btn-text-sm" (click)="clearSelection()">Reset Selection</button>
+              </div>
+            } @else {
+              <div class="highlight-banner hint">
+                <span>Click any medication or investigation card to highlight its source evidence span.</span>
+              </div>
+            }
+            <div class="narrative-text-flow">
+              @for (seg of narrativeSegments(); track $index) {
+                @if (seg.isHighlight) {
+                  <mark class="evidence-highlight" title="Verbatim Evidence Span">{{ seg.text }}</mark>
+                } @else {
+                  <span>{{ seg.text }}</span>
+                }
+              }
+            </div>
+          </div>
+        }
       </div>
 
       <!-- Action Footer -->
@@ -106,24 +156,42 @@
 
       <!-- Results Header & Metrics Bar -->
       @if (result(); as res) {
-        <div class="metrics-bar">
-          <div class="metric-item">
-            <span class="metric-label">Latency</span>
-            <span class="metric-val highlight-val">{{ res.executionDurationMs }} ms</span>
+        <div class="results-top-bar">
+          <div class="metrics-bar">
+            <div class="metric-item">
+              <span class="metric-label">Execution Time</span>
+              <span class="metric-val highlight-val">{{ res.executionDurationMs }} ms</span>
+            </div>
+            <div class="metric-item">
+              <span class="metric-label">Medications</span>
+              <span class="metric-val">{{ res.medications.length }}</span>
+            </div>
+            <div class="metric-item">
+              <span class="metric-label">Investigations</span>
+              <span class="metric-val">{{ res.investigations.length }}</span>
+            </div>
+            <div class="metric-item">
+              <span class="metric-label">Quality Warnings</span>
+              <span class="metric-val" [class.metric-warning]="res.validationSummary.warningCount > 0">
+                {{ res.validationSummary.warningCount }}
+              </span>
+            </div>
           </div>
-          <div class="metric-item">
-            <span class="metric-label">Medications</span>
-            <span class="metric-val">{{ res.medications.length }}</span>
-          </div>
-          <div class="metric-item">
-            <span class="metric-label">Investigations</span>
-            <span class="metric-val">{{ res.investigations.length }}</span>
-          </div>
-          <div class="metric-item">
-            <span class="metric-label">Quality Warnings</span>
-            <span class="metric-val" [class.metric-warning]="res.validationSummary.warningCount > 0">
-              {{ res.validationSummary.warningCount }}
-            </span>
+
+          <!-- Export Action Buttons -->
+          <div class="export-actions">
+            <button type="button" class="btn btn-outline-sm" (click)="exportJson()" title="Download raw JSON report">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="btn-icon-sm">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>
+              </svg>
+              JSON
+            </button>
+            <button type="button" class="btn btn-outline-sm" (click)="exportCsv()" title="Download tabular CSV export">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="btn-icon-sm">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>
+              </svg>
+              CSV
+            </button>
           </div>
         </div>
 
@@ -163,27 +231,68 @@
           </button>
         </nav>
 
+        <!-- Assertion Filter Controls (for medications & investigations) -->
+        @if (activeTab() === 'medications' || activeTab() === 'investigations') {
+          <div class="filter-bar">
+            <span class="filter-label">Filter Intent:</span>
+            <div class="filter-pills">
+              <button type="button" class="pill-btn" [class.active]="assertionFilter() === 'all'" (click)="setFilter('all')">All</button>
+              <button type="button" class="pill-btn" [class.active]="assertionFilter() === 'new_order'" (click)="setFilter('new_order')">New Orders</button>
+              <button type="button" class="pill-btn" [class.active]="assertionFilter() === 'historical'" (click)="setFilter('historical')">Historical</button>
+              <button type="button" class="pill-btn" [class.active]="assertionFilter() === 'discontinued'" (click)="setFilter('discontinued')">Discontinued</button>
+              <button type="button" class="pill-btn" [class.active]="assertionFilter() === 'negated'" (click)="setFilter('negated')">Negated / Allergy</button>
+              <button type="button" class="pill-btn" [class.active]="assertionFilter() === 'conditional'" (click)="setFilter('conditional')">Conditional / PRN</button>
+            </div>
+          </div>
+        }
+
         <!-- Tab 1: Extracted Medications List -->
         @if (activeTab() === 'medications') {
           <div class="tab-content">
-            @if (res.medications.length === 0) {
-              <div class="empty-tab">No medications extracted from this clinical note.</div>
+            @if (filteredMedications().length === 0) {
+              <div class="empty-tab">No medications match the active intent filter.</div>
             }
-            @for (med of res.medications; track med.name + $index) {
-              <div class="entity-card" [class.card-negated]="med.assertionStatus === 'negated'" [class.card-discontinued]="med.assertionStatus === 'discontinued'">
+            @for (med of filteredMedications(); track med.name + $index) {
+              <div
+                class="entity-card"
+                [class.selected]="selectedEntity() === med"
+                [class.card-negated]="med.assertionStatus === 'negated'"
+                [class.card-discontinued]="med.assertionStatus === 'discontinued'"
+                (click)="selectEntity(med)"
+              >
                 <div class="card-header">
                   <div class="entity-title-block">
                     <h3 class="entity-name">{{ med.name }}</h3>
-                    @if (med.strength) { <span class="entity-strength">{{ med.strength }}</span> }
+                    @if (med.strength) {
+                      <span class="entity-strength">{{ med.strength }}</span>
+                    } @else {
+                      <span class="missing-badge" title="Dose strength was not specified in narrative">Missing Strength</span>
+                    }
                   </div>
                   <div class="card-badges">
                     <span class="assertion-badge" [attr.data-status]="med.assertionStatus">
                       {{ med.assertionStatus | uppercase }}
                     </span>
-                    <span class="eligibility-badge" [class.eligible]="med.writebackEligible">
-                      {{ med.writebackEligible ? 'Writeback Eligible' : 'Writeback Blocked' }}
-                    </span>
+                    @if (med.normalization) {
+                      <span class="norm-badge" [class.norm-matched]="med.normalization.status !== 'unresolved'" [title]="'Confidence: ' + (med.normalization.confidence * 100).toFixed(0) + '%'">
+                        @if (med.normalization.matchedCode) {
+                          RxNorm: {{ med.normalization.matchedCode }}
+                        } @else {
+                          Unresolved
+                        }
+                      </span>
+                    }
                   </div>
+                </div>
+
+                <!-- Missing Fields Warnings -->
+                <div class="missing-row">
+                  @if (!med.frequency) {
+                    <span class="missing-pill">Missing Frequency</span>
+                  }
+                  @if (!med.route) {
+                    <span class="missing-pill">Missing Route</span>
+                  }
                 </div>
 
                 <!-- Attributes Grid -->
@@ -205,6 +314,7 @@
                     } @else {
                       <span class="unverified-tag">✗ Evidence Mismatch</span>
                     }
+                    <span class="inspect-hint">Click card to highlight</span>
                   </div>
                   <blockquote class="evidence-quote">"{{ med.evidence.quote }}"</blockquote>
                 </div>
@@ -225,11 +335,16 @@
         <!-- Tab 2: Extracted Investigations List -->
         @if (activeTab() === 'investigations') {
           <div class="tab-content">
-            @if (res.investigations.length === 0) {
-              <div class="empty-tab">No investigations extracted from this clinical note.</div>
+            @if (filteredInvestigations().length === 0) {
+              <div class="empty-tab">No investigations match the active intent filter.</div>
             }
-            @for (inv of res.investigations; track inv.name + $index) {
-              <div class="entity-card" [class.card-conditional]="inv.assertionStatus === 'conditional'">
+            @for (inv of filteredInvestigations(); track inv.name + $index) {
+              <div
+                class="entity-card"
+                [class.selected]="selectedEntity() === inv"
+                [class.card-conditional]="inv.assertionStatus === 'conditional'"
+                (click)="selectEntity(inv)"
+              >
                 <div class="card-header">
                   <div class="entity-title-block">
                     <h3 class="entity-name">{{ inv.name }}</h3>
@@ -239,9 +354,15 @@
                     <span class="assertion-badge" [attr.data-status]="inv.assertionStatus">
                       {{ inv.assertionStatus | uppercase }}
                     </span>
-                    <span class="eligibility-badge" [class.eligible]="inv.writebackEligible">
-                      {{ inv.writebackEligible ? 'Writeback Eligible' : 'Writeback Blocked' }}
-                    </span>
+                    @if (inv.normalization) {
+                      <span class="norm-badge" [class.norm-matched]="inv.normalization.status !== 'unresolved'" [title]="'Confidence: ' + (inv.normalization.confidence * 100).toFixed(0) + '%'">
+                        @if (inv.normalization.matchedCode) {
+                          LOINC: {{ inv.normalization.matchedCode }}
+                        } @else {
+                          Unresolved
+                        }
+                      </span>
+                    }
                   </div>
                 </div>
 
@@ -251,6 +372,7 @@
                     @if (inv.evidence.verified) {
                       <span class="verified-tag">✓ Verified [{{ inv.evidence.start }}:{{ inv.evidence.end }}]</span>
                     }
+                    <span class="inspect-hint">Click card to highlight</span>
                   </div>
                   <blockquote class="evidence-quote">"{{ inv.evidence.quote }}"</blockquote>
                 </div>

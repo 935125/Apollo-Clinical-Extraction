@@ -243,6 +243,19 @@ class ClinicalValidator:
 
         return summary
 
+    @staticmethod
+    def to_utf16_offset(text: str, code_point_offset: int | None) -> int | None:
+        """
+        Converts Python Unicode code point offset into a JavaScript/DOM compatible
+        UTF-16 code unit offset by accounting for surrogate pairs (characters > U+FFFF).
+        Guarantees that in Angular: sourceText.substring(start, end) === quote.
+        """
+        if code_point_offset is None or code_point_offset < 0:
+            return None
+        prefix = text[:code_point_offset]
+        surrogate_count = sum(1 for ch in prefix if ord(ch) > 0xFFFF)
+        return code_point_offset + surrogate_count
+
     def _verify_evidence(self, quote: str | None, text: str) -> EvidenceMatch:
         if not quote or not quote.strip():
             return EvidenceMatch(
@@ -252,8 +265,11 @@ class ClinicalValidator:
         clean_quote = quote.strip()
         idx = text.find(clean_quote)
         if idx != -1:
+            end_idx = idx + len(clean_quote)
+            utf16_start = self.to_utf16_offset(text, idx)
+            utf16_end = self.to_utf16_offset(text, end_idx)
             return EvidenceMatch(
-                quote=clean_quote, verified=True, start=idx, end=idx + len(clean_quote)
+                quote=clean_quote, verified=True, start=utf16_start, end=utf16_end
             )
 
         return EvidenceMatch(quote=clean_quote, verified=False, start=None, end=None)

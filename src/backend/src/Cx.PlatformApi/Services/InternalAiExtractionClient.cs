@@ -35,7 +35,6 @@ public class InternalAiExtractionClient : IInternalAiExtractionClient
 {
     private readonly HttpClient _httpClient;
     private readonly ILogger<InternalAiExtractionClient> _logger;
-    private static readonly JsonSerializerOptions JsonOptions = new() { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
 
     public InternalAiExtractionClient(HttpClient httpClient, ILogger<InternalAiExtractionClient> logger)
     {
@@ -49,7 +48,7 @@ public class InternalAiExtractionClient : IInternalAiExtractionClient
         {
             note_text = noteText,
             correlation_id = correlationId,
-            model_deployment = "synthetic"
+            model_deployment = "auto"
         };
 
         var requestJson = JsonSerializer.Serialize(internalPayload);
@@ -100,6 +99,17 @@ public class InternalAiExtractionClient : IInternalAiExtractionClient
 
         using var doc = JsonDocument.Parse(responseBody);
         var root = doc.RootElement;
+
+        // Parse model metadata
+        var adapterType = "unknown";
+        var modelDeployment = "unknown";
+        var promptVersion = "v1.0.0";
+        if (root.TryGetProperty("model_metadata", out var metaEl))
+        {
+            adapterType = metaEl.GetProperty("adapter_type").GetString() ?? adapterType;
+            modelDeployment = metaEl.GetProperty("model_deployment").GetString() ?? modelDeployment;
+            promptVersion = metaEl.GetProperty("prompt_version").GetString() ?? promptVersion;
+        }
 
         // Parse preprocessed
         var preprocessedEl = root.GetProperty("preprocessed");
@@ -152,6 +162,14 @@ public class InternalAiExtractionClient : IInternalAiExtractionClient
                     }
                 }
 
+                var normEl = m.GetProperty("normalization");
+                var normalization = new NormalizationDto(
+                    normEl.GetProperty("status").GetString() ?? "unresolved",
+                    normEl.GetProperty("matched_code").ValueKind == JsonValueKind.Null ? null : normEl.GetProperty("matched_code").GetString(),
+                    normEl.GetProperty("display_name").ValueKind == JsonValueKind.Null ? null : normEl.GetProperty("display_name").GetString(),
+                    normEl.GetProperty("confidence").GetDouble()
+                );
+
                 medications.Add(new ExtractedMedicationDto(
                     m.GetProperty("name").GetString() ?? "",
                     m.GetProperty("strength").ValueKind == JsonValueKind.Null ? null : m.GetProperty("strength").GetString(),
@@ -165,8 +183,7 @@ public class InternalAiExtractionClient : IInternalAiExtractionClient
                     evidenceDto,
                     qualityFlags,
                     findings,
-                    m.GetProperty("writeback_eligible").GetBoolean(),
-                    m.GetProperty("normalization_status").GetString() ?? "unmatched"
+                    normalization
                 ));
             }
         }
@@ -205,6 +222,14 @@ public class InternalAiExtractionClient : IInternalAiExtractionClient
                     }
                 }
 
+                var normEl = i.GetProperty("normalization");
+                var normalization = new NormalizationDto(
+                    normEl.GetProperty("status").GetString() ?? "unresolved",
+                    normEl.GetProperty("matched_code").ValueKind == JsonValueKind.Null ? null : normEl.GetProperty("matched_code").GetString(),
+                    normEl.GetProperty("display_name").ValueKind == JsonValueKind.Null ? null : normEl.GetProperty("display_name").GetString(),
+                    normEl.GetProperty("confidence").GetDouble()
+                );
+
                 investigations.Add(new ExtractedInvestigationDto(
                     i.GetProperty("name").GetString() ?? "",
                     i.GetProperty("timing").ValueKind == JsonValueKind.Null ? null : i.GetProperty("timing").GetString(),
@@ -213,8 +238,7 @@ public class InternalAiExtractionClient : IInternalAiExtractionClient
                     evidenceDto,
                     qualityFlags,
                     findings,
-                    i.GetProperty("writeback_eligible").GetBoolean(),
-                    i.GetProperty("normalization_status").GetString() ?? "unmatched"
+                    normalization
                 ));
             }
         }
@@ -233,6 +257,7 @@ public class InternalAiExtractionClient : IInternalAiExtractionClient
             CorrelationId: correlationId,
             ExtractedAt: DateTime.UtcNow,
             ExecutionDurationMs: durationMs,
+            ModelMetadata: new ModelMetadataDto(adapterType, modelDeployment, promptVersion),
             Preprocessed: new PreprocessedDto(charLength, sections),
             Medications: medications,
             Investigations: investigations,
@@ -240,4 +265,3 @@ public class InternalAiExtractionClient : IInternalAiExtractionClient
         );
     }
 }
-

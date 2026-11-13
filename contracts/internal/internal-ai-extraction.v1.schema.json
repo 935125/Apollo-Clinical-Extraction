@@ -20,6 +20,14 @@
     "correlationId": {
       "type": "string"
     },
+    "modelMetadata": {
+      "type": "object",
+      "properties": {
+        "adapterType": { "type": "string" },
+        "modelDeployment": { "type": "string" },
+        "promptVersion": { "type": "string" }
+      }
+    },
     "preprocessed": {
       "type": "object",
       "required": ["charLength", "sections"],
@@ -33,8 +41,8 @@
             "properties": {
               "code": { "type": "string" },
               "heading": { "type": "string" },
-              "start": { "type": "integer" },
-              "end": { "type": "integer" }
+              "start": { "type": "integer", "description": "UTF-16 start offset" },
+              "end": { "type": "integer", "description": "UTF-16 end offset" }
             }
           }
         }
@@ -44,7 +52,7 @@
       "type": "array",
       "items": {
         "type": "object",
-        "required": ["name", "assertionStatus", "evidence", "qualityFlags", "writebackEligible"],
+        "required": ["name", "assertionStatus", "evidence", "qualityFlags", "normalization"],
         "properties": {
           "name": { "type": "string" },
           "strength": { "type": ["string", "null"] },
@@ -54,15 +62,28 @@
           "duration": { "type": ["string", "null"] },
           "formulation": { "type": ["string", "null"] },
           "instructions": { "type": ["string", "null"] },
-          "assertionStatus": { "type": "string" },
+          "assertionStatus": {
+            "type": "string",
+            "enum": ["new_order", "current_medication", "historical", "discontinued", "negated", "suggested", "conditional", "uncertain"]
+          },
           "evidence": {
             "type": "object",
             "required": ["quote", "verified", "start", "end"],
             "properties": {
               "quote": { "type": "string" },
               "verified": { "type": "boolean" },
-              "start": { "type": ["integer", "null"] },
-              "end": { "type": ["integer", "null"] }
+              "start": { "type": ["integer", "null"], "description": "0-based UTF-16 code unit start offset" },
+              "end": { "type": ["integer", "null"], "description": "0-based UTF-16 code unit end offset" }
+            }
+          },
+          "normalization": {
+            "type": "object",
+            "required": ["status", "confidence"],
+            "properties": {
+              "status": { "type": "string", "enum": ["exact_match", "synonym_match", "fuzzy_match", "ambiguous", "unresolved"] },
+              "matchedCode": { "type": ["string", "null"] },
+              "displayName": { "type": ["string", "null"] },
+              "confidence": { "type": "number" }
             }
           },
           "qualityFlags": {
@@ -81,8 +102,7 @@
                 "message": { "type": "string" }
               }
             }
-          },
-          "writebackEligible": { "type": "boolean" }
+          }
         }
       }
     },
@@ -90,20 +110,33 @@
       "type": "array",
       "items": {
         "type": "object",
-        "required": ["name", "assertionStatus", "evidence", "qualityFlags", "writebackEligible"],
+        "required": ["name", "assertionStatus", "evidence", "qualityFlags", "normalization"],
         "properties": {
           "name": { "type": "string" },
-          "testType": { "type": ["string", "null"] },
+          "timing": { "type": ["string", "null"] },
           "specimen": { "type": ["string", "null"] },
-          "assertionStatus": { "type": "string" },
+          "assertionStatus": {
+            "type": "string",
+            "enum": ["new_order", "historical", "negated", "suggested", "conditional", "uncertain"]
+          },
           "evidence": {
             "type": "object",
             "required": ["quote", "verified", "start", "end"],
             "properties": {
               "quote": { "type": "string" },
               "verified": { "type": "boolean" },
-              "start": { "type": ["integer", "null"] },
-              "end": { "type": ["integer", "null"] }
+              "start": { "type": ["integer", "null"], "description": "0-based UTF-16 code unit start offset" },
+              "end": { "type": ["integer", "null"], "description": "0-based UTF-16 code unit end offset" }
+            }
+          },
+          "normalization": {
+            "type": "object",
+            "required": ["status", "confidence"],
+            "properties": {
+              "status": { "type": "string", "enum": ["exact_match", "synonym_match", "fuzzy_match", "ambiguous", "unresolved"] },
+              "matchedCode": { "type": ["string", "null"] },
+              "displayName": { "type": ["string", "null"] },
+              "confidence": { "type": "number" }
             }
           },
           "qualityFlags": {
@@ -122,8 +155,7 @@
                 "message": { "type": "string" }
               }
             }
-          },
-          "writebackEligible": { "type": "boolean" }
+          }
         }
       }
     },
@@ -141,4 +173,3 @@
     }
   }
 }
-

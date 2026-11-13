@@ -18,6 +18,13 @@ export interface Finding {
   message: string;
 }
 
+export interface NormalizationInfo {
+  status: string;
+  matchedCode: string | null;
+  displayName: string | null;
+  confidence: number;
+}
+
 export interface ExtractedMedication {
   name: string;
   strength: string | null;
@@ -31,8 +38,7 @@ export interface ExtractedMedication {
   evidence: Evidence;
   qualityFlags: string[];
   findings: Finding[];
-  writebackEligible: boolean;
-  normalizationStatus: string;
+  normalization: NormalizationInfo;
 }
 
 export interface ExtractedInvestigation {
@@ -43,8 +49,7 @@ export interface ExtractedInvestigation {
   evidence: Evidence;
   qualityFlags: string[];
   findings: Finding[];
-  writebackEligible: boolean;
-  normalizationStatus: string;
+  normalization: NormalizationInfo;
 }
 
 export interface ValidationSummary {
@@ -65,11 +70,18 @@ export interface PreprocessedNote {
   sections: SectionSpan[];
 }
 
+export interface ModelMetadata {
+  adapterType: string;
+  modelDeployment: string;
+  promptVersion: string;
+}
+
 export interface ClinicalExtractionResponse {
   extractionId: string;
   correlationId: string;
   extractedAt: string;
   executionDurationMs: number;
+  modelMetadata: ModelMetadata;
   preprocessed: PreprocessedNote;
   medications: ExtractedMedication[];
   investigations: ExtractedInvestigation[];
@@ -83,4 +95,3 @@ export interface ProblemDetails {
   code?: string;
   correlationId?: string;
 }
-

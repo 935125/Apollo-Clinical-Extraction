@@ -22,6 +22,13 @@ public record FindingDto(
     [property: JsonPropertyName("message")] string Message
 );
 
+public record NormalizationDto(
+    [property: JsonPropertyName("status")] string Status,
+    [property: JsonPropertyName("matchedCode")] string? MatchedCode,
+    [property: JsonPropertyName("displayName")] string? DisplayName,
+    [property: JsonPropertyName("confidence")] double Confidence
+);
+
 public record ExtractedMedicationDto(
     [property: JsonPropertyName("name")] string Name,
     [property: JsonPropertyName("strength")] string? Strength,
@@ -35,8 +42,7 @@ public record ExtractedMedicationDto(
     [property: JsonPropertyName("evidence")] EvidenceDto Evidence,
     [property: JsonPropertyName("qualityFlags")] List<string> QualityFlags,
     [property: JsonPropertyName("findings")] List<FindingDto> Findings,
-    [property: JsonPropertyName("writebackEligible")] bool WritebackEligible,
-    [property: JsonPropertyName("normalizationStatus")] string NormalizationStatus = "unmatched"
+    [property: JsonPropertyName("normalization")] NormalizationDto Normalization
 );
 
 public record ExtractedInvestigationDto(
@@ -47,8 +53,7 @@ public record ExtractedInvestigationDto(
     [property: JsonPropertyName("evidence")] EvidenceDto Evidence,
     [property: JsonPropertyName("qualityFlags")] List<string> QualityFlags,
     [property: JsonPropertyName("findings")] List<FindingDto> Findings,
-    [property: JsonPropertyName("writebackEligible")] bool WritebackEligible,
-    [property: JsonPropertyName("normalizationStatus")] string NormalizationStatus = "unmatched"
+    [property: JsonPropertyName("normalization")] NormalizationDto Normalization
 );
 
 public record ValidationSummaryDto(
@@ -69,14 +74,20 @@ public record PreprocessedDto(
     [property: JsonPropertyName("sections")] List<SectionSpanDto> Sections
 );
 
+public record ModelMetadataDto(
+    [property: JsonPropertyName("adapterType")] string AdapterType,
+    [property: JsonPropertyName("modelDeployment")] string ModelDeployment,
+    [property: JsonPropertyName("promptVersion")] string PromptVersion
+);
+
 public record ClinicalExtractionResponse(
     [property: JsonPropertyName("extractionId")] string ExtractionId,
     [property: JsonPropertyName("correlationId")] string CorrelationId,
     [property: JsonPropertyName("extractedAt")] DateTime ExtractedAt,
     [property: JsonPropertyName("executionDurationMs")] double ExecutionDurationMs,
+    [property: JsonPropertyName("modelMetadata")] ModelMetadataDto ModelMetadata,
     [property: JsonPropertyName("preprocessed")] PreprocessedDto Preprocessed,
     [property: JsonPropertyName("medications")] List<ExtractedMedicationDto> Medications,
     [property: JsonPropertyName("investigations")] List<ExtractedInvestigationDto> Investigations,
     [property: JsonPropertyName("validationSummary")] ValidationSummaryDto ValidationSummary
 );
-
