@@ -1,6 +1,6 @@
 # BUILD & VERIFICATION STATUS
 
-Last Updated: 2026-11-13 (Milestone: Real Microsoft Foundry gpt-4.1-mini Live Inference Verified)
+Last Updated: 2026-11-13 (Milestone: Live Clinical Extraction Quality & UI Verification)
 
 ---
 
@@ -11,12 +11,13 @@ Last Updated: 2026-11-13 (Milestone: Real Microsoft Foundry gpt-4.1-mini Live In
 | **OS** | Windows 11 Pro 10.0.26100 | Supported |
 | **Topology** | **Standalone Extraction Platform** | Angular 21 $\rightarrow$ ASP.NET Core Web API (.NET 10) $\rightarrow$ Internal Python AI Service (FastAPI) $\rightarrow$ Microsoft Foundry |
 | **Live LLM Deployment** | **VERIFIED LIVE** | Microsoft Foundry `gpt-4.1-mini` (Model Version `2025-04-14`, Global Standard) via AzureOpenAI client |
+| **Browser Verification** | **VERIFIED LIVE** | Real Chromium browser automated end-to-end verification passing; exact evidence highlighting, zero direct Python/Foundry calls, zero secrets in network/logs |
 | **Public API Gateway** | **ASP.NET Core Web API (.NET 10)** | Exclusively owns `/api/v1/extractions`, input validation, timeouts, CORS, trace correlation |
 | **Internal AI Service** | **Python 3.13 via uv** | Loopback microservice on `http://127.0.0.1:5005/internal/v1/extract`, strict typing, 5-stage pipeline |
 | **Model Adapter** | **Dual Engine Factory** | `FoundryModelAdapter` (Azure OpenAI / Microsoft Foundry with structured outputs, 30s timeout, retries) + `SyntheticModelAdapter` |
 | **Foundry API Mode** | **Explicit & Auto Validated** | `FOUNDRY_API_MODE=azure_openai | openai_v1 | auto` with strict format validation to prevent endpoint routing errors |
 | **Environment Loader** | **Verified Diagnostics** | Explicit candidate path scanning (`src/worker/.env` and repo root `.env`) with safe telemetry |
-| **Terminology Engine** | **3-Tier Normalizer** | RxNorm & LOINC hospital catalogs; Tier 1 exact $\rightarrow$ Tier 2 synonym $\rightarrow$ Tier 3 RapidFuzz token-sort $\ge 88$ with deterministic strength checks |
+| **Terminology Engine** | **Clinical Safety Guarded** | RxNorm & LOINC hospital masters; Formulation Specificity Guard (prevents fabricating dosage forms like Delayed-Release Capsule), CBC LOINC disambiguation (separates hemogram from differential), Combination medications (Sacubitril/Valsartan, Augmentin), and Ambiguous ultrasound protection |
 | **PostgreSQL 18** | **RUNNING & VERIFIED** | Portable PostgreSQL 18.7 running background daemons on `localhost:5432` (`cx_platform`) and `localhost:5433` (`emr_sim`). |
 | **Node.js** | `v24.12.0` | Angular 21.2 LTS (`21.2.30`) with Angular Material 21 |
 
@@ -24,7 +25,7 @@ Last Updated: 2026-11-13 (Milestone: Real Microsoft Foundry gpt-4.1-mini Live In
 
 ## 2. Test Execution Summary
 
-### Total Automated Tests Executed: **83 Passed, 0 Failed** across 3 Stacks
+### Total Automated Tests Executed: **84 Passed, 0 Failed** across 3 Stacks
 
 ---
 
@@ -36,9 +37,9 @@ Last Updated: 2026-11-13 (Milestone: Real Microsoft Foundry gpt-4.1-mini Live In
 
 ---
 
-### AI Worker & Internal Service (Python 3.13 via uv) — **42 Passed, 0 Failed**
+### AI Worker & Internal Service (Python 3.13 via uv) — **43 Passed, 0 Failed**
 - **tests/test_evaluation.py**: **4 Passed, 0 Failed** (Accuracy Benchmark Suite & Safe Report Generation)
-- **tests/test_service.py**: **13 Passed, 0 Failed** (Health, 5-stage pipeline, API mode validation, deterministic strength checks, non-leaking diagnostics, env precedence)
+- **tests/test_service.py**: **14 Passed, 0 Failed** (Health, 5-stage pipeline, API mode validation, deterministic strength checks, clinical formulation guard, CBC LOINC disambiguation, combination medications, non-leaking diagnostics, env precedence)
 - **tests/test_clinical_extraction.py**: **18 Passed, 0 Failed** (Mandatory 17-Case Clinical Test Matrix)
 - **tests/test_consumer.py**: **5 Passed, 0 Failed** (Versioning, dedup keys, poison messages, lease fencing)
 - **tests/test_models.py**: **2 Passed, 0 Failed** (Pydantic schema parity)
