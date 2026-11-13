@@ -1,6 +1,6 @@
 # BUILD & VERIFICATION STATUS
 
-Last Updated: 2026-11-13 (Milestone: Microsoft Foundry gpt-4.1-mini Live Integration Prepped & Verified)
+Last Updated: 2026-11-13 (Milestone: Real Microsoft Foundry gpt-4.1-mini Live Inference Verified)
 
 ---
 
@@ -10,6 +10,7 @@ Last Updated: 2026-11-13 (Milestone: Microsoft Foundry gpt-4.1-mini Live Integra
 |---|---|---|
 | **OS** | Windows 11 Pro 10.0.26100 | Supported |
 | **Topology** | **Standalone Extraction Platform** | Angular 21 $\rightarrow$ ASP.NET Core Web API (.NET 10) $\rightarrow$ Internal Python AI Service (FastAPI) $\rightarrow$ Microsoft Foundry |
+| **Live LLM Deployment** | **VERIFIED LIVE** | Microsoft Foundry `gpt-4.1-mini` (Model Version `2025-04-14`, Global Standard) via AzureOpenAI client |
 | **Public API Gateway** | **ASP.NET Core Web API (.NET 10)** | Exclusively owns `/api/v1/extractions`, input validation, timeouts, CORS, trace correlation |
 | **Internal AI Service** | **Python 3.13 via uv** | Loopback microservice on `http://127.0.0.1:5005/internal/v1/extract`, strict typing, 5-stage pipeline |
 | **Model Adapter** | **Dual Engine Factory** | `FoundryModelAdapter` (Azure OpenAI / Microsoft Foundry with structured outputs, 30s timeout, retries) + `SyntheticModelAdapter` |
@@ -23,7 +24,7 @@ Last Updated: 2026-11-13 (Milestone: Microsoft Foundry gpt-4.1-mini Live Integra
 
 ## 2. Test Execution Summary
 
-### Total Automated Tests Executed: **81 Passed, 0 Failed** across 3 Stacks
+### Total Automated Tests Executed: **83 Passed, 0 Failed** across 3 Stacks
 
 ---
 
@@ -35,9 +36,9 @@ Last Updated: 2026-11-13 (Milestone: Microsoft Foundry gpt-4.1-mini Live Integra
 
 ---
 
-### AI Worker & Internal Service (Python 3.13 via uv) — **41 Passed, 0 Failed**
-- **tests/test_evaluation.py**: **4 Passed, 0 Failed** (Accuracy Benchmark Suite & Report Generation)
-- **tests/test_service.py**: **12 Passed, 0 Failed** (Health, 5-stage pipeline, API mode validation, deterministic strength checks, non-leaking diagnostics)
+### AI Worker & Internal Service (Python 3.13 via uv) — **42 Passed, 0 Failed**
+- **tests/test_evaluation.py**: **4 Passed, 0 Failed** (Accuracy Benchmark Suite & Safe Report Generation)
+- **tests/test_service.py**: **13 Passed, 0 Failed** (Health, 5-stage pipeline, API mode validation, deterministic strength checks, non-leaking diagnostics, env precedence)
 - **tests/test_clinical_extraction.py**: **18 Passed, 0 Failed** (Mandatory 17-Case Clinical Test Matrix)
 - **tests/test_consumer.py**: **5 Passed, 0 Failed** (Versioning, dedup keys, poison messages, lease fencing)
 - **tests/test_models.py**: **2 Passed, 0 Failed** (Pydantic schema parity)
@@ -47,17 +48,16 @@ Last Updated: 2026-11-13 (Milestone: Microsoft Foundry gpt-4.1-mini Live Integra
 
 ---
 
-### Frontend (Angular 21 + Vitest) — **9 Passed, 0 Failed**
-- Full smoke tests: note input, extraction results, evidence quote highlighting, terminology codes, safety warnings, and token usage telemetry.
-
----
-
-### Frontend (Angular 21 LTS with Vitest) — **9 Passed, 0 Failed**
-- Unit test suite (`app.spec.ts`): **9 Passed in 348ms**.
+### Frontend (Angular 21 LTS with Vitest) — **10 Passed, 0 Failed**
+- Unit test suite (`app.spec.ts`): **10 Passed in 373ms**.
   - Component creation, application title rendering, synthetic preset loading.
   - Word count and character count real-time computation.
   - Extraction service invocation and metric card display.
   - Medication & investigation filtering by clinical assertion status (`new_order`, `historical`, `discontinued`, etc.).
+  - Entity selection and narrative bidirectional highlight spanning.
+  - Live Microsoft Foundry telemetry, token consumption, and cost metric rendering.
+  - Export to JSON and CSV.
+  - Error handling and ProblemDetails alert banner.
   - Entity selection and verbatim narrative segment highlight generation.
   - Tabular CSV and structured JSON client-side export generation.
   - RFC 7807 ProblemDetails error alert handling.
