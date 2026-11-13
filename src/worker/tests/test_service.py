@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import pytest
 from fastapi.testclient import TestClient
 
@@ -224,4 +226,24 @@ def test_configuration_diagnostics_never_leaks_api_key(monkeypatch: pytest.Monke
     assert diag["api_key_configured"] is True
     assert secret_key not in str(diag)
     assert "token=secret" not in diag["endpoint_sanitized"]
+
+
+def test_existing_env_vars_have_precedence_over_dotenv(tmp_path: Path, monkeypatch: pytest.MonkeyPatch):
+    import os
+
+    from dotenv import load_dotenv
+
+    # 1. Simulate existing environment variable in session
+    monkeypatch.setenv("FOUNDRY_MODEL_DEPLOYMENT", "session-explicit-model")
+
+    # 2. Create temporary .env file with a conflicting value
+    env_file = tmp_path / ".env"
+    env_file.write_text("FOUNDRY_MODEL_DEPLOYMENT=env-file-model\n", encoding="utf-8")
+
+    # 3. Load with override=False
+    load_dotenv(dotenv_path=env_file, override=False)
+
+    # 4. Existing environment variable must retain precedence
+    assert os.getenv("FOUNDRY_MODEL_DEPLOYMENT") == "session-explicit-model"
+
 

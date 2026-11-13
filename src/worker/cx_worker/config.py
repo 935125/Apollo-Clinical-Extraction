@@ -26,11 +26,12 @@ def load_environment() -> Path | None:
 
     for candidate in candidate_paths:
         if candidate.is_file():
-            load_dotenv(dotenv_path=candidate, override=True)
+            # override=False guarantees existing system/session environment variables have precedence
+            load_dotenv(dotenv_path=candidate, override=False)
             return candidate
 
-    # Fallback to standard dotenv resolution
-    load_dotenv(override=True)
+    # Fallback to standard dotenv resolution (respecting existing env variables)
+    load_dotenv(override=False)
     return None
 
 
