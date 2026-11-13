@@ -171,6 +171,57 @@ def test_deterministic_terminology_strength_matching():
     assert res_creat.loinc_num == "2160-0"
 
 
+def test_clinical_terminology_safety_formulation_and_lab_specificity():
+    normalizer = ProductionTerminologyNormalizer()
+
+    # 1. Omeprazole 20mg with NO formulation must not fabricate 'Delayed-Release Capsule'
+    res_ome_no_form = normalizer.normalize_medication("Omeprazole", strength="20mg", formulation=None)
+    assert res_ome_no_form.status == "exact_match"
+    assert res_ome_no_form.matched_code == "RX-OME-20"
+    assert "Formulation Unspecified" in (res_ome_no_form.matched_name or "")
+    assert "Delayed-Release Capsule" not in (res_ome_no_form.matched_name or "")
+
+    # 2. Omeprazole 20mg with explicit 'capsule' formulation assigns specific dosage form
+    res_ome_capsule = normalizer.normalize_medication("Omeprazole", strength="20mg", formulation="capsule")
+    assert res_ome_capsule.status == "exact_match"
+    assert res_ome_capsule.matched_name == "Omeprazole 20mg Delayed-Release Capsule"
+
+    # 3. CBC without differential mentions must map to automated hemogram panel (58410-2), NOT with diff
+    res_cbc = normalizer.normalize_investigation("Complete Blood Count")
+    assert res_cbc.status == "exact_match"
+    assert res_cbc.matched_code == "LAB-CBC"
+    assert res_cbc.loinc_num == "58410-2"
+    assert "Automated Hemogram Panel" in (res_cbc.matched_name or "")
+    assert "with Automated Differential" not in (res_cbc.matched_name or "")
+
+    # 4. CBC with differential explicitly orders differential panel (57022-6)
+    res_cbc_diff = normalizer.normalize_investigation("CBC with diff")
+    assert res_cbc_diff.status == "synonym_match"
+    assert res_cbc_diff.matched_code == "LAB-CBC-DIFF"
+    assert res_cbc_diff.loinc_num == "57022-6"
+    assert "with Automated Differential Panel" in (res_cbc_diff.matched_name or "")
+
+    # 5. General Ultrasound without anatomical site must be flagged ambiguous
+    res_us = normalizer.normalize_investigation("Ultrasound")
+    assert res_us.status == "ambiguous"
+    assert res_us.matched_code is None
+    assert res_us.confidence == 0.0
+    assert len(res_us.candidates) >= 2
+
+    # 6. Combination medications: Sacubitril/Valsartan (Entresto)
+    res_entresto = normalizer.normalize_medication("Entresto", strength="24/26mg")
+    assert res_entresto.status == "synonym_match"
+    assert res_entresto.matched_code == "RX-SAC-VAL-24-26"
+    assert res_entresto.rxnorm_cui == "1656336"
+
+    # 7. Combination medications: Augmentin (Amoxicillin/Clavulanate)
+    res_augmentin = normalizer.normalize_medication("Augmentin", strength="500/125mg")
+    assert res_augmentin.status == "synonym_match"
+    assert res_augmentin.matched_code == "RX-AMX-CLV-500"
+    assert res_augmentin.rxnorm_cui == "308182"
+
+
+
 def test_foundry_adapter_api_mode_validation(monkeypatch: pytest.MonkeyPatch):
     from openai import AzureOpenAI, OpenAI
 

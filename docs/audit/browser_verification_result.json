@@ -1,0 +1,55 @@
+{
+  "timestamp": "2026-11-13T09:19:38.171Z",
+  "pageTitle": "CxReviewUi",
+  "headerText": "Clinical AI Extraction Platform",
+  "architecture": {
+    "browserOrigin": "http://localhost:4200/",
+    "apiGatewayTarget": [
+      "http://localhost:5000/api/v1/extractions"
+    ],
+    "callsAspNetCoreDirectly": true,
+    "callsPythonDirectly": false,
+    "callsFoundryDirectly": false,
+    "secretsInBrowserRequests": false
+  },
+  "telemetry": {
+    "headerBadges": "Model: gpt-4.1-mini (microsoft_foundry_live) Verified Clean Stack",
+    "metricsBar": "Execution Time3548.21 msMedications2Investigations2Quality Warnings 0 Token Consumption 1149 ($0.00027)"
+  },
+  "renderedMedications": [
+    {
+      "name": "Salbutamol",
+      "strength": "100mcg",
+      "badge": "NEW_ORDER",
+      "code": "RxNorm: RX-SAL-100",
+      "quote": "\"Salbutamol 100mcg inhaler 2 puffs QDS PRN\""
+    },
+    {
+      "name": "Prednisolone",
+      "strength": "40mg",
+      "badge": "NEW_ORDER",
+      "code": "RxNorm: RX-PRED-40",
+      "quote": "\"Prednisolone 40mg PO daily x 5 days\""
+    }
+  ],
+  "renderedInvestigations": [
+    {
+      "name": "Chest X-Ray PA view",
+      "badge": "NEW_ORDER",
+      "code": "LOINC: IMG-CXR",
+      "quote": "\"Order Chest X-Ray PA view\""
+    },
+    {
+      "name": "Pulmonary Function Test",
+      "badge": "NEW_ORDER",
+      "code": "LOINC: LAB-PFT",
+      "quote": "\"Order Pulmonary Function Test\""
+    }
+  ],
+  "highlightVerification": {
+    "selectedHighlightedText": [
+      "Salbutamol 100mcg inhaler 2 puffs QDS PRN"
+    ]
+  },
+  "consoleLogsCount": 3
+}

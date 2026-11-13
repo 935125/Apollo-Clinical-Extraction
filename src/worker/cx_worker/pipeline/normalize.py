@@ -283,6 +283,97 @@ class ProductionTerminologyNormalizer(ITerminologyNormalizer):
             "display": "Amlodipine besylate 5mg Oral Tablet",
             "synonyms": ["Norvasc", "Amlong 5", "Amlodipine 5"]
         },
+        {
+            "code": "RX-SAL-100",
+            "rxnorm_cui": "1649556",
+            "generic": "Salbutamol",
+            "strength": "100mcg",
+            "formulation": "inhaler",
+            "route": "Inhalation",
+            "display": "Albuterol 0.1 MG/ACTUAT Metered Dose Inhaler",
+            "synonyms": ["Albuterol", "Ventolin", "ProAir", "Proventil", "Salbutamol 100mcg", "Salbutamol inhaler"]
+        },
+        {
+            "code": "RX-PRED-40",
+            "rxnorm_cui": "312615",
+            "generic": "Prednisolone",
+            "strength": "40mg",
+            "formulation": "tablet",
+            "route": "PO",
+            "display": "Prednisolone 40mg Oral Tablet",
+            "synonyms": ["Omnipred", "Prelone", "Prednisolone 40", "Prednisone 40"]
+        },
+        {
+            "code": "RX-PRED-5",
+            "rxnorm_cui": "198145",
+            "generic": "Prednisolone",
+            "strength": "5mg",
+            "formulation": "tablet",
+            "route": "PO",
+            "display": "Prednisolone 5mg Oral Tablet",
+            "synonyms": ["Prelone 5", "Prednisolone 5", "Prednisone 5"]
+        },
+        # Combination Medications (Multi-Ingredient Equivalents)
+        {
+            "code": "RX-SAC-VAL-24-26",
+            "rxnorm_cui": "1656336",
+            "generic": "Sacubitril/Valsartan",
+            "strength": "24/26mg",
+            "formulation": "tablet",
+            "route": "PO",
+            "display": "Sacubitril 24mg / Valsartan 26mg Oral Tablet",
+            "synonyms": ["Entresto", "Entresto 24/26", "Sacubitril Valsartan", "LCZ696"]
+        },
+        {
+            "code": "RX-SAC-VAL-49-51",
+            "rxnorm_cui": "1656342",
+            "generic": "Sacubitril/Valsartan",
+            "strength": "49/51mg",
+            "formulation": "tablet",
+            "route": "PO",
+            "display": "Sacubitril 49mg / Valsartan 51mg Oral Tablet",
+            "synonyms": ["Entresto 49/51", "Entresto 50"]
+        },
+        {
+            "code": "RX-SAC-VAL-97-103",
+            "rxnorm_cui": "1656348",
+            "generic": "Sacubitril/Valsartan",
+            "strength": "97/103mg",
+            "formulation": "tablet",
+            "route": "PO",
+            "display": "Sacubitril 97mg / Valsartan 103mg Oral Tablet",
+            "synonyms": ["Entresto 97/103", "Entresto 100"]
+        },
+        {
+            "code": "RX-TAM-FIN-04-5",
+            "rxnorm_cui": "1009147",
+            "generic": "Tamsulosin/Finasteride",
+            "strength": "0.4mg/5mg",
+            "formulation": "capsule",
+            "route": "PO",
+            "display": "Tamsulosin HCl 0.4mg / Finasteride 5mg Oral Capsule",
+            "synonyms": ["Combodart", "Jalyn", "Tamsulosin Finasteride"]
+        },
+        {
+            "code": "RX-AMX-CLV-500",
+            "rxnorm_cui": "308182",
+            "generic": "Amoxicillin/Clavulanate",
+            "strength": "500/125mg",
+            "formulation": "tablet",
+            "route": "PO",
+            "display": "Amoxicillin 500mg / Clavulanate potassium 125mg Oral Tablet",
+            "synonyms": ["Augmentin", "Augmentin 500", "Amoxicillin Clavulanate", "Co-amoxiclav"]
+        },
+        {
+            "code": "RX-AMX-CLV-875",
+            "rxnorm_cui": "308184",
+            "generic": "Amoxicillin/Clavulanate",
+            "strength": "875/125mg",
+            "formulation": "tablet",
+            "route": "PO",
+            "display": "Amoxicillin 875mg / Clavulanate potassium 125mg Oral Tablet",
+            "synonyms": ["Augmentin 875", "Augmentin Duo", "Co-amoxiclav 875"]
+        },
     ]
 
     # Hospital Investigation Master Catalog with verified LOINC numbers
@@ -308,8 +399,32 @@ class ProductionTerminologyNormalizer(ITerminologyNormalizer):
             "loinc_num": "58410-2",
             "name": "Complete Blood Count",
             "specimen": "Blood",
-            "display": "Complete Blood Count with Automated Differential",
+            "display": "Complete Blood Count (Automated Hemogram Panel)",
             "synonyms": ["CBC", "Hemogram", "Full Blood Count", "FBC"]
+        },
+        {
+            "code": "LAB-CBC-DIFF",
+            "loinc_num": "57022-6",
+            "name": "Complete Blood Count with Differential",
+            "specimen": "Blood",
+            "display": "Complete Blood Count with Automated Differential Panel",
+            "synonyms": ["CBC with diff", "CBC with differential", "Complete Blood Count with Differential", "CBC diff"]
+        },
+        {
+            "code": "LAB-CBC-NODIFF",
+            "loinc_num": "57021-8",
+            "name": "Complete Blood Count without Differential",
+            "specimen": "Blood",
+            "display": "Complete Blood Count without Differential Panel",
+            "synonyms": ["CBC without diff", "CBC no diff", "CBC without differential"]
+        },
+        {
+            "code": "LAB-PFT",
+            "loinc_num": "81459-0",
+            "name": "Pulmonary Function Test",
+            "specimen": None,
+            "display": "Pulmonary Function Test Panel (Spirometry and Lung Volumes)",
+            "synonyms": ["PFT", "Pulmonary Function Test", "Spirometry", "Lung Function Test"]
         },
         {
             "code": "LAB-LIPID",
@@ -357,7 +472,7 @@ class ProductionTerminologyNormalizer(ITerminologyNormalizer):
             "name": "Chest X-Ray",
             "specimen": None,
             "display": "Radiologic Examination, Chest; Single View / PA View",
-            "synonyms": ["CXR", "Chest Radiograph", "Chest X-ray PA view", "X-ray Chest", "Chest X-ray"]
+            "synonyms": ["CXR", "Chest Radiograph", "Chest X-ray PA view", "X-ray Chest", "Chest X-ray", "Chest X-Ray PA view"]
         },
         {
             "code": "IMG-ECG",
@@ -368,12 +483,20 @@ class ProductionTerminologyNormalizer(ITerminologyNormalizer):
             "synonyms": ["ECG", "EKG", "12-Lead ECG", "12 Lead Electrocardiogram"]
         },
         {
-            "code": "IMG-ECHO",
+            "code": "IMG-ECHO-GEN",
+            "loinc_num": "18154-5",
+            "name": "Echocardiogram (General)",
+            "specimen": None,
+            "display": "Echocardiography Study (General / Unspecified)",
+            "synonyms": ["Echocardiogram", "Echo"]
+        },
+        {
+            "code": "IMG-ECHO-2D",
             "loinc_num": "34552-0",
             "name": "2D Echocardiogram",
             "specimen": None,
             "display": "Transthoracic Echocardiography, 2D with Doppler",
-            "synonyms": ["Echocardiogram", "Echo", "2D Echo", "TTE"]
+            "synonyms": ["2D Echo", "2D Echocardiogram", "TTE", "Echocardiogram with Doppler"]
         },
         {
             "code": "IMG-USG-ABD",
@@ -381,7 +504,23 @@ class ProductionTerminologyNormalizer(ITerminologyNormalizer):
             "name": "Ultrasound Abdomen",
             "specimen": None,
             "display": "Ultrasound, Abdominal, B-Scan and/or Real Time with Image Documentation",
-            "synonyms": ["USG Abdomen", "Abdominal Ultrasound", "US Abdomen"]
+            "synonyms": ["USG Abdomen", "Abdominal Ultrasound", "US Abdomen", "Ultrasound of Abdomen"]
+        },
+        {
+            "code": "IMG-USG-RENAL",
+            "loinc_num": "24987-0",
+            "name": "Ultrasound Renal",
+            "specimen": None,
+            "display": "Ultrasound, Retroperitoneal (Renal, Aorta, Nodes), Complete",
+            "synonyms": ["Renal Ultrasound", "Kidney Ultrasound", "US Renal", "US KUB"]
+        },
+        {
+            "code": "IMG-USG-PELVIS",
+            "loinc_num": "79104-6",
+            "name": "Ultrasound Pelvis",
+            "specimen": None,
+            "display": "Ultrasound, Pelvic, Real Time with Image Documentation",
+            "synonyms": ["Pelvic Ultrasound", "US Pelvis"]
         },
     ]
 
@@ -437,46 +576,48 @@ class ProductionTerminologyNormalizer(ITerminologyNormalizer):
         if not matched_entries:
             return NormalizationResult("unresolved", None, None, 0.0, [])
 
-        # 2. Deterministic Attribute Check: Strength Matching
+        # 2. Deterministic Attribute Check: Strength & Formulation Matching
+        target_item: dict[str, Any]
+        mtype: str
+
         if norm_strength:
             strength_matches = [
-                (item, mtype) for (item, mtype) in matched_entries
+                (item, mt) for (item, mt) in matched_entries
                 if self._normalize_strength_str(item.get("strength")) == norm_strength
             ]
             if strength_matches:
                 target_item, mtype = strength_matches[0]
-                conf = 1.0 if mtype == "exact" else (0.95 if mtype == "synonym" else 0.85)
-                status_str = "exact_match" if mtype == "exact" else (
-                    "synonym_match" if mtype == "synonym" else "fuzzy_match"
-                )
-                return NormalizationResult(
-                    status=status_str,
-                    matched_code=str(target_item["code"]),
-                    matched_name=str(target_item["display"]),
-                    confidence=conf,
-                    rxnorm_cui=target_item.get("rxnorm_cui"),
-                    candidates=[
-                        MasterCandidate(
-                            master_id=str(target_item["code"]),
-                            code=str(target_item["code"]),
-                            display_name=str(target_item["display"]),
-                            match_method=mtype,
-                            rank=1,
-                            score=conf * 100.0,
-                            rxnorm_cui=target_item.get("rxnorm_cui")
-                        )
-                    ]
-                )
+            else:
+                target_item, mtype = matched_entries[0]
+        else:
+            target_item, mtype = matched_entries[0]
 
-        target_item, mtype = matched_entries[0]
-        conf = 0.95 if mtype == "exact" else (0.90 if mtype == "synonym" else 0.80)
+        # Clinical Form Specificity Guard:
+        # Do not fabricate a delivery mechanism (e.g. Delayed-Release Capsule) if formulation was omitted in note!
+        clean_formulation = (formulation or "").strip().lower()
+        catalog_formulation = str(target_item.get("formulation", "")).lower()
+
+        if clean_formulation:
+            if clean_formulation in catalog_formulation or catalog_formulation in clean_formulation:
+                final_display = str(target_item["display"])
+                conf = 1.0 if mtype == "exact" else (0.95 if mtype == "synonym" else 0.85)
+            else:
+                # Formulation mismatch (e.g. tablet requested but catalog only has capsule)
+                final_display = f"{target_item['generic']} {target_item.get('strength', '')} (Requested: {clean_formulation.capitalize()}, Catalog: {catalog_formulation.capitalize()})"
+                conf = 0.85
+        else:
+            # Formulation was OMITTED by clinician:
+            # Assign generic Clinical Drug Component without assuming a specific release form
+            final_display = f"{target_item['generic']} {target_item.get('strength', '')} (Formulation Unspecified)"
+            conf = 1.0 if mtype == "exact" else (0.95 if mtype == "synonym" else 0.85)
+
         status_str = "exact_match" if mtype == "exact" else (
             "synonym_match" if mtype == "synonym" else "fuzzy_match"
         )
         return NormalizationResult(
             status=status_str,
             matched_code=str(target_item["code"]),
-            matched_name=str(target_item["display"]),
+            matched_name=final_display,
             confidence=conf,
             rxnorm_cui=target_item.get("rxnorm_cui"),
             candidates=[
@@ -498,6 +639,30 @@ class ProductionTerminologyNormalizer(ITerminologyNormalizer):
 
         clean_name = self._clean_text(name).lower()
 
+        # Ambiguous investigation guard:
+        # Ultrasound without anatomical site must NOT match Abdominal ultrasound!
+        if clean_name in ["ultrasound", "usg", "us", "ultrasound scan"]:
+            us_candidates = [
+                MasterCandidate(
+                    master_id=str(item["code"]),
+                    code=str(item["code"]),
+                    display_name=str(item["display"]),
+                    match_method="anatomical_candidate",
+                    rank=idx + 1,
+                    score=50.0,
+                    loinc_num=item.get("loinc_num"),
+                )
+                for idx, item in enumerate(self.TEST_CATALOG)
+                if "USG" in item["code"]
+            ]
+            return NormalizationResult(
+                status="ambiguous",
+                matched_code=None,
+                matched_name=None,
+                confidence=0.0,
+                candidates=us_candidates,
+            )
+
         # 1. Exact canonical test name match
         for item in self.TEST_CATALOG:
             test_name = str(item["name"]).lower()
@@ -516,34 +681,40 @@ class ProductionTerminologyNormalizer(ITerminologyNormalizer):
                             match_method="exact",
                             rank=1,
                             score=100.0,
-                            loinc_num=item.get("loinc_num")
+                            loinc_num=item.get("loinc_num"),
                         )
-                    ]
+                    ],
                 )
 
-        # 2. Verified synonym / acronym match
+        # 2. Verified synonym / acronym match (prioritize longer, more specific synonyms)
+        # Collect all synonyms with their items
+        all_syn_entries: list[tuple[str, dict[str, Any]]] = []
         for item in self.TEST_CATALOG:
-            synonyms = [s.lower() for s in item.get("synonyms", [])]
-            for syn in synonyms:
-                if clean_name == syn or syn in clean_name:
-                    return NormalizationResult(
-                        status="synonym_match",
-                        matched_code=str(item["code"]),
-                        matched_name=str(item["display"]),
-                        confidence=0.95,
-                        loinc_num=item.get("loinc_num"),
-                        candidates=[
-                            MasterCandidate(
-                                master_id=str(item["code"]),
-                                code=str(item["code"]),
-                                display_name=str(item["display"]),
-                                match_method="synonym",
-                                rank=1,
-                                score=95.0,
-                                loinc_num=item.get("loinc_num")
-                            )
-                        ]
-                    )
+            for s in item.get("synonyms", []):
+                all_syn_entries.append((s.lower(), item))
+        # Sort by length descending so "cbc with diff" matches before "cbc"
+        all_syn_entries.sort(key=lambda x: len(x[0]), reverse=True)
+
+        for syn, item in all_syn_entries:
+            if clean_name == syn or syn in clean_name:
+                return NormalizationResult(
+                    status="synonym_match",
+                    matched_code=str(item["code"]),
+                    matched_name=str(item["display"]),
+                    confidence=0.95,
+                    loinc_num=item.get("loinc_num"),
+                    candidates=[
+                        MasterCandidate(
+                            master_id=str(item["code"]),
+                            code=str(item["code"]),
+                            display_name=str(item["display"]),
+                            match_method="synonym",
+                            rank=1,
+                            score=95.0,
+                            loinc_num=item.get("loinc_num"),
+                        )
+                    ],
+                )
 
         # 3. Fuzzy token sort retrieval
         scored: list[tuple[dict[str, Any], float]] = []
