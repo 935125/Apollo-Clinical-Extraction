@@ -1,0 +1,6 @@
+@Cx.EmrSimulator_HostAddress = http://localhost:5299
+
+GET {{Cx.EmrSimulator_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

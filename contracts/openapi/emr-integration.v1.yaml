@@ -1,0 +1,152 @@
+openapi: 3.1.0
+info:
+  title: EMR Integration API — ASSUMED CONTRACT (implemented by emr-simulator for dev/test)
+  version: 0.1.0-assumed
+  description: |
+    This is NOT a hospital-provided contract. It encodes the integration capabilities the CX platform
+    REQUIRES from the EMR (assumptions A-02, A-07, A-09 in docs/integration/open-questions.md).
+    The emr-simulator implements it for development and tests only. When the hospital provides its real
+    API, CX's EMR adapter (IEmrClient) is re-implemented against it; this file is then superseded.
+    Caller authentication (assumed): Entra ID app-to-app token (client credentials / managed identity).
+servers:
+  - url: http://localhost:5090
+security:
+  - serviceToken: []
+paths:
+  # ---- Simulator-only endpoints standing in for the doctor-facing EMR UI/backend ----
+  /emr-sim/v1/encounters/{encounterId}/notes:
+    post:
+      operationId: simCreateNote
+      summary: SIMULATOR ONLY. Create a note (version 1) + outbox row in one transaction.
+      parameters: [ { name: encounterId, in: path, required: true, schema: { type: string } } ]
+      requestBody:
+        required: true
+        content: { application/json: { schema: { $ref: '#/components/schemas/NoteWrite' } } }
+      responses:
+        '201': { description: Created, content: { application/json: { schema: { $ref: '#/components/schemas/NoteVersion' } } } }
+        '400': { $ref: '#/components/responses/Problem' }
+        '413': { $ref: '#/components/responses/Problem' }
+  /emr-sim/v1/notes/{noteId}:
+    put:
+      operationId: simAmendNote
+      summary: SIMULATOR ONLY. Amend a note → new version + outbox row (same transaction). If-Match = current version.
+      parameters:
+        - { name: noteId, in: path, required: true, schema: { type: string } }
+        - { name: If-Match, in: header, required: true, schema: { type: string } }
+      requestBody:
+        required: true
+        content: { application/json: { schema: { $ref: '#/components/schemas/NoteWrite' } } }
+      responses:
+        '200': { description: Amended, content: { application/json: { schema: { $ref: '#/components/schemas/NoteVersion' } } } }
+        '412': { $ref: '#/components/responses/Problem' }
+
+  # ---- Capabilities CX requires from the real EMR ----
+  /emr/v1/notes/{noteId}/versions/{version}:
+    get:
+      operationId: getNoteVersion
+      summary: (A-02) Read an immutable note version (claim-check target).
+      parameters:
+        - { name: noteId, in: path, required: true, schema: { type: string } }
+        - { name: version, in: path, required: true, schema: { type: integer, minimum: 1 } }
+      responses:
+        '200': { description: Note version, content: { application/json: { schema: { $ref: '#/components/schemas/NoteVersion' } } } }
+        '404': { $ref: '#/components/responses/Problem' }
+  /emr/v1/access-checks:
+    post:
+      operationId: checkAccess
+      summary: (A-09) May user U access patient P / encounter E for purpose X?
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [userId, patientId, encounterId, purpose]
+              properties:
+                userId: { type: string }
+                patientId: { type: string }
+                encounterId: { type: string }
+                purpose: { type: string, enum: [review, order_entry] }
+      responses:
+        '200':
+          description: Decision
+          content:
+            application/json:
+              schema: { type: object, required: [allowed], properties: { allowed: { type: boolean }, reasonCode: { type: [string, 'null'] } } }
+  /emr/v1/orders:
+    post:
+      operationId: createUnsignedOrder
+      summary: (A-07) Create an UNSIGNED order. Idempotent on Idempotency-Key (same key → same order, 200).
+      parameters:
+        - { name: Idempotency-Key, in: header, required: true, schema: { type: string, format: uuid } }
+      requestBody:
+        required: true
+        content: { application/json: { schema: { $ref: '#/components/schemas/OrderRequest' } } }
+      responses:
+        '200': { description: Replay — order already exists, content: { application/json: { schema: { $ref: '#/components/schemas/OrderResult' } } } }
+        '201': { description: Created, content: { application/json: { schema: { $ref: '#/components/schemas/OrderResult' } } } }
+        '409': { description: 'NOTE_VERSION_CHANGED — note amended since approval', content: { application/problem+json: { schema: { $ref: '#/components/schemas/Problem' } } } }
+        '422': { description: 'Rejected by EMR rules (invalid code, not authorised, patient state)', content: { application/problem+json: { schema: { $ref: '#/components/schemas/Problem' } } } }
+  /emr/v1/orders/by-idempotency-key/{key}:
+    get:
+      operationId: findOrderByIdempotencyKey
+      summary: (A-07) Reconciliation for unknown outcomes.
+      parameters: [ { name: key, in: path, required: true, schema: { type: string, format: uuid } } ]
+      responses:
+        '200': { description: Found, content: { application/json: { schema: { $ref: '#/components/schemas/OrderResult' } } } }
+        '404': { description: No order was created for this key }
+components:
+  securitySchemes:
+    serviceToken: { type: http, scheme: bearer }
+  responses:
+    Problem: { description: Error, content: { application/problem+json: { schema: { $ref: '#/components/schemas/Problem' } } } }
+  schemas:
+    Problem:
+      type: object
+      required: [title, status]
+      properties: { type: { type: string }, title: { type: string }, status: { type: integer }, code: { type: string }, detail: { type: string } }
+    NoteWrite:
+      type: object
+      additionalProperties: false
+      required: [noteType, text, authoredBy]
+      properties:
+        noteType: { type: string, maxLength: 64 }
+        text: { type: string, minLength: 1, maxLength: 65536 }
+        authoredBy: { type: string, maxLength: 128 }
+    NoteVersion:
+      type: object
+      required: [sourceSystem, patientId, encounterId, noteId, noteVersion, noteType, text, contentSha256, facilityId, committedAt]
+      properties:
+        sourceSystem: { type: string }
+        patientId: { type: string }
+        encounterId: { type: string }
+        noteId: { type: string }
+        noteVersion: { type: integer }
+        noteType: { type: string }
+        specialtyCode: { type: [string, 'null'] }
+        facilityId: { type: string }
+        authoredBy: { type: [string, 'null'] }
+        text: { type: string }
+        contentSha256: { type: string, pattern: '^[0-9a-f]{64}$' }
+        committedAt: { type: string, format: date-time }
+    OrderRequest:
+      type: object
+      required: [encounterId, noteId, expectedNoteVersion, orderType, masterCode, requestedBy, approvedAt, payload]
+      properties:
+        encounterId: { type: string }
+        noteId: { type: string }
+        expectedNoteVersion: { type: integer }
+        orderType: { type: string, enum: [medication, investigation] }
+        masterCode: { type: string }
+        requestedBy: { type: string, description: Clinician who approved in CX (EMR re-validates authority). }
+        approvedAt: { type: string, format: date-time }
+        payload: { type: object, description: Order attributes (dose, route, frequency, duration / specimen, timing). }
+        sourceReference: { type: string, description: 'CX writeback item id, for traceability in EMR.' }
+    OrderResult:
+      type: object
+      required: [emrOrderId, status, idempotencyKey]
+      properties:
+        emrOrderId: { type: string }
+        status: { type: string, enum: [unsigned, signed, cancelled] }
+        idempotencyKey: { type: string, format: uuid }
+

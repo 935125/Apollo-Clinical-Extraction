@@ -1,0 +1,778 @@
+openapi: 3.1.0
+info:
+  title: Clinical Extraction Platform — Review & Operations API
+  version: 1.0.0-draft
+  description: |
+    AUTHORITATIVE HTTP contract for the CX Review & Ops API (Milestone 0 draft).
+    Conventions (see docs/api/api-spec.md):
+    * JSON camelCase; timestamps RFC 3339 UTC; IDs are UUID strings unless EMR-originated (opaque strings).
+    * Errors: RFC 9457 `application/problem+json` with extension members `code` and `traceId`.
+    * Pagination: keyset (`cursor`, `pageSize` ≤ 100). No offset pagination.
+    * Concurrency: item resources return `ETag` (`W/"<rowVersion>"`); mutations require `If-Match`.
+    * Idempotency: `Idempotency-Key` header required on write-back creation.
+    * All /api/v1 endpoints require an Entra ID bearer token; patient-scoped endpoints additionally
+      perform an EMR-backed patient/encounter access check (403 `PATIENT_ACCESS_DENIED`, audited).
+    * Evidence offsets in responses are UTF-16 code-unit offsets into `SourceNote.text` (ADR-0009).
+servers:
+  - url: https://{host}
+    variables:
+      host: { default: localhost:5080 }
+security:
+  - entra: []
+tags:
+  - name: Health
+  - name: Review
+  - name: WriteBack
+  - name: Terminology
+  - name: Operations
+
+paths:
+  /health/live:
+    get:
+      tags: [Health]
+      security: []
+      summary: Liveness (process up). No dependency checks.
+      responses:
+        '200': { description: Alive, content: { application/json: { schema: { $ref: '#/components/schemas/HealthReport' } } } }
+  /health/ready:
+    get:
+      tags: [Health]
+      security: []
+      summary: Readiness (database reachable, migrations at expected version).
+      responses:
+        '200': { description: Ready, content: { application/json: { schema: { $ref: '#/components/schemas/HealthReport' } } } }
+        '503': { description: Not ready, content: { application/json: { schema: { $ref: '#/components/schemas/HealthReport' } } } }
+
+  /api/v1/extractions:
+    post:
+      tags: [Extraction]
+      operationId: extractClinicalInformation
+      summary: Interactive synchronous clinical note extraction.
+      description: |
+        Processes an unstructured outpatient clinical note through the internal 5-stage AI pipeline,
+        validating entities, checking verbatim evidence offsets, and surfacing ISMP safety flags.
+      parameters:
+        - name: X-Correlation-ID
+          in: header
+          required: false
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [noteText]
+              properties:
+                noteText:
+                  type: string
+                  description: Unstructured clinical note text (max 64 KiB).
+                patientId:
+                  type: string
+                  nullable: true
+                encounterId:
+                  type: string
+                  nullable: true
+                options:
+                  type: object
+                  nullable: true
+      responses:
+        '200':
+          description: Extraction successful.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InteractiveExtractionResult'
+        '400':
+          description: Invalid request payload (e.g. empty or exceeds size limit).
+        '503':
+          description: Internal AI extraction engine unavailable or timed out.
+
+  /api/v1/review-queue:
+    get:
+      tags: [Review]
+      operationId: listReviewQueue
+      summary: Active extractions awaiting review, ordered by creation time (oldest first).
+      description: Requires CX.Reviewer or CX.Viewer. Results are additionally filtered to encounters the caller may access.
+      parameters:
+        - { name: facilityId, in: query, required: true, schema: { type: string, maxLength: 64 } }
+        - { name: specialtyCode, in: query, schema: { type: string, maxLength: 64 } }
+        - { name: reviewState, in: query, schema: { type: string, enum: [pending, in_review], default: pending } }
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/Cursor'
+      responses:
+        '200': { description: Page, content: { application/json: { schema: { $ref: '#/components/schemas/ReviewQueuePage' } } } }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+
+  /api/v1/encounters/{encounterId}/extractions:
+    get:
+      tags: [Review]
+      operationId: listEncounterExtractions
+      parameters:
+        - { name: encounterId, in: path, required: true, schema: { type: string, maxLength: 64 } }
+        - { name: sourceSystem, in: query, required: true, schema: { type: string, maxLength: 64 } }
+        - { name: includeInactive, in: query, schema: { type: boolean, default: false } }
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/Cursor'
+      responses:
+        '200': { description: Page, content: { application/json: { schema: { $ref: '#/components/schemas/ReviewQueuePage' } } } }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+
+  /api/v1/extractions/{extractionId}:
+    get:
+      tags: [Review]
+      operationId: getExtraction
+      parameters: [ { $ref: '#/components/parameters/ExtractionId' } ]
+      responses:
+        '200':
+          description: Extraction with items, candidates and findings.
+          headers: { ETag: { $ref: '#/components/headers/ETag' } }
+          content: { application/json: { schema: { $ref: '#/components/schemas/ExtractionDetail' } } }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+
+  /api/v1/extractions/{extractionId}/source:
+    get:
+      tags: [Review]
+      operationId: getExtractionSource
+      summary: Exact note-version text the extraction was produced from. Access is audited (note_source.viewed).
+      parameters: [ { $ref: '#/components/parameters/ExtractionId' } ]
+      responses:
+        '200': { description: Source, content: { application/json: { schema: { $ref: '#/components/schemas/SourceNote' } } } }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '410': { description: Snapshot purged by retention policy (code NOTE_CONTENT_PURGED), content: { application/problem+json: { schema: { $ref: '#/components/schemas/Problem' } } } }
+
+  /api/v1/extractions/{extractionId}/processing-details:
+    get:
+      tags: [Review]
+      operationId: getProcessingDetails
+      parameters: [ { $ref: '#/components/parameters/ExtractionId' } ]
+      responses:
+        '200': { description: Details, content: { application/json: { schema: { $ref: '#/components/schemas/ExtractionRun' } } } }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+
+  /api/v1/medications/{medicationId}/decisions:
+    parameters:
+      - { name: medicationId, in: path, required: true, schema: { type: string, format: uuid } }
+    post:
+      tags: [Review]
+      operationId: decideMedication
+      summary: Record a clinician decision (append-only). Requires CX.Reviewer.
+      parameters: [ { $ref: '#/components/parameters/IfMatch' } ]
+      requestBody:
+        required: true
+        content: { application/json: { schema: { $ref: '#/components/schemas/MedicationDecisionRequest' } } }
+      responses:
+        '201':
+          description: Decision recorded; returns updated item.
+          headers: { ETag: { $ref: '#/components/headers/ETag' } }
+          content: { application/json: { schema: { $ref: '#/components/schemas/Medication' } } }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '409': { $ref: '#/components/responses/Conflict' }
+        '412': { $ref: '#/components/responses/PreconditionFailed' }
+        '428': { $ref: '#/components/responses/PreconditionRequired' }
+    get:
+      tags: [Review]
+      operationId: listMedicationDecisions
+      responses:
+        '200': { description: Decision history (newest first, max 100), content: { application/json: { schema: { type: array, maxItems: 100, items: { $ref: '#/components/schemas/ReviewDecision' } } } } }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+
+  /api/v1/investigations/{investigationId}/decisions:
+    parameters:
+      - { name: investigationId, in: path, required: true, schema: { type: string, format: uuid } }
+    post:
+      tags: [Review]
+      operationId: decideInvestigation
+      parameters: [ { $ref: '#/components/parameters/IfMatch' } ]
+      requestBody:
+        required: true
+        content: { application/json: { schema: { $ref: '#/components/schemas/InvestigationDecisionRequest' } } }
+      responses:
+        '201':
+          description: Decision recorded.
+          headers: { ETag: { $ref: '#/components/headers/ETag' } }
+          content: { application/json: { schema: { $ref: '#/components/schemas/Investigation' } } }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '409': { $ref: '#/components/responses/Conflict' }
+        '412': { $ref: '#/components/responses/PreconditionFailed' }
+        '428': { $ref: '#/components/responses/PreconditionRequired' }
+    get:
+      tags: [Review]
+      operationId: listInvestigationDecisions
+      responses:
+        '200': { description: Decision history, content: { application/json: { schema: { type: array, maxItems: 100, items: { $ref: '#/components/schemas/ReviewDecision' } } } } }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+
+  /api/v1/extractions/{extractionId}/writeback-operations:
+    post:
+      tags: [WriteBack]
+      operationId: createWritebackOperation
+      summary: Submit confirmed/corrected items as UNSIGNED EMR orders. Requires CX.Reviewer.
+      description: |
+        Eligibility is re-validated server-side (FR-040). Same Idempotency-Key + same body → returns the original
+        operation (200). Same key + different body → 422 IDEMPOTENCY_KEY_REUSED. Possible duplicate orders for the
+        same encounter + master item → 409 POSSIBLE_DUPLICATE_ORDER unless `acknowledgedDuplicateItemIds` lists them.
+      parameters:
+        - $ref: '#/components/parameters/ExtractionId'
+        - { name: Idempotency-Key, in: header, required: true, schema: { type: string, minLength: 16, maxLength: 128, pattern: '^[A-Za-z0-9_-]+$' } }
+      requestBody:
+        required: true
+        content: { application/json: { schema: { $ref: '#/components/schemas/WritebackRequest' } } }
+      responses:
+        '200': { description: Replay of an existing operation, content: { application/json: { schema: { $ref: '#/components/schemas/WritebackOperation' } } } }
+        '202':
+          description: Accepted; dispatch is asynchronous.
+          headers: { Location: { schema: { type: string } } }
+          content: { application/json: { schema: { $ref: '#/components/schemas/WritebackOperation' } } }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '409': { $ref: '#/components/responses/Conflict' }
+        '422': { $ref: '#/components/responses/Unprocessable' }
+
+  /api/v1/writeback-operations/{operationId}:
+    get:
+      tags: [WriteBack]
+      operationId: getWritebackOperation
+      parameters:
+        - { name: operationId, in: path, required: true, schema: { type: string, format: uuid } }
+      responses:
+        '200': { description: Operation with per-item status, content: { application/json: { schema: { $ref: '#/components/schemas/WritebackOperation' } } } }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+
+  /api/v1/terminology/drugs:
+    get:
+      tags: [Terminology]
+      operationId: searchDrugs
+      summary: Search the ACTIVE drug master release (orderable, active items only).
+      parameters:
+        - { name: q, in: query, required: true, schema: { type: string, minLength: 2, maxLength: 100 } }
+        - { name: formulationCode, in: query, schema: { type: string, maxLength: 16 } }
+        - { name: routeCode, in: query, schema: { type: string, maxLength: 16 } }
+        - { name: limit, in: query, schema: { type: integer, minimum: 1, maximum: 50, default: 20 } }
+      responses:
+        '200': { description: Matches, content: { application/json: { schema: { type: array, maxItems: 50, items: { $ref: '#/components/schemas/DrugMasterItem' } } } } }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+
+  /api/v1/terminology/investigations:
+    get:
+      tags: [Terminology]
+      operationId: searchInvestigations
+      parameters:
+        - { name: q, in: query, required: true, schema: { type: string, minLength: 2, maxLength: 100 } }
+        - { name: specimenCode, in: query, schema: { type: string, maxLength: 16 } }
+        - { name: limit, in: query, schema: { type: integer, minimum: 1, maximum: 50, default: 20 } }
+      responses:
+        '200': { description: Matches, content: { application/json: { schema: { type: array, maxItems: 50, items: { $ref: '#/components/schemas/InvestigationMasterItem' } } } } }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+
+  /api/v1/ops/extraction-runs:
+    get:
+      tags: [Operations]
+      operationId: listExtractionRuns
+      summary: Requires CX.Operator. No PHI text is returned.
+      parameters:
+        - { name: status, in: query, required: true, schema: { $ref: '#/components/schemas/ExtractionRunStatus' } }
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/Cursor'
+      responses:
+        '200': { description: Page, content: { application/json: { schema: { $ref: '#/components/schemas/ExtractionRunPage' } } } }
+        '403': { $ref: '#/components/responses/Forbidden' }
+
+  /api/v1/ops/extraction-runs/{runId}/requeue:
+    post:
+      tags: [Operations]
+      operationId: requeueExtractionRun
+      summary: Requeue a failed_terminal run as a new reprocess run (audited). Requires CX.Operator.
+      parameters:
+        - { name: runId, in: path, required: true, schema: { type: string, format: uuid } }
+        - { name: Idempotency-Key, in: header, required: true, schema: { type: string, minLength: 16, maxLength: 128 } }
+      requestBody:
+        required: true
+        content: { application/json: { schema: { type: object, additionalProperties: false, required: [reason], properties: { reason: { type: string, minLength: 5, maxLength: 500 } } } } }
+      responses:
+        '202': { description: Requeued, content: { application/json: { schema: { $ref: '#/components/schemas/ExtractionRun' } } } }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '409': { $ref: '#/components/responses/Conflict' }
+
+  /api/v1/ops/backfill-jobs:
+    post:
+      tags: [Operations]
+      operationId: createBackfillJob
+      parameters:
+        - { name: Idempotency-Key, in: header, required: true, schema: { type: string, minLength: 16, maxLength: 128 } }
+      requestBody:
+        required: true
+        content: { application/json: { schema: { $ref: '#/components/schemas/BackfillJobRequest' } } }
+      responses:
+        '201': { description: Created, content: { application/json: { schema: { $ref: '#/components/schemas/BackfillJob' } } } }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '409': { $ref: '#/components/responses/Conflict' }
+
+  /api/v1/ops/backfill-jobs/{jobId}:
+    get:
+      tags: [Operations]
+      operationId: getBackfillJob
+      parameters: [ { name: jobId, in: path, required: true, schema: { type: string, format: uuid } } ]
+      responses:
+        '200': { description: Job, content: { application/json: { schema: { $ref: '#/components/schemas/BackfillJob' } } } }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+
+  /api/v1/ops/backfill-jobs/{jobId}/state:
+    put:
+      tags: [Operations]
+      operationId: setBackfillJobState
+      parameters:
+        - { name: jobId, in: path, required: true, schema: { type: string, format: uuid } }
+        - $ref: '#/components/parameters/IfMatch'
+      requestBody:
+        required: true
+        content: { application/json: { schema: { type: object, additionalProperties: false, required: [state], properties: { state: { type: string, enum: [running, paused, cancelled] } } } } }
+      responses:
+        '200': { description: Updated, content: { application/json: { schema: { $ref: '#/components/schemas/BackfillJob' } } } }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '409': { $ref: '#/components/responses/Conflict' }
+        '412': { $ref: '#/components/responses/PreconditionFailed' }
+
+components:
+  securitySchemes:
+    entra:
+      type: oauth2
+      description: Microsoft Entra ID. App roles CX.Reviewer, CX.Viewer, CX.Operator, CX.TerminologyAdmin, CX.Auditor.
+      flows:
+        authorizationCode:
+          authorizationUrl: https://login.microsoftonline.com/{tenant}/oauth2/v2.0/authorize
+          tokenUrl: https://login.microsoftonline.com/{tenant}/oauth2/v2.0/token
+          scopes:
+            api://cx-review-api/Review.ReadWrite: Review extractions and submit decisions
+
+  parameters:
+    ExtractionId: { name: extractionId, in: path, required: true, schema: { type: string, format: uuid } }
+    PageSize: { name: pageSize, in: query, schema: { type: integer, minimum: 1, maximum: 100, default: 25 } }
+    Cursor: { name: cursor, in: query, description: Opaque keyset cursor from previous page, schema: { type: string, maxLength: 512 } }
+    IfMatch: { name: If-Match, in: header, required: true, description: 'ETag of the resource, e.g. W/"3"', schema: { type: string, maxLength: 64 } }
+
+  headers:
+    ETag: { description: 'Weak ETag W/"<rowVersion>"', schema: { type: string } }
+
+  responses:
+    BadRequest: { description: Validation error (VALIDATION_FAILED), content: { application/problem+json: { schema: { $ref: '#/components/schemas/Problem' } } } }
+    Unauthorized: { description: Missing/invalid token, content: { application/problem+json: { schema: { $ref: '#/components/schemas/Problem' } } } }
+    Forbidden: { description: Role or patient access denied (FORBIDDEN, PATIENT_ACCESS_DENIED), content: { application/problem+json: { schema: { $ref: '#/components/schemas/Problem' } } } }
+    NotFound: { description: Not found (or not visible to caller), content: { application/problem+json: { schema: { $ref: '#/components/schemas/Problem' } } } }
+    Conflict: { description: 'State conflict: NOTE_VERSION_STALE, EXTRACTION_SUPERSEDED, ITEM_NOT_ELIGIBLE, POSSIBLE_DUPLICATE_ORDER, INVALID_STATE_TRANSITION', content: { application/problem+json: { schema: { $ref: '#/components/schemas/Problem' } } } }
+    PreconditionFailed: { description: ETag mismatch (CONCURRENT_MODIFICATION), content: { application/problem+json: { schema: { $ref: '#/components/schemas/Problem' } } } }
+    PreconditionRequired: { description: If-Match missing (IF_MATCH_REQUIRED), content: { application/problem+json: { schema: { $ref: '#/components/schemas/Problem' } } } }
+    Unprocessable: { description: 'IDEMPOTENCY_KEY_REUSED, NO_ELIGIBLE_ITEMS', content: { application/problem+json: { schema: { $ref: '#/components/schemas/Problem' } } } }
+
+  schemas:
+    Problem:
+      type: object
+      required: [type, title, status, code, traceId]
+      properties:
+        type: { type: string, format: uri-reference, example: 'https://cx.example/problems/note-version-stale' }
+        title: { type: string }
+        status: { type: integer }
+        detail: { type: string, description: Never contains PHI. }
+        instance: { type: string }
+        code: { type: string, example: NOTE_VERSION_STALE }
+        traceId: { type: string }
+        errors:
+          type: object
+          description: Field validation errors (VALIDATION_FAILED only).
+          additionalProperties: { type: array, items: { type: string } }
+
+    HealthReport:
+      type: object
+      required: [status]
+      properties:
+        status: { type: string, enum: [Healthy, Degraded, Unhealthy] }
+        checks:
+          type: array
+          items: { type: object, required: [name, status], properties: { name: { type: string }, status: { type: string }, durationMs: { type: number } } }
+
+    ExtractionRunStatus: { type: string, enum: [received, processing, succeeded, failed_retryable, failed_terminal, superseded] }
+    MedicationAssertionStatus: { type: string, enum: [new_order, current_medication, historical, discontinued, negated, suggested, conditional, uncertain] }
+    InvestigationAssertionStatus: { type: string, enum: [new_order, historical, negated, suggested, conditional, uncertain] }
+    NormalizationStatus: { type: string, enum: [matched, ambiguous, unmatched, not_attempted] }
+    ItemReviewStatus: { type: string, enum: [pending, confirmed, corrected, rejected, superseded] }
+    ReviewState: { type: string, enum: [pending, in_review, completed, superseded, no_items] }
+
+    NoteReference:
+      type: object
+      required: [sourceSystem, patientId, encounterId, noteId, noteVersion, noteType, facilityId, committedAt, isCurrentVersion]
+      properties:
+        sourceSystem: { type: string }
+        patientId: { type: string }
+        encounterId: { type: string }
+        noteId: { type: string }
+        noteVersion: { type: integer, minimum: 1 }
+        latestKnownVersion: { type: integer, minimum: 1 }
+        isCurrentVersion: { type: boolean, description: False → extraction is stale; decisions/write-back are blocked. }
+        noteType: { type: string }
+        specialtyCode: { type: [string, 'null'] }
+        facilityId: { type: string }
+        authoredBy: { type: [string, 'null'] }
+        committedAt: { type: string, format: date-time }
+
+    ReviewQueueItem:
+      type: object
+      required: [extractionId, note, reviewState, medicationCount, investigationCount, pendingItemCount, createdAt]
+      properties:
+        extractionId: { type: string, format: uuid }
+        note: { $ref: '#/components/schemas/NoteReference' }
+        reviewState: { $ref: '#/components/schemas/ReviewState' }
+        medicationCount: { type: integer }
+        investigationCount: { type: integer }
+        pendingItemCount: { type: integer }
+        hasBlockingFindings: { type: boolean }
+        createdAt: { type: string, format: date-time }
+
+    ReviewQueuePage:
+      type: object
+      required: [items]
+      properties:
+        items: { type: array, maxItems: 100, items: { $ref: '#/components/schemas/ReviewQueueItem' } }
+        nextCursor: { type: [string, 'null'] }
+
+    EvidenceSpan:
+      type: object
+      required: [quote, verified]
+      properties:
+        quote: { type: string }
+        verified: { type: boolean, description: Quote located exactly in source text. }
+        start: { type: [integer, 'null'], description: UTF-16 offset (inclusive) }
+        end: { type: [integer, 'null'], description: UTF-16 offset (exclusive) }
+        sectionCode: { type: [string, 'null'] }
+
+    ValidationFinding:
+      type: object
+      required: [code, severity, message]
+      properties:
+        code: { type: string, example: DOSE_UNIT_MISSING }
+        severity: { type: string, enum: [info, warning, error] }
+        field: { type: [string, 'null'] }
+        message: { type: string }
+
+    TerminologyCandidate:
+      type: object
+      required: [masterItemId, code, displayName, matchMethod, rank, attributeCheck]
+      properties:
+        masterItemId: { type: string, format: uuid }
+        code: { type: string }
+        displayName: { type: string }
+        matchMethod: { type: string, enum: [exact_code, alias, keyword, vector] }
+        retrievalScore: { type: [number, 'null'], description: Retrieval score — NOT a probability. }
+        rank: { type: integer, minimum: 1 }
+        attributeCheck: { type: string, enum: [compatible, incompatible, not_evaluable] }
+        attributeConflicts: { type: array, items: { type: string } }
+        isAutoSelected: { type: boolean }
+
+    QualityInfo:
+      type: object
+      required: [flags]
+      properties:
+        score: { type: [number, 'null'], minimum: 0, maximum: 1, description: Heuristic, UNCALIBRATED ranking aid. Not a probability of correctness. }
+        flags: { type: array, items: { type: string } }
+
+    MedicationValues:
+      type: object
+      description: Clinician-correctable attributes (verbatim text + parsed fields).
+      additionalProperties: false
+      properties:
+        name: { type: string, minLength: 1, maxLength: 200 }
+        strengthText: { type: [string, 'null'], maxLength: 100 }
+        strengthValue: { type: [number, 'null'] }
+        strengthUnit: { type: [string, 'null'], maxLength: 20 }
+        doseText: { type: [string, 'null'], maxLength: 100 }
+        doseValue: { type: [number, 'null'] }
+        doseUnit: { type: [string, 'null'], maxLength: 20 }
+        routeCode: { type: [string, 'null'], maxLength: 16 }
+        frequencyCode: { type: [string, 'null'], maxLength: 32 }
+        frequencyText: { type: [string, 'null'], maxLength: 100 }
+        durationValue: { type: [number, 'null'] }
+        durationUnit: { type: [string, 'null'], enum: [day, week, month, null] }
+        formulationCode: { type: [string, 'null'], maxLength: 16 }
+        instructionsText: { type: [string, 'null'], maxLength: 500 }
+        assertionStatus: { $ref: '#/components/schemas/MedicationAssertionStatus' }
+
+    Medication:
+      type: object
+      required: [medicationId, itemIndex, extracted, evidence, normalizationStatus, candidates, findings, quality, reviewStatus, writebackEligible, rowVersion]
+      properties:
+        medicationId: { type: string, format: uuid }
+        itemIndex: { type: integer }
+        extracted: { $ref: '#/components/schemas/MedicationValues' }
+        effective: { description: Values after latest correction (null if none)., oneOf: [ { $ref: '#/components/schemas/MedicationValues' }, { type: 'null' } ] }
+        evidence: { $ref: '#/components/schemas/EvidenceSpan' }
+        normalizationStatus: { $ref: '#/components/schemas/NormalizationStatus' }
+        selectedMasterItemId: { type: [string, 'null'], format: uuid }
+        candidates: { type: array, maxItems: 20, items: { $ref: '#/components/schemas/TerminologyCandidate' } }
+        findings: { type: array, items: { $ref: '#/components/schemas/ValidationFinding' } }
+        quality: { $ref: '#/components/schemas/QualityInfo' }
+        reviewStatus: { $ref: '#/components/schemas/ItemReviewStatus' }
+        writebackEligible: { type: boolean }
+        writebackIneligibleReasons: { type: array, items: { type: string } }
+        rowVersion: { type: integer }
+
+    InvestigationValues:
+      type: object
+      additionalProperties: false
+      properties:
+        name: { type: string, minLength: 1, maxLength: 200 }
+        specimenText: { type: [string, 'null'], maxLength: 100 }
+        specimenCode: { type: [string, 'null'], maxLength: 16 }
+        timingText: { type: [string, 'null'], maxLength: 100 }
+        assertionStatus: { $ref: '#/components/schemas/InvestigationAssertionStatus' }
+
+    Investigation:
+      type: object
+      required: [investigationId, itemIndex, extracted, evidence, normalizationStatus, candidates, findings, quality, reviewStatus, writebackEligible, rowVersion]
+      properties:
+        investigationId: { type: string, format: uuid }
+        itemIndex: { type: integer }
+        extracted: { $ref: '#/components/schemas/InvestigationValues' }
+        effective: { oneOf: [ { $ref: '#/components/schemas/InvestigationValues' }, { type: 'null' } ] }
+        evidence: { $ref: '#/components/schemas/EvidenceSpan' }
+        normalizationStatus: { $ref: '#/components/schemas/NormalizationStatus' }
+        selectedMasterItemId: { type: [string, 'null'], format: uuid }
+        candidates: { type: array, maxItems: 20, items: { $ref: '#/components/schemas/TerminologyCandidate' } }
+        findings: { type: array, items: { $ref: '#/components/schemas/ValidationFinding' } }
+        quality: { $ref: '#/components/schemas/QualityInfo' }
+        reviewStatus: { $ref: '#/components/schemas/ItemReviewStatus' }
+        writebackEligible: { type: boolean }
+        writebackIneligibleReasons: { type: array, items: { type: string } }
+        rowVersion: { type: integer }
+
+    ExtractionDetail:
+      type: object
+      required: [extractionId, runId, note, isActive, reviewState, medications, investigations, createdAt, rowVersion]
+      properties:
+        extractionId: { type: string, format: uuid }
+        runId: { type: string, format: uuid }
+        note: { $ref: '#/components/schemas/NoteReference' }
+        isActive: { type: boolean }
+        reviewState: { $ref: '#/components/schemas/ReviewState' }
+        medications: { type: array, maxItems: 200, items: { $ref: '#/components/schemas/Medication' } }
+        investigations: { type: array, maxItems: 200, items: { $ref: '#/components/schemas/Investigation' } }
+        createdAt: { type: string, format: date-time }
+        rowVersion: { type: integer }
+
+    SourceNote:
+      type: object
+      required: [extractionId, note, text, contentSha256]
+      properties:
+        extractionId: { type: string, format: uuid }
+        note: { $ref: '#/components/schemas/NoteReference' }
+        text: { type: string }
+        contentSha256: { type: string, pattern: '^[0-9a-f]{64}$' }
+        sections:
+          type: array
+          items: { type: object, required: [code, start, end], properties: { code: { type: string }, start: { type: integer }, end: { type: integer } } }
+
+    ExtractionRun:
+      type: object
+      required: [runId, status, trigger, attemptCount, createdAt]
+      properties:
+        runId: { type: string, format: uuid }
+        noteReferenceId: { type: string, format: uuid }
+        status: { $ref: '#/components/schemas/ExtractionRunStatus' }
+        trigger: { type: string, enum: [realtime, backfill, reprocess] }
+        attemptCount: { type: integer }
+        pipelineProfile: { type: string }
+        preprocessorVersion: { type: [string, 'null'] }
+        promptVersion: { type: [string, 'null'] }
+        outputSchemaVersion: { type: [string, 'null'] }
+        modelDeployment: { type: [string, 'null'] }
+        modelVersion: { type: [string, 'null'] }
+        terminologyReleaseLabel: { type: [string, 'null'] }
+        inputTokens: { type: [integer, 'null'] }
+        outputTokens: { type: [integer, 'null'] }
+        llmLatencyMs: { type: [integer, 'null'] }
+        errorCode: { type: [string, 'null'] }
+        errorDetail: { type: [string, 'null'], description: Redacted; contains no PHI. }
+        correlationId: { type: string }
+        createdAt: { type: string, format: date-time }
+        startedAt: { type: [string, 'null'], format: date-time }
+        completedAt: { type: [string, 'null'], format: date-time }
+
+    ExtractionRunPage:
+      type: object
+      required: [items]
+      properties:
+        items: { type: array, maxItems: 100, items: { $ref: '#/components/schemas/ExtractionRun' } }
+        nextCursor: { type: [string, 'null'] }
+
+    MedicationDecisionRequest:
+      type: object
+      additionalProperties: false
+      required: [decision, expectedNoteVersion]
+      properties:
+        decision: { type: string, enum: [confirm, correct, reject, select_alternative] }
+        expectedNoteVersion: { type: integer, minimum: 1, description: Note version shown to the clinician; mismatch → 409 NOTE_VERSION_STALE. }
+        correctedValues: { $ref: '#/components/schemas/MedicationValues' }
+        selectedMasterItemId: { type: string, format: uuid }
+        reasonCode: { type: string, enum: [not_in_note, wrong_assertion, wrong_attributes, duplicate, not_clinically_appropriate, other] }
+        reasonText: { type: string, maxLength: 1000 }
+      description: |
+        Rules: correct → correctedValues required; reject → reasonCode required; select_alternative → selectedMasterItemId
+        required and must reference an active, orderable item in the active release compatible with effective attributes
+        (else 422). confirm on an item whose normalizationStatus ≠ matched requires selectedMasterItemId.
+
+    InvestigationDecisionRequest:
+      type: object
+      additionalProperties: false
+      required: [decision, expectedNoteVersion]
+      properties:
+        decision: { type: string, enum: [confirm, correct, reject, select_alternative] }
+        expectedNoteVersion: { type: integer, minimum: 1 }
+        correctedValues: { $ref: '#/components/schemas/InvestigationValues' }
+        selectedMasterItemId: { type: string, format: uuid }
+        reasonCode: { type: string, enum: [not_in_note, wrong_assertion, wrong_attributes, duplicate, not_clinically_appropriate, other] }
+        reasonText: { type: string, maxLength: 1000 }
+
+    ReviewDecision:
+      type: object
+      required: [reviewDecisionId, decision, reviewerUserId, reviewerRole, noteVersionAtDecision, decidedAt]
+      properties:
+        reviewDecisionId: { type: string, format: uuid }
+        decision: { type: string, enum: [confirm, correct, reject, select_alternative] }
+        correctedValues: { type: [object, 'null'] }
+        selectedMasterItemId: { type: [string, 'null'], format: uuid }
+        reasonCode: { type: [string, 'null'] }
+        reasonText: { type: [string, 'null'] }
+        reviewerUserId: { type: string }
+        reviewerRole: { type: string }
+        noteVersionAtDecision: { type: integer }
+        decidedAt: { type: string, format: date-time }
+
+    WritebackRequest:
+      type: object
+      additionalProperties: false
+      required: [expectedNoteVersion, items]
+      properties:
+        expectedNoteVersion: { type: integer, minimum: 1 }
+        items:
+          type: array
+          minItems: 1
+          maxItems: 50
+          items:
+            type: object
+            additionalProperties: false
+            required: [itemType, itemId, expectedRowVersion]
+            properties:
+              itemType: { type: string, enum: [medication, investigation] }
+              itemId: { type: string, format: uuid }
+              expectedRowVersion: { type: integer }
+        acknowledgedDuplicateItemIds: { type: array, maxItems: 50, items: { type: string, format: uuid } }
+
+    WritebackItem:
+      type: object
+      required: [writebackItemId, itemType, itemId, status, attemptCount]
+      properties:
+        writebackItemId: { type: string, format: uuid }
+        itemType: { type: string, enum: [medication, investigation] }
+        itemId: { type: string, format: uuid }
+        masterItemCode: { type: string }
+        status: { type: string, enum: [pending, submitting, succeeded, unknown_outcome, failed_retryable, failed_terminal, rejected_by_emr] }
+        attemptCount: { type: integer }
+        emrOrderId: { type: [string, 'null'] }
+        lastErrorCode: { type: [string, 'null'] }
+
+    WritebackOperation:
+      type: object
+      required: [writebackOperationId, extractionId, status, items, createdAt]
+      properties:
+        writebackOperationId: { type: string, format: uuid }
+        extractionId: { type: string, format: uuid }
+        status: { type: string, enum: [pending, in_progress, completed, partially_failed, failed] }
+        items: { type: array, items: { $ref: '#/components/schemas/WritebackItem' } }
+        createdAt: { type: string, format: date-time }
+        completedAt: { type: [string, 'null'], format: date-time }
+
+    DrugMasterItem:
+      type: object
+      required: [masterItemId, code, displayName, genericName, formulationCode, routeCode, releaseLabel]
+      properties:
+        masterItemId: { type: string, format: uuid }
+        code: { type: string }
+        displayName: { type: string }
+        genericName: { type: string }
+        brandName: { type: [string, 'null'] }
+        strengthText: { type: [string, 'null'] }
+        formulationCode: { type: string }
+        routeCode: { type: string }
+        releaseLabel: { type: string }
+
+    InvestigationMasterItem:
+      type: object
+      required: [masterItemId, code, displayName, departmentCode, releaseLabel]
+      properties:
+        masterItemId: { type: string, format: uuid }
+        code: { type: string }
+        displayName: { type: string }
+        specimenCode: { type: [string, 'null'] }
+        departmentCode: { type: string }
+        isPanel: { type: boolean }
+        releaseLabel: { type: string }
+
+    BackfillJobRequest:
+      type: object
+      additionalProperties: false
+      required: [jobName, sourceDescription, filter, pipelineProfile, batchSize, maxNotesPerMinute]
+      properties:
+        jobName: { type: string, minLength: 3, maxLength: 100 }
+        sourceDescription: { type: string, maxLength: 500 }
+        filter:
+          type: object
+          additionalProperties: false
+          required: [committedFrom, committedTo]
+          properties:
+            committedFrom: { type: string, format: date-time }
+            committedTo: { type: string, format: date-time }
+            facilityIds: { type: array, maxItems: 100, items: { type: string } }
+            specialtyCodes: { type: array, maxItems: 100, items: { type: string } }
+            noteTypes: { type: array, maxItems: 20, items: { type: string } }
+        pipelineProfile: { type: string }
+        batchSize: { type: integer, minimum: 1, maximum: 10000 }
+        maxNotesPerMinute: { type: integer, minimum: 1, maximum: 100000 }
+
+    BackfillJob:
+      type: object
+      required: [backfillJobId, jobName, status, notesEnqueued, notesSkipped, createdAt, rowVersion]
+      properties:
+        backfillJobId: { type: string, format: uuid }
+        jobName: { type: string }
+        status: { type: string, enum: [created, running, paused, completed, failed, cancelled] }
+        notesEnqueued: { type: integer }
+        notesSkipped: { type: integer }
+        createdAt: { type: string, format: date-time }
+        startedAt: { type: [string, 'null'], format: date-time }
+        completedAt: { type: [string, 'null'], format: date-time }
+        lastHeartbeatAt: { type: [string, 'null'], format: date-time }
+        rowVersion: { type: integer }
+

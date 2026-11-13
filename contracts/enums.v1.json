@@ -1,0 +1,39 @@
+{
+  "$comment": "AUTHORITATIVE shared enumerations v1. DB CHECK constraints, C# enums, Python enums and TypeScript unions are verified against this file by contract tests (M1+). Never rename a value; add + deprecate.",
+  "version": "1.0.0",
+  "enums": {
+    "medication_assertion_status": ["new_order", "current_medication", "historical", "discontinued", "negated", "suggested", "conditional", "uncertain"],
+    "investigation_assertion_status": ["new_order", "historical", "negated", "suggested", "conditional", "uncertain"],
+    "extraction_trigger": ["realtime", "backfill", "reprocess"],
+    "extraction_run_status": ["received", "processing", "succeeded", "failed_retryable", "failed_terminal", "superseded"],
+    "extraction_review_state": ["pending", "in_review", "completed", "superseded", "no_items"],
+    "normalization_status": ["matched", "ambiguous", "unmatched", "not_attempted"],
+    "item_review_status": ["pending", "confirmed", "corrected", "rejected", "superseded"],
+    "review_decision_type": ["confirm", "correct", "reject", "select_alternative"],
+    "reject_reason_code": ["not_in_note", "wrong_assertion", "wrong_attributes", "duplicate", "not_clinically_appropriate", "other"],
+    "finding_severity": ["info", "warning", "error"],
+    "match_method": ["exact_code", "alias", "keyword", "vector"],
+    "attribute_check": ["compatible", "incompatible", "not_evaluable"],
+    "writeback_operation_status": ["pending", "in_progress", "completed", "partially_failed", "failed"],
+    "writeback_item_status": ["pending", "submitting", "succeeded", "unknown_outcome", "failed_retryable", "failed_terminal", "rejected_by_emr"],
+    "backfill_job_status": ["created", "running", "paused", "completed", "failed", "cancelled"],
+    "terminology_release_status": ["staged", "active", "retired"],
+    "audit_outcome": ["success", "denied", "failure"],
+    "actor_type": ["user", "service", "system"]
+  },
+  "quality_flags": [
+    "EVIDENCE_NOT_FOUND",
+    "EVIDENCE_AMBIGUOUS_LOCATION",
+    "DOSE_UNIT_MISSING",
+    "DOSE_UNIT_UNRECOGNISED",
+    "FREQUENCY_UNRECOGNISED",
+    "MANDATORY_ORDER_ATTRIBUTE_MISSING",
+    "ASSERTION_EVIDENCE_CONFLICT",
+    "NEGATION_CUE_IN_EVIDENCE",
+    "TERMINOLOGY_AMBIGUOUS",
+    "TERMINOLOGY_UNMATCHED",
+    "TERMINOLOGY_ATTRIBUTE_CONFLICT",
+    "VALUE_NOT_IN_EVIDENCE"
+  ]
+}
+

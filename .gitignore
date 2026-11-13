@@ -1,0 +1,34 @@
+# Local binaries and databases
+tools/
+tools/data_cx/
+tools/data_emr/
+tools/pgsql/
+
+# .NET
+bin/
+obj/
+*.user
+*.suo
+.vs/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+env/
+venv/
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+
+# Node / Angular
+node_modules/
+dist/
+.angular/
+.vscode/
+
+# Environment files with secrets
+.env
+.env.*
+*.local

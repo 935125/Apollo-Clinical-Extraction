@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:cx:events:note-version-committed:1.0",
+  "title": "NoteVersionCommitted v1.0",
+  "description": "AUTHORITATIVE. Emitted via the EMR transactional outbox when a clinical note version is committed. Carries identifiers and a content hash only — NEVER note text (claim-check pattern, ADR-0007). Transport: Azure Service Bus message; MessageId = eventId; ContentType = application/json; application properties: eventType, schemaVersion, correlationId (mirrors body).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "eventId", "eventType", "schemaVersion", "occurredAt", "correlationId",
+    "sourceSystem", "patientId", "encounterId", "noteId", "noteVersion",
+    "contentSha256", "charLength", "noteType", "facilityId", "committedAt"
+  ],
+  "properties": {
+    "eventId":       { "type": "string", "format": "uuid", "description": "Unique per outbox row; used as Service Bus MessageId for broker duplicate detection." },
+    "eventType":     { "const": "note.version.committed" },
+    "schemaVersion": { "const": "1.0" },
+    "occurredAt":    { "type": "string", "format": "date-time", "description": "UTC time the outbox row was written." },
+    "correlationId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[A-Za-z0-9._:-]+$" },
+    "sourceSystem":  { "type": "string", "minLength": 1, "maxLength": 64, "pattern": "^[A-Za-z0-9._-]+$", "description": "Identifies the EMR instance (multi-location networks may run several)." },
+    "patientId":     { "type": "string", "minLength": 1, "maxLength": 64, "description": "EMR patient identifier (e.g. UHID). PHI identifier." },
+    "encounterId":   { "type": "string", "minLength": 1, "maxLength": 64 },
+    "noteId":        { "type": "string", "minLength": 1, "maxLength": 64 },
+    "noteVersion":   { "type": "integer", "minimum": 1, "description": "Monotonically increasing per noteId." },
+    "contentSha256": { "type": "string", "pattern": "^[0-9a-f]{64}$", "description": "Lower-case hex SHA-256 of the UTF-8 note text. Worker verifies after fetching." },
+    "charLength":    { "type": "integer", "minimum": 0, "description": "Length in Unicode code points; lets the worker reject over-size notes before fetching." },
+    "noteType":      { "type": "string", "minLength": 1, "maxLength": 64 },
+    "specialtyCode": { "type": ["string", "null"], "maxLength": 64 },
+    "facilityId":    { "type": "string", "minLength": 1, "maxLength": 64 },
+    "authoredBy":    { "type": ["string", "null"], "maxLength": 128 },
+    "committedAt":   { "type": "string", "format": "date-time" },
+    "trigger":       { "enum": ["realtime", "backfill", "reprocess"], "default": "realtime", "description": "Set by producer: EMR outbox = realtime; backfill orchestrator = backfill; ops requeue = reprocess." },
+    "backfillJobId": { "type": ["string", "null"], "format": "uuid" },
+    "reprocessRequestId": { "type": ["string", "null"], "format": "uuid" }
+  }
+}
+

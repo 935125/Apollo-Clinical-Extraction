@@ -1,0 +1,65 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  backend:
+    name: Backend (.NET 10)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+      - name: Restore dependencies
+        run: dotnet restore src/backend/Cx.Platform.sln
+      - name: Build Solution
+        run: dotnet build src/backend/Cx.Platform.sln --no-restore --configuration Release
+      - name: Run Tests
+        run: dotnet test src/backend/Cx.Platform.sln --no-build --configuration Release --verbosity normal
+
+  worker:
+    name: AI Worker (Python 3.13)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install uv
+        uses: astral-sh/setup-uv@v3
+        with:
+          version: "latest"
+      - name: Setup Python
+        run: uv python install 3.13
+      - name: Run Linting (ruff)
+        working-directory: src/worker
+        run: uv run ruff check
+      - name: Run Type Checking (mypy)
+        working-directory: src/worker
+        run: uv run mypy cx_worker
+      - name: Run Unit Tests (pytest)
+        working-directory: src/worker
+        run: uv run pytest
+
+  frontend:
+    name: Frontend (Angular 21 LTS)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24.12.0'
+      - name: Install Dependencies
+        working-directory: src/cx-review-ui
+        run: npm ci
+      - name: Run Unit Tests
+        working-directory: src/cx-review-ui
+        run: npm test -- --watch=false
+      - name: Build Application
+        working-directory: src/cx-review-ui
+        run: npm run build
+

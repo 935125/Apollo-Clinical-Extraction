@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:cx:extraction:llm-output:1.0",
+  "title": "LlmExtractionOutput v1.0",
+  "$comment": "AUTHORITATIVE. Sent to Foundry as the structured-output (strict) response_format. Designed for strict mode: every property required, nullability via type unions, additionalProperties=false, no unsupported keywords. The model returns VERBATIM text fragments only; numeric parsing, unit normalisation, codes and offsets are computed deterministically by the worker (Stage 3/4) — never by the model. Length limits are enforced post-hoc by Pydantic (strict mode does not guarantee them).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "medications", "investigations"],
+  "properties": {
+    "schema_version": { "type": "string", "enum": ["1.0"] },
+    "medications": { "type": "array", "items": { "$ref": "#/$defs/medication" } },
+    "investigations": { "type": "array", "items": { "$ref": "#/$defs/investigation" } }
+  },
+  "$defs": {
+    "medication": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "strength", "dose", "route", "frequency", "duration", "formulation", "instructions", "assertion_status", "evidence_quote"],
+      "properties": {
+        "name":             { "type": "string", "description": "Drug name exactly as written." },
+        "strength":         { "type": ["string", "null"], "description": "Verbatim strength, e.g. '500 mg'. null if not stated." },
+        "dose":             { "type": ["string", "null"], "description": "Verbatim dose per administration, e.g. '1 tab'. null if not stated." },
+        "route":            { "type": ["string", "null"] },
+        "frequency":        { "type": ["string", "null"], "description": "Verbatim, e.g. 'BD', '1-0-1'." },
+        "duration":         { "type": ["string", "null"], "description": "Verbatim, e.g. 'x 5 days'." },
+        "formulation":      { "type": ["string", "null"], "description": "Verbatim, e.g. 'tab', 'syrup'." },
+        "instructions":     { "type": ["string", "null"], "description": "Verbatim additional instructions, e.g. 'after food'." },
+        "assertion_status": { "type": "string", "enum": ["new_order", "current_medication", "historical", "discontinued", "negated", "suggested", "conditional", "uncertain"] },
+        "evidence_quote":   { "type": "string", "description": "Shortest exact contiguous substring of the note supporting this item." }
+      }
+    },
+    "investigation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "specimen", "timing", "assertion_status", "evidence_quote"],
+      "properties": {
+        "name":             { "type": "string", "description": "Test name exactly as written." },
+        "specimen":         { "type": ["string", "null"], "description": "Only if explicitly stated." },
+        "timing":           { "type": ["string", "null"], "description": "Verbatim timing, e.g. 'after 3 months', 'fasting'." },
+        "assertion_status": { "type": "string", "enum": ["new_order", "historical", "negated", "suggested", "conditional", "uncertain"] },
+        "evidence_quote":   { "type": "string" }
+      }
+    }
+  }
+}
+
