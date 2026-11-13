@@ -3,10 +3,15 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 async function runBrowserVerification() {
-  console.log('--- STARTING PLAYWRIGHT LIVE BROWSER VERIFICATION ---');
+  console.log('--- STARTING PLAYWRIGHT LIVE BROWSER VERIFICATION (APOLLO HOSPITALS STUDIO) ---');
 
-  const browser = await chromium.launch({ headless: true });
-  const context = await browser.newContext();
+  const browser = await chromium.launch({
+    headless: true,
+    args: ['--no-sandbox', '--disable-setuid-sandbox', '--window-size=1600,900']
+  });
+  const context = await browser.newContext({
+    viewport: { width: 1600, height: 900 }
+  });
   const page = await context.newPage();
 
   const networkRequests = [];
@@ -36,95 +41,111 @@ async function runBrowserVerification() {
   // 3. Navigate to Angular application
   console.log('Navigating to http://localhost:4200/ ...');
   await page.goto('http://localhost:4200/', { waitUntil: 'domcontentloaded', timeout: 30000 });
+  await page.waitForTimeout(1000);
 
   // 4. Verify title and page header
   const title = await page.title();
   const headerText = await page.locator('.app-title').textContent();
   console.log(`Page title: "${title}", Header: "${headerText.trim()}"`);
 
-  // 5. Enter fictional clinical note
-  const sampleNote = `Patient: 62-year-old male with persistent cough and exertional dyspnea.
-Assessment: Chronic Obstructive Pulmonary Disease with acute mild exacerbation.
+  // 5. Check sidebar navigation
+  const sidebarNavItems = await page.locator('.sidebar-nav .nav-item').allTextContents();
+  console.log('Sidebar nav items:', sidebarNavItems.map(s => s.trim()));
+
+  // 6. Enter clinical note
+  const sampleNote = `62-year-old male with type 2 diabetes and hypertension presents with 3 days of fever, productive cough and shortness of breath.
+
+Assessment: Community acquired pneumonia.
+
 Plan:
-1. Prescribe Salbutamol 100mcg inhaler 2 puffs QDS PRN.
-2. Prescribe Prednisolone 40mg PO daily x 5 days.
-3. Patient allergic to Penicillin (anaphylaxis).
-4. Order Chest X-Ray PA view and Pulmonary Function Test.`;
+• Start amoxicillin-clavulanate 875/125 mg orally twice daily for 7 days.
+• Add azithromycin 500 mg on day 1, then 250 mg once daily for 4 more days.
+• Continue metformin 500 mg twice daily.
+• Increase amlodipine to 10 mg once daily.
+
+Investigations:
+• Chest X-ray to rule out consolidation.
+• CBC, CRP and U&E today.`;
 
   const textarea = page.locator('textarea.clinical-textarea');
   await textarea.fill('');
   await textarea.fill(sampleNote);
   console.log('Filled clinical narrative in textarea.');
 
-  // 6. Click Extract Clinical Information
-  console.log('Clicking "Extract Clinical Information" button...');
-  const extractButton = page.locator('button.btn-primary');
+  // 7. Click Extract Medications & Investigations
+  console.log('Clicking "Extract Medications & Investigations" button...');
+  const extractButton = page.locator('button.btn-extract-main');
+  const responsePromise = page.waitForResponse(resp => resp.url().includes('/api/v1/extractions') && resp.status() === 200, { timeout: 45000 });
   await extractButton.click();
 
-  // 7. Wait for results container to render
+  // 8. Wait for actual extraction response from ASP.NET Core -> Python -> Foundry gpt-4.1-mini
   console.log('Waiting for extraction response from ASP.NET Core -> Python -> Foundry gpt-4.1-mini...');
-  await page.waitForSelector('.results-top-bar', { timeout: 35000 });
-  console.log('Results top bar rendered!');
+  const response = await responsePromise;
+  const responseBody = await response.json();
+  console.log(`Live response received! Total tokens: ${responseBody.modelMetadata?.totalTokens}, duration: ${responseBody.executionDurationMs}ms`);
+  await page.waitForTimeout(1000);
 
-  // 8. Extract rendered telemetry and metadata
-  const headerBadges = await page.locator('.header-badges').textContent();
-  const metricsBar = await page.locator('.metrics-bar').textContent();
-
-  // Extract medication cards
-  const medCards = await page.locator('.entity-card').evaluateAll(cards => {
+  // 9. Inspect KPI cards
+  const kpiCards = await page.locator('.kpi-card').evaluateAll(cards => {
     return cards.map(c => {
-      const name = c.querySelector('.entity-name')?.textContent?.trim() || '';
-      const strength = c.querySelector('.entity-strength')?.textContent?.trim() || '';
-      const badge = c.querySelector('.assertion-badge')?.textContent?.trim() || '';
-      const code = c.querySelector('.norm-badge')?.textContent?.trim() || '';
-      const quote = c.querySelector('.evidence-box blockquote')?.textContent?.trim() || '';
-      return { name, strength, badge, code, quote };
+      const num = c.querySelector('.kpi-number')?.textContent?.trim() || '';
+      const label = c.querySelector('.kpi-label')?.textContent?.trim() || '';
+      return `${label}: ${num}`;
     });
   });
+  console.log('Rendered KPI Metrics:', kpiCards);
 
-  // Switch to Investigations Tab to view investigation cards
-  console.log('Switching to Investigations tab...');
-  const invTab = page.locator('button.tab-btn:has-text("Investigations")');
-  await invTab.click();
-  await page.waitForTimeout(500);
-
-  const invCards = await page.locator('.entity-card').evaluateAll(cards => {
-    return cards.map(c => {
-      const name = c.querySelector('.entity-name')?.textContent?.trim() || '';
-      const badge = c.querySelector('.assertion-badge')?.textContent?.trim() || '';
-      const code = c.querySelector('.norm-badge')?.textContent?.trim() || '';
-      const quote = c.querySelector('.evidence-box blockquote')?.textContent?.trim() || '';
-      return { name, badge, code, quote };
+  // 10. Extract rendered table rows for medications
+  const medRows = await page.locator('.entity-section:has-text("Medications") tbody tr').evaluateAll(rows => {
+    return rows.map(r => {
+      const name = r.querySelector('.td-name')?.textContent?.trim() || '';
+      const intent = r.querySelector('.intent-pill')?.textContent?.trim() || '';
+      const evidence = r.querySelector('.td-evidence')?.textContent?.trim() || '';
+      const match = r.querySelector('.match-exact, .match-unresolved')?.textContent?.trim() || '';
+      return { name, intent, evidence, match };
     });
   });
+  console.log(`Rendered ${medRows.length} Medications in table:`, medRows);
 
-  // Switch back to Medications Tab
-  const medTab = page.locator('button.tab-btn:has-text("Medications")');
-  await medTab.click();
+  // 11. Extract rendered table rows for investigations
+  const invRows = await page.locator('.entity-section:has-text("Investigations") tbody tr').evaluateAll(rows => {
+    return rows.map(r => {
+      const name = r.querySelector('.td-name')?.textContent?.trim() || '';
+      const intent = r.querySelector('.intent-pill')?.textContent?.trim() || '';
+      const evidence = r.querySelector('.td-evidence')?.textContent?.trim() || '';
+      const match = r.querySelector('.match-exact, .match-unresolved')?.textContent?.trim() || '';
+      return { name, intent, evidence, match };
+    });
+  });
+  console.log(`Rendered ${invRows.length} Investigations in table:`, invRows);
+
+  // 12. Click on first medication row to inspect evidence highlight
+  console.log('Clicking first medication row...');
+  const firstRow = page.locator('.entity-section:has-text("Medications") tbody tr').first();
+  await firstRow.click();
+  await page.waitForTimeout(300);
+
+  // 13. Switch to Highlighted Note tab
+  console.log('Switching to "Highlighted Note" tab...');
+  const highlightTab = page.locator('button.subtab-btn:has-text("Highlighted Note")');
+  await highlightTab.click();
   await page.waitForTimeout(500);
 
-  // 9. Click on first medication card to verify bidirectional highlight
-  console.log('Clicking first medication card to trigger evidence highlight...');
-  const firstCard = page.locator('.entity-card').first();
-  await firstCard.click();
-  await page.waitForTimeout(500);
-
-  // Switch to Evidence Highlight View in narrative panel
-  const highlightToggle = page.locator('.chip-toggle:has-text("Evidence Highlight View")');
-  await highlightToggle.click();
-  await page.waitForTimeout(500);
-
-  // Check highlighted mark text
   const highlightedSpans = await page.locator('mark.evidence-highlight').allTextContents();
   console.log('Highlighted evidence mark spans:', highlightedSpans);
 
-  // 10. Capture screenshot
+  // Switch back to Structured Results tab
+  const structuredTab = page.locator('button.subtab-btn:has-text("Structured Results")');
+  await structuredTab.click();
+  await page.waitForTimeout(500);
+
+  // 14. Capture full page screenshot
   const screenshotPath = 'docs/audit/browser_verification_live.png';
   fs.mkdirSync(path.dirname(screenshotPath), { recursive: true });
   await page.screenshot({ path: screenshotPath, fullPage: true });
   console.log(`Screenshot saved to ${screenshotPath}`);
 
-  // 11. Analyze network security and architecture
+  // 15. Analyze network security and architecture
   const apiRequests = networkRequests.filter(r => r.url.includes('/api/v1/extractions'));
   const pythonDirectCalls = networkRequests.filter(r => r.targetPort === '5005');
   const foundryDirectCalls = networkRequests.filter(r => r.url.includes('openai.azure.com') || r.url.includes('ai.azure.com'));
@@ -143,11 +164,11 @@ Plan:
       secretsInBrowserRequests: requestsWithAuth.length > 0
     },
     telemetry: {
-      headerBadges: headerBadges.replace(/\s+/g, ' ').trim(),
-      metricsBar: metricsBar.replace(/\s+/g, ' ').trim()
+      kpiCards,
+      modelBadge: await page.locator('.model-pill').textContent()
     },
-    renderedMedications: medCards,
-    renderedInvestigations: invCards,
+    renderedMedications: medRows,
+    renderedInvestigations: invRows,
     highlightVerification: {
       selectedHighlightedText: highlightedSpans
     },
@@ -163,10 +184,8 @@ Plan:
   console.log('Direct calls to Python (5005):', verificationResult.architecture.callsPythonDirectly);
   console.log('Direct calls to Foundry:', verificationResult.architecture.callsFoundryDirectly);
   console.log('Secrets in browser requests:', verificationResult.architecture.secretsInBrowserRequests);
-  console.log('Header Badges:', verificationResult.telemetry.headerBadges);
-  console.log('Metrics Bar:', verificationResult.telemetry.metricsBar);
-  console.log('Medication Cards:', verificationResult.renderedMedications);
-  console.log('Investigation Cards:', verificationResult.renderedInvestigations);
+  console.log('Model pill:', verificationResult.telemetry.modelBadge.replace(/\s+/g, ' ').trim());
+  console.log('KPI Cards:', verificationResult.telemetry.kpiCards);
   console.log('Evidence Highlights:', verificationResult.highlightVerification.selectedHighlightedText);
 
   await browser.close();

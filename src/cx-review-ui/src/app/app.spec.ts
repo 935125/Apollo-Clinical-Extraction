@@ -125,7 +125,7 @@ describe('App', () => {
     const fixture = TestBed.createComponent(App);
     await fixture.whenStable();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('.app-title')?.textContent).toContain('Clinical AI Extraction Platform');
+    expect(compiled.querySelector('.app-title')?.textContent).toContain('Clinical AI Extraction Studio');
   });
 
   it('should load synthetic preset into textarea', async () => {
@@ -156,7 +156,7 @@ describe('App', () => {
 
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('.entity-name')?.textContent).toContain('Metformin');
+    expect(compiled.querySelector('.td-name')?.textContent).toContain('Metformin');
     expect(compiled.querySelector('.highlight-val')?.textContent).toContain('42.5 ms');
   });
 
@@ -262,6 +262,7 @@ describe('App', () => {
     await fixture.whenStable();
 
     app.onExtract();
+    app.setResultTab('model');
     fixture.detectChanges();
 
     const compiled = fixture.nativeElement as HTMLElement;

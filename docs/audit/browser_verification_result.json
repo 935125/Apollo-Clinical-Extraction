@@ -1,7 +1,7 @@
 {
-  "timestamp": "2026-11-13T09:19:38.171Z",
+  "timestamp": "2026-11-13T09:38:09.446Z",
   "pageTitle": "CxReviewUi",
-  "headerText": "Clinical AI Extraction Platform",
+  "headerText": "Clinical AI Extraction Studio",
   "architecture": {
     "browserOrigin": "http://localhost:4200/",
     "apiGatewayTarget": [
@@ -13,42 +13,76 @@
     "secretsInBrowserRequests": false
   },
   "telemetry": {
-    "headerBadges": "Model: gpt-4.1-mini (microsoft_foundry_live) Verified Clean Stack",
-    "metricsBar": "Execution Time3548.21 msMedications2Investigations2Quality Warnings 0 Token Consumption 1149 ($0.00027)"
+    "kpiCards": [
+      "Medications: 5",
+      "Investigations: 4",
+      "Validation Errors: 0",
+      "Warning: 1",
+      "Processing Time: 6.66 s"
+    ],
+    "modelBadge": "Model: gpt-4.1-mini"
   },
   "renderedMedications": [
     {
-      "name": "Salbutamol",
-      "strength": "100mcg",
-      "badge": "NEW_ORDER",
-      "code": "RxNorm: RX-SAL-100",
-      "quote": "\"Salbutamol 100mcg inhaler 2 puffs QDS PRN\""
+      "name": "amoxicillin-clavulanate",
+      "intent": "New (Start)",
+      "evidence": "\"Start amoxicillin-clavulanate 875/125 mg orally twice daily for 7 days\"",
+      "match": "Exact"
     },
     {
-      "name": "Prednisolone",
-      "strength": "40mg",
-      "badge": "NEW_ORDER",
-      "code": "RxNorm: RX-PRED-40",
-      "quote": "\"Prednisolone 40mg PO daily x 5 days\""
+      "name": "azithromycin",
+      "intent": "New (Add)",
+      "evidence": "\"Add azithromycin 500 mg on day 1\"",
+      "match": "Exact"
+    },
+    {
+      "name": "azithromycin",
+      "intent": "New (Start)",
+      "evidence": "\"then 250 mg once daily for 4 more days\"",
+      "match": "Exact"
+    },
+    {
+      "name": "metformin",
+      "intent": "Continue",
+      "evidence": "\"Continue metformin 500 mg twice daily\"",
+      "match": "Exact"
+    },
+    {
+      "name": "amlodipine",
+      "intent": "New (Start)",
+      "evidence": "\"Increase amlodipine to 10 mg once daily\"",
+      "match": "Exact"
     }
   ],
   "renderedInvestigations": [
     {
-      "name": "Chest X-Ray PA view",
-      "badge": "NEW_ORDER",
-      "code": "LOINC: IMG-CXR",
-      "quote": "\"Order Chest X-Ray PA view\""
+      "name": "Chest X-ray",
+      "intent": "Order (New)",
+      "evidence": "\"Chest X-ray to rule out consolidation\"",
+      "match": "Exact"
     },
     {
-      "name": "Pulmonary Function Test",
-      "badge": "NEW_ORDER",
-      "code": "LOINC: LAB-PFT",
-      "quote": "\"Order Pulmonary Function Test\""
+      "name": "CBC",
+      "intent": "Order (New)",
+      "evidence": "\"CBC, CRP and U&E today\"",
+      "match": "Exact"
+    },
+    {
+      "name": "CRP",
+      "intent": "Order (New)",
+      "evidence": "\"CBC, CRP and U&E today\"",
+      "match": "Unresolved"
+    },
+    {
+      "name": "U&E",
+      "intent": "Order (New)",
+      "evidence": "\"CBC, CRP and U&E today\"",
+      "match": "Unresolved"
     }
   ],
   "highlightVerification": {
     "selectedHighlightedText": [
-      "Salbutamol 100mcg inhaler 2 puffs QDS PRN"
+      "Start amoxicillin-clavulanate 875/125 mg orally twice daily for 7 days"
     ]
   },
   "consoleLogsCount": 3
