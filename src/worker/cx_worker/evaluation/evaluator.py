@@ -13,7 +13,11 @@ from pathlib import Path
 from typing import Any
 
 from cx_worker.evaluation.dataset import EvalGroundTruth, build_evaluation_dataset
-from cx_worker.pipeline.adapter import IExtractionModelAdapter, create_model_adapter
+from cx_worker.pipeline.adapter import (
+    IExtractionModelAdapter,
+    SyntheticModelAdapter,
+    create_model_adapter,
+)
 from cx_worker.pipeline.validate import ClinicalValidator
 
 logger = logging.getLogger(__name__)
@@ -310,8 +314,11 @@ class ExtractionEvaluator:
         return content
 
 
-def run_evaluation(output_file: Path | None = None) -> EvaluationReport:
-    evaluator = ExtractionEvaluator()
+def run_evaluation(
+    adapter: IExtractionModelAdapter | None = None, output_file: Path | None = None
+) -> EvaluationReport:
+    # Default to deterministic SyntheticModelAdapter to protect against accidental live token expenditure
+    evaluator = ExtractionEvaluator(adapter=adapter or SyntheticModelAdapter())
     report = evaluator.evaluate()
     # Resolve repo root relative to this file
     repo_root = Path(__file__).resolve().parents[4]

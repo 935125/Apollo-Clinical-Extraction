@@ -241,4 +241,32 @@ describe('App', () => {
     const compiled = fixture.nativeElement as HTMLElement;
     expect(compiled.querySelector('.alert-error')?.textContent).toContain('AI inference timeout');
   });
+
+  it('should render Microsoft Foundry live deployment telemetry and token metrics', async () => {
+    const liveFoundryResponse: ClinicalExtractionResponse = {
+      ...mockResponse,
+      modelMetadata: {
+        adapterType: 'microsoft_foundry_live',
+        modelDeployment: 'gpt-4.1-mini',
+        promptVersion: '2025-04-14',
+        promptTokens: 901,
+        completionTokens: 225,
+        totalTokens: 1126,
+        estimatedCostUsd: 0.00027
+      }
+    };
+
+    mockExtractionService.extract.mockReturnValue(of(liveFoundryResponse));
+    const fixture = TestBed.createComponent(App);
+    const app = fixture.componentInstance;
+    await fixture.whenStable();
+
+    app.onExtract();
+    fixture.detectChanges();
+
+    const compiled = fixture.nativeElement as HTMLElement;
+    expect(compiled.textContent).toContain('gpt-4.1-mini');
+    expect(compiled.textContent).toContain('1126');
+    expect(compiled.textContent).toContain('$0.00027');
+  });
 });

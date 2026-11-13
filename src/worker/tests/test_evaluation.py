@@ -62,7 +62,7 @@ def test_evaluator_benchmark_metrics():
 
 def test_run_evaluation_generates_report(tmp_path: Path):
     report_file = tmp_path / "test-accuracy-report.md"
-    run_evaluation(output_file=report_file)
+    run_evaluation(adapter=SyntheticModelAdapter(), output_file=report_file)
     assert report_file.exists()
     content = report_file.read_text(encoding="utf-8")
     assert "# Clinical AI Extraction Accuracy Evaluation Report" in content
