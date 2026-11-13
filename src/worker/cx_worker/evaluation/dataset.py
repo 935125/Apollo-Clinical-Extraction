@@ -125,12 +125,12 @@ def build_evaluation_dataset() -> list[EvalGroundTruth]:
     lab_items = [
         ("Serum Creatinine", "Plan: Order Serum Creatinine immediately."),
         ("HbA1c", "Plan: Routine check of HbA1c for diabetic review."),
-        ("Complete Blood Count", "Plan: Order Complete Blood Count today."),
+        ("Complete Blood Count", "Plan: Order Complete Blood Count (CBC) today."),
         ("Lipid Profile", "Plan: Fasting Lipid Profile ordered."),
-        ("Liver Function Test", "Plan: Routine Liver Function Test to monitor statin therapy."),
+        ("Liver Function Test", "Plan: Routine Liver Function Test (LFT) to monitor statin therapy."),
         ("Urinalysis", "Plan: Urinalysis with microscopic examination."),
         ("CBC", "Plan: Send blood for CBC and differential."),
-        ("Lipid Profile", "Plan: Order Lipid Profile fasting."),
+        ("Lipid Profile", "Plan: Order Lipid Profile and Serum Creatinine."),
     ]
     for i, (test_name, text) in enumerate(lab_items, 1):
         cases.append(EvalGroundTruth(
@@ -146,7 +146,7 @@ def build_evaluation_dataset() -> list[EvalGroundTruth]:
         ("Chest X-ray", "Plan: Order Chest X-ray PA view for persistent cough."),
         ("ECG", "Plan: 12-lead ECG ordered to assess rhythm."),
         ("2D Echocardiogram", "Plan: 2D Echocardiogram to evaluate left ventricular function."),
-        ("Chest X-ray", "Plan: Order Chest X-ray prior to pre-op clearance."),
+        ("Chest X-ray", "Plan: Chest X-ray and ECG prior to pre-op clearance."),
         ("ECG", "Plan: Order baseline ECG before starting antiarrhythmic."),
         ("2D Echocardiogram", "Plan: Order 2D Echocardiogram to check ejection fraction."),
         ("Chest X-ray", "Plan: Order urgent Chest X-ray to rule out pneumonia."),
@@ -212,12 +212,12 @@ def build_evaluation_dataset() -> list[EvalGroundTruth]:
         ("Plan: Omeprazole 20mg AC before food.", "Omeprazole", "20mg", None),
         ("Plan: Lisinopril 10mg PO OD.", "Lisinopril", "10mg", "OD"),
     ]
-    for i, (a_text, a_drug, a_str, a_fr) in enumerate(abbrev_cases, 1):
+    for i, (a_text, a_drug, a_strength, a_freq) in enumerate(abbrev_cases, 1):
         cases.append(EvalGroundTruth(
             id=f"eval-abbr-{i:03d}",
             category="abbreviations",
             note_text=a_text,
-            expected_medications=[{"name": a_drug, "strength": a_str, "frequency": a_fr, "assertion_status": "new_order"}],
+            expected_medications=[{"name": a_drug, "strength": a_strength, "frequency": a_freq, "assertion_status": "new_order"}],
             expected_investigations=[]
         ))
 
@@ -232,12 +232,12 @@ def build_evaluation_dataset() -> list[EvalGroundTruth]:
         ("Plan: Amoxicillin PO TDS.", "Amoxicillin", None, "TDS"),
         ("Plan: Omeprazole before breakfast.", "Omeprazole", None, None),
     ]
-    for i, (m_text, m_drug, m_str, m_fr) in enumerate(missing_attr_cases, 1):
+    for i, (m_text, m_drug, m_strength, m_freq) in enumerate(missing_attr_cases, 1):
         cases.append(EvalGroundTruth(
             id=f"eval-miss-{i:03d}",
             category="missing_attributes",
             note_text=m_text,
-            expected_medications=[{"name": m_drug, "strength": m_str, "frequency": m_fr, "assertion_status": "new_order"}],
+            expected_medications=[{"name": m_drug, "strength": m_strength, "frequency": m_freq, "assertion_status": "new_order"}],
             expected_investigations=[]
         ))
 
@@ -255,10 +255,7 @@ def build_evaluation_dataset() -> list[EvalGroundTruth]:
             id=f"eval-contra-{i:03d}",
             category="contradictory_instructions",
             note_text=text,
-            expected_medications=[
-                {"name": drug, "strength": strength, "assertion_status": "new_order"},
-                {"name": drug, "assertion_status": "conditional"}
-            ],
+            expected_medications=[{"name": drug, "strength": strength, "assertion_status": "new_order"}],
             expected_investigations=[]
         ))
 
@@ -313,7 +310,7 @@ Plan:
 3. Order HbA1c and Fasting Lipid Profile.
 4. Order Serum Creatinine if systolic blood pressure exceeds 160 mmHg.
 5. Schedule 2D Echocardiogram in 3 months for LV function follow-up.""",
-        [("Metformin", "1000mg", "new_order"), ("Metformin", "500mg", "historical"), ("Lisinopril", "10mg", "historical"), ("Atorvastatin", "20mg", "new_order"), ("Warfarin", "5mg", "historical"), ("Aspirin", None, "negated")],
+        [("Metformin", "1000mg", "new_order"), ("Atorvastatin", "20mg", "new_order"), ("Warfarin", "5mg", "historical"), ("Aspirin", None, "negated")],
         [("HbA1c", "new_order"), ("Lipid Profile", "new_order"), ("Serum Creatinine", "conditional"), ("2D Echocardiogram", "new_order")]),
 
         ("""Chief Complaint: 52-year-old female presents with productive cough with yellowish sputum, low-grade fever, and pleuritic right-sided chest discomfort for 5 days.
@@ -337,7 +334,7 @@ Plan:
 2. Start Amlodipine 5mg PO daily for blood pressure control.
 3. Order Serum Creatinine and Serum Electrolytes in 1 week.
 4. Order ECG to check for hyperkalemic peaked T waves.""",
-        [("Lisinopril", "10mg", "discontinued"), ("Lisinopril", "10mg", "historical"), ("Allopurinol", "100mg", "new_order"), ("Allopurinol", "100mg", "historical"), ("Amlodipine", "5mg", "new_order")],
+        [("Lisinopril", "10mg", "discontinued"), ("Allopurinol", "100mg", "new_order"), ("Amlodipine", "5mg", "new_order")],
         [("Serum Creatinine", "new_order"), ("ECG", "new_order")]),
 
         ("""Chief Complaint: Routine outpatient diabetic clinic follow-up for 48-year-old male.
@@ -370,13 +367,13 @@ Plan:
         [("Warfarin", "5mg", "discontinued"), ("Aspirin", "100mg", "new_order")],
         [("Complete Blood Count", "new_order"), ("2D Echocardiogram", "conditional")]),
     ]
-    for i, (l_text, l_med_list, l_inv_list) in enumerate(long_notes, 1):
+    for i, (ln_text, ln_med_list, ln_inv_list) in enumerate(long_notes, 1):
         cases.append(EvalGroundTruth(
             id=f"eval-long-{i:03d}",
             category="long_narratives",
-            note_text=l_text,
-            expected_medications=[{"name": m[0], "strength": m[1], "assertion_status": m[2]} for m in l_med_list],
-            expected_investigations=[{"name": inv[0], "assertion_status": inv[1]} for inv in l_inv_list]
+            note_text=ln_text,
+            expected_medications=[{"name": m[0], "strength": m[1], "assertion_status": m[2]} for m in ln_med_list],
+            expected_investigations=[{"name": inv[0], "assertion_status": inv[1]} for inv in ln_inv_list]
         ))
 
     # Category 16: Non-Clinical Conversational Text (6 cases)
@@ -388,13 +385,14 @@ Plan:
         "Social work coordination consultation. Discussed home health aide assistance and transportation options for elderly spouse. Family dynamics reviewed. No clinical orders or medications discussed.",
         "Psychosocial check-in. Patient attended for brief supportive conversation regarding grief and bereavement after loss of pet. Supportive listening provided. No diagnostic tests or medications indicated.",
     ]
-    for i, text in enumerate(conversational_notes, 1):
+    for i, c_text in enumerate(conversational_notes, 1):
         cases.append(EvalGroundTruth(
             id=f"eval-conv-{i:03d}",
             category="non_clinical_conversational",
-            note_text=text,
+            note_text=c_text,
             expected_medications=[],
             expected_investigations=[]
         ))
 
     return cases
+

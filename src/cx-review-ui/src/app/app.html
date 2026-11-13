@@ -176,6 +176,17 @@
                 {{ res.validationSummary.warningCount }}
               </span>
             </div>
+            @if (res.modelMetadata.totalTokens) {
+              <div class="metric-item">
+                <span class="metric-label">Token Consumption</span>
+                <span class="metric-val highlight-val">
+                  {{ res.modelMetadata.totalTokens }}
+                  @if (res.modelMetadata.estimatedCostUsd !== null && res.modelMetadata.estimatedCostUsd !== undefined) {
+                    <small>(${{ res.modelMetadata.estimatedCostUsd | number:'1.5-5' }})</small>
+                  }
+                </span>
+              </div>
+            }
           </div>
 
           <!-- Export Action Buttons -->

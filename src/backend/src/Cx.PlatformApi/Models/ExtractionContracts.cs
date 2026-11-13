@@ -77,7 +77,11 @@ public record PreprocessedDto(
 public record ModelMetadataDto(
     [property: JsonPropertyName("adapterType")] string AdapterType,
     [property: JsonPropertyName("modelDeployment")] string ModelDeployment,
-    [property: JsonPropertyName("promptVersion")] string PromptVersion
+    [property: JsonPropertyName("promptVersion")] string PromptVersion,
+    [property: JsonPropertyName("promptTokens")] int? PromptTokens = null,
+    [property: JsonPropertyName("completionTokens")] int? CompletionTokens = null,
+    [property: JsonPropertyName("totalTokens")] int? TotalTokens = null,
+    [property: JsonPropertyName("estimatedCostUsd")] double? EstimatedCostUsd = null
 );
 
 public record ClinicalExtractionResponse(

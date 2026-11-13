@@ -104,11 +104,25 @@ public class InternalAiExtractionClient : IInternalAiExtractionClient
         var adapterType = "unknown";
         var modelDeployment = "unknown";
         var promptVersion = "v1.0.0";
+        int? promptTokens = null;
+        int? completionTokens = null;
+        int? totalTokens = null;
+        double? estimatedCostUsd = null;
+
         if (root.TryGetProperty("model_metadata", out var metaEl))
         {
             adapterType = metaEl.GetProperty("adapter_type").GetString() ?? adapterType;
             modelDeployment = metaEl.GetProperty("model_deployment").GetString() ?? modelDeployment;
             promptVersion = metaEl.GetProperty("prompt_version").GetString() ?? promptVersion;
+
+            if (metaEl.TryGetProperty("prompt_tokens", out var pt) && pt.ValueKind == JsonValueKind.Number)
+                promptTokens = pt.GetInt32();
+            if (metaEl.TryGetProperty("completion_tokens", out var ct) && ct.ValueKind == JsonValueKind.Number)
+                completionTokens = ct.GetInt32();
+            if (metaEl.TryGetProperty("total_tokens", out var tt) && tt.ValueKind == JsonValueKind.Number)
+                totalTokens = tt.GetInt32();
+            if (metaEl.TryGetProperty("estimated_cost_usd", out var ec) && ec.ValueKind == JsonValueKind.Number)
+                estimatedCostUsd = ec.GetDouble();
         }
 
         // Parse preprocessed
@@ -257,7 +271,7 @@ public class InternalAiExtractionClient : IInternalAiExtractionClient
             CorrelationId: correlationId,
             ExtractedAt: DateTime.UtcNow,
             ExecutionDurationMs: durationMs,
-            ModelMetadata: new ModelMetadataDto(adapterType, modelDeployment, promptVersion),
+            ModelMetadata: new ModelMetadataDto(adapterType, modelDeployment, promptVersion, promptTokens, completionTokens, totalTokens, estimatedCostUsd),
             Preprocessed: new PreprocessedDto(charLength, sections),
             Medications: medications,
             Investigations: investigations,

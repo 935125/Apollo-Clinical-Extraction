@@ -11,6 +11,7 @@ from fastapi import FastAPI, HTTPException, status
 from pydantic import BaseModel, Field
 
 from cx_worker.pipeline.adapter import (
+    ConfigurationError,
     IExtractionModelAdapter,
     create_model_adapter,
 )
@@ -27,9 +28,19 @@ app = FastAPI(
     version="1.0.0",
 )
 
-# Active adapter (dynamically switches between SyntheticModelAdapter and FoundryModelAdapter via environment)
-active_adapter: IExtractionModelAdapter = create_model_adapter()
+_adapter_override: IExtractionModelAdapter | None = None
 active_normalizer: ITerminologyNormalizer = ProductionTerminologyNormalizer()
+
+
+def get_adapter() -> IExtractionModelAdapter:
+    if _adapter_override is not None:
+        return _adapter_override
+    return create_model_adapter()
+
+
+def set_adapter_override(adapter: IExtractionModelAdapter | None) -> None:
+    global _adapter_override
+    _adapter_override = adapter
 
 
 class InternalExtractionRequest(BaseModel):
@@ -111,6 +122,10 @@ class ModelMetadataDto(BaseModel):
     adapter_type: str
     model_deployment: str
     prompt_version: str
+    prompt_tokens: int | None = None
+    completion_tokens: int | None = None
+    total_tokens: int | None = None
+    estimated_cost_usd: float | None = None
 
 
 class InternalExtractionResponse(BaseModel):
@@ -126,17 +141,33 @@ class InternalExtractionResponse(BaseModel):
 
 @app.get("/internal/v1/health")
 def health_check() -> dict[str, str]:
-    return {
-        "status": "healthy",
-        "service": "internal-ai-extraction",
-        "adapter": active_adapter.adapter_type,
-        "model": active_adapter.model_name,
-    }
+    try:
+        adapter = get_adapter()
+        return {
+            "status": "healthy",
+            "service": "internal-ai-extraction",
+            "adapter": adapter.adapter_type,
+            "model": adapter.model_name,
+        }
+    except ConfigurationError as ex:
+        return {
+            "status": "misconfigured",
+            "service": "internal-ai-extraction",
+            "error": str(ex),
+        }
 
 
 @app.post("/internal/v1/extract", response_model=InternalExtractionResponse)
 def extract_clinical_information(request: InternalExtractionRequest) -> InternalExtractionResponse:
     start_time = time.perf_counter()
+
+    try:
+        adapter = get_adapter()
+    except ConfigurationError as ex:
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail=f"CONFIGURATION_ERROR: {ex!s}",
+        ) from ex
 
     # Stage 1: Preprocessing & Context Normalization
     preprocessor = ClinicalPreprocessor()
@@ -149,7 +180,7 @@ def extract_clinical_information(request: InternalExtractionRequest) -> Internal
 
     # Stage 2: Model Inference via Abstracted Adapter
     try:
-        raw_extraction = active_adapter.extract_structured(
+        raw_extraction = adapter.extract_structured(
             clinical_text=preprocessed.normalized_text, correlation_id=request.correlation_id
         )
     except TimeoutError as ex:
@@ -251,14 +282,19 @@ def extract_clinical_information(request: InternalExtractionRequest) -> Internal
     )
 
     duration_ms = round((time.perf_counter() - start_time) * 1000.0, 2)
+    usage = adapter.last_usage
 
     return InternalExtractionResponse(
         schema_version="1.0",
         correlation_id=request.correlation_id,
         model_metadata=ModelMetadataDto(
-            adapter_type=active_adapter.adapter_type,
-            model_deployment=active_adapter.model_name,
-            prompt_version=active_adapter.prompt_version,
+            adapter_type=adapter.adapter_type,
+            model_deployment=adapter.model_name,
+            prompt_version=adapter.prompt_version,
+            prompt_tokens=usage.get("prompt_tokens"),
+            completion_tokens=usage.get("completion_tokens"),
+            total_tokens=usage.get("total_tokens"),
+            estimated_cost_usd=usage.get("estimated_cost_usd"),
         ),
         preprocessed=PreprocessedDto(
             char_length=preprocessed.char_length,

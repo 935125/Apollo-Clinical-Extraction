@@ -25,7 +25,11 @@
       "properties": {
         "adapterType": { "type": "string" },
         "modelDeployment": { "type": "string" },
-        "promptVersion": { "type": "string" }
+        "promptVersion": { "type": "string" },
+        "promptTokens": { "type": ["integer", "null"] },
+        "completionTokens": { "type": ["integer", "null"] },
+        "totalTokens": { "type": ["integer", "null"] },
+        "estimatedCostUsd": { "type": ["number", "null"] }
       }
     },
     "preprocessed": {

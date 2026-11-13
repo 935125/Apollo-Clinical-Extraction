@@ -69,3 +69,22 @@ def test_run_evaluation_generates_report(tmp_path: Path):
     assert "# Clinical AI Extraction Accuracy Evaluation Report" in content
     assert "Executive Summary & Aggregate Metrics" in content
     assert "prompt_injection" in content
+
+
+def test_held_out_dataset_integrity():
+    from cx_worker.evaluation.held_out_dataset import build_held_out_dataset
+    from cx_worker.evaluation.live_smoke_test import run_held_out_evaluation
+
+    held_out = build_held_out_dataset()
+    assert len(held_out) == 20, f"Expected 20 held-out cases, got {len(held_out)}"
+
+    specialties = {case.specialty for case in held_out}
+    assert len(specialties) >= 10, f"Expected at least 10 specialties, got {len(specialties)}"
+
+    # Run held-out evaluation with synthetic adapter
+    adapter = SyntheticModelAdapter()
+    res = run_held_out_evaluation(adapter)
+    assert res["total_notes"] == 20
+    assert res["unsupported_rate"] <= 0.05
+    assert res["p50_latency_ms"] >= 0.0
+

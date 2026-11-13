@@ -74,6 +74,10 @@ export interface ModelMetadata {
   adapterType: string;
   modelDeployment: string;
   promptVersion: string;
+  promptTokens?: number | null;
+  completionTokens?: number | null;
+  totalTokens?: number | null;
+  estimatedCostUsd?: number | null;
 }
 
 export interface ClinicalExtractionResponse {
