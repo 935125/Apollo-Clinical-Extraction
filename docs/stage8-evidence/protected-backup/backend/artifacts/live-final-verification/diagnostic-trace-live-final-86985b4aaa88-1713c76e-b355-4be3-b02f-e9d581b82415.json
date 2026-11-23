@@ -1,0 +1,2750 @@
+{
+  "capturedAt": "2026-11-23T07:33:42.5985+00:00",
+  "governancePolicy": "SYNTHETIC_TEST_INPUT_ONLY",
+  "documentIdentifier": "Inpatient_Cardiology_Pulmonology_Discharge_Summary.pdf",
+  "documentSha256": "148EBF0606A51AC8ECF9526ECC195AE25590F84C3A0D22CBA9DA508A376F183D",
+  "reconstructedText": "INPATIENT DISCHARGE SUMMARY\n\nCardiology \u0026 Internal Medicine \u2014 Hospital Course\n\n\u0026 Plan\n\nDocumented Allergies: Penicillin (anaphylaxis) and Ibuprofen (bronchospasm).\n\nHospital Course \u0026 Clinical Presentation\n\n64-year-old female with non-valvular atrial fibrillation, chronic kidney disease stage 3b, and\n\ncommunity-acquired lower respiratory tract infection admitted with acute palpitations, productive\n\ncough, and fever of 38.9 \u00B0C. Treated with intravenous antimicrobial therapy and rate-control\n\nstabilization with full clinical recovery prior to discharge.\n\nDischarge Vital Signs \u0026 Baseline Labs\n\nBlood Pressure Heart Rate Temperature Serum Potassium \u0026 Creatinine\n\n124/76 mmHg | 82 bpm (controlled AF) | 36.8 \u00B0C | K\u002B 5.7 mEq/L, Creatinine 1.9 mg/dL\n\nDischarge Diagnoses\n\n1. Non-valvular atrial fibrillation with controlled ventricular response.\n\n2. Resolving community-acquired pneumonia (CAP).\n\n3. Chronic kidney disease stage 3b with mild hyperkalemia.\n\nDischarge Medications\n\nWarfarin 5 mg orally once daily in the evening for stroke prophylaxis.\n\nAspirin 81 mg orally once daily in the morning (verify concurrent anticoagulation indication).\n\nAzithromycin 500 mg orally once daily for 3 days to complete respiratory course.\n\nOndansetron 4 mg orally every 8 hours as needed for nausea.\n\nPantoprazole 40 mg orally once daily before breakfast for 30 days.\n\nOutpatient Follow-Up Investigations\n\nProthrombin time and INR (PT/INR) in 3 days.\n\nRepeat serum potassium, serum sodium, and serum creatinine in 48 hours.\n\nComplete blood count (CBC) and C-reactive protein (CRP) at 1-week follow-up.\n\nFollow-up chest X-ray (PA view) and 12-lead ECG in 2 weeks.\n\nInpatient Cardiology \u0026 Internal Medicine Discharge Summary Page 1 of 1",
+  "preprocessedSections": [
+    {
+      "code": "OTHER",
+      "heading": "Prologue",
+      "start": 0,
+      "end": 86
+    },
+    {
+      "code": "ALLERGIES",
+      "heading": "Documented Allergies:",
+      "start": 86,
+      "end": 164
+    },
+    {
+      "code": "CHIEF_COMPLAINT",
+      "heading": "Hospital Course \u0026 Clinical Presentation",
+      "start": 164,
+      "end": 557
+    },
+    {
+      "code": "EXAMINATION",
+      "heading": "Discharge Vital Signs \u0026 Baseline Labs",
+      "start": 557,
+      "end": 749
+    },
+    {
+      "code": "DIAGNOSES",
+      "heading": "Discharge Diagnoses",
+      "start": 749,
+      "end": 955
+    },
+    {
+      "code": "MEDICATIONS",
+      "heading": "Discharge Medications",
+      "start": 955,
+      "end": 1357
+    },
+    {
+      "code": "LABS",
+      "heading": "Outpatient Follow-Up Investigations",
+      "start": 1357,
+      "end": 1723
+    }
+  ],
+  "modelProvenance": {
+    "adapterType": "microsoft_foundry",
+    "modelDeployment": "gpt-6.1-sol",
+    "promptVersion": "clinical-v3",
+    "promptTokens": 1255,
+    "completionTokens": 2305,
+    "totalTokens": 3560,
+    "estimatedCostUsd": null,
+    "provider": "foundry",
+    "model": "gpt-6.1-sol-2026-09-29",
+    "azureDeployment": "gpt-6.1-sol",
+    "fallbackReason": null,
+    "inferenceExecuted": true,
+    "attempts": [
+      {
+        "provider": "foundry",
+        "model": "gpt-6.1-sol-2026-09-29",
+        "deployment": "gpt-6.1-sol",
+        "outcome": "accepted",
+        "reason": null,
+        "durationMs": 0.68,
+        "inferenceExecuted": true,
+        "promptTokens": 1255,
+        "completionTokens": 2305,
+        "totalTokens": 3560,
+        "onnxWindows": null,
+        "inferenceDurationMs": null,
+        "modelMedicationMentions": null,
+        "ruleMedicationMentions": null,
+        "ruleInvestigationMentions": null
+      }
+    ],
+    "schemaValidationStatus": "passed"
+  },
+  "rawStructuredModelResponse": "{\n  \u0022medications\u0022: [\n    {\n      \u0022name\u0022: \u0022Penicillin\u0022,\n      \u0022strength\u0022: null,\n      \u0022dose\u0022: null,\n      \u0022doseUnit\u0022: null,\n      \u0022route\u0022: null,\n      \u0022frequency\u0022: null,\n      \u0022duration\u0022: null,\n      \u0022formulation\u0022: null,\n      \u0022instructions\u0022: \u0022anaphylaxis\u0022,\n      \u0022action\u0022: \u0022allergy\u0022,\n      \u0022assertionStatus\u0022: \u0022allergy\u0022,\n      \u0022evidence\u0022: {\n        \u0022quote\u0022: \u0022Documented Allergies: Penicillin (anaphylaxis) and Ibuprofen (bronchospasm).\u0022,\n        \u0022occurrence\u0022: 1\n      }\n    },\n    {\n      \u0022name\u0022: \u0022Ibuprofen\u0022,\n      \u0022strength\u0022: null,\n      \u0022dose\u0022: null,\n      \u0022doseUnit\u0022: null,\n      \u0022route\u0022: null,\n      \u0022frequency\u0022: null,\n      \u0022duration\u0022: null,\n      \u0022formulation\u0022: null,\n      \u0022instructions\u0022: \u0022bronchospasm\u0022,\n      \u0022action\u0022: \u0022allergy\u0022,\n      \u0022assertionStatus\u0022: \u0022allergy\u0022,\n      \u0022evidence\u0022: {\n        \u0022quote\u0022: \u0022Documented Allergies: Penicillin (anaphylaxis) and Ibuprofen (bronchospasm).\u0022,\n        \u0022occurrence\u0022: 1\n      }\n    },\n    {\n      \u0022name\u0022: \u0022antimicrobial therapy\u0022,\n      \u0022strength\u0022: null,\n      \u0022dose\u0022: null,\n      \u0022doseUnit\u0022: null,\n      \u0022route\u0022: \u0022intravenous\u0022,\n      \u0022frequency\u0022: null,\n      \u0022duration\u0022: null,\n      \u0022formulation\u0022: null,\n      \u0022instructions\u0022: null,\n      \u0022action\u0022: \u0022none\u0022,\n      \u0022assertionStatus\u0022: \u0022historical\u0022,\n      \u0022evidence\u0022: {\n        \u0022quote\u0022: \u0022Treated with intravenous antimicrobial therapy\u0022,\n        \u0022occurrence\u0022: 1\n      }\n    },\n    {\n      \u0022name\u0022: \u0022Warfarin\u0022,\n      \u0022strength\u0022: \u00225 mg\u0022,\n      \u0022dose\u0022: null,\n      \u0022doseUnit\u0022: null,\n      \u0022route\u0022: \u0022orally\u0022,\n      \u0022frequency\u0022: \u0022once daily\u0022,\n      \u0022duration\u0022: null,\n      \u0022formulation\u0022: null,\n      \u0022instructions\u0022: \u0022in the evening for stroke prophylaxis.\u0022,\n      \u0022action\u0022: \u0022continue\u0022,\n      \u0022assertionStatus\u0022: \u0022current_medication\u0022,\n      \u0022evidence\u0022: {\n        \u0022quote\u0022: \u0022Warfarin 5 mg orally once daily in the evening for stroke prophylaxis.\u0022,\n        \u0022occurrence\u0022: 1\n      }\n    },\n    {\n      \u0022name\u0022: \u0022Aspirin\u0022,\n      \u0022strength\u0022: \u002281 mg\u0022,\n      \u0022dose\u0022: null,\n      \u0022doseUnit\u0022: null,\n      \u0022route\u0022: \u0022orally\u0022,\n      \u0022frequency\u0022: \u0022once daily\u0022,\n      \u0022duration\u0022: null,\n      \u0022formulation\u0022: null,\n      \u0022instructions\u0022: \u0022in the morning (verify concurrent anticoagulation indication).\u0022,\n      \u0022action\u0022: \u0022continue\u0022,\n      \u0022assertionStatus\u0022: \u0022current_medication\u0022,\n      \u0022evidence\u0022: {\n        \u0022quote\u0022: \u0022Aspirin 81 mg orally once daily in the morning (verify concurrent anticoagulation indication).\u0022,\n        \u0022occurrence\u0022: 1\n      }\n    },\n    {\n      \u0022name\u0022: \u0022Azithromycin\u0022,\n      \u0022strength\u0022: \u0022500 mg\u0022,\n      \u0022dose\u0022: null,\n      \u0022doseUnit\u0022: null,\n      \u0022route\u0022: \u0022orally\u0022,\n      \u0022frequency\u0022: \u0022once daily\u0022,\n      \u0022duration\u0022: \u00223 days\u0022,\n      \u0022formulation\u0022: null,\n      \u0022instructions\u0022: \u0022to complete respiratory course.\u0022,\n      \u0022action\u0022: \u0022continue\u0022,\n      \u0022assertionStatus\u0022: \u0022current_medication\u0022,\n      \u0022evidence\u0022: {\n        \u0022quote\u0022: \u0022Azithromycin 500 mg orally once daily for 3 days to complete respiratory course.\u0022,\n        \u0022occurrence\u0022: 1\n      }\n    },\n    {\n      \u0022name\u0022: \u0022Ondansetron\u0022,\n      \u0022strength\u0022: \u00224 mg\u0022,\n      \u0022dose\u0022: null,\n      \u0022doseUnit\u0022: null,\n      \u0022route\u0022: \u0022orally\u0022,\n      \u0022frequency\u0022: \u0022every 8 hours as needed\u0022,\n      \u0022duration\u0022: null,\n      \u0022formulation\u0022: null,\n      \u0022instructions\u0022: \u0022as needed for nausea.\u0022,\n      \u0022action\u0022: \u0022continue\u0022,\n      \u0022assertionStatus\u0022: \u0022current_medication\u0022,\n      \u0022evidence\u0022: {\n        \u0022quote\u0022: \u0022Ondansetron 4 mg orally every 8 hours as needed for nausea.\u0022,\n        \u0022occurrence\u0022: 1\n      }\n    },\n    {\n      \u0022name\u0022: \u0022Pantoprazole\u0022,\n      \u0022strength\u0022: \u002240 mg\u0022,\n      \u0022dose\u0022: null,\n      \u0022doseUnit\u0022: null,\n      \u0022route\u0022: \u0022orally\u0022,\n      \u0022frequency\u0022: \u0022once daily\u0022,\n      \u0022duration\u0022: \u002230 days\u0022,\n      \u0022formulation\u0022: null,\n      \u0022instructions\u0022: \u0022before breakfast\u0022,\n      \u0022action\u0022: \u0022continue\u0022,\n      \u0022assertionStatus\u0022: \u0022current_medication\u0022,\n      \u0022evidence\u0022: {\n        \u0022quote\u0022: \u0022Pantoprazole 40 mg orally once daily before breakfast for 30 days.\u0022,\n        \u0022occurrence\u0022: 1\n      }\n    }\n  ],\n  \u0022investigations\u0022: [\n    {\n      \u0022name\u0022: \u0022K\u002B\u0022,\n      \u0022timing\u0022: null,\n      \u0022specimen\u0022: \u0022Serum\u0022,\n      \u0022assertionStatus\u0022: \u0022historical\u0022,\n      \u0022status\u0022: \u0022unknown\u0022,\n      \u0022evidence\u0022: {\n        \u0022quote\u0022: \u0022Discharge Vital Signs \u0026 Baseline Labs\\n\\nBlood Pressure Heart Rate Temperature Serum Potassium \u0026 Creatinine\\n\\n124/76 mmHg | 82 bpm (controlled AF) | 36.8 \u00B0C | K\u002B 5.7 mEq/L, Creatinine 1.9 mg/dL\u0022,\n        \u0022occurrence\u0022: 1\n      }\n    },\n    {\n      \u0022name\u0022: \u0022Creatinine\u0022,\n      \u0022timing\u0022: null,\n      \u0022specimen\u0022: \u0022Serum\u0022,\n      \u0022assertionStatus\u0022: \u0022historical\u0022,\n      \u0022status\u0022: \u0022unknown\u0022,\n      \u0022evidence\u0022: {\n        \u0022quote\u0022: \u0022Discharge Vital Signs \u0026 Baseline Labs\\n\\nBlood Pressure Heart Rate Temperature Serum Potassium \u0026 Creatinine\\n\\n124/76 mmHg | 82 bpm (controlled AF) | 36.8 \u00B0C | K\u002B 5.7 mEq/L, Creatinine 1.9 mg/dL\u0022,\n        \u0022occurrence\u0022: 1\n      }\n    },\n    {\n      \u0022name\u0022: \u0022Prothrombin time and INR (PT/INR)\u0022,\n      \u0022timing\u0022: \u0022in 3 days\u0022,\n      \u0022specimen\u0022: null,\n      \u0022assertionStatus\u0022: \u0022new_order\u0022,\n      \u0022status\u0022: \u0022unknown\u0022,\n      \u0022evidence\u0022: {\n        \u0022quote\u0022: \u0022Prothrombin time and INR (PT/INR) in 3 days.\u0022,\n        \u0022occurrence\u0022: 1\n      }\n    },\n    {\n      \u0022name\u0022: \u0022serum potassium\u0022,\n      \u0022timing\u0022: \u0022in 48 hours\u0022,\n      \u0022specimen\u0022: \u0022serum\u0022,\n      \u0022assertionStatus\u0022: \u0022new_order\u0022,\n      \u0022status\u0022: \u0022unknown\u0022,\n      \u0022evidence\u0022: {\n        \u0022quote\u0022: \u0022Repeat serum potassium, serum sodium, and serum creatinine in 48 hours.\u0022,\n        \u0022occurrence\u0022: 1\n      }\n    },\n    {\n      \u0022name\u0022: \u0022serum sodium\u0022,\n      \u0022timing\u0022: \u0022in 48 hours\u0022,\n      \u0022specimen\u0022: \u0022serum\u0022,\n      \u0022assertionStatus\u0022: \u0022new_order\u0022,\n      \u0022status\u0022: \u0022unknown\u0022,\n      \u0022evidence\u0022: {\n        \u0022quote\u0022: \u0022Repeat serum potassium, serum sodium, and serum creatinine in 48 hours.\u0022,\n        \u0022occurrence\u0022: 1\n      }\n    },\n    {\n      \u0022name\u0022: \u0022serum creatinine\u0022,\n      \u0022timing\u0022: \u0022in 48 hours\u0022,\n      \u0022specimen\u0022: \u0022serum\u0022,\n      \u0022assertionStatus\u0022: \u0022new_order\u0022,\n      \u0022status\u0022: \u0022unknown\u0022,\n      \u0022evidence\u0022: {\n        \u0022quote\u0022: \u0022Repeat serum potassium, serum sodium, and serum creatinine in 48 hours.\u0022,\n        \u0022occurrence\u0022: 1\n      }\n    },\n    {\n      \u0022name\u0022: \u0022Complete blood count (CBC)\u0022,\n      \u0022timing\u0022: \u0022at 1-week follow-up\u0022,\n      \u0022specimen\u0022: null,\n      \u0022assertionStatus\u0022: \u0022new_order\u0022,\n      \u0022status\u0022: \u0022unknown\u0022,\n      \u0022evidence\u0022: {\n        \u0022quote\u0022: \u0022Complete blood count (CBC) and C-reactive protein (CRP) at 1-week follow-up.\u0022,\n        \u0022occurrence\u0022: 1\n      }\n    },\n    {\n      \u0022name\u0022: \u0022C-reactive protein (CRP)\u0022,\n      \u0022timing\u0022: \u0022at 1-week follow-up\u0022,\n      \u0022specimen\u0022: null,\n      \u0022assertionStatus\u0022: \u0022new_order\u0022,\n      \u0022status\u0022: \u0022unknown\u0022,\n      \u0022evidence\u0022: {\n        \u0022quote\u0022: \u0022Complete blood count (CBC) and C-reactive protein (CRP) at 1-week follow-up.\u0022,\n        \u0022occurrence\u0022: 1\n      }\n    },\n    {\n      \u0022name\u0022: \u0022chest X-ray (PA view)\u0022,\n      \u0022timing\u0022: \u0022in 2 weeks\u0022,\n      \u0022specimen\u0022: null,\n      \u0022assertionStatus\u0022: \u0022new_order\u0022,\n      \u0022status\u0022: \u0022unknown\u0022,\n      \u0022evidence\u0022: {\n        \u0022quote\u0022: \u0022Follow-up chest X-ray (PA view) and 12-lead ECG in 2 weeks.\u0022,\n        \u0022occurrence\u0022: 1\n      }\n    },\n    {\n      \u0022name\u0022: \u002212-lead ECG\u0022,\n      \u0022timing\u0022: \u0022in 2 weeks\u0022,\n      \u0022specimen\u0022: null,\n      \u0022assertionStatus\u0022: \u0022new_order\u0022,\n      \u0022status\u0022: \u0022unknown\u0022,\n      \u0022evidence\u0022: {\n        \u0022quote\u0022: \u0022Follow-up chest X-ray (PA view) and 12-lead ECG in 2 weeks.\u0022,\n        \u0022occurrence\u0022: 1\n      }\n    }\n  ]\n}",
+  "deserializedCandidate": {
+    "medications": [
+      {
+        "name": "Penicillin",
+        "strength": null,
+        "dose": null,
+        "doseUnit": null,
+        "route": null,
+        "frequency": null,
+        "duration": null,
+        "formulation": null,
+        "instructions": "anaphylaxis",
+        "action": "allergy",
+        "assertionStatus": "allergy",
+        "evidence": {
+          "quote": "Documented Allergies: Penicillin (anaphylaxis) and Ibuprofen (bronchospasm).",
+          "occurrence": 1
+        }
+      },
+      {
+        "name": "Ibuprofen",
+        "strength": null,
+        "dose": null,
+        "doseUnit": null,
+        "route": null,
+        "frequency": null,
+        "duration": null,
+        "formulation": null,
+        "instructions": "bronchospasm",
+        "action": "allergy",
+        "assertionStatus": "allergy",
+        "evidence": {
+          "quote": "Documented Allergies: Penicillin (anaphylaxis) and Ibuprofen (bronchospasm).",
+          "occurrence": 1
+        }
+      },
+      {
+        "name": "antimicrobial therapy",
+        "strength": null,
+        "dose": null,
+        "doseUnit": null,
+        "route": "intravenous",
+        "frequency": null,
+        "duration": null,
+        "formulation": null,
+        "instructions": null,
+        "action": "none",
+        "assertionStatus": "historical",
+        "evidence": {
+          "quote": "Treated with intravenous antimicrobial therapy",
+          "occurrence": 1
+        }
+      },
+      {
+        "name": "Warfarin",
+        "strength": "5 mg",
+        "dose": null,
+        "doseUnit": null,
+        "route": "orally",
+        "frequency": "once daily",
+        "duration": null,
+        "formulation": null,
+        "instructions": "in the evening for stroke prophylaxis.",
+        "action": "continue",
+        "assertionStatus": "current_medication",
+        "evidence": {
+          "quote": "Warfarin 5 mg orally once daily in the evening for stroke prophylaxis.",
+          "occurrence": 1
+        }
+      },
+      {
+        "name": "Aspirin",
+        "strength": "81 mg",
+        "dose": null,
+        "doseUnit": null,
+        "route": "orally",
+        "frequency": "once daily",
+        "duration": null,
+        "formulation": null,
+        "instructions": "in the morning (verify concurrent anticoagulation indication).",
+        "action": "continue",
+        "assertionStatus": "current_medication",
+        "evidence": {
+          "quote": "Aspirin 81 mg orally once daily in the morning (verify concurrent anticoagulation indication).",
+          "occurrence": 1
+        }
+      },
+      {
+        "name": "Azithromycin",
+        "strength": "500 mg",
+        "dose": null,
+        "doseUnit": null,
+        "route": "orally",
+        "frequency": "once daily",
+        "duration": "3 days",
+        "formulation": null,
+        "instructions": "to complete respiratory course.",
+        "action": "continue",
+        "assertionStatus": "current_medication",
+        "evidence": {
+          "quote": "Azithromycin 500 mg orally once daily for 3 days to complete respiratory course.",
+          "occurrence": 1
+        }
+      },
+      {
+        "name": "Ondansetron",
+        "strength": "4 mg",
+        "dose": null,
+        "doseUnit": null,
+        "route": "orally",
+        "frequency": "every 8 hours as needed",
+        "duration": null,
+        "formulation": null,
+        "instructions": "as needed for nausea.",
+        "action": "continue",
+        "assertionStatus": "current_medication",
+        "evidence": {
+          "quote": "Ondansetron 4 mg orally every 8 hours as needed for nausea.",
+          "occurrence": 1
+        }
+      },
+      {
+        "name": "Pantoprazole",
+        "strength": "40 mg",
+        "dose": null,
+        "doseUnit": null,
+        "route": "orally",
+        "frequency": "once daily",
+        "duration": "30 days",
+        "formulation": null,
+        "instructions": "before breakfast",
+        "action": "continue",
+        "assertionStatus": "current_medication",
+        "evidence": {
+          "quote": "Pantoprazole 40 mg orally once daily before breakfast for 30 days.",
+          "occurrence": 1
+        }
+      }
+    ],
+    "investigations": [
+      {
+        "name": "K\u002B",
+        "timing": null,
+        "specimen": "Serum",
+        "assertionStatus": "historical",
+        "status": "unknown",
+        "evidence": {
+          "quote": "Discharge Vital Signs \u0026 Baseline Labs\n\nBlood Pressure Heart Rate Temperature Serum Potassium \u0026 Creatinine\n\n124/76 mmHg | 82 bpm (controlled AF) | 36.8 \u00B0C | K\u002B 5.7 mEq/L, Creatinine 1.9 mg/dL",
+          "occurrence": 1
+        }
+      },
+      {
+        "name": "Creatinine",
+        "timing": null,
+        "specimen": "Serum",
+        "assertionStatus": "historical",
+        "status": "unknown",
+        "evidence": {
+          "quote": "Discharge Vital Signs \u0026 Baseline Labs\n\nBlood Pressure Heart Rate Temperature Serum Potassium \u0026 Creatinine\n\n124/76 mmHg | 82 bpm (controlled AF) | 36.8 \u00B0C | K\u002B 5.7 mEq/L, Creatinine 1.9 mg/dL",
+          "occurrence": 1
+        }
+      },
+      {
+        "name": "Prothrombin time and INR (PT/INR)",
+        "timing": "in 3 days",
+        "specimen": null,
+        "assertionStatus": "new_order",
+        "status": "unknown",
+        "evidence": {
+          "quote": "Prothrombin time and INR (PT/INR) in 3 days.",
+          "occurrence": 1
+        }
+      },
+      {
+        "name": "serum potassium",
+        "timing": "in 48 hours",
+        "specimen": "serum",
+        "assertionStatus": "new_order",
+        "status": "unknown",
+        "evidence": {
+          "quote": "Repeat serum potassium, serum sodium, and serum creatinine in 48 hours.",
+          "occurrence": 1
+        }
+      },
+      {
+        "name": "serum sodium",
+        "timing": "in 48 hours",
+        "specimen": "serum",
+        "assertionStatus": "new_order",
+        "status": "unknown",
+        "evidence": {
+          "quote": "Repeat serum potassium, serum sodium, and serum creatinine in 48 hours.",
+          "occurrence": 1
+        }
+      },
+      {
+        "name": "serum creatinine",
+        "timing": "in 48 hours",
+        "specimen": "serum",
+        "assertionStatus": "new_order",
+        "status": "unknown",
+        "evidence": {
+          "quote": "Repeat serum potassium, serum sodium, and serum creatinine in 48 hours.",
+          "occurrence": 1
+        }
+      },
+      {
+        "name": "Complete blood count (CBC)",
+        "timing": "at 1-week follow-up",
+        "specimen": null,
+        "assertionStatus": "new_order",
+        "status": "unknown",
+        "evidence": {
+          "quote": "Complete blood count (CBC) and C-reactive protein (CRP) at 1-week follow-up.",
+          "occurrence": 1
+        }
+      },
+      {
+        "name": "C-reactive protein (CRP)",
+        "timing": "at 1-week follow-up",
+        "specimen": null,
+        "assertionStatus": "new_order",
+        "status": "unknown",
+        "evidence": {
+          "quote": "Complete blood count (CBC) and C-reactive protein (CRP) at 1-week follow-up.",
+          "occurrence": 1
+        }
+      },
+      {
+        "name": "chest X-ray (PA view)",
+        "timing": "in 2 weeks",
+        "specimen": null,
+        "assertionStatus": "new_order",
+        "status": "unknown",
+        "evidence": {
+          "quote": "Follow-up chest X-ray (PA view) and 12-lead ECG in 2 weeks.",
+          "occurrence": 1
+        }
+      },
+      {
+        "name": "12-lead ECG",
+        "timing": "in 2 weeks",
+        "specimen": null,
+        "assertionStatus": "new_order",
+        "status": "unknown",
+        "evidence": {
+          "quote": "Follow-up chest X-ray (PA view) and 12-lead ECG in 2 weeks.",
+          "occurrence": 1
+        }
+      }
+    ]
+  },
+  "validationSummary": {
+    "hasErrors": false,
+    "errorCount": 0,
+    "warningCount": 6,
+    "dimensions": [
+      {
+        "dimension": "StructuralJsonValidity",
+        "status": "PASS",
+        "evaluatedCount": 1,
+        "passedCount": 1,
+        "warningCount": 0,
+        "errorCount": 0,
+        "summary": "Strict JSON schema validation and candidate deserialization succeeded."
+      },
+      {
+        "dimension": "EvidenceQuoteValidity",
+        "status": "PASS",
+        "evaluatedCount": 17,
+        "passedCount": 17,
+        "warningCount": 0,
+        "errorCount": 0,
+        "summary": "17/17 entity evidence quotes verified verbatim against reconstructed source text."
+      },
+      {
+        "dimension": "EvidenceOffsetValidity",
+        "status": "PASS",
+        "evaluatedCount": 17,
+        "passedCount": 17,
+        "warningCount": 0,
+        "errorCount": 0,
+        "summary": "17/17 entity character offset spans verified within source bounds."
+      },
+      {
+        "dimension": "EntityCompleteness",
+        "status": "PASS",
+        "evaluatedCount": 17,
+        "passedCount": 17,
+        "warningCount": 0,
+        "errorCount": 0,
+        "summary": "Second-pass source completeness check detected no omitted medication or investigation mentions."
+      },
+      {
+        "dimension": "AttributeGrounding",
+        "status": "PARTIAL",
+        "evaluatedCount": 7,
+        "passedCount": 7,
+        "warningCount": 5,
+        "errorCount": 0,
+        "summary": "All populated posology attributes are lexically grounded in entity scope; 5 incomplete/complex prescription review flag(s)."
+      },
+      {
+        "dimension": "ClinicalAssertionConsistency",
+        "status": "PASS",
+        "evaluatedCount": 17,
+        "passedCount": 17,
+        "warningCount": 0,
+        "errorCount": 0,
+        "summary": "All medication and investigation assertions are consistent with section context, negation, and temporality."
+      },
+      {
+        "dimension": "TerminologyNormalization",
+        "status": "PARTIAL",
+        "evaluatedCount": 17,
+        "passedCount": 9,
+        "warningCount": 8,
+        "errorCount": 0,
+        "summary": "9/17 exact RxNorm/LOINC concepts resolved; 8 narrower/broader/unresolved concept(s) withheld from exact code assignment."
+      },
+      {
+        "dimension": "SafetyAlertGrounding",
+        "status": "PASS",
+        "evaluatedCount": 7,
+        "passedCount": 7,
+        "warningCount": 0,
+        "errorCount": 0,
+        "summary": "7/7 safety/review alert(s) grounded with source evidence quotes and character offsets."
+      }
+    ]
+  },
+  "medications": [
+    {
+      "name": "Penicillin",
+      "strength": null,
+      "dose": null,
+      "route": null,
+      "frequency": null,
+      "duration": null,
+      "formulation": null,
+      "instructions": "anaphylaxis",
+      "assertionStatus": "allergy",
+      "evidence": {
+        "quote": "Documented Allergies: Penicillin (anaphylaxis) and Ibuprofen (bronchospasm).",
+        "verified": true,
+        "start": 87,
+        "end": 163
+      },
+      "qualityFlags": [
+        "TERMINOLOGY_UNMATCHED"
+      ],
+      "findings": [
+        {
+          "code": "TERMINOLOGY_UNMATCHED",
+          "severity": "warning",
+          "field": "name",
+          "message": "The supported terminology catalog could not confidently map this extracted term; review its source evidence."
+        }
+      ],
+      "normalization": {
+        "status": "unmatched",
+        "matchedCode": null,
+        "displayName": null,
+        "confidence": 0,
+        "semanticStatus": "unresolved",
+        "candidateCode": null,
+        "terminologySource": "RxNorm",
+        "terminologyVersion": "02-Nov-2026",
+        "mappingNote": "Unlisted medication mention; routed to OOV quarantine."
+      },
+      "doseUnit": null,
+      "action": "allergy",
+      "origin": "LLM_EXTRACTED",
+      "provenance": {
+        "origin": "LLM_EXTRACTED",
+        "provider": "foundry",
+        "ruleModified": false,
+        "modifications": null,
+        "uncertaintyReason": "Unlisted medication mention; routed to OOV quarantine.",
+        "quarantined": true,
+        "triggeredAlertIds": null
+      }
+    },
+    {
+      "name": "Ibuprofen",
+      "strength": null,
+      "dose": null,
+      "route": null,
+      "frequency": null,
+      "duration": null,
+      "formulation": null,
+      "instructions": "bronchospasm",
+      "assertionStatus": "allergy",
+      "evidence": {
+        "quote": "Documented Allergies: Penicillin (anaphylaxis) and Ibuprofen (bronchospasm).",
+        "verified": true,
+        "start": 87,
+        "end": 163
+      },
+      "qualityFlags": [],
+      "findings": [],
+      "normalization": {
+        "status": "matched",
+        "matchedCode": "5640",
+        "displayName": "Ibuprofen",
+        "confidence": 0.98,
+        "semanticStatus": "exact",
+        "candidateCode": "5640",
+        "terminologySource": "RxNorm",
+        "terminologyVersion": "02-Nov-2026",
+        "mappingNote": "Exact RxNorm ingredient (IN) match for \u0027Ibuprofen\u0027 (RxCUI 5640)."
+      },
+      "doseUnit": null,
+      "action": "allergy",
+      "origin": "LLM_AND_RULE_CONFIRMED",
+      "provenance": {
+        "origin": "LLM_AND_RULE_CONFIRMED",
+        "provider": "foundry",
+        "ruleModified": false,
+        "modifications": null,
+        "uncertaintyReason": null,
+        "quarantined": false,
+        "triggeredAlertIds": null
+      }
+    },
+    {
+      "name": "Warfarin",
+      "strength": "5 mg",
+      "dose": null,
+      "route": "orally",
+      "frequency": "once daily",
+      "duration": null,
+      "formulation": null,
+      "instructions": "in the evening for stroke prophylaxis.",
+      "assertionStatus": "current_medication",
+      "evidence": {
+        "quote": "Warfarin 5 mg orally once daily in the evening for stroke prophylaxis.",
+        "verified": true,
+        "start": 979,
+        "end": 1049
+      },
+      "qualityFlags": [
+        "INCOMPLETE_PRESCRIPTION"
+      ],
+      "findings": [
+        {
+          "code": "INCOMPLETE_PRESCRIPTION",
+          "severity": "warning",
+          "field": "dose",
+          "message": "Unresolved prescription attributes: dose (administered form quantity; product strength alone does not specify administered dose). Human review is required."
+        }
+      ],
+      "normalization": {
+        "status": "matched",
+        "matchedCode": "11289",
+        "displayName": "Warfarin",
+        "confidence": 0.98,
+        "semanticStatus": "exact",
+        "candidateCode": "11289",
+        "terminologySource": "RxNorm",
+        "terminologyVersion": "02-Nov-2026",
+        "mappingNote": "Exact RxNorm ingredient (IN) match for \u0027Warfarin\u0027 (RxCUI 11289); product strength \u00275 mg\u0027 is preserved separately in the strength field."
+      },
+      "doseUnit": null,
+      "action": "none",
+      "origin": "LLM_AND_RULE_CONFIRMED",
+      "provenance": {
+        "origin": "LLM_AND_RULE_CONFIRMED",
+        "provider": "foundry",
+        "ruleModified": true,
+        "modifications": [
+          "action normalized from \u0027continue\u0027 to \u0027none\u0027"
+        ],
+        "uncertaintyReason": null,
+        "quarantined": false,
+        "triggeredAlertIds": null
+      }
+    },
+    {
+      "name": "Aspirin",
+      "strength": "81 mg",
+      "dose": null,
+      "route": "orally",
+      "frequency": "once daily",
+      "duration": null,
+      "formulation": null,
+      "instructions": "in the morning (verify concurrent anticoagulation indication).",
+      "assertionStatus": "current_medication",
+      "evidence": {
+        "quote": "Aspirin 81 mg orally once daily in the morning (verify concurrent anticoagulation indication).",
+        "verified": true,
+        "start": 1051,
+        "end": 1145
+      },
+      "qualityFlags": [
+        "INCOMPLETE_PRESCRIPTION"
+      ],
+      "findings": [
+        {
+          "code": "INCOMPLETE_PRESCRIPTION",
+          "severity": "warning",
+          "field": "dose",
+          "message": "Unresolved prescription attributes: dose (administered form quantity; product strength alone does not specify administered dose). Human review is required."
+        }
+      ],
+      "normalization": {
+        "status": "matched",
+        "matchedCode": "1191",
+        "displayName": "Aspirin",
+        "confidence": 0.98,
+        "semanticStatus": "exact",
+        "candidateCode": "1191",
+        "terminologySource": "RxNorm",
+        "terminologyVersion": "02-Nov-2026",
+        "mappingNote": "Exact RxNorm ingredient (IN) match for \u0027Aspirin\u0027 (RxCUI 1191); product strength \u002781 mg\u0027 is preserved separately in the strength field."
+      },
+      "doseUnit": null,
+      "action": "none",
+      "origin": "LLM_AND_RULE_CONFIRMED",
+      "provenance": {
+        "origin": "LLM_AND_RULE_CONFIRMED",
+        "provider": "foundry",
+        "ruleModified": true,
+        "modifications": [
+          "action normalized from \u0027continue\u0027 to \u0027none\u0027"
+        ],
+        "uncertaintyReason": null,
+        "quarantined": false,
+        "triggeredAlertIds": null
+      }
+    },
+    {
+      "name": "Azithromycin",
+      "strength": "500 mg",
+      "dose": null,
+      "route": "orally",
+      "frequency": "once daily",
+      "duration": "for 3 days",
+      "formulation": null,
+      "instructions": "to complete respiratory course.",
+      "assertionStatus": "current_medication",
+      "evidence": {
+        "quote": "Azithromycin 500 mg orally once daily for 3 days to complete respiratory course.",
+        "verified": true,
+        "start": 1147,
+        "end": 1227
+      },
+      "qualityFlags": [
+        "INCOMPLETE_PRESCRIPTION"
+      ],
+      "findings": [
+        {
+          "code": "INCOMPLETE_PRESCRIPTION",
+          "severity": "warning",
+          "field": "dose",
+          "message": "Unresolved prescription attributes: dose (administered form quantity; product strength alone does not specify administered dose). Human review is required."
+        }
+      ],
+      "normalization": {
+        "status": "matched",
+        "matchedCode": "18631",
+        "displayName": "Azithromycin",
+        "confidence": 0.98,
+        "semanticStatus": "exact",
+        "candidateCode": "18631",
+        "terminologySource": "RxNorm",
+        "terminologyVersion": "02-Nov-2026",
+        "mappingNote": "Exact RxNorm ingredient (IN) match for \u0027Azithromycin\u0027 (RxCUI 18631); product strength \u0027500 mg\u0027 is preserved separately in the strength field."
+      },
+      "doseUnit": null,
+      "action": "none",
+      "origin": "LLM_AND_RULE_CONFIRMED",
+      "provenance": {
+        "origin": "LLM_AND_RULE_CONFIRMED",
+        "provider": "foundry",
+        "ruleModified": true,
+        "modifications": [
+          "action normalized from \u0027continue\u0027 to \u0027none\u0027",
+          "duration normalized from \u00273 days\u0027 to \u0027for 3 days\u0027"
+        ],
+        "uncertaintyReason": null,
+        "quarantined": false,
+        "triggeredAlertIds": null
+      }
+    },
+    {
+      "name": "Ondansetron",
+      "strength": "4 mg",
+      "dose": null,
+      "route": "orally",
+      "frequency": "every 8 hours as needed",
+      "duration": null,
+      "formulation": null,
+      "instructions": "as needed for nausea.",
+      "assertionStatus": "current_medication",
+      "evidence": {
+        "quote": "Ondansetron 4 mg orally every 8 hours as needed for nausea.",
+        "verified": true,
+        "start": 1229,
+        "end": 1288
+      },
+      "qualityFlags": [
+        "INCOMPLETE_PRESCRIPTION"
+      ],
+      "findings": [
+        {
+          "code": "INCOMPLETE_PRESCRIPTION",
+          "severity": "warning",
+          "field": "dose",
+          "message": "Unresolved prescription attributes: dose (administered form quantity; product strength alone does not specify administered dose). Human review is required."
+        }
+      ],
+      "normalization": {
+        "status": "matched",
+        "matchedCode": "26225",
+        "displayName": "Ondansetron",
+        "confidence": 0.98,
+        "semanticStatus": "exact",
+        "candidateCode": "26225",
+        "terminologySource": "RxNorm",
+        "terminologyVersion": "02-Nov-2026",
+        "mappingNote": "Exact RxNorm ingredient (IN) match for \u0027Ondansetron\u0027 (RxCUI 26225); product strength \u00274 mg\u0027 is preserved separately in the strength field."
+      },
+      "doseUnit": null,
+      "action": "none",
+      "origin": "LLM_AND_RULE_CONFIRMED",
+      "provenance": {
+        "origin": "LLM_AND_RULE_CONFIRMED",
+        "provider": "foundry",
+        "ruleModified": true,
+        "modifications": [
+          "action normalized from \u0027continue\u0027 to \u0027none\u0027"
+        ],
+        "uncertaintyReason": null,
+        "quarantined": false,
+        "triggeredAlertIds": null
+      }
+    },
+    {
+      "name": "Pantoprazole",
+      "strength": "40 mg",
+      "dose": null,
+      "route": "orally",
+      "frequency": "once daily",
+      "duration": "for 30 days",
+      "formulation": null,
+      "instructions": "before breakfast",
+      "assertionStatus": "current_medication",
+      "evidence": {
+        "quote": "Pantoprazole 40 mg orally once daily before breakfast for 30 days.",
+        "verified": true,
+        "start": 1290,
+        "end": 1356
+      },
+      "qualityFlags": [
+        "INCOMPLETE_PRESCRIPTION"
+      ],
+      "findings": [
+        {
+          "code": "INCOMPLETE_PRESCRIPTION",
+          "severity": "warning",
+          "field": "dose",
+          "message": "Unresolved prescription attributes: dose (administered form quantity; product strength alone does not specify administered dose). Human review is required."
+        }
+      ],
+      "normalization": {
+        "status": "matched",
+        "matchedCode": "40790",
+        "displayName": "Pantoprazole",
+        "confidence": 0.98,
+        "semanticStatus": "exact",
+        "candidateCode": "40790",
+        "terminologySource": "RxNorm",
+        "terminologyVersion": "02-Nov-2026",
+        "mappingNote": "Exact RxNorm ingredient (IN) match for \u0027Pantoprazole\u0027 (RxCUI 40790); product strength \u002740 mg\u0027 is preserved separately in the strength field."
+      },
+      "doseUnit": null,
+      "action": "none",
+      "origin": "LLM_AND_RULE_CONFIRMED",
+      "provenance": {
+        "origin": "LLM_AND_RULE_CONFIRMED",
+        "provider": "foundry",
+        "ruleModified": true,
+        "modifications": [
+          "action normalized from \u0027continue\u0027 to \u0027none\u0027",
+          "duration normalized from \u002730 days\u0027 to \u0027for 30 days\u0027"
+        ],
+        "uncertaintyReason": null,
+        "quarantined": false,
+        "triggeredAlertIds": null
+      }
+    }
+  ],
+  "investigations": [
+    {
+      "name": "K\u002B",
+      "timing": null,
+      "specimen": "Serum",
+      "assertionStatus": "historical",
+      "evidence": {
+        "quote": "Discharge Vital Signs \u0026 Baseline Labs\n\nBlood Pressure Heart Rate Temperature Serum Potassium \u0026 Creatinine\n\n124/76 mmHg | 82 bpm (controlled AF) | 36.8 \u00B0C | K\u002B 5.7 mEq/L, Creatinine 1.9 mg/dL",
+        "verified": true,
+        "start": 558,
+        "end": 748
+      },
+      "qualityFlags": [
+        "TERMINOLOGY_UNCERTAIN"
+      ],
+      "findings": [
+        {
+          "code": "TERMINOLOGY_UNCERTAIN",
+          "severity": "info",
+          "field": "name",
+          "message": "The supported terminology catalog could not confidently map this extracted term; review its source evidence."
+        }
+      ],
+      "normalization": {
+        "status": "uncertain",
+        "matchedCode": null,
+        "displayName": "Serum Potassium",
+        "confidence": 0.5,
+        "semanticStatus": "narrower",
+        "candidateCode": "2823-3",
+        "terminologySource": "LOINC",
+        "terminologyVersion": "2.83",
+        "mappingNote": "LOINC 2823-3 specifies Serum or Plasma system, whereas shorthand \u0027K\u002B\u0027/\u0027potassium\u0027 does not state specimen (could be serum, plasma, whole blood, or urine)."
+      },
+      "matchedCode": null,
+      "displayName": "Serum Potassium",
+      "status": "unknown",
+      "clinicalCategory": "laboratory",
+      "method": null,
+      "resultValue": "5.7 mEq/L",
+      "origin": "LLM_AND_RULE_CONFIRMED",
+      "provenance": {
+        "origin": "LLM_AND_RULE_CONFIRMED",
+        "provider": "foundry",
+        "ruleModified": false,
+        "modifications": null,
+        "uncertaintyReason": "LOINC 2823-3 specifies Serum or Plasma system, whereas shorthand \u0027K\u002B\u0027/\u0027potassium\u0027 does not state specimen (could be serum, plasma, whole blood, or urine).",
+        "quarantined": true,
+        "triggeredAlertIds": null
+      }
+    },
+    {
+      "name": "Creatinine",
+      "timing": null,
+      "specimen": "Serum",
+      "assertionStatus": "historical",
+      "evidence": {
+        "quote": "Discharge Vital Signs \u0026 Baseline Labs\n\nBlood Pressure Heart Rate Temperature Serum Potassium \u0026 Creatinine\n\n124/76 mmHg | 82 bpm (controlled AF) | 36.8 \u00B0C | K\u002B 5.7 mEq/L, Creatinine 1.9 mg/dL",
+        "verified": true,
+        "start": 558,
+        "end": 748
+      },
+      "qualityFlags": [
+        "TERMINOLOGY_UNCERTAIN"
+      ],
+      "findings": [
+        {
+          "code": "TERMINOLOGY_UNCERTAIN",
+          "severity": "info",
+          "field": "name",
+          "message": "The supported terminology catalog could not confidently map this extracted term; review its source evidence."
+        }
+      ],
+      "normalization": {
+        "status": "uncertain",
+        "matchedCode": null,
+        "displayName": "Serum Creatinine",
+        "confidence": 0.5,
+        "semanticStatus": "narrower",
+        "candidateCode": "2160-0",
+        "terminologySource": "LOINC",
+        "terminologyVersion": "2.83",
+        "mappingNote": "LOINC 2160-0 specifies Serum or Plasma system, whereas unqualified \u0027Creatinine\u0027 does not state specimen (serum vs urine)."
+      },
+      "matchedCode": null,
+      "displayName": "Serum Creatinine",
+      "status": "unknown",
+      "clinicalCategory": "laboratory",
+      "method": null,
+      "resultValue": "1.9 mg/dL",
+      "origin": "LLM_AND_RULE_CONFIRMED",
+      "provenance": {
+        "origin": "LLM_AND_RULE_CONFIRMED",
+        "provider": "foundry",
+        "ruleModified": false,
+        "modifications": null,
+        "uncertaintyReason": "LOINC 2160-0 specifies Serum or Plasma system, whereas unqualified \u0027Creatinine\u0027 does not state specimen (serum vs urine).",
+        "quarantined": true,
+        "triggeredAlertIds": null
+      }
+    },
+    {
+      "name": "Prothrombin time and INR",
+      "timing": "in 3 days",
+      "specimen": null,
+      "assertionStatus": "new_order",
+      "evidence": {
+        "quote": "Prothrombin time and INR (PT/INR) in 3 days.",
+        "verified": true,
+        "start": 1395,
+        "end": 1439
+      },
+      "qualityFlags": [
+        "TERMINOLOGY_UNCERTAIN"
+      ],
+      "findings": [
+        {
+          "code": "TERMINOLOGY_UNCERTAIN",
+          "severity": "info",
+          "field": "name",
+          "message": "The supported terminology catalog could not confidently map this extracted term; review its source evidence."
+        }
+      ],
+      "normalization": {
+        "status": "uncertain",
+        "matchedCode": null,
+        "displayName": "International Normalized Ratio",
+        "confidence": 0.5,
+        "semanticStatus": "narrower",
+        "candidateCode": "6301-6",
+        "terminologySource": "LOINC",
+        "terminologyVersion": "2.83",
+        "mappingNote": "LOINC 6301-6 (\u0027INR in Platelet poor plasma by Coagulation assay\u0027) encodes only INR (omitting Prothrombin Time seconds) and assumes platelet-poor plasma coagulation assay."
+      },
+      "matchedCode": null,
+      "displayName": "International Normalized Ratio",
+      "status": "unknown",
+      "clinicalCategory": "laboratory",
+      "method": null,
+      "resultValue": null,
+      "origin": "LLM_AND_RULE_CONFIRMED",
+      "provenance": {
+        "origin": "LLM_AND_RULE_CONFIRMED",
+        "provider": "foundry",
+        "ruleModified": true,
+        "modifications": [
+          "name normalized from \u0027Prothrombin time and INR (PT/INR)\u0027 to \u0027Prothrombin time and INR\u0027"
+        ],
+        "uncertaintyReason": "LOINC 6301-6 (\u0027INR in Platelet poor plasma by Coagulation assay\u0027) encodes only INR (omitting Prothrombin Time seconds) and assumes platelet-poor plasma coagulation assay.",
+        "quarantined": true,
+        "triggeredAlertIds": null
+      }
+    },
+    {
+      "name": "serum potassium",
+      "timing": "in 48 hours",
+      "specimen": "serum",
+      "assertionStatus": "new_order",
+      "evidence": {
+        "quote": "Repeat serum potassium, serum sodium, and serum creatinine in 48 hours.",
+        "verified": true,
+        "start": 1441,
+        "end": 1512
+      },
+      "qualityFlags": [],
+      "findings": [],
+      "normalization": {
+        "status": "matched",
+        "matchedCode": "2823-3",
+        "displayName": "Serum Potassium",
+        "confidence": 0.98,
+        "semanticStatus": "exact",
+        "candidateCode": "2823-3",
+        "terminologySource": "LOINC",
+        "terminologyVersion": "2.83",
+        "mappingNote": "Verified LOINC 2823-3 matches component, system/specimen, method, and view/lead specificity of \u0027serum potassium\u0027."
+      },
+      "matchedCode": "2823-3",
+      "displayName": "Serum Potassium",
+      "status": "unknown",
+      "clinicalCategory": "laboratory",
+      "method": null,
+      "resultValue": null,
+      "origin": "LLM_AND_RULE_CONFIRMED",
+      "provenance": {
+        "origin": "LLM_AND_RULE_CONFIRMED",
+        "provider": "foundry",
+        "ruleModified": false,
+        "modifications": null,
+        "uncertaintyReason": null,
+        "quarantined": false,
+        "triggeredAlertIds": null
+      }
+    },
+    {
+      "name": "serum sodium",
+      "timing": "in 48 hours",
+      "specimen": "serum",
+      "assertionStatus": "new_order",
+      "evidence": {
+        "quote": "Repeat serum potassium, serum sodium, and serum creatinine in 48 hours.",
+        "verified": true,
+        "start": 1441,
+        "end": 1512
+      },
+      "qualityFlags": [],
+      "findings": [],
+      "normalization": {
+        "status": "matched",
+        "matchedCode": "2951-2",
+        "displayName": "Serum Sodium",
+        "confidence": 0.98,
+        "semanticStatus": "exact",
+        "candidateCode": "2951-2",
+        "terminologySource": "LOINC",
+        "terminologyVersion": "2.83",
+        "mappingNote": "Verified LOINC 2951-2 matches component, system/specimen, method, and view/lead specificity of \u0027serum sodium\u0027."
+      },
+      "matchedCode": "2951-2",
+      "displayName": "Serum Sodium",
+      "status": "unknown",
+      "clinicalCategory": "laboratory",
+      "method": null,
+      "resultValue": null,
+      "origin": "LLM_AND_RULE_CONFIRMED",
+      "provenance": {
+        "origin": "LLM_AND_RULE_CONFIRMED",
+        "provider": "foundry",
+        "ruleModified": false,
+        "modifications": null,
+        "uncertaintyReason": null,
+        "quarantined": false,
+        "triggeredAlertIds": null
+      }
+    },
+    {
+      "name": "serum creatinine",
+      "timing": "in 48 hours",
+      "specimen": "serum",
+      "assertionStatus": "new_order",
+      "evidence": {
+        "quote": "Repeat serum potassium, serum sodium, and serum creatinine in 48 hours.",
+        "verified": true,
+        "start": 1441,
+        "end": 1512
+      },
+      "qualityFlags": [],
+      "findings": [],
+      "normalization": {
+        "status": "matched",
+        "matchedCode": "2160-0",
+        "displayName": "Serum Creatinine",
+        "confidence": 0.98,
+        "semanticStatus": "exact",
+        "candidateCode": "2160-0",
+        "terminologySource": "LOINC",
+        "terminologyVersion": "2.83",
+        "mappingNote": "Verified LOINC 2160-0 matches component, system/specimen, method, and view/lead specificity of \u0027serum creatinine\u0027."
+      },
+      "matchedCode": "2160-0",
+      "displayName": "Serum Creatinine",
+      "status": "unknown",
+      "clinicalCategory": "laboratory",
+      "method": null,
+      "resultValue": null,
+      "origin": "LLM_AND_RULE_CONFIRMED",
+      "provenance": {
+        "origin": "LLM_AND_RULE_CONFIRMED",
+        "provider": "foundry",
+        "ruleModified": false,
+        "modifications": null,
+        "uncertaintyReason": null,
+        "quarantined": false,
+        "triggeredAlertIds": null
+      }
+    },
+    {
+      "name": "Complete blood count",
+      "timing": "at 1-week follow-up",
+      "specimen": null,
+      "assertionStatus": "new_order",
+      "evidence": {
+        "quote": "Complete blood count (CBC) and C-reactive protein (CRP) at 1-week follow-up.",
+        "verified": true,
+        "start": 1514,
+        "end": 1590
+      },
+      "qualityFlags": [
+        "TERMINOLOGY_UNCERTAIN"
+      ],
+      "findings": [
+        {
+          "code": "TERMINOLOGY_UNCERTAIN",
+          "severity": "info",
+          "field": "name",
+          "message": "The supported terminology catalog could not confidently map this extracted term; review its source evidence."
+        }
+      ],
+      "normalization": {
+        "status": "uncertain",
+        "matchedCode": null,
+        "displayName": "Complete Blood Count",
+        "confidence": 0.5,
+        "semanticStatus": "narrower",
+        "candidateCode": "58410-2",
+        "terminologySource": "LOINC",
+        "terminologyVersion": "2.83",
+        "mappingNote": "LOINC 58410-2 (\u0027CBC panel - Blood by Automated count\u0027) assumes an automated count method not stated in generic \u0027CBC\u0027."
+      },
+      "matchedCode": null,
+      "displayName": "Complete Blood Count",
+      "status": "unknown",
+      "clinicalCategory": "laboratory",
+      "method": null,
+      "resultValue": null,
+      "origin": "LLM_AND_RULE_CONFIRMED",
+      "provenance": {
+        "origin": "LLM_AND_RULE_CONFIRMED",
+        "provider": "foundry",
+        "ruleModified": true,
+        "modifications": [
+          "name normalized from \u0027Complete blood count (CBC)\u0027 to \u0027Complete blood count\u0027"
+        ],
+        "uncertaintyReason": "LOINC 58410-2 (\u0027CBC panel - Blood by Automated count\u0027) assumes an automated count method not stated in generic \u0027CBC\u0027.",
+        "quarantined": true,
+        "triggeredAlertIds": null
+      }
+    },
+    {
+      "name": "C-reactive protein",
+      "timing": "at 1-week follow-up",
+      "specimen": null,
+      "assertionStatus": "new_order",
+      "evidence": {
+        "quote": "Complete blood count (CBC) and C-reactive protein (CRP) at 1-week follow-up.",
+        "verified": true,
+        "start": 1514,
+        "end": 1590
+      },
+      "qualityFlags": [
+        "TERMINOLOGY_UNCERTAIN"
+      ],
+      "findings": [
+        {
+          "code": "TERMINOLOGY_UNCERTAIN",
+          "severity": "info",
+          "field": "name",
+          "message": "The supported terminology catalog could not confidently map this extracted term; review its source evidence."
+        }
+      ],
+      "normalization": {
+        "status": "uncertain",
+        "matchedCode": null,
+        "displayName": "C-Reactive Protein",
+        "confidence": 0.5,
+        "semanticStatus": "narrower",
+        "candidateCode": "1988-5",
+        "terminologySource": "LOINC",
+        "terminologyVersion": "2.83",
+        "mappingNote": "LOINC 1988-5 (\u0027C reactive protein [Mass/volume] in Serum or Plasma\u0027) assumes Serum/Plasma mass concentration not stated in unqualified \u0027CRP\u0027."
+      },
+      "matchedCode": null,
+      "displayName": "C-Reactive Protein",
+      "status": "unknown",
+      "clinicalCategory": "laboratory",
+      "method": null,
+      "resultValue": null,
+      "origin": "LLM_AND_RULE_CONFIRMED",
+      "provenance": {
+        "origin": "LLM_AND_RULE_CONFIRMED",
+        "provider": "foundry",
+        "ruleModified": true,
+        "modifications": [
+          "name normalized from \u0027C-reactive protein (CRP)\u0027 to \u0027C-reactive protein\u0027"
+        ],
+        "uncertaintyReason": "LOINC 1988-5 (\u0027C reactive protein [Mass/volume] in Serum or Plasma\u0027) assumes Serum/Plasma mass concentration not stated in unqualified \u0027CRP\u0027.",
+        "quarantined": true,
+        "triggeredAlertIds": null
+      }
+    },
+    {
+      "name": "chest X-ray",
+      "timing": "in 2 weeks",
+      "specimen": null,
+      "assertionStatus": "new_order",
+      "evidence": {
+        "quote": "Follow-up chest X-ray (PA view) and 12-lead ECG in 2 weeks.",
+        "verified": true,
+        "start": 1592,
+        "end": 1651
+      },
+      "qualityFlags": [
+        "TERMINOLOGY_UNCERTAIN"
+      ],
+      "findings": [
+        {
+          "code": "TERMINOLOGY_UNCERTAIN",
+          "severity": "info",
+          "field": "name",
+          "message": "The supported terminology catalog could not confidently map this extracted term; review its source evidence."
+        }
+      ],
+      "normalization": {
+        "status": "uncertain",
+        "matchedCode": null,
+        "displayName": "Chest X-Ray PA",
+        "confidence": 0.5,
+        "semanticStatus": "narrower",
+        "candidateCode": "24648-8",
+        "terminologySource": "LOINC",
+        "terminologyVersion": "2.83",
+        "mappingNote": "LOINC 24648-8 (\u0027XR Chest PA upright\u0027) specifies an upright patient posture not stated in \u0027chest X-ray (PA view)\u0027; withheld from exact match code."
+      },
+      "matchedCode": null,
+      "displayName": "Chest X-Ray PA",
+      "status": "unknown",
+      "clinicalCategory": "imaging",
+      "method": null,
+      "resultValue": null,
+      "origin": "LLM_AND_RULE_CONFIRMED",
+      "provenance": {
+        "origin": "LLM_AND_RULE_CONFIRMED",
+        "provider": "foundry",
+        "ruleModified": true,
+        "modifications": [
+          "name normalized from \u0027chest X-ray (PA view)\u0027 to \u0027chest X-ray\u0027"
+        ],
+        "uncertaintyReason": "LOINC 24648-8 (\u0027XR Chest PA upright\u0027) specifies an upright patient posture not stated in \u0027chest X-ray (PA view)\u0027; withheld from exact match code.",
+        "quarantined": true,
+        "triggeredAlertIds": null
+      }
+    },
+    {
+      "name": "12-lead ECG",
+      "timing": "in 2 weeks",
+      "specimen": null,
+      "assertionStatus": "new_order",
+      "evidence": {
+        "quote": "Follow-up chest X-ray (PA view) and 12-lead ECG in 2 weeks.",
+        "verified": true,
+        "start": 1592,
+        "end": 1651
+      },
+      "qualityFlags": [
+        "TERMINOLOGY_UNCERTAIN"
+      ],
+      "findings": [
+        {
+          "code": "TERMINOLOGY_UNCERTAIN",
+          "severity": "info",
+          "field": "name",
+          "message": "The supported terminology catalog could not confidently map this extracted term; review its source evidence."
+        }
+      ],
+      "normalization": {
+        "status": "uncertain",
+        "matchedCode": null,
+        "displayName": "Electrocardiogram",
+        "confidence": 0.5,
+        "semanticStatus": "broader",
+        "candidateCode": "11524-6",
+        "terminologySource": "LOINC",
+        "terminologyVersion": "2.83",
+        "mappingNote": "LOINC 11524-6 (\u0027EKG study\u0027) is a general electrocardiogram concept and does not encode the 12-lead configuration stated in \u002712-lead ECG\u0027 (vs LOINC 34534-8); withheld from exact match code."
+      },
+      "matchedCode": null,
+      "displayName": "Electrocardiogram",
+      "status": "unknown",
+      "clinicalCategory": "electrophysiology_procedure",
+      "method": null,
+      "resultValue": null,
+      "origin": "LLM_AND_RULE_CONFIRMED",
+      "provenance": {
+        "origin": "LLM_AND_RULE_CONFIRMED",
+        "provider": "foundry",
+        "ruleModified": false,
+        "modifications": null,
+        "uncertaintyReason": "LOINC 11524-6 (\u0027EKG study\u0027) is a general electrocardiogram concept and does not encode the 12-lead configuration stated in \u002712-lead ECG\u0027 (vs LOINC 34534-8); withheld from exact match code.",
+        "quarantined": true,
+        "triggeredAlertIds": null
+      }
+    }
+  ],
+  "quarantineItems": [
+    {
+      "quarantineId": "8c57a5a8-9aec-4d3e-82b9-b24c14e00a55",
+      "extractionId": "1713c76e-b355-4be3-b02f-e9d581b82415",
+      "category": "MEDICATION",
+      "mention": "Penicillin",
+      "normalizedMention": "penicillin",
+      "confidence": 0,
+      "reason": "unmapped_rxnorm",
+      "startChar": 87,
+      "endChar": 163,
+      "scrubbedContext": "Documented Allergies: Penicillin (anaphylaxis) and Ibuprofen (bronchospasm).",
+      "reviewStatus": "pending",
+      "mappedCode": null,
+      "mappedDisplay": null,
+      "reviewerNotes": null,
+      "createdAt": "",
+      "reviewedAt": null
+    },
+    {
+      "quarantineId": "6368a410-a47c-4e73-9315-1f8262bb6ffb",
+      "extractionId": "1713c76e-b355-4be3-b02f-e9d581b82415",
+      "category": "INVESTIGATION",
+      "mention": "K\u002B",
+      "normalizedMention": "k\u002B",
+      "confidence": 0.5,
+      "reason": "uncertain_strength",
+      "startChar": 558,
+      "endChar": 748,
+      "scrubbedContext": "Discharge Vital Signs \u0026 Baseline Labs\n\nBlood Pressure Heart Rate Temperature Serum Potassium \u0026 Creatinine\n\n124/76 mmHg | 82 bpm (controlled AF) | 36.8 \u00B0C | K\u002B 5.7 mEq/L, Creatinine 1.9 mg/dL",
+      "reviewStatus": "pending",
+      "mappedCode": null,
+      "mappedDisplay": null,
+      "reviewerNotes": null,
+      "createdAt": "",
+      "reviewedAt": null
+    },
+    {
+      "quarantineId": "252a3233-5ca1-4862-b085-48ee0ab1bbcc",
+      "extractionId": "1713c76e-b355-4be3-b02f-e9d581b82415",
+      "category": "INVESTIGATION",
+      "mention": "Creatinine",
+      "normalizedMention": "creatinine",
+      "confidence": 0.5,
+      "reason": "uncertain_strength",
+      "startChar": 558,
+      "endChar": 748,
+      "scrubbedContext": "Discharge Vital Signs \u0026 Baseline Labs\n\nBlood Pressure Heart Rate Temperature Serum Potassium \u0026 Creatinine\n\n124/76 mmHg | 82 bpm (controlled AF) | 36.8 \u00B0C | K\u002B 5.7 mEq/L, Creatinine 1.9 mg/dL",
+      "reviewStatus": "pending",
+      "mappedCode": null,
+      "mappedDisplay": null,
+      "reviewerNotes": null,
+      "createdAt": "",
+      "reviewedAt": null
+    },
+    {
+      "quarantineId": "4acc1c95-bba5-49fb-9ef2-1c5772f84351",
+      "extractionId": "1713c76e-b355-4be3-b02f-e9d581b82415",
+      "category": "INVESTIGATION",
+      "mention": "Prothrombin time and INR",
+      "normalizedMention": "prothrombin time and inr",
+      "confidence": 0.5,
+      "reason": "uncertain_strength",
+      "startChar": 1395,
+      "endChar": 1439,
+      "scrubbedContext": "Prothrombin time and INR (PT/INR) in 3 days.",
+      "reviewStatus": "pending",
+      "mappedCode": null,
+      "mappedDisplay": null,
+      "reviewerNotes": null,
+      "createdAt": "",
+      "reviewedAt": null
+    },
+    {
+      "quarantineId": "bc7d789b-6acd-4e09-8bde-245a5fc363f9",
+      "extractionId": "1713c76e-b355-4be3-b02f-e9d581b82415",
+      "category": "INVESTIGATION",
+      "mention": "Complete blood count",
+      "normalizedMention": "complete blood count",
+      "confidence": 0.5,
+      "reason": "uncertain_strength",
+      "startChar": 1514,
+      "endChar": 1590,
+      "scrubbedContext": "Complete blood count (CBC) and C-reactive protein (CRP) at 1-week follow-up.",
+      "reviewStatus": "pending",
+      "mappedCode": null,
+      "mappedDisplay": null,
+      "reviewerNotes": null,
+      "createdAt": "",
+      "reviewedAt": null
+    },
+    {
+      "quarantineId": "e910e238-869b-4e81-904e-522ff4f5d4a8",
+      "extractionId": "1713c76e-b355-4be3-b02f-e9d581b82415",
+      "category": "INVESTIGATION",
+      "mention": "C-reactive protein",
+      "normalizedMention": "c-reactive protein",
+      "confidence": 0.5,
+      "reason": "uncertain_strength",
+      "startChar": 1514,
+      "endChar": 1590,
+      "scrubbedContext": "Complete blood count (CBC) and C-reactive protein (CRP) at 1-week follow-up.",
+      "reviewStatus": "pending",
+      "mappedCode": null,
+      "mappedDisplay": null,
+      "reviewerNotes": null,
+      "createdAt": "",
+      "reviewedAt": null
+    },
+    {
+      "quarantineId": "e54bb6d0-d788-41c3-877e-8f398dd4d939",
+      "extractionId": "1713c76e-b355-4be3-b02f-e9d581b82415",
+      "category": "INVESTIGATION",
+      "mention": "chest X-ray",
+      "normalizedMention": "chest x-ray",
+      "confidence": 0.5,
+      "reason": "uncertain_strength",
+      "startChar": 1592,
+      "endChar": 1651,
+      "scrubbedContext": "Follow-up chest X-ray (PA view) and 12-lead ECG in 2 weeks.",
+      "reviewStatus": "pending",
+      "mappedCode": null,
+      "mappedDisplay": null,
+      "reviewerNotes": null,
+      "createdAt": "",
+      "reviewedAt": null
+    },
+    {
+      "quarantineId": "af7ba00e-b561-4e95-8a82-b858ba49b372",
+      "extractionId": "1713c76e-b355-4be3-b02f-e9d581b82415",
+      "category": "INVESTIGATION",
+      "mention": "12-lead ECG",
+      "normalizedMention": "12-lead ecg",
+      "confidence": 0.5,
+      "reason": "uncertain_strength",
+      "startChar": 1592,
+      "endChar": 1651,
+      "scrubbedContext": "Follow-up chest X-ray (PA view) and 12-lead ECG in 2 weeks.",
+      "reviewStatus": "pending",
+      "mappedCode": null,
+      "mappedDisplay": null,
+      "reviewerNotes": null,
+      "createdAt": "",
+      "reviewedAt": null
+    }
+  ],
+  "safetyAlerts": [
+    {
+      "alertId": "DDI-fbb5fcdc",
+      "severity": "HIGH",
+      "category": "DRUG_INTERACTION",
+      "title": "Major Bleeding Risk: Warfarin \u002B Antiplatelet/NSAID",
+      "description": "Derived interpretation: Concurrent active documentation of Warfarin with Aspirin, Clopidogrel, or NSAIDs significantly increases the risk of major gastrointestinal and intracranial hemorrhage.",
+      "involvedEntities": [
+        "Warfarin",
+        "Aspirin"
+      ],
+      "recommendation": "Review the source note and reconcile this finding with a qualified clinician. This extraction does not recommend treatment changes.",
+      "alertType": "INTERACTION_RISK_REVIEW",
+      "temporality": "CURRENT_ACTIVE",
+      "thresholdCriterion": "Active co-prescription of Vitamin K antagonist (Warfarin) \u002B Antiplatelet/NSAID",
+      "observedFact": "Active co-prescription of Warfarin (5 mg) and Aspirin (81 mg).",
+      "evidenceQuote": "Warfarin 5 mg orally once daily in the evening for stroke prophylaxis. | Aspirin 81 mg orally once daily in the morning (verify concurrent anticoagulation indication).",
+      "startChar": 979,
+      "endChar": 1145
+    },
+    {
+      "alertId": "DDI-9fdd6db7",
+      "severity": "MODERATE",
+      "category": "DRUG_INTERACTION",
+      "title": "QTc Prolongation Risk: Macrolide/Fluoroquinolone \u002B Ondansetron",
+      "description": "Derived interpretation: Co-administration of QT-prolonging antimicrobials with Ondansetron increases the risk of ventricular arrhythmia / Torsades de Pointes.",
+      "involvedEntities": [
+        "Azithromycin",
+        "Ondansetron"
+      ],
+      "recommendation": "Review the source note and reconcile this finding with a qualified clinician. This extraction does not recommend treatment changes.",
+      "alertType": "INTERACTION_RISK_REVIEW",
+      "temporality": "CURRENT_ACTIVE",
+      "thresholdCriterion": "Active co-prescription of QT-prolonging antimicrobial (Macrolide/Fluoroquinolone) \u002B 5-HT3 antagonist (Ondansetron)",
+      "observedFact": "Active co-prescription of Azithromycin and Ondansetron.",
+      "evidenceQuote": "Azithromycin 500 mg orally once daily for 3 days to complete respiratory course. | Ondansetron 4 mg orally every 8 hours as needed for nausea.",
+      "startChar": 1147,
+      "endChar": 1288
+    },
+    {
+      "alertId": "ALG-4f5bcab3",
+      "severity": "MODERATE",
+      "category": "ALLERGY_CONFLICT",
+      "title": "Documented Drug Allergy Vigilance: Penicillin",
+      "description": "Observed data: Patient note documents allergy/reaction to Penicillin (evidence: \u0022Documented Allergies: Penicillin (anaphylaxis) and Ibuprofen (bronchospasm).\u0022). Ensure all newly prescribed agents avoid cross-reactivity.",
+      "involvedEntities": [
+        "Penicillin"
+      ],
+      "recommendation": "Review the source note and reconcile this finding with a qualified clinician. This extraction does not recommend treatment changes.",
+      "alertType": "OBSERVED_FACT_WARNING",
+      "temporality": "CURRENT_ACTIVE",
+      "thresholdCriterion": null,
+      "observedFact": "Documented Allergies: Penicillin (anaphylaxis) and Ibuprofen (bronchospasm).",
+      "evidenceQuote": "Documented Allergies: Penicillin (anaphylaxis) and Ibuprofen (bronchospasm).",
+      "startChar": 87,
+      "endChar": 163
+    },
+    {
+      "alertId": "ALG-a4ac8df4",
+      "severity": "MODERATE",
+      "category": "ALLERGY_CONFLICT",
+      "title": "Documented Drug Allergy Vigilance: Ibuprofen",
+      "description": "Observed data: Patient note documents allergy/reaction to Ibuprofen (evidence: \u0022Documented Allergies: Penicillin (anaphylaxis) and Ibuprofen (bronchospasm).\u0022). Ensure all newly prescribed agents avoid cross-reactivity.",
+      "involvedEntities": [
+        "Ibuprofen"
+      ],
+      "recommendation": "Review the source note and reconcile this finding with a qualified clinician. This extraction does not recommend treatment changes.",
+      "alertType": "OBSERVED_FACT_WARNING",
+      "temporality": "CURRENT_ACTIVE",
+      "thresholdCriterion": null,
+      "observedFact": "Documented Allergies: Penicillin (anaphylaxis) and Ibuprofen (bronchospasm).",
+      "evidenceQuote": "Documented Allergies: Penicillin (anaphylaxis) and Ibuprofen (bronchospasm).",
+      "startChar": 87,
+      "endChar": 163
+    },
+    {
+      "alertId": "LAB-ec1b9b9b",
+      "severity": "CRITICAL",
+      "category": "LAB_ANOMALY",
+      "title": "Critical Potassium Value (5.7 mEq/L)",
+      "description": "Observed data (BASELINE_MEASUREMENT): Potassium = 5.7 mEq/L (evidence: \u0022K\u002B 5.7 mEq/L\u0022 at [714..726]). Derived interpretation (configured institutional threshold: K\u002B \u003E 5.5 or \u003C 3.0 mEq/L; reference range 3.5\u20135.1 mEq/L): Exceeds hyperkalemia threshold (\u003E 5.5 mEq/L) and carries arrhythmia risk.",
+      "involvedEntities": [
+        "Potassium: 5.7 mEq/L"
+      ],
+      "recommendation": "Review the source note and reconcile this finding with a qualified clinician. This extraction does not recommend treatment changes.",
+      "alertType": "DERIVED_CLINICAL_INFERENCE",
+      "temporality": "BASELINE_MEASUREMENT",
+      "thresholdCriterion": "Configured rule threshold: Serum Potassium \u003E 5.5 mEq/L or \u003C 3.0 mEq/L (reference interval 3.5\u20135.1 mEq/L)",
+      "observedFact": "Potassium = 5.7 mEq/L",
+      "evidenceQuote": "K\u002B 5.7 mEq/L",
+      "startChar": 714,
+      "endChar": 726
+    },
+    {
+      "alertId": "LAB-ed64e74b",
+      "severity": "HIGH",
+      "category": "LAB_ANOMALY",
+      "title": "Elevated Serum Creatinine (1.9 mg/dL)",
+      "description": "Observed data (BASELINE_MEASUREMENT): Serum Creatinine = 1.9 mg/dL (evidence: \u0022Creatinine 1.9 mg/dL\u0022 at [728..748]). Derived interpretation (configured threshold: SCr \u003E= 1.8 mg/dL): Potentially elevated serum creatinine requiring clinical interpretation and renal dose review.",
+      "involvedEntities": [
+        "Serum Creatinine: 1.9 mg/dL"
+      ],
+      "recommendation": "Review the source note and reconcile this finding with a qualified clinician. This extraction does not recommend treatment changes.",
+      "alertType": "DERIVED_CLINICAL_INFERENCE",
+      "temporality": "BASELINE_MEASUREMENT",
+      "thresholdCriterion": "Configured rule threshold: Serum Creatinine \u003E= 1.8 mg/dL",
+      "observedFact": "Serum Creatinine = 1.9 mg/dL",
+      "evidenceQuote": "Creatinine 1.9 mg/dL",
+      "startChar": 728,
+      "endChar": 748
+    },
+    {
+      "alertId": "VIT-362cb00b",
+      "severity": "MODERATE",
+      "category": "LAB_ANOMALY",
+      "title": "Historical Admission Finding \u2014 Significant Pyrexia (38.9\u00B0C)",
+      "description": "Observed data (HISTORICAL_ADMISSION_COURSE): Temperature = 38.9\u00B0C (evidence: \u0022fever of 38.9 \u00B0C\u0022 at [412..428]). Derived interpretation (configured threshold: Temp \u003E= 38.5\u00B0C): High fever documented in historical admission course context.",
+      "involvedEntities": [
+        "Temperature: 38.9\u00B0C"
+      ],
+      "recommendation": "Review the source note and reconcile this finding with a qualified clinician. This extraction does not recommend treatment changes.",
+      "alertType": "DERIVED_CLINICAL_INFERENCE",
+      "temporality": "HISTORICAL_ADMISSION_COURSE",
+      "thresholdCriterion": "Configured rule threshold: Temperature \u003E= 38.5\u00B0C",
+      "observedFact": "Temperature = 38.9\u00B0C",
+      "evidenceQuote": "fever of 38.9 \u00B0C",
+      "startChar": 412,
+      "endChar": 428
+    }
+  ],
+  "finalPersistedJson": {
+    "schemaVersion": "1.0.0",
+    "extractionId": "1713c76e-b355-4be3-b02f-e9d581b82415",
+    "correlationId": "live-final-86985b4aaa88",
+    "extractedAt": "2026-11-23T07:33:41.9709356\u002B00:00",
+    "executionDurationMs": 58.8,
+    "modelMetadata": {
+      "adapterType": "microsoft_foundry",
+      "modelDeployment": "gpt-6.1-sol",
+      "promptVersion": "clinical-v3",
+      "promptTokens": 1255,
+      "completionTokens": 2305,
+      "totalTokens": 3560,
+      "estimatedCostUsd": null,
+      "provider": "foundry",
+      "model": "gpt-6.1-sol-2026-09-29",
+      "azureDeployment": "gpt-6.1-sol",
+      "fallbackReason": null,
+      "inferenceExecuted": true,
+      "attempts": [
+        {
+          "provider": "foundry",
+          "model": "gpt-6.1-sol-2026-09-29",
+          "deployment": "gpt-6.1-sol",
+          "outcome": "accepted",
+          "reason": null,
+          "durationMs": 0.68,
+          "inferenceExecuted": true,
+          "promptTokens": 1255,
+          "completionTokens": 2305,
+          "totalTokens": 3560,
+          "onnxWindows": null,
+          "inferenceDurationMs": null,
+          "modelMedicationMentions": null,
+          "ruleMedicationMentions": null,
+          "ruleInvestigationMentions": null
+        }
+      ],
+      "schemaValidationStatus": "passed"
+    },
+    "preprocessed": {
+      "charLength": 1723,
+      "sections": [
+        {
+          "code": "OTHER",
+          "heading": "Prologue",
+          "start": 0,
+          "end": 86
+        },
+        {
+          "code": "ALLERGIES",
+          "heading": "Documented Allergies:",
+          "start": 86,
+          "end": 164
+        },
+        {
+          "code": "CHIEF_COMPLAINT",
+          "heading": "Hospital Course \u0026 Clinical Presentation",
+          "start": 164,
+          "end": 557
+        },
+        {
+          "code": "EXAMINATION",
+          "heading": "Discharge Vital Signs \u0026 Baseline Labs",
+          "start": 557,
+          "end": 749
+        },
+        {
+          "code": "DIAGNOSES",
+          "heading": "Discharge Diagnoses",
+          "start": 749,
+          "end": 955
+        },
+        {
+          "code": "MEDICATIONS",
+          "heading": "Discharge Medications",
+          "start": 955,
+          "end": 1357
+        },
+        {
+          "code": "LABS",
+          "heading": "Outpatient Follow-Up Investigations",
+          "start": 1357,
+          "end": 1723
+        }
+      ]
+    },
+    "medications": [
+      {
+        "name": "Penicillin",
+        "strength": null,
+        "dose": null,
+        "route": null,
+        "frequency": null,
+        "duration": null,
+        "formulation": null,
+        "instructions": "anaphylaxis",
+        "assertionStatus": "allergy",
+        "evidence": {
+          "quote": "Documented Allergies: Penicillin (anaphylaxis) and Ibuprofen (bronchospasm).",
+          "verified": true,
+          "start": 87,
+          "end": 163
+        },
+        "qualityFlags": [
+          "TERMINOLOGY_UNMATCHED"
+        ],
+        "findings": [
+          {
+            "code": "TERMINOLOGY_UNMATCHED",
+            "severity": "warning",
+            "field": "name",
+            "message": "The supported terminology catalog could not confidently map this extracted term; review its source evidence."
+          }
+        ],
+        "normalization": {
+          "status": "unmatched",
+          "matchedCode": null,
+          "displayName": null,
+          "confidence": 0,
+          "semanticStatus": "unresolved",
+          "candidateCode": null,
+          "terminologySource": "RxNorm",
+          "terminologyVersion": "02-Nov-2026",
+          "mappingNote": "Unlisted medication mention; routed to OOV quarantine."
+        },
+        "doseUnit": null,
+        "action": "allergy",
+        "origin": "LLM_EXTRACTED",
+        "provenance": {
+          "origin": "LLM_EXTRACTED",
+          "provider": "foundry",
+          "ruleModified": false,
+          "modifications": null,
+          "uncertaintyReason": "Unlisted medication mention; routed to OOV quarantine.",
+          "quarantined": true,
+          "triggeredAlertIds": null
+        }
+      },
+      {
+        "name": "Ibuprofen",
+        "strength": null,
+        "dose": null,
+        "route": null,
+        "frequency": null,
+        "duration": null,
+        "formulation": null,
+        "instructions": "bronchospasm",
+        "assertionStatus": "allergy",
+        "evidence": {
+          "quote": "Documented Allergies: Penicillin (anaphylaxis) and Ibuprofen (bronchospasm).",
+          "verified": true,
+          "start": 87,
+          "end": 163
+        },
+        "qualityFlags": [],
+        "findings": [],
+        "normalization": {
+          "status": "matched",
+          "matchedCode": "5640",
+          "displayName": "Ibuprofen",
+          "confidence": 0.98,
+          "semanticStatus": "exact",
+          "candidateCode": "5640",
+          "terminologySource": "RxNorm",
+          "terminologyVersion": "02-Nov-2026",
+          "mappingNote": "Exact RxNorm ingredient (IN) match for \u0027Ibuprofen\u0027 (RxCUI 5640)."
+        },
+        "doseUnit": null,
+        "action": "allergy",
+        "origin": "LLM_AND_RULE_CONFIRMED",
+        "provenance": {
+          "origin": "LLM_AND_RULE_CONFIRMED",
+          "provider": "foundry",
+          "ruleModified": false,
+          "modifications": null,
+          "uncertaintyReason": null,
+          "quarantined": false,
+          "triggeredAlertIds": null
+        }
+      },
+      {
+        "name": "Warfarin",
+        "strength": "5 mg",
+        "dose": null,
+        "route": "orally",
+        "frequency": "once daily",
+        "duration": null,
+        "formulation": null,
+        "instructions": "in the evening for stroke prophylaxis.",
+        "assertionStatus": "current_medication",
+        "evidence": {
+          "quote": "Warfarin 5 mg orally once daily in the evening for stroke prophylaxis.",
+          "verified": true,
+          "start": 979,
+          "end": 1049
+        },
+        "qualityFlags": [
+          "INCOMPLETE_PRESCRIPTION"
+        ],
+        "findings": [
+          {
+            "code": "INCOMPLETE_PRESCRIPTION",
+            "severity": "warning",
+            "field": "dose",
+            "message": "Unresolved prescription attributes: dose (administered form quantity; product strength alone does not specify administered dose). Human review is required."
+          }
+        ],
+        "normalization": {
+          "status": "matched",
+          "matchedCode": "11289",
+          "displayName": "Warfarin",
+          "confidence": 0.98,
+          "semanticStatus": "exact",
+          "candidateCode": "11289",
+          "terminologySource": "RxNorm",
+          "terminologyVersion": "02-Nov-2026",
+          "mappingNote": "Exact RxNorm ingredient (IN) match for \u0027Warfarin\u0027 (RxCUI 11289); product strength \u00275 mg\u0027 is preserved separately in the strength field."
+        },
+        "doseUnit": null,
+        "action": "none",
+        "origin": "LLM_AND_RULE_CONFIRMED",
+        "provenance": {
+          "origin": "LLM_AND_RULE_CONFIRMED",
+          "provider": "foundry",
+          "ruleModified": true,
+          "modifications": [
+            "action normalized from \u0027continue\u0027 to \u0027none\u0027"
+          ],
+          "uncertaintyReason": null,
+          "quarantined": false,
+          "triggeredAlertIds": null
+        }
+      },
+      {
+        "name": "Aspirin",
+        "strength": "81 mg",
+        "dose": null,
+        "route": "orally",
+        "frequency": "once daily",
+        "duration": null,
+        "formulation": null,
+        "instructions": "in the morning (verify concurrent anticoagulation indication).",
+        "assertionStatus": "current_medication",
+        "evidence": {
+          "quote": "Aspirin 81 mg orally once daily in the morning (verify concurrent anticoagulation indication).",
+          "verified": true,
+          "start": 1051,
+          "end": 1145
+        },
+        "qualityFlags": [
+          "INCOMPLETE_PRESCRIPTION"
+        ],
+        "findings": [
+          {
+            "code": "INCOMPLETE_PRESCRIPTION",
+            "severity": "warning",
+            "field": "dose",
+            "message": "Unresolved prescription attributes: dose (administered form quantity; product strength alone does not specify administered dose). Human review is required."
+          }
+        ],
+        "normalization": {
+          "status": "matched",
+          "matchedCode": "1191",
+          "displayName": "Aspirin",
+          "confidence": 0.98,
+          "semanticStatus": "exact",
+          "candidateCode": "1191",
+          "terminologySource": "RxNorm",
+          "terminologyVersion": "02-Nov-2026",
+          "mappingNote": "Exact RxNorm ingredient (IN) match for \u0027Aspirin\u0027 (RxCUI 1191); product strength \u002781 mg\u0027 is preserved separately in the strength field."
+        },
+        "doseUnit": null,
+        "action": "none",
+        "origin": "LLM_AND_RULE_CONFIRMED",
+        "provenance": {
+          "origin": "LLM_AND_RULE_CONFIRMED",
+          "provider": "foundry",
+          "ruleModified": true,
+          "modifications": [
+            "action normalized from \u0027continue\u0027 to \u0027none\u0027"
+          ],
+          "uncertaintyReason": null,
+          "quarantined": false,
+          "triggeredAlertIds": null
+        }
+      },
+      {
+        "name": "Azithromycin",
+        "strength": "500 mg",
+        "dose": null,
+        "route": "orally",
+        "frequency": "once daily",
+        "duration": "for 3 days",
+        "formulation": null,
+        "instructions": "to complete respiratory course.",
+        "assertionStatus": "current_medication",
+        "evidence": {
+          "quote": "Azithromycin 500 mg orally once daily for 3 days to complete respiratory course.",
+          "verified": true,
+          "start": 1147,
+          "end": 1227
+        },
+        "qualityFlags": [
+          "INCOMPLETE_PRESCRIPTION"
+        ],
+        "findings": [
+          {
+            "code": "INCOMPLETE_PRESCRIPTION",
+            "severity": "warning",
+            "field": "dose",
+            "message": "Unresolved prescription attributes: dose (administered form quantity; product strength alone does not specify administered dose). Human review is required."
+          }
+        ],
+        "normalization": {
+          "status": "matched",
+          "matchedCode": "18631",
+          "displayName": "Azithromycin",
+          "confidence": 0.98,
+          "semanticStatus": "exact",
+          "candidateCode": "18631",
+          "terminologySource": "RxNorm",
+          "terminologyVersion": "02-Nov-2026",
+          "mappingNote": "Exact RxNorm ingredient (IN) match for \u0027Azithromycin\u0027 (RxCUI 18631); product strength \u0027500 mg\u0027 is preserved separately in the strength field."
+        },
+        "doseUnit": null,
+        "action": "none",
+        "origin": "LLM_AND_RULE_CONFIRMED",
+        "provenance": {
+          "origin": "LLM_AND_RULE_CONFIRMED",
+          "provider": "foundry",
+          "ruleModified": true,
+          "modifications": [
+            "action normalized from \u0027continue\u0027 to \u0027none\u0027",
+            "duration normalized from \u00273 days\u0027 to \u0027for 3 days\u0027"
+          ],
+          "uncertaintyReason": null,
+          "quarantined": false,
+          "triggeredAlertIds": null
+        }
+      },
+      {
+        "name": "Ondansetron",
+        "strength": "4 mg",
+        "dose": null,
+        "route": "orally",
+        "frequency": "every 8 hours as needed",
+        "duration": null,
+        "formulation": null,
+        "instructions": "as needed for nausea.",
+        "assertionStatus": "current_medication",
+        "evidence": {
+          "quote": "Ondansetron 4 mg orally every 8 hours as needed for nausea.",
+          "verified": true,
+          "start": 1229,
+          "end": 1288
+        },
+        "qualityFlags": [
+          "INCOMPLETE_PRESCRIPTION"
+        ],
+        "findings": [
+          {
+            "code": "INCOMPLETE_PRESCRIPTION",
+            "severity": "warning",
+            "field": "dose",
+            "message": "Unresolved prescription attributes: dose (administered form quantity; product strength alone does not specify administered dose). Human review is required."
+          }
+        ],
+        "normalization": {
+          "status": "matched",
+          "matchedCode": "26225",
+          "displayName": "Ondansetron",
+          "confidence": 0.98,
+          "semanticStatus": "exact",
+          "candidateCode": "26225",
+          "terminologySource": "RxNorm",
+          "terminologyVersion": "02-Nov-2026",
+          "mappingNote": "Exact RxNorm ingredient (IN) match for \u0027Ondansetron\u0027 (RxCUI 26225); product strength \u00274 mg\u0027 is preserved separately in the strength field."
+        },
+        "doseUnit": null,
+        "action": "none",
+        "origin": "LLM_AND_RULE_CONFIRMED",
+        "provenance": {
+          "origin": "LLM_AND_RULE_CONFIRMED",
+          "provider": "foundry",
+          "ruleModified": true,
+          "modifications": [
+            "action normalized from \u0027continue\u0027 to \u0027none\u0027"
+          ],
+          "uncertaintyReason": null,
+          "quarantined": false,
+          "triggeredAlertIds": null
+        }
+      },
+      {
+        "name": "Pantoprazole",
+        "strength": "40 mg",
+        "dose": null,
+        "route": "orally",
+        "frequency": "once daily",
+        "duration": "for 30 days",
+        "formulation": null,
+        "instructions": "before breakfast",
+        "assertionStatus": "current_medication",
+        "evidence": {
+          "quote": "Pantoprazole 40 mg orally once daily before breakfast for 30 days.",
+          "verified": true,
+          "start": 1290,
+          "end": 1356
+        },
+        "qualityFlags": [
+          "INCOMPLETE_PRESCRIPTION"
+        ],
+        "findings": [
+          {
+            "code": "INCOMPLETE_PRESCRIPTION",
+            "severity": "warning",
+            "field": "dose",
+            "message": "Unresolved prescription attributes: dose (administered form quantity; product strength alone does not specify administered dose). Human review is required."
+          }
+        ],
+        "normalization": {
+          "status": "matched",
+          "matchedCode": "40790",
+          "displayName": "Pantoprazole",
+          "confidence": 0.98,
+          "semanticStatus": "exact",
+          "candidateCode": "40790",
+          "terminologySource": "RxNorm",
+          "terminologyVersion": "02-Nov-2026",
+          "mappingNote": "Exact RxNorm ingredient (IN) match for \u0027Pantoprazole\u0027 (RxCUI 40790); product strength \u002740 mg\u0027 is preserved separately in the strength field."
+        },
+        "doseUnit": null,
+        "action": "none",
+        "origin": "LLM_AND_RULE_CONFIRMED",
+        "provenance": {
+          "origin": "LLM_AND_RULE_CONFIRMED",
+          "provider": "foundry",
+          "ruleModified": true,
+          "modifications": [
+            "action normalized from \u0027continue\u0027 to \u0027none\u0027",
+            "duration normalized from \u002730 days\u0027 to \u0027for 30 days\u0027"
+          ],
+          "uncertaintyReason": null,
+          "quarantined": false,
+          "triggeredAlertIds": null
+        }
+      }
+    ],
+    "investigations": [
+      {
+        "name": "K\u002B",
+        "timing": null,
+        "specimen": "Serum",
+        "assertionStatus": "historical",
+        "evidence": {
+          "quote": "Discharge Vital Signs \u0026 Baseline Labs\n\nBlood Pressure Heart Rate Temperature Serum Potassium \u0026 Creatinine\n\n124/76 mmHg | 82 bpm (controlled AF) | 36.8 \u00B0C | K\u002B 5.7 mEq/L, Creatinine 1.9 mg/dL",
+          "verified": true,
+          "start": 558,
+          "end": 748
+        },
+        "qualityFlags": [
+          "TERMINOLOGY_UNCERTAIN"
+        ],
+        "findings": [
+          {
+            "code": "TERMINOLOGY_UNCERTAIN",
+            "severity": "info",
+            "field": "name",
+            "message": "The supported terminology catalog could not confidently map this extracted term; review its source evidence."
+          }
+        ],
+        "normalization": {
+          "status": "uncertain",
+          "matchedCode": null,
+          "displayName": "Serum Potassium",
+          "confidence": 0.5,
+          "semanticStatus": "narrower",
+          "candidateCode": "2823-3",
+          "terminologySource": "LOINC",
+          "terminologyVersion": "2.83",
+          "mappingNote": "LOINC 2823-3 specifies Serum or Plasma system, whereas shorthand \u0027K\u002B\u0027/\u0027potassium\u0027 does not state specimen (could be serum, plasma, whole blood, or urine)."
+        },
+        "matchedCode": null,
+        "displayName": "Serum Potassium",
+        "status": "unknown",
+        "clinicalCategory": "laboratory",
+        "method": null,
+        "resultValue": "5.7 mEq/L",
+        "origin": "LLM_AND_RULE_CONFIRMED",
+        "provenance": {
+          "origin": "LLM_AND_RULE_CONFIRMED",
+          "provider": "foundry",
+          "ruleModified": false,
+          "modifications": null,
+          "uncertaintyReason": "LOINC 2823-3 specifies Serum or Plasma system, whereas shorthand \u0027K\u002B\u0027/\u0027potassium\u0027 does not state specimen (could be serum, plasma, whole blood, or urine).",
+          "quarantined": true,
+          "triggeredAlertIds": null
+        }
+      },
+      {
+        "name": "Creatinine",
+        "timing": null,
+        "specimen": "Serum",
+        "assertionStatus": "historical",
+        "evidence": {
+          "quote": "Discharge Vital Signs \u0026 Baseline Labs\n\nBlood Pressure Heart Rate Temperature Serum Potassium \u0026 Creatinine\n\n124/76 mmHg | 82 bpm (controlled AF) | 36.8 \u00B0C | K\u002B 5.7 mEq/L, Creatinine 1.9 mg/dL",
+          "verified": true,
+          "start": 558,
+          "end": 748
+        },
+        "qualityFlags": [
+          "TERMINOLOGY_UNCERTAIN"
+        ],
+        "findings": [
+          {
+            "code": "TERMINOLOGY_UNCERTAIN",
+            "severity": "info",
+            "field": "name",
+            "message": "The supported terminology catalog could not confidently map this extracted term; review its source evidence."
+          }
+        ],
+        "normalization": {
+          "status": "uncertain",
+          "matchedCode": null,
+          "displayName": "Serum Creatinine",
+          "confidence": 0.5,
+          "semanticStatus": "narrower",
+          "candidateCode": "2160-0",
+          "terminologySource": "LOINC",
+          "terminologyVersion": "2.83",
+          "mappingNote": "LOINC 2160-0 specifies Serum or Plasma system, whereas unqualified \u0027Creatinine\u0027 does not state specimen (serum vs urine)."
+        },
+        "matchedCode": null,
+        "displayName": "Serum Creatinine",
+        "status": "unknown",
+        "clinicalCategory": "laboratory",
+        "method": null,
+        "resultValue": "1.9 mg/dL",
+        "origin": "LLM_AND_RULE_CONFIRMED",
+        "provenance": {
+          "origin": "LLM_AND_RULE_CONFIRMED",
+          "provider": "foundry",
+          "ruleModified": false,
+          "modifications": null,
+          "uncertaintyReason": "LOINC 2160-0 specifies Serum or Plasma system, whereas unqualified \u0027Creatinine\u0027 does not state specimen (serum vs urine).",
+          "quarantined": true,
+          "triggeredAlertIds": null
+        }
+      },
+      {
+        "name": "Prothrombin time and INR",
+        "timing": "in 3 days",
+        "specimen": null,
+        "assertionStatus": "new_order",
+        "evidence": {
+          "quote": "Prothrombin time and INR (PT/INR) in 3 days.",
+          "verified": true,
+          "start": 1395,
+          "end": 1439
+        },
+        "qualityFlags": [
+          "TERMINOLOGY_UNCERTAIN"
+        ],
+        "findings": [
+          {
+            "code": "TERMINOLOGY_UNCERTAIN",
+            "severity": "info",
+            "field": "name",
+            "message": "The supported terminology catalog could not confidently map this extracted term; review its source evidence."
+          }
+        ],
+        "normalization": {
+          "status": "uncertain",
+          "matchedCode": null,
+          "displayName": "International Normalized Ratio",
+          "confidence": 0.5,
+          "semanticStatus": "narrower",
+          "candidateCode": "6301-6",
+          "terminologySource": "LOINC",
+          "terminologyVersion": "2.83",
+          "mappingNote": "LOINC 6301-6 (\u0027INR in Platelet poor plasma by Coagulation assay\u0027) encodes only INR (omitting Prothrombin Time seconds) and assumes platelet-poor plasma coagulation assay."
+        },
+        "matchedCode": null,
+        "displayName": "International Normalized Ratio",
+        "status": "unknown",
+        "clinicalCategory": "laboratory",
+        "method": null,
+        "resultValue": null,
+        "origin": "LLM_AND_RULE_CONFIRMED",
+        "provenance": {
+          "origin": "LLM_AND_RULE_CONFIRMED",
+          "provider": "foundry",
+          "ruleModified": true,
+          "modifications": [
+            "name normalized from \u0027Prothrombin time and INR (PT/INR)\u0027 to \u0027Prothrombin time and INR\u0027"
+          ],
+          "uncertaintyReason": "LOINC 6301-6 (\u0027INR in Platelet poor plasma by Coagulation assay\u0027) encodes only INR (omitting Prothrombin Time seconds) and assumes platelet-poor plasma coagulation assay.",
+          "quarantined": true,
+          "triggeredAlertIds": null
+        }
+      },
+      {
+        "name": "serum potassium",
+        "timing": "in 48 hours",
+        "specimen": "serum",
+        "assertionStatus": "new_order",
+        "evidence": {
+          "quote": "Repeat serum potassium, serum sodium, and serum creatinine in 48 hours.",
+          "verified": true,
+          "start": 1441,
+          "end": 1512
+        },
+        "qualityFlags": [],
+        "findings": [],
+        "normalization": {
+          "status": "matched",
+          "matchedCode": "2823-3",
+          "displayName": "Serum Potassium",
+          "confidence": 0.98,
+          "semanticStatus": "exact",
+          "candidateCode": "2823-3",
+          "terminologySource": "LOINC",
+          "terminologyVersion": "2.83",
+          "mappingNote": "Verified LOINC 2823-3 matches component, system/specimen, method, and view/lead specificity of \u0027serum potassium\u0027."
+        },
+        "matchedCode": "2823-3",
+        "displayName": "Serum Potassium",
+        "status": "unknown",
+        "clinicalCategory": "laboratory",
+        "method": null,
+        "resultValue": null,
+        "origin": "LLM_AND_RULE_CONFIRMED",
+        "provenance": {
+          "origin": "LLM_AND_RULE_CONFIRMED",
+          "provider": "foundry",
+          "ruleModified": false,
+          "modifications": null,
+          "uncertaintyReason": null,
+          "quarantined": false,
+          "triggeredAlertIds": null
+        }
+      },
+      {
+        "name": "serum sodium",
+        "timing": "in 48 hours",
+        "specimen": "serum",
+        "assertionStatus": "new_order",
+        "evidence": {
+          "quote": "Repeat serum potassium, serum sodium, and serum creatinine in 48 hours.",
+          "verified": true,
+          "start": 1441,
+          "end": 1512
+        },
+        "qualityFlags": [],
+        "findings": [],
+        "normalization": {
+          "status": "matched",
+          "matchedCode": "2951-2",
+          "displayName": "Serum Sodium",
+          "confidence": 0.98,
+          "semanticStatus": "exact",
+          "candidateCode": "2951-2",
+          "terminologySource": "LOINC",
+          "terminologyVersion": "2.83",
+          "mappingNote": "Verified LOINC 2951-2 matches component, system/specimen, method, and view/lead specificity of \u0027serum sodium\u0027."
+        },
+        "matchedCode": "2951-2",
+        "displayName": "Serum Sodium",
+        "status": "unknown",
+        "clinicalCategory": "laboratory",
+        "method": null,
+        "resultValue": null,
+        "origin": "LLM_AND_RULE_CONFIRMED",
+        "provenance": {
+          "origin": "LLM_AND_RULE_CONFIRMED",
+          "provider": "foundry",
+          "ruleModified": false,
+          "modifications": null,
+          "uncertaintyReason": null,
+          "quarantined": false,
+          "triggeredAlertIds": null
+        }
+      },
+      {
+        "name": "serum creatinine",
+        "timing": "in 48 hours",
+        "specimen": "serum",
+        "assertionStatus": "new_order",
+        "evidence": {
+          "quote": "Repeat serum potassium, serum sodium, and serum creatinine in 48 hours.",
+          "verified": true,
+          "start": 1441,
+          "end": 1512
+        },
+        "qualityFlags": [],
+        "findings": [],
+        "normalization": {
+          "status": "matched",
+          "matchedCode": "2160-0",
+          "displayName": "Serum Creatinine",
+          "confidence": 0.98,
+          "semanticStatus": "exact",
+          "candidateCode": "2160-0",
+          "terminologySource": "LOINC",
+          "terminologyVersion": "2.83",
+          "mappingNote": "Verified LOINC 2160-0 matches component, system/specimen, method, and view/lead specificity of \u0027serum creatinine\u0027."
+        },
+        "matchedCode": "2160-0",
+        "displayName": "Serum Creatinine",
+        "status": "unknown",
+        "clinicalCategory": "laboratory",
+        "method": null,
+        "resultValue": null,
+        "origin": "LLM_AND_RULE_CONFIRMED",
+        "provenance": {
+          "origin": "LLM_AND_RULE_CONFIRMED",
+          "provider": "foundry",
+          "ruleModified": false,
+          "modifications": null,
+          "uncertaintyReason": null,
+          "quarantined": false,
+          "triggeredAlertIds": null
+        }
+      },
+      {
+        "name": "Complete blood count",
+        "timing": "at 1-week follow-up",
+        "specimen": null,
+        "assertionStatus": "new_order",
+        "evidence": {
+          "quote": "Complete blood count (CBC) and C-reactive protein (CRP) at 1-week follow-up.",
+          "verified": true,
+          "start": 1514,
+          "end": 1590
+        },
+        "qualityFlags": [
+          "TERMINOLOGY_UNCERTAIN"
+        ],
+        "findings": [
+          {
+            "code": "TERMINOLOGY_UNCERTAIN",
+            "severity": "info",
+            "field": "name",
+            "message": "The supported terminology catalog could not confidently map this extracted term; review its source evidence."
+          }
+        ],
+        "normalization": {
+          "status": "uncertain",
+          "matchedCode": null,
+          "displayName": "Complete Blood Count",
+          "confidence": 0.5,
+          "semanticStatus": "narrower",
+          "candidateCode": "58410-2",
+          "terminologySource": "LOINC",
+          "terminologyVersion": "2.83",
+          "mappingNote": "LOINC 58410-2 (\u0027CBC panel - Blood by Automated count\u0027) assumes an automated count method not stated in generic \u0027CBC\u0027."
+        },
+        "matchedCode": null,
+        "displayName": "Complete Blood Count",
+        "status": "unknown",
+        "clinicalCategory": "laboratory",
+        "method": null,
+        "resultValue": null,
+        "origin": "LLM_AND_RULE_CONFIRMED",
+        "provenance": {
+          "origin": "LLM_AND_RULE_CONFIRMED",
+          "provider": "foundry",
+          "ruleModified": true,
+          "modifications": [
+            "name normalized from \u0027Complete blood count (CBC)\u0027 to \u0027Complete blood count\u0027"
+          ],
+          "uncertaintyReason": "LOINC 58410-2 (\u0027CBC panel - Blood by Automated count\u0027) assumes an automated count method not stated in generic \u0027CBC\u0027.",
+          "quarantined": true,
+          "triggeredAlertIds": null
+        }
+      },
+      {
+        "name": "C-reactive protein",
+        "timing": "at 1-week follow-up",
+        "specimen": null,
+        "assertionStatus": "new_order",
+        "evidence": {
+          "quote": "Complete blood count (CBC) and C-reactive protein (CRP) at 1-week follow-up.",
+          "verified": true,
+          "start": 1514,
+          "end": 1590
+        },
+        "qualityFlags": [
+          "TERMINOLOGY_UNCERTAIN"
+        ],
+        "findings": [
+          {
+            "code": "TERMINOLOGY_UNCERTAIN",
+            "severity": "info",
+            "field": "name",
+            "message": "The supported terminology catalog could not confidently map this extracted term; review its source evidence."
+          }
+        ],
+        "normalization": {
+          "status": "uncertain",
+          "matchedCode": null,
+          "displayName": "C-Reactive Protein",
+          "confidence": 0.5,
+          "semanticStatus": "narrower",
+          "candidateCode": "1988-5",
+          "terminologySource": "LOINC",
+          "terminologyVersion": "2.83",
+          "mappingNote": "LOINC 1988-5 (\u0027C reactive protein [Mass/volume] in Serum or Plasma\u0027) assumes Serum/Plasma mass concentration not stated in unqualified \u0027CRP\u0027."
+        },
+        "matchedCode": null,
+        "displayName": "C-Reactive Protein",
+        "status": "unknown",
+        "clinicalCategory": "laboratory",
+        "method": null,
+        "resultValue": null,
+        "origin": "LLM_AND_RULE_CONFIRMED",
+        "provenance": {
+          "origin": "LLM_AND_RULE_CONFIRMED",
+          "provider": "foundry",
+          "ruleModified": true,
+          "modifications": [
+            "name normalized from \u0027C-reactive protein (CRP)\u0027 to \u0027C-reactive protein\u0027"
+          ],
+          "uncertaintyReason": "LOINC 1988-5 (\u0027C reactive protein [Mass/volume] in Serum or Plasma\u0027) assumes Serum/Plasma mass concentration not stated in unqualified \u0027CRP\u0027.",
+          "quarantined": true,
+          "triggeredAlertIds": null
+        }
+      },
+      {
+        "name": "chest X-ray",
+        "timing": "in 2 weeks",
+        "specimen": null,
+        "assertionStatus": "new_order",
+        "evidence": {
+          "quote": "Follow-up chest X-ray (PA view) and 12-lead ECG in 2 weeks.",
+          "verified": true,
+          "start": 1592,
+          "end": 1651
+        },
+        "qualityFlags": [
+          "TERMINOLOGY_UNCERTAIN"
+        ],
+        "findings": [
+          {
+            "code": "TERMINOLOGY_UNCERTAIN",
+            "severity": "info",
+            "field": "name",
+            "message": "The supported terminology catalog could not confidently map this extracted term; review its source evidence."
+          }
+        ],
+        "normalization": {
+          "status": "uncertain",
+          "matchedCode": null,
+          "displayName": "Chest X-Ray PA",
+          "confidence": 0.5,
+          "semanticStatus": "narrower",
+          "candidateCode": "24648-8",
+          "terminologySource": "LOINC",
+          "terminologyVersion": "2.83",
+          "mappingNote": "LOINC 24648-8 (\u0027XR Chest PA upright\u0027) specifies an upright patient posture not stated in \u0027chest X-ray (PA view)\u0027; withheld from exact match code."
+        },
+        "matchedCode": null,
+        "displayName": "Chest X-Ray PA",
+        "status": "unknown",
+        "clinicalCategory": "imaging",
+        "method": null,
+        "resultValue": null,
+        "origin": "LLM_AND_RULE_CONFIRMED",
+        "provenance": {
+          "origin": "LLM_AND_RULE_CONFIRMED",
+          "provider": "foundry",
+          "ruleModified": true,
+          "modifications": [
+            "name normalized from \u0027chest X-ray (PA view)\u0027 to \u0027chest X-ray\u0027"
+          ],
+          "uncertaintyReason": "LOINC 24648-8 (\u0027XR Chest PA upright\u0027) specifies an upright patient posture not stated in \u0027chest X-ray (PA view)\u0027; withheld from exact match code.",
+          "quarantined": true,
+          "triggeredAlertIds": null
+        }
+      },
+      {
+        "name": "12-lead ECG",
+        "timing": "in 2 weeks",
+        "specimen": null,
+        "assertionStatus": "new_order",
+        "evidence": {
+          "quote": "Follow-up chest X-ray (PA view) and 12-lead ECG in 2 weeks.",
+          "verified": true,
+          "start": 1592,
+          "end": 1651
+        },
+        "qualityFlags": [
+          "TERMINOLOGY_UNCERTAIN"
+        ],
+        "findings": [
+          {
+            "code": "TERMINOLOGY_UNCERTAIN",
+            "severity": "info",
+            "field": "name",
+            "message": "The supported terminology catalog could not confidently map this extracted term; review its source evidence."
+          }
+        ],
+        "normalization": {
+          "status": "uncertain",
+          "matchedCode": null,
+          "displayName": "Electrocardiogram",
+          "confidence": 0.5,
+          "semanticStatus": "broader",
+          "candidateCode": "11524-6",
+          "terminologySource": "LOINC",
+          "terminologyVersion": "2.83",
+          "mappingNote": "LOINC 11524-6 (\u0027EKG study\u0027) is a general electrocardiogram concept and does not encode the 12-lead configuration stated in \u002712-lead ECG\u0027 (vs LOINC 34534-8); withheld from exact match code."
+        },
+        "matchedCode": null,
+        "displayName": "Electrocardiogram",
+        "status": "unknown",
+        "clinicalCategory": "electrophysiology_procedure",
+        "method": null,
+        "resultValue": null,
+        "origin": "LLM_AND_RULE_CONFIRMED",
+        "provenance": {
+          "origin": "LLM_AND_RULE_CONFIRMED",
+          "provider": "foundry",
+          "ruleModified": false,
+          "modifications": null,
+          "uncertaintyReason": "LOINC 11524-6 (\u0027EKG study\u0027) is a general electrocardiogram concept and does not encode the 12-lead configuration stated in \u002712-lead ECG\u0027 (vs LOINC 34534-8); withheld from exact match code.",
+          "quarantined": true,
+          "triggeredAlertIds": null
+        }
+      }
+    ],
+    "validationSummary": {
+      "hasErrors": false,
+      "errorCount": 0,
+      "warningCount": 6,
+      "dimensions": [
+        {
+          "dimension": "StructuralJsonValidity",
+          "status": "PASS",
+          "evaluatedCount": 1,
+          "passedCount": 1,
+          "warningCount": 0,
+          "errorCount": 0,
+          "summary": "Strict JSON schema validation and candidate deserialization succeeded."
+        },
+        {
+          "dimension": "EvidenceQuoteValidity",
+          "status": "PASS",
+          "evaluatedCount": 17,
+          "passedCount": 17,
+          "warningCount": 0,
+          "errorCount": 0,
+          "summary": "17/17 entity evidence quotes verified verbatim against reconstructed source text."
+        },
+        {
+          "dimension": "EvidenceOffsetValidity",
+          "status": "PASS",
+          "evaluatedCount": 17,
+          "passedCount": 17,
+          "warningCount": 0,
+          "errorCount": 0,
+          "summary": "17/17 entity character offset spans verified within source bounds."
+        },
+        {
+          "dimension": "EntityCompleteness",
+          "status": "PASS",
+          "evaluatedCount": 17,
+          "passedCount": 17,
+          "warningCount": 0,
+          "errorCount": 0,
+          "summary": "Second-pass source completeness check detected no omitted medication or investigation mentions."
+        },
+        {
+          "dimension": "AttributeGrounding",
+          "status": "PARTIAL",
+          "evaluatedCount": 7,
+          "passedCount": 7,
+          "warningCount": 5,
+          "errorCount": 0,
+          "summary": "All populated posology attributes are lexically grounded in entity scope; 5 incomplete/complex prescription review flag(s)."
+        },
+        {
+          "dimension": "ClinicalAssertionConsistency",
+          "status": "PASS",
+          "evaluatedCount": 17,
+          "passedCount": 17,
+          "warningCount": 0,
+          "errorCount": 0,
+          "summary": "All medication and investigation assertions are consistent with section context, negation, and temporality."
+        },
+        {
+          "dimension": "TerminologyNormalization",
+          "status": "PARTIAL",
+          "evaluatedCount": 17,
+          "passedCount": 9,
+          "warningCount": 8,
+          "errorCount": 0,
+          "summary": "9/17 exact RxNorm/LOINC concepts resolved; 8 narrower/broader/unresolved concept(s) withheld from exact code assignment."
+        },
+        {
+          "dimension": "SafetyAlertGrounding",
+          "status": "PASS",
+          "evaluatedCount": 7,
+          "passedCount": 7,
+          "warningCount": 0,
+          "errorCount": 0,
+          "summary": "7/7 safety/review alert(s) grounded with source evidence quotes and character offsets."
+        }
+      ]
+    },
+    "safetyAlerts": [
+      {
+        "alertId": "DDI-fbb5fcdc",
+        "severity": "HIGH",
+        "category": "DRUG_INTERACTION",
+        "title": "Major Bleeding Risk: Warfarin \u002B Antiplatelet/NSAID",
+        "description": "Derived interpretation: Concurrent active documentation of Warfarin with Aspirin, Clopidogrel, or NSAIDs significantly increases the risk of major gastrointestinal and intracranial hemorrhage.",
+        "involvedEntities": [
+          "Warfarin",
+          "Aspirin"
+        ],
+        "recommendation": "Review the source note and reconcile this finding with a qualified clinician. This extraction does not recommend treatment changes.",
+        "alertType": "INTERACTION_RISK_REVIEW",
+        "temporality": "CURRENT_ACTIVE",
+        "thresholdCriterion": "Active co-prescription of Vitamin K antagonist (Warfarin) \u002B Antiplatelet/NSAID",
+        "observedFact": "Active co-prescription of Warfarin (5 mg) and Aspirin (81 mg).",
+        "evidenceQuote": "Warfarin 5 mg orally once daily in the evening for stroke prophylaxis. | Aspirin 81 mg orally once daily in the morning (verify concurrent anticoagulation indication).",
+        "startChar": 979,
+        "endChar": 1145
+      },
+      {
+        "alertId": "DDI-9fdd6db7",
+        "severity": "MODERATE",
+        "category": "DRUG_INTERACTION",
+        "title": "QTc Prolongation Risk: Macrolide/Fluoroquinolone \u002B Ondansetron",
+        "description": "Derived interpretation: Co-administration of QT-prolonging antimicrobials with Ondansetron increases the risk of ventricular arrhythmia / Torsades de Pointes.",
+        "involvedEntities": [
+          "Azithromycin",
+          "Ondansetron"
+        ],
+        "recommendation": "Review the source note and reconcile this finding with a qualified clinician. This extraction does not recommend treatment changes.",
+        "alertType": "INTERACTION_RISK_REVIEW",
+        "temporality": "CURRENT_ACTIVE",
+        "thresholdCriterion": "Active co-prescription of QT-prolonging antimicrobial (Macrolide/Fluoroquinolone) \u002B 5-HT3 antagonist (Ondansetron)",
+        "observedFact": "Active co-prescription of Azithromycin and Ondansetron.",
+        "evidenceQuote": "Azithromycin 500 mg orally once daily for 3 days to complete respiratory course. | Ondansetron 4 mg orally every 8 hours as needed for nausea.",
+        "startChar": 1147,
+        "endChar": 1288
+      },
+      {
+        "alertId": "ALG-4f5bcab3",
+        "severity": "MODERATE",
+        "category": "ALLERGY_CONFLICT",
+        "title": "Documented Drug Allergy Vigilance: Penicillin",
+        "description": "Observed data: Patient note documents allergy/reaction to Penicillin (evidence: \u0022Documented Allergies: Penicillin (anaphylaxis) and Ibuprofen (bronchospasm).\u0022). Ensure all newly prescribed agents avoid cross-reactivity.",
+        "involvedEntities": [
+          "Penicillin"
+        ],
+        "recommendation": "Review the source note and reconcile this finding with a qualified clinician. This extraction does not recommend treatment changes.",
+        "alertType": "OBSERVED_FACT_WARNING",
+        "temporality": "CURRENT_ACTIVE",
+        "thresholdCriterion": null,
+        "observedFact": "Documented Allergies: Penicillin (anaphylaxis) and Ibuprofen (bronchospasm).",
+        "evidenceQuote": "Documented Allergies: Penicillin (anaphylaxis) and Ibuprofen (bronchospasm).",
+        "startChar": 87,
+        "endChar": 163
+      },
+      {
+        "alertId": "ALG-a4ac8df4",
+        "severity": "MODERATE",
+        "category": "ALLERGY_CONFLICT",
+        "title": "Documented Drug Allergy Vigilance: Ibuprofen",
+        "description": "Observed data: Patient note documents allergy/reaction to Ibuprofen (evidence: \u0022Documented Allergies: Penicillin (anaphylaxis) and Ibuprofen (bronchospasm).\u0022). Ensure all newly prescribed agents avoid cross-reactivity.",
+        "involvedEntities": [
+          "Ibuprofen"
+        ],
+        "recommendation": "Review the source note and reconcile this finding with a qualified clinician. This extraction does not recommend treatment changes.",
+        "alertType": "OBSERVED_FACT_WARNING",
+        "temporality": "CURRENT_ACTIVE",
+        "thresholdCriterion": null,
+        "observedFact": "Documented Allergies: Penicillin (anaphylaxis) and Ibuprofen (bronchospasm).",
+        "evidenceQuote": "Documented Allergies: Penicillin (anaphylaxis) and Ibuprofen (bronchospasm).",
+        "startChar": 87,
+        "endChar": 163
+      },
+      {
+        "alertId": "LAB-ec1b9b9b",
+        "severity": "CRITICAL",
+        "category": "LAB_ANOMALY",
+        "title": "Critical Potassium Value (5.7 mEq/L)",
+        "description": "Observed data (BASELINE_MEASUREMENT): Potassium = 5.7 mEq/L (evidence: \u0022K\u002B 5.7 mEq/L\u0022 at [714..726]). Derived interpretation (configured institutional threshold: K\u002B \u003E 5.5 or \u003C 3.0 mEq/L; reference range 3.5\u20135.1 mEq/L): Exceeds hyperkalemia threshold (\u003E 5.5 mEq/L) and carries arrhythmia risk.",
+        "involvedEntities": [
+          "Potassium: 5.7 mEq/L"
+        ],
+        "recommendation": "Review the source note and reconcile this finding with a qualified clinician. This extraction does not recommend treatment changes.",
+        "alertType": "DERIVED_CLINICAL_INFERENCE",
+        "temporality": "BASELINE_MEASUREMENT",
+        "thresholdCriterion": "Configured rule threshold: Serum Potassium \u003E 5.5 mEq/L or \u003C 3.0 mEq/L (reference interval 3.5\u20135.1 mEq/L)",
+        "observedFact": "Potassium = 5.7 mEq/L",
+        "evidenceQuote": "K\u002B 5.7 mEq/L",
+        "startChar": 714,
+        "endChar": 726
+      },
+      {
+        "alertId": "LAB-ed64e74b",
+        "severity": "HIGH",
+        "category": "LAB_ANOMALY",
+        "title": "Elevated Serum Creatinine (1.9 mg/dL)",
+        "description": "Observed data (BASELINE_MEASUREMENT): Serum Creatinine = 1.9 mg/dL (evidence: \u0022Creatinine 1.9 mg/dL\u0022 at [728..748]). Derived interpretation (configured threshold: SCr \u003E= 1.8 mg/dL): Potentially elevated serum creatinine requiring clinical interpretation and renal dose review.",
+        "involvedEntities": [
+          "Serum Creatinine: 1.9 mg/dL"
+        ],
+        "recommendation": "Review the source note and reconcile this finding with a qualified clinician. This extraction does not recommend treatment changes.",
+        "alertType": "DERIVED_CLINICAL_INFERENCE",
+        "temporality": "BASELINE_MEASUREMENT",
+        "thresholdCriterion": "Configured rule threshold: Serum Creatinine \u003E= 1.8 mg/dL",
+        "observedFact": "Serum Creatinine = 1.9 mg/dL",
+        "evidenceQuote": "Creatinine 1.9 mg/dL",
+        "startChar": 728,
+        "endChar": 748
+      },
+      {
+        "alertId": "VIT-362cb00b",
+        "severity": "MODERATE",
+        "category": "LAB_ANOMALY",
+        "title": "Historical Admission Finding \u2014 Significant Pyrexia (38.9\u00B0C)",
+        "description": "Observed data (HISTORICAL_ADMISSION_COURSE): Temperature = 38.9\u00B0C (evidence: \u0022fever of 38.9 \u00B0C\u0022 at [412..428]). Derived interpretation (configured threshold: Temp \u003E= 38.5\u00B0C): High fever documented in historical admission course context.",
+        "involvedEntities": [
+          "Temperature: 38.9\u00B0C"
+        ],
+        "recommendation": "Review the source note and reconcile this finding with a qualified clinician. This extraction does not recommend treatment changes.",
+        "alertType": "DERIVED_CLINICAL_INFERENCE",
+        "temporality": "HISTORICAL_ADMISSION_COURSE",
+        "thresholdCriterion": "Configured rule threshold: Temperature \u003E= 38.5\u00B0C",
+        "observedFact": "Temperature = 38.9\u00B0C",
+        "evidenceQuote": "fever of 38.9 \u00B0C",
+        "startChar": 412,
+        "endChar": 428
+      }
+    ],
+    "embedding": [
+      0.206716,
+      0.082686,
+      0,
+      0.12403,
+      0,
+      0.206716,
+      0.206716,
+      0,
+      0,
+      0.082686,
+      0,
+      0.082686,
+      0.082686,
+      0.082686,
+      0.041343,
+      0,
+      -0.10198,
+      0.02894,
+      0.012403,
+      -0.031696,
+      0.198447,
+      -0.095089,
+      0.081308,
+      -0.157104,
+      -0.128164,
+      -0.095089,
+      -0.085443,
+      -0.026184,
+      -0.05788,
+      0.017915,
+      -0.13092,
+      0.168129,
+      -0.017915,
+      0.155726,
+      0.095089,
+      0.053746,
+      -0.05788,
+      -0.048234,
+      0.07993,
+      -0.005512,
+      0.075796,
+      0.33488,
+      -0.009647,
+      0.063393,
+      -0.093711,
+      -0.238412,
+      0.068905,
+      0.002756,
+      0.206716,
+      -0.150214,
+      -0.18191,
+      0.015159,
+      0.260462,
+      -0.150214,
+      0.113005,
+      -0.390004,
+      0.148835,
+      -0.011025,
+      0.13092,
+      0.092333,
+      0.009647,
+      0.006891,
+      -0.052368,
+      -0.013781
+    ],
+    "noteText": "INPATIENT DISCHARGE SUMMARY\n\nCardiology \u0026 Internal Medicine \u2014 Hospital Course\n\n\u0026 Plan\n\nDocumented Allergies: Penicillin (anaphylaxis) and Ibuprofen (bronchospasm).\n\nHospital Course \u0026 Clinical Presentation\n\n64-year-old female with non-valvular atrial fibrillation, chronic kidney disease stage 3b, and\n\ncommunity-acquired lower respiratory tract infection admitted with acute palpitations, productive\n\ncough, and fever of 38.9 \u00B0C. Treated with intravenous antimicrobial therapy and rate-control\n\nstabilization with full clinical recovery prior to discharge.\n\nDischarge Vital Signs \u0026 Baseline Labs\n\nBlood Pressure Heart Rate Temperature Serum Potassium \u0026 Creatinine\n\n124/76 mmHg | 82 bpm (controlled AF) | 36.8 \u00B0C | K\u002B 5.7 mEq/L, Creatinine 1.9 mg/dL\n\nDischarge Diagnoses\n\n1. Non-valvular atrial fibrillation with controlled ventricular response.\n\n2. Resolving community-acquired pneumonia (CAP).\n\n3. Chronic kidney disease stage 3b with mild hyperkalemia.\n\nDischarge Medications\n\nWarfarin 5 mg orally once daily in the evening for stroke prophylaxis.\n\nAspirin 81 mg orally once daily in the morning (verify concurrent anticoagulation indication).\n\nAzithromycin 500 mg orally once daily for 3 days to complete respiratory course.\n\nOndansetron 4 mg orally every 8 hours as needed for nausea.\n\nPantoprazole 40 mg orally once daily before breakfast for 30 days.\n\nOutpatient Follow-Up Investigations\n\nProthrombin time and INR (PT/INR) in 3 days.\n\nRepeat serum potassium, serum sodium, and serum creatinine in 48 hours.\n\nComplete blood count (CBC) and C-reactive protein (CRP) at 1-week follow-up.\n\nFollow-up chest X-ray (PA view) and 12-lead ECG in 2 weeks.\n\nInpatient Cardiology \u0026 Internal Medicine Discharge Summary Page 1 of 1",
+    "inputType": "pdf",
+    "sourceFileName": "Inpatient_Cardiology_Pulmonology_Discharge_Summary.pdf",
+    "saved": true
+  }
+}

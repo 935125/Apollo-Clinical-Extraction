@@ -1,0 +1,27 @@
+{
+  "date": "2026-11-23",
+  "backend": {
+    "passed": 158,
+    "failed": 0,
+    "skipped": 10,
+    "postgres_integration_passed": 8,
+    "evidence": "backend-tests.trx"
+  },
+  "angular": {
+    "passed": 34,
+    "failed": 0,
+    "command": "npm test -- --watch=false"
+  },
+  "angular_production_build": {
+    "status": "PASS",
+    "initial_bytes_label": "358.88 kB"
+  },
+  "playwright": {
+    "existing_scenarios_passed": 7,
+    "stage6_scenarios_passed": 2,
+    "failed": 0
+  },
+  "raw_model_spans_identical_before_after": true,
+  "billable_foundry_calls": 0,
+  "independent_clinical_evaluation": "PENDING EXTERNAL REVIEW"
+}

@@ -1,0 +1,699 @@
+{
+  "generatedAt": "2026-11-23T10:19:56.7874004+00:00",
+  "dataset": "post_live_unseen_cases.json (6 unseen synthetic clinical notes across 6 specialties; frozen post-live release audit)",
+  "provider": "LocalOnnx (bc5cdr_int8 \u002B deterministic posology/catalog; 0 live Foundry calls)",
+  "medicationsMicro": {
+    "tp": 18,
+    "fp": 1,
+    "fn": 1,
+    "precision": 0.9473684210526315,
+    "recall": 0.9473684210526315,
+    "f1": 0.9473684210526315
+  },
+  "investigationsMicro": {
+    "tp": 22,
+    "fp": 2,
+    "fn": 1,
+    "precision": 0.9166666666666666,
+    "recall": 0.9565217391304348,
+    "f1": 0.9361702127659575
+  },
+  "medicationAttributes": {
+    "strength": {
+      "correct": 18,
+      "evaluated": 19,
+      "rate": 0.9473684210526315
+    },
+    "assertion_status": {
+      "correct": 18,
+      "evaluated": 19,
+      "rate": 0.9473684210526315
+    },
+    "route": {
+      "correct": 13,
+      "evaluated": 14,
+      "rate": 0.9285714285714286
+    },
+    "frequency": {
+      "correct": 12,
+      "evaluated": 15,
+      "rate": 0.8
+    },
+    "duration": {
+      "correct": 3,
+      "evaluated": 3,
+      "rate": 1
+    }
+  },
+  "investigationAttributes": {
+    "assertion_status": {
+      "correct": 22,
+      "evaluated": 23,
+      "rate": 0.9565217391304348
+    }
+  },
+  "terminologyMetrics": {
+    "rxNormExactPrecision": 1,
+    "rxNormCodeAssignmentCoverage": 0.9474,
+    "rxNormAssignedCount": 18,
+    "rxNormTotalEntities": 19,
+    "loincExactPrecision": 1,
+    "loincCodeAssignmentCoverage": 0.7083,
+    "loincAssignedCount": 17,
+    "loincTotalEntities": 24
+  },
+  "safetyAlertVerification": {
+    "expectedAlerts": 7,
+    "matchedCategoryAndTemporality": 7,
+    "recall": 1
+  },
+  "foundryOfflinePipelineVerification": {
+    "provider": "MicrosoftFoundry \u002B ClinicalResultValidator (offline deterministic replay; 0 live calls)",
+    "acceptedCases": 6,
+    "totalCases": 6,
+    "medicationsMicro": {
+      "tp": 19,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1,
+      "recall": 1,
+      "f1": 1
+    },
+    "investigationsMicro": {
+      "tp": 23,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1,
+      "recall": 1,
+      "f1": 1
+    },
+    "medicationAttributes": {
+      "strength": {
+        "correct": 19,
+        "evaluated": 19,
+        "rate": 1
+      },
+      "assertion_status": {
+        "correct": 18,
+        "evaluated": 19,
+        "rate": 0.9473684210526315
+      },
+      "route": {
+        "correct": 14,
+        "evaluated": 14,
+        "rate": 1
+      },
+      "frequency": {
+        "correct": 15,
+        "evaluated": 15,
+        "rate": 1
+      },
+      "duration": {
+        "correct": 3,
+        "evaluated": 3,
+        "rate": 1
+      }
+    },
+    "investigationAttributes": {
+      "assertion_status": {
+        "correct": 23,
+        "evaluated": 23,
+        "rate": 1
+      }
+    },
+    "terminologyMetrics": {
+      "rxNormExactPrecision": 1,
+      "rxNormCodeAssignmentCoverage": 0.9474,
+      "rxNormAssignedCount": 18,
+      "rxNormTotalEntities": 19,
+      "loincExactPrecision": 1,
+      "loincCodeAssignmentCoverage": 0.7391,
+      "loincAssignedCount": 17,
+      "loincTotalEntities": 23
+    },
+    "safetyAlertsMatched": 7,
+    "safetyAlertsExpected": 7
+  },
+  "cases": [
+    {
+      "id": "unseen-001-infectious-cap",
+      "specialty": "Infectious Disease / Pulmonology",
+      "medNormalized": {
+        "tp": 3,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1,
+        "recall": 1,
+        "f1": 1
+      },
+      "invNormalized": {
+        "tp": 5,
+        "fp": 1,
+        "fn": 1,
+        "precision": 0.8333333333333334,
+        "recall": 0.8333333333333334,
+        "f1": 0.8333333333333334
+      },
+      "medAttributes": {
+        "strength": {
+          "correct": 3,
+          "evaluated": 3,
+          "rate": 1
+        },
+        "assertion_status": {
+          "correct": 3,
+          "evaluated": 3,
+          "rate": 1
+        },
+        "route": {
+          "correct": 2,
+          "evaluated": 2,
+          "rate": 1
+        },
+        "frequency": {
+          "correct": 1,
+          "evaluated": 2,
+          "rate": 0.5
+        },
+        "duration": {
+          "correct": 1,
+          "evaluated": 1,
+          "rate": 1
+        }
+      },
+      "medExactRxNormAssigned": 2,
+      "medTotalExtracted": 3,
+      "invExactLoincAssigned": 4,
+      "invTotalExtracted": 6,
+      "expectedAlertsCount": 2,
+      "matchedAlertsCount": 2,
+      "emittedSafetyAlerts": [
+        {
+          "alertId": "ALG-e02ba705",
+          "severity": "MODERATE",
+          "category": "ALLERGY_CONFLICT",
+          "title": "Documented Drug Allergy Vigilance: Penicillin",
+          "description": "Observed data: Patient note documents allergy/reaction to Penicillin (evidence: \u0022Documented Allergies: Penicillin (urticaria)\u0022). Ensure all newly prescribed agents avoid cross-reactivity.",
+          "involvedEntities": [
+            "Penicillin"
+          ],
+          "recommendation": "Review the source note and reconcile this finding with a qualified clinician. This extraction does not recommend treatment changes.",
+          "alertType": "OBSERVED_FACT_WARNING",
+          "temporality": "CURRENT_ACTIVE",
+          "thresholdCriterion": null,
+          "observedFact": "Documented Allergies: Penicillin (urticaria)",
+          "evidenceQuote": "Documented Allergies: Penicillin (urticaria)",
+          "startChar": 120,
+          "endChar": 164
+        },
+        {
+          "alertId": "VIT-bb8ab2d4",
+          "severity": "MODERATE",
+          "category": "LAB_ANOMALY",
+          "title": "Historical Admission Finding \u2014 Significant Pyrexia (39.1\u00B0C)",
+          "description": "Observed data (HISTORICAL_ADMISSION_COURSE): Temperature = 39.1\u00B0C (evidence: \u0022fever of 39.1 \u00B0C\u0022 at [71..87]). Derived interpretation (configured threshold: Temp \u003E= 38.5\u00B0C): High fever documented in historical admission course context.",
+          "involvedEntities": [
+            "Temperature: 39.1\u00B0C"
+          ],
+          "recommendation": "Review the source note and reconcile this finding with a qualified clinician. This extraction does not recommend treatment changes.",
+          "alertType": "DERIVED_CLINICAL_INFERENCE",
+          "temporality": "HISTORICAL_ADMISSION_COURSE",
+          "thresholdCriterion": "Configured rule threshold: Temperature \u003E= 38.5\u00B0C",
+          "observedFact": "Temperature = 39.1\u00B0C",
+          "evidenceQuote": "fever of 39.1 \u00B0C",
+          "startChar": 71,
+          "endChar": 87
+        }
+      ],
+      "failures": [
+        {
+          "kind": "attribute",
+          "category": "attribute_mismatch",
+          "entity": "Paracetamol",
+          "field": "frequency",
+          "expected": "every 8 hours",
+          "actual": "every 8 hours as needed"
+        },
+        {
+          "kind": "FN",
+          "category": "unrecognized",
+          "entity": "C-reactive protein",
+          "field": "name",
+          "expected": "C-reactive protein",
+          "actual": null
+        },
+        {
+          "kind": "attribute",
+          "category": "attribute_mismatch",
+          "entity": "C-reactive protein",
+          "field": "assertion_status",
+          "expected": "new_order",
+          "actual": null
+        },
+        {
+          "kind": "FP",
+          "category": "Evaluation matching error / incomplete gold (unadjudicated)",
+          "entity": "C-reactive protein (CRP)",
+          "field": "assertion_status",
+          "expected": null,
+          "actual": "new_order"
+        }
+      ]
+    },
+    {
+      "id": "unseen-002-cardio-afib",
+      "specialty": "Cardiology",
+      "medNormalized": {
+        "tp": 3,
+        "fp": 1,
+        "fn": 0,
+        "precision": 0.75,
+        "recall": 1,
+        "f1": 0.8571428571428571
+      },
+      "invNormalized": {
+        "tp": 5,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1,
+        "recall": 1,
+        "f1": 1
+      },
+      "medAttributes": {
+        "strength": {
+          "correct": 3,
+          "evaluated": 3,
+          "rate": 1
+        },
+        "route": {
+          "correct": 3,
+          "evaluated": 3,
+          "rate": 1
+        },
+        "frequency": {
+          "correct": 3,
+          "evaluated": 3,
+          "rate": 1
+        },
+        "assertion_status": {
+          "correct": 3,
+          "evaluated": 3,
+          "rate": 1
+        }
+      },
+      "medExactRxNormAssigned": 4,
+      "medTotalExtracted": 4,
+      "invExactLoincAssigned": 3,
+      "invTotalExtracted": 5,
+      "expectedAlertsCount": 2,
+      "matchedAlertsCount": 2,
+      "emittedSafetyAlerts": [
+        {
+          "alertId": "DDI-0b9c2140",
+          "severity": "HIGH",
+          "category": "DRUG_INTERACTION",
+          "title": "Major Bleeding Risk: Warfarin \u002B Antiplatelet/NSAID",
+          "description": "Derived interpretation: Concurrent active documentation of Warfarin with Aspirin, Clopidogrel, or NSAIDs significantly increases the risk of major gastrointestinal and intracranial hemorrhage.",
+          "involvedEntities": [
+            "Warfarin",
+            "Aspirin"
+          ],
+          "recommendation": "Review the source note and reconcile this finding with a qualified clinician. This extraction does not recommend treatment changes.",
+          "alertType": "INTERACTION_RISK_REVIEW",
+          "temporality": "CURRENT_ACTIVE",
+          "thresholdCriterion": "Active co-prescription of Vitamin K antagonist (Warfarin) \u002B Antiplatelet/NSAID",
+          "observedFact": "Active co-prescription of Warfarin (5 mg) and Aspirin (81 mg).",
+          "evidenceQuote": "Start Warfarin 5 mg PO once daily | Start Aspirin 81 mg PO once daily",
+          "startChar": 134,
+          "endChar": 205
+        },
+        {
+          "alertId": "LAB-54ffc6a9",
+          "severity": "CRITICAL",
+          "category": "LAB_ANOMALY",
+          "title": "Critical Potassium Value (5.9 mEq/L)",
+          "description": "Observed data (BASELINE_MEASUREMENT): Potassium = 5.9 mEq/L (evidence: \u0022K\u002B 5.9 mEq/L\u0022 at [90..102]). Derived interpretation (configured institutional threshold: K\u002B \u003E 5.5 or \u003C 3.0 mEq/L; reference range 3.5\u20135.1 mEq/L): Exceeds hyperkalemia threshold (\u003E 5.5 mEq/L) and carries arrhythmia risk.",
+          "involvedEntities": [
+            "Potassium: 5.9 mEq/L"
+          ],
+          "recommendation": "Review the source note and reconcile this finding with a qualified clinician. This extraction does not recommend treatment changes.",
+          "alertType": "DERIVED_CLINICAL_INFERENCE",
+          "temporality": "BASELINE_MEASUREMENT",
+          "thresholdCriterion": "Configured rule threshold: Serum Potassium \u003E 5.5 mEq/L or \u003C 3.0 mEq/L (reference interval 3.5\u20135.1 mEq/L)",
+          "observedFact": "Potassium = 5.9 mEq/L",
+          "evidenceQuote": "K\u002B 5.9 mEq/L",
+          "startChar": 90,
+          "endChar": 102
+        },
+        {
+          "alertId": "LAB-637a3078",
+          "severity": "HIGH",
+          "category": "LAB_ANOMALY",
+          "title": "Elevated Serum Creatinine (2.2 mg/dL)",
+          "description": "Observed data (BASELINE_MEASUREMENT): Serum Creatinine = 2.2 mg/dL (evidence: \u0022Creatinine 2.2 mg/dL\u0022 at [104..124]). Derived interpretation (configured threshold: SCr \u003E= 1.8 mg/dL): Potentially elevated serum creatinine requiring clinical interpretation and renal dose review.",
+          "involvedEntities": [
+            "Serum Creatinine: 2.2 mg/dL"
+          ],
+          "recommendation": "Review the source note and reconcile this finding with a qualified clinician. This extraction does not recommend treatment changes.",
+          "alertType": "DERIVED_CLINICAL_INFERENCE",
+          "temporality": "BASELINE_MEASUREMENT",
+          "thresholdCriterion": "Configured rule threshold: Serum Creatinine \u003E= 1.8 mg/dL",
+          "observedFact": "Serum Creatinine = 2.2 mg/dL",
+          "evidenceQuote": "Creatinine 2.2 mg/dL",
+          "startChar": 104,
+          "endChar": 124
+        }
+      ],
+      "failures": [
+        {
+          "kind": "FP",
+          "category": "Negated mention",
+          "entity": "Aspirin",
+          "field": "assertion_status",
+          "expected": null,
+          "actual": "negated"
+        }
+      ]
+    },
+    {
+      "id": "unseen-003-rheum-weekly",
+      "specialty": "Rheumatology",
+      "medNormalized": {
+        "tp": 3,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1,
+        "recall": 1,
+        "f1": 1
+      },
+      "invNormalized": {
+        "tp": 3,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1,
+        "recall": 1,
+        "f1": 1
+      },
+      "medAttributes": {
+        "strength": {
+          "correct": 3,
+          "evaluated": 3,
+          "rate": 1
+        },
+        "frequency": {
+          "correct": 3,
+          "evaluated": 3,
+          "rate": 1
+        },
+        "assertion_status": {
+          "correct": 3,
+          "evaluated": 3,
+          "rate": 1
+        },
+        "route": {
+          "correct": 2,
+          "evaluated": 2,
+          "rate": 1
+        }
+      },
+      "medExactRxNormAssigned": 3,
+      "medTotalExtracted": 3,
+      "invExactLoincAssigned": 1,
+      "invTotalExtracted": 3,
+      "expectedAlertsCount": 0,
+      "matchedAlertsCount": 0,
+      "emittedSafetyAlerts": [],
+      "failures": []
+    },
+    {
+      "id": "unseen-004-gi-qtc",
+      "specialty": "Gastroenterology / Oncology",
+      "medNormalized": {
+        "tp": 4,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1,
+        "recall": 1,
+        "f1": 1
+      },
+      "invNormalized": {
+        "tp": 2,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1,
+        "recall": 1,
+        "f1": 1
+      },
+      "medAttributes": {
+        "strength": {
+          "correct": 4,
+          "evaluated": 4,
+          "rate": 1
+        },
+        "assertion_status": {
+          "correct": 4,
+          "evaluated": 4,
+          "rate": 1
+        },
+        "route": {
+          "correct": 3,
+          "evaluated": 3,
+          "rate": 1
+        },
+        "frequency": {
+          "correct": 2,
+          "evaluated": 3,
+          "rate": 0.6666666666666666
+        },
+        "duration": {
+          "correct": 2,
+          "evaluated": 2,
+          "rate": 1
+        }
+      },
+      "medExactRxNormAssigned": 4,
+      "medTotalExtracted": 4,
+      "invExactLoincAssigned": 2,
+      "invTotalExtracted": 2,
+      "expectedAlertsCount": 2,
+      "matchedAlertsCount": 2,
+      "emittedSafetyAlerts": [
+        {
+          "alertId": "DDI-eb70a88e",
+          "severity": "MODERATE",
+          "category": "DRUG_INTERACTION",
+          "title": "QTc Prolongation Risk: Macrolide/Fluoroquinolone \u002B Ondansetron",
+          "description": "Derived interpretation: Co-administration of QT-prolonging antimicrobials with Ondansetron increases the risk of ventricular arrhythmia / Torsades de Pointes.",
+          "involvedEntities": [
+            "Ciprofloxacin",
+            "Ondansetron"
+          ],
+          "recommendation": "Review the source note and reconcile this finding with a qualified clinician. This extraction does not recommend treatment changes.",
+          "alertType": "INTERACTION_RISK_REVIEW",
+          "temporality": "CURRENT_ACTIVE",
+          "thresholdCriterion": "Active co-prescription of QT-prolonging antimicrobial (Macrolide/Fluoroquinolone) \u002B 5-HT3 antagonist (Ondansetron)",
+          "observedFact": "Active co-prescription of Ciprofloxacin and Ondansetron.",
+          "evidenceQuote": "Start Ciprofloxacin 500 mg PO twice daily for 7 days | Start Ondansetron 4 mg PO every 8 hours as needed",
+          "startChar": 57,
+          "endChar": 163
+        },
+        {
+          "alertId": "ALG-30618fdf",
+          "severity": "MODERATE",
+          "category": "ALLERGY_CONFLICT",
+          "title": "Documented Drug Allergy Vigilance: Ibuprofen",
+          "description": "Observed data: Patient note documents allergy/reaction to Ibuprofen (evidence: \u0022Documented Allergies: Ibuprofen (bronchospasm)\u0022). Ensure all newly prescribed agents avoid cross-reactivity.",
+          "involvedEntities": [
+            "Ibuprofen"
+          ],
+          "recommendation": "Review the source note and reconcile this finding with a qualified clinician. This extraction does not recommend treatment changes.",
+          "alertType": "OBSERVED_FACT_WARNING",
+          "temporality": "CURRENT_ACTIVE",
+          "thresholdCriterion": null,
+          "observedFact": "Documented Allergies: Ibuprofen (bronchospasm)",
+          "evidenceQuote": "Documented Allergies: Ibuprofen (bronchospasm)",
+          "startChar": 0,
+          "endChar": 46
+        }
+      ],
+      "failures": [
+        {
+          "kind": "attribute",
+          "category": "attribute_mismatch",
+          "entity": "Ondansetron",
+          "field": "frequency",
+          "expected": "every 8 hours",
+          "actual": "every 8 hours as needed"
+        }
+      ]
+    },
+    {
+      "id": "unseen-005-endo-thyroid-dm",
+      "specialty": "Endocrinology",
+      "medNormalized": {
+        "tp": 4,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1,
+        "recall": 1,
+        "f1": 1
+      },
+      "invNormalized": {
+        "tp": 3,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1,
+        "recall": 1,
+        "f1": 1
+      },
+      "medAttributes": {
+        "strength": {
+          "correct": 4,
+          "evaluated": 4,
+          "rate": 1
+        },
+        "route": {
+          "correct": 3,
+          "evaluated": 3,
+          "rate": 1
+        },
+        "frequency": {
+          "correct": 3,
+          "evaluated": 3,
+          "rate": 1
+        },
+        "assertion_status": {
+          "correct": 4,
+          "evaluated": 4,
+          "rate": 1
+        }
+      },
+      "medExactRxNormAssigned": 4,
+      "medTotalExtracted": 4,
+      "invExactLoincAssigned": 3,
+      "invTotalExtracted": 3,
+      "expectedAlertsCount": 0,
+      "matchedAlertsCount": 0,
+      "emittedSafetyAlerts": [],
+      "failures": []
+    },
+    {
+      "id": "unseen-006-nephro-conflict",
+      "specialty": "Nephrology",
+      "medNormalized": {
+        "tp": 1,
+        "fp": 0,
+        "fn": 1,
+        "precision": 1,
+        "recall": 0.5,
+        "f1": 0.6666666666666666
+      },
+      "invNormalized": {
+        "tp": 4,
+        "fp": 1,
+        "fn": 0,
+        "precision": 0.8,
+        "recall": 1,
+        "f1": 0.8888888888888888
+      },
+      "medAttributes": {
+        "strength": {
+          "correct": 1,
+          "evaluated": 2,
+          "rate": 0.5
+        },
+        "assertion_status": {
+          "correct": 1,
+          "evaluated": 2,
+          "rate": 0.5
+        },
+        "route": {
+          "correct": 0,
+          "evaluated": 1,
+          "rate": 0
+        },
+        "frequency": {
+          "correct": 0,
+          "evaluated": 1,
+          "rate": 0
+        }
+      },
+      "medExactRxNormAssigned": 1,
+      "medTotalExtracted": 1,
+      "invExactLoincAssigned": 4,
+      "invTotalExtracted": 5,
+      "expectedAlertsCount": 1,
+      "matchedAlertsCount": 1,
+      "emittedSafetyAlerts": [
+        {
+          "alertId": "QA-2c414438d",
+          "severity": "WARNING",
+          "category": "DATA_QUALITY_WARNING",
+          "title": "Ambiguous or Conflicting Serum Creatinine Measurement",
+          "description": "Multiple conflicting serum creatinine measurements were detected in the note; automated renal impairment alerting was suppressed pending clinician verification.",
+          "involvedEntities": [
+            "Serum Creatinine"
+          ],
+          "recommendation": "Verify serum creatinine directly in the source laboratory report.",
+          "alertType": "OBSERVED_FACT_WARNING",
+          "temporality": "CURRENT_ACTIVE",
+          "thresholdCriterion": null,
+          "observedFact": null,
+          "evidenceQuote": null,
+          "startChar": null,
+          "endChar": null
+        }
+      ],
+      "failures": [
+        {
+          "kind": "FN",
+          "category": "unrecognized",
+          "entity": "Sodium Bicarbonate",
+          "field": "name",
+          "expected": "Sodium Bicarbonate",
+          "actual": null
+        },
+        {
+          "kind": "attribute",
+          "category": "attribute_mismatch",
+          "entity": "Sodium Bicarbonate",
+          "field": "strength",
+          "expected": "650 mg",
+          "actual": null
+        },
+        {
+          "kind": "attribute",
+          "category": "attribute_mismatch",
+          "entity": "Sodium Bicarbonate",
+          "field": "route",
+          "expected": "PO",
+          "actual": null
+        },
+        {
+          "kind": "attribute",
+          "category": "attribute_mismatch",
+          "entity": "Sodium Bicarbonate",
+          "field": "frequency",
+          "expected": "twice daily",
+          "actual": null
+        },
+        {
+          "kind": "attribute",
+          "category": "attribute_mismatch",
+          "entity": "Sodium Bicarbonate",
+          "field": "assertion_status",
+          "expected": "new_order",
+          "actual": null
+        },
+        {
+          "kind": "FP",
+          "category": "Evaluation matching error / incomplete gold (unadjudicated)",
+          "entity": "Sodium",
+          "field": "assertion_status",
+          "expected": null,
+          "actual": "new_order"
+        }
+      ]
+    }
+  ]
+}

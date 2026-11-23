@@ -1,0 +1,1 @@
+{"type":"https://tools.ietf.org/html/rfc4918#section-11.2","title":"Extraction unavailable","status":422,"detail":"Primary clinical extraction output failed deterministic validation (AZURE_INVALID_EVIDENCE) and local fallback is disabled.","code":"AZURE_INVALID_EVIDENCE","correlationId":"live-final-86985b4aaa88"}

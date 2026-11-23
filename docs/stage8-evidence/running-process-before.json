@@ -1,0 +1,9 @@
+{
+    "processId":  10080,
+    "routingEnvironment":  {
+                               "ASPNETCORE_ENVIRONMENT":  "Development",
+                               "Extraction__Provider":  "LocalOnnx"
+                           },
+    "secretValuesIncluded":  false,
+    "processModified":  false
+}

@@ -1,0 +1,29 @@
+{
+  "original-stage5": {
+    "Incorrect attribute binding": 70,
+    "Unsupported model capability": 98,
+    "Evaluation contract mismatch": 157,
+    "Missing source information": 4,
+    "Assertion classification error": 9,
+    "Clinical scope error": 3,
+    "Normalization issue": 21
+  },
+  "real-model-before": {
+    "Incorrect attribute binding": 71,
+    "Unsupported model capability": 98,
+    "Missing source information": 4,
+    "Assertion classification error": 9,
+    "Clinical scope error": 38,
+    "Normalization issue": 21,
+    "Evaluation contract mismatch": 5,
+    "Model entity omission": 53
+  },
+  "real-model-after": {
+    "Missing source information": 4,
+    "Normalization issue": 19,
+    "Unsupported model capability": 32,
+    "Evaluation contract mismatch": 5,
+    "Model entity omission": 53,
+    "Clinical scope error": 37
+  }
+}

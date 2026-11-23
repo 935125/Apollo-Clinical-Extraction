@@ -6,16 +6,12 @@ Apollo transforms unstructured clinical notes and text-based PDFs into structure
 
 **Angular 21 · ASP.NET Core / .NET 10 · Microsoft Foundry · ONNX · PostgreSQL / pgvector**
 
-**Quick links:** [Live UI gallery](#frontend-screenshots) · [One-click Windows startup](#option-a-one-click-windows-launcher) · [Frontend walkthrough](#frontend-walkthrough) · [Architecture](#architecture) · [API reference](#api-overview) · [Testing](#verify-the-application)
-
 > [!IMPORTANT]
 > **Status: engineering demonstration / development candidate, not hospital-production ready.** Independent clinical validation, institutional authentication and access controls, security governance, and deployment approvals remain outstanding. Use synthetic data unless the institution explicitly authorizes real clinical data processing.
 
 ## Contents
 
 - [What the platform does](#what-the-platform-does)
-- [Frontend walkthrough](#frontend-walkthrough)
-- [Frontend screenshots](#frontend-screenshots)
 - [Architecture](#architecture)
 - [Extraction lifecycle](#extraction-lifecycle)
 - [Clinical validation and terminology](#clinical-validation-and-terminology)
@@ -23,8 +19,6 @@ Apollo transforms unstructured clinical notes and text-based PDFs into structure
 - [Technology stack](#technology-stack)
 - [Repository layout](#repository-layout)
 - [Run locally](#run-locally)
-  - [Option A — one-click Windows launcher](#option-a-one-click-windows-launcher)
-  - [Option B — manual setup](#option-b-manual-setup)
 - [API overview](#api-overview)
 - [Verify the application](#verify-the-application)
 - [Security and limitations](#security-and-limitations)
@@ -44,104 +38,6 @@ Apollo transforms unstructured clinical notes and text-based PDFs into structure
 | **Interoperability** | Provides versioned extraction APIs, compatibility endpoints, and FHIR-related export capabilities. |
 
 > **PDF boundary:** Scanned or image-only PDFs are **not** OCR-processed. Such files return `422 OCR_REQUIRED`; OCR is not bundled.
-
-## Frontend walkthrough
-
-The Angular application is designed as a **single clinical extraction and review workflow**. The steps below describe the user journey—not a claim that each item is a separate route or navigation tab in the current UI.
-
-```mermaid
-flowchart LR
-    START["Open dashboard"] --> INPUT["Paste clinical note<br/>or upload text PDF"]
-    INPUT --> SUBMIT["Submit for extraction"]
-    SUBMIT --> OUTPUT["Review extracted entities"]
-    OUTPUT --> MED["Medications + allergies"]
-    OUTPUT --> INVEST["Planned investigations<br/>+ historical results"]
-    MED --> EVIDENCE["Inspect evidence,<br/>normalization + warnings"]
-    INVEST --> EVIDENCE
-    EVIDENCE --> DECIDE["Accept / correct / reject<br/>or request clarification"]
-    DECIDE --> HISTORY["Versioned review history"]
-    HISTORY -.->|"Reload saved result"| OUTPUT
-
-    classDef entry fill:#e0f2fe,stroke:#0284c7,color:#0c4a6e
-    classDef result fill:#eef2ff,stroke:#6366f1,color:#312e81
-    classDef review fill:#dcfce7,stroke:#16a34a,color:#14532d
-    class START,INPUT,SUBMIT entry
-    class OUTPUT,MED,INVEST,EVIDENCE result
-    class DECIDE,HISTORY review
-```
-
-| Where to go | What to do | What to check |
-| --- | --- | --- |
-| **Clinical input** | Paste a note or choose a text-based PDF and submit it. | Confirm source text and processing feedback. |
-| **Extraction results** | Inspect the structured output returned by the API. | Distinguish active medications from allergies, and future investigations from historical results. |
-| **Evidence and terminology** | Open the available evidence and normalization details. | Check source quotations, RxNorm/LOINC mapping status, unresolved codes, and rule/model provenance. |
-| **Safety and uncertainty** | Review flagged interactions, measurements, missing details, and warnings. | Treat alerts as review aids rather than automated medical decisions. |
-| **Clinical review** | Accept, correct, reject, or request clarification for individual entities. | Confirm the original extraction is preserved and review decisions are recorded separately. |
-| **Saved extraction** | Open a previously persisted result using its extraction ID. | Verify the saved data and review history survive a page refresh. |
-
-For a saved extraction, the development UI supports a query-string deep link:
-
-```text
-http://localhost:4200/?extractionId=<your-extraction-uuid>
-```
-
-The query string identifies an existing record; it **does not** create a new extraction or bypass API authorization. Actual controls and presentation may vary as the Angular UI evolves.
-
-## Frontend screenshots
-
-Actual screenshots from the Apollo Angular development interface, captured with **synthetic demonstration notes**. Select any image to open it at full resolution. The screenshots show functionality and layout from a development build; they do not represent hospital production approval.
-
-### Clinical extraction in action
-
-<a href="docs/screenshots/02-extraction-results.png">
-  <img src="docs/screenshots/02-extraction-results.png" alt="Apollo clinical extraction workspace showing a synthetic respiratory note alongside extracted medications and investigations" width="100%" />
-</a>
-
-*Source text remains visible beside the structured results. This example displays the Local ONNX fallback with explicit reduced-coverage disclosure, medication status and investigation summaries.*
-
-### Explore the interface
-
-<table>
-  <tr>
-    <td width="50%" valign="top">
-      <a href="docs/screenshots/01-workspace-input.png"><img src="docs/screenshots/01-workspace-input.png" alt="Empty Apollo workspace with pasted clinical note editor, PDF upload, and Extract action" width="100%" /></a>
-      <br/><strong>01 · Clinical input workspace</strong><br/>
-      Enter a note, select an example, or upload a text-based PDF.
-    </td>
-    <td width="50%" valign="top">
-      <a href="docs/screenshots/03-pdf-extraction.png"><img src="docs/screenshots/03-pdf-extraction.png" alt="Apollo extraction view displaying a synthetic inpatient discharge PDF alongside structured medication results" width="100%" /></a>
-      <br/><strong>02 · PDF extraction</strong><br/>
-      Inspect a synthetic discharge summary side by side with extracted data.
-    </td>
-  </tr>
-  <tr>
-    <td width="50%" valign="top">
-      <a href="docs/screenshots/04-validation-export.png"><img src="docs/screenshots/04-validation-export.png" alt="Apollo extraction details and validation warnings with JSON, CSV and FHIR export options" width="100%" /></a>
-      <br/><strong>03 · Validation and export</strong><br/>
-      Examine warnings, extraction metadata and JSON / CSV / FHIR export options.
-    </td>
-    <td width="50%" valign="top">
-      <a href="docs/screenshots/05-extraction-history.png"><img src="docs/screenshots/05-extraction-history.png" alt="Apollo extraction history showing saved synthetic runs, dates, providers and entity counts" width="100%" /></a>
-      <br/><strong>04 · Extraction history</strong><br/>
-      Search prior runs and identify the provider and extraction timestamp.
-    </td>
-  </tr>
-</table>
-
-### Where to click
-
-| Interface control | What it opens |
-| --- | --- |
-| **Workspace** | Input, extraction and result review in a single two-column layout. |
-| **Upload PDF / Extract** | Submit a text-based document or the pasted clinical note. |
-| **Structured** | Medication, allergy and investigation results. |
-| **Source** | Source-oriented inspection in the results area. |
-| **Details / View details** | Extraction metadata, validation findings and warnings. |
-| **Export** | Download JSON, CSV or FHIR output where enabled. |
-| **History** | Search and reopen previously saved extraction runs. |
-| **Select an extracted entity** | Open entity-level review controls, where available in the current build. |
-
-> **Additional screenshot welcome:** The entity-level clinical review and audit-history panel is implemented but is not shown in the five supplied screenshots. Add a real capture before presenting that panel as part of this gallery.
 
 ## Architecture
 
@@ -314,9 +210,6 @@ The current local workflow may operate in **unauthenticated demonstration mode**
 ```text
 .
 ├── frontend/                         # Angular dashboard and browser tests
-├── docs/screenshots/                 # Real development UI screenshots used by this README
-├── Start-Apollo.bat                   # One-click Windows launcher
-├── Start-Apollo.ps1                   # Local service orchestration
 ├── backend/
 │   ├── Apollo.Backend.csproj          # ASP.NET Core application
 │   ├── Clinical/                      # Extraction and validation logic
@@ -340,54 +233,7 @@ See [Repository structure](backend/docs/repository-structure.md) for more detail
 - PostgreSQL with the `vector` extension, or Docker with the supplied Compose configuration
 - Azure CLI sign-in and appropriate Foundry permissions **if using the cloud provider**
 
-### Option A: One-click Windows launcher
-
-For an **already provisioned local Windows development environment**, the repository's startup scripts provide a shortcut:
-
-- [`Start-Apollo.bat`](Start-Apollo.bat) — double-click entry point; launches the PowerShell script and leaves the launcher window open to display any errors.
-- [`Start-Apollo.ps1`](Start-Apollo.ps1) — checks prerequisites and ports, starts the development services as needed, and opens the Angular app in the browser.
-
-Keep **both files in the repository root** (beside `frontend/` and `backend/`). In File Explorer, double-click **`Start-Apollo.bat`**; alternatively run:
-
-```powershell
-cd "D:\AI Extraction"
-.\Start-Apollo.bat
-```
-
-Based on the supplied launcher scripts, the sequence is:
-
-```mermaid
-flowchart LR
-    BAT["Start-Apollo.bat"] --> PS["Start-Apollo.ps1"]
-    PS --> PG["Bundled PostgreSQL<br/>127.0.0.1:5432"]
-    PS --> API["ASP.NET Core API<br/>127.0.0.1:5000"]
-    PS --> UI["Angular dev server<br/>127.0.0.1:4200"]
-    UI --> BROWSER["Open localhost:4200"]
-
-    classDef entry fill:#e0f2fe,stroke:#0284c7,color:#0c4a6e
-    classDef step fill:#eef2ff,stroke:#6366f1,color:#312e81
-    classDef done fill:#dcfce7,stroke:#16a34a,color:#14532d
-    class BAT,PS entry
-    class PG,API,UI step
-    class BROWSER done
-```
-
-**Launcher requirements and behavior:**
-
-- Expects the **bundled PostgreSQL executable** at `backend/tools/pgsql/bin/pg_ctl.exe` and an **already initialized** local cluster at `backend/tools/data_cx/`. It **does not install PostgreSQL or initialize a database**.
-- Requires `.NET` and `npm` on `PATH`; `frontend/node_modules/` must already exist. Run `npm --prefix frontend ci` once if dependencies have not been installed.
-- Checks ports **5432**, **5000**, and **4200**; it skips launching a second service when the relevant port is already in use. Confirm that an existing listener is actually the expected Apollo service.
-- Opens separate terminal windows for the API and Angular processes, then opens `http://localhost:4200/` when both ports respond. **Keep the service terminals open** while using the app.
-- Does **not** stop existing processes or reset PostgreSQL data. The batch file invokes PowerShell with a process-specific `ExecutionPolicy Bypass`; review scripts before running them in managed environments.
-
-> [!NOTE]
-> **Fresh GitHub clone?** The bundled PostgreSQL binaries and initialized `data_cx` cluster may be absent (and database files should not be committed). If so, **use Option B with Docker Compose or your own PostgreSQL instance**. The one-click launcher is for a pre-provisioned local setup, not a replacement for initial installation or database migration.
-
-### Option B: Manual setup
-
-Use this path on macOS/Linux, when the bundled Windows database is unavailable, or when you prefer to start each component yourself.
-
-#### 1. Start PostgreSQL
+### 1. Start PostgreSQL
 
 From the repository root:
 
@@ -397,7 +243,7 @@ docker compose -f backend/infra/docker/docker-compose.yml up -d
 
 Override the development database connection using `ConnectionStrings__Postgres` if required. When upgrading an existing database, inspect and apply `backend/db/platform/migrations/` **in order**, with the appropriate migration privileges and backup process. Do not reset existing clinical data as part of routine setup.
 
-#### 2. Start the ASP.NET Core API
+### 2. Start the ASP.NET Core API
 
 ```powershell
 dotnet run --project backend/Apollo.Backend.csproj
@@ -405,7 +251,7 @@ dotnet run --project backend/Apollo.Backend.csproj
 
 For cloud inference, see [Foundry configuration and handoff](backend/docs/foundry-integration.md). The documented development deployment name is `gpt-6.1-sol`. Store keys only in User Secrets or environment variables; local Azure CLI and deployed managed identities are supported as documented.
 
-#### 3. Start Angular
+### 3. Start Angular
 
 In a second terminal:
 
@@ -475,9 +321,6 @@ Mermaid v13 is **alpha software**, and GitHub uses its **own renderer/version**.
 - **No OCR bundled.** Image-only PDFs return `422 OCR_REQUIRED`.
 
 ## Documentation
-
-**README navigation:** [Top](#apollo-clinical-extraction-platform) · [Frontend walkthrough](#frontend-walkthrough) · [Screenshots](#frontend-screenshots) · [One-click start](#option-a-one-click-windows-launcher) · [Manual start](#option-b-manual-setup)
-
 
 - [Foundry integration, configuration, migration, verification and handoff](backend/docs/foundry-integration.md)
 - [Repository structure](backend/docs/repository-structure.md)

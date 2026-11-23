@@ -1,0 +1,381 @@
+{
+  "capturedAt": "2026-11-23T07:09:43.9145388+00:00",
+  "correlationId": "live-final-86985b4aaa88",
+  "pdfFileName": "Inpatient_Cardiology_Pulmonology_Discharge_Summary.pdf",
+  "pdfSha256": "06EC68D60AFC1A60B132B741725CA23522B8952ACB421A7B19CAEA80248E0C32",
+  "reconstructedCharLength": 1723,
+  "reconstructedTextSent": "INPATIENT DISCHARGE SUMMARY\n\nCardiology \u0026 Internal Medicine \u2014 Hospital Course\n\n\u0026 Plan\n\nDocumented Allergies: Penicillin (anaphylaxis) and Ibuprofen (bronchospasm).\n\nHospital Course \u0026 Clinical Presentation\n\n64-year-old female with non-valvular atrial fibrillation, chronic kidney disease stage 3b, and\n\ncommunity-acquired lower respiratory tract infection admitted with acute palpitations, productive\n\ncough, and fever of 38.9 \u00B0C. Treated with intravenous antimicrobial therapy and rate-control\n\nstabilization with full clinical recovery prior to discharge.\n\nDischarge Vital Signs \u0026 Baseline Labs\n\nBlood Pressure Heart Rate Temperature Serum Potassium \u0026 Creatinine\n\n124/76 mmHg | 82 bpm (controlled AF) | 36.8 \u00B0C | K\u002B 5.7 mEq/L, Creatinine 1.9 mg/dL\n\nDischarge Diagnoses\n\n1. Non-valvular atrial fibrillation with controlled ventricular response.\n\n2. Resolving community-acquired pneumonia (CAP).\n\n3. Chronic kidney disease stage 3b with mild hyperkalemia.\n\nDischarge Medications\n\nWarfarin 5 mg orally once daily in the evening for stroke prophylaxis.\n\nAspirin 81 mg orally once daily in the morning (verify concurrent anticoagulation indication).\n\nAzithromycin 500 mg orally once daily for 3 days to complete respiratory course.\n\nOndansetron 4 mg orally every 8 hours as needed for nausea.\n\nPantoprazole 40 mg orally once daily before breakfast for 30 days.\n\nOutpatient Follow-Up Investigations\n\nProthrombin time and INR (PT/INR) in 3 days.\n\nRepeat serum potassium, serum sodium, and serum creatinine in 48 hours.\n\nComplete blood count (CBC) and C-reactive protein (CRP) at 1-week follow-up.\n\nFollow-up chest X-ray (PA view) and 12-lead ECG in 2 weeks.\n\nInpatient Cardiology \u0026 Internal Medicine Discharge Summary Page 1 of 1",
+  "promptVersion": "clinical-v3",
+  "schemaVersion": "1.0.0",
+  "effectiveDeployment": "gpt-6.1-sol",
+  "requestMaxCompletionTokens": 6000,
+  "requestMaxRetries": 0,
+  "allowLocalFallback": false,
+  "httpStatusCode": 200,
+  "providerReportedModel": "gpt-6.1-sol-2026-09-29",
+  "finishReason": "stop",
+  "promptTokens": 1255,
+  "completionTokens": 2305,
+  "reasoningTokens": 248,
+  "totalTokens": 3560,
+  "httpLatencyMs": 41688.95,
+  "totalEndpointLatencyMs": 42171.9,
+  "preDispatchMaxEstimateUsd": 0.153858,
+  "actualEstimatedCostUsd": 0.04902,
+  "pricingSource": "https://techcommunity.microsoft.com/blog/azure-ai-foundry-blog/introducing-gpt-6-1-sol-in-microsoft-foundry-advanced-intelligence-optimized-for/4560811",
+  "rawOpenAiEnvelope": {
+    "choices": [
+      {
+        "content_filter_results": {
+          "hate": {
+            "filtered": false,
+            "severity": "safe"
+          },
+          "protected_material_code": {
+            "detected": false,
+            "filtered": false
+          },
+          "protected_material_text": {
+            "detected": false,
+            "filtered": false
+          },
+          "self_harm": {
+            "filtered": false,
+            "severity": "safe"
+          },
+          "sexual": {
+            "filtered": false,
+            "severity": "safe"
+          },
+          "violence": {
+            "filtered": false,
+            "severity": "safe"
+          }
+        },
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "annotations": [],
+          "content": "{\n  \u0022medications\u0022: [\n    {\n      \u0022name\u0022: \u0022Penicillin\u0022,\n      \u0022strength\u0022: null,\n      \u0022dose\u0022: null,\n      \u0022doseUnit\u0022: null,\n      \u0022route\u0022: null,\n      \u0022frequency\u0022: null,\n      \u0022duration\u0022: null,\n      \u0022formulation\u0022: null,\n      \u0022instructions\u0022: \u0022anaphylaxis\u0022,\n      \u0022action\u0022: \u0022allergy\u0022,\n      \u0022assertionStatus\u0022: \u0022allergy\u0022,\n      \u0022evidence\u0022: {\n        \u0022quote\u0022: \u0022Documented Allergies: Penicillin (anaphylaxis) and Ibuprofen (bronchospasm).\u0022,\n        \u0022occurrence\u0022: 1\n      }\n    },\n    {\n      \u0022name\u0022: \u0022Ibuprofen\u0022,\n      \u0022strength\u0022: null,\n      \u0022dose\u0022: null,\n      \u0022doseUnit\u0022: null,\n      \u0022route\u0022: null,\n      \u0022frequency\u0022: null,\n      \u0022duration\u0022: null,\n      \u0022formulation\u0022: null,\n      \u0022instructions\u0022: \u0022bronchospasm\u0022,\n      \u0022action\u0022: \u0022allergy\u0022,\n      \u0022assertionStatus\u0022: \u0022allergy\u0022,\n      \u0022evidence\u0022: {\n        \u0022quote\u0022: \u0022Documented Allergies: Penicillin (anaphylaxis) and Ibuprofen (bronchospasm).\u0022,\n        \u0022occurrence\u0022: 1\n      }\n    },\n    {\n      \u0022name\u0022: \u0022antimicrobial therapy\u0022,\n      \u0022strength\u0022: null,\n      \u0022dose\u0022: null,\n      \u0022doseUnit\u0022: null,\n      \u0022route\u0022: \u0022intravenous\u0022,\n      \u0022frequency\u0022: null,\n      \u0022duration\u0022: null,\n      \u0022formulation\u0022: null,\n      \u0022instructions\u0022: null,\n      \u0022action\u0022: \u0022none\u0022,\n      \u0022assertionStatus\u0022: \u0022historical\u0022,\n      \u0022evidence\u0022: {\n        \u0022quote\u0022: \u0022Treated with intravenous antimicrobial therapy\u0022,\n        \u0022occurrence\u0022: 1\n      }\n    },\n    {\n      \u0022name\u0022: \u0022Warfarin\u0022,\n      \u0022strength\u0022: \u00225 mg\u0022,\n      \u0022dose\u0022: null,\n      \u0022doseUnit\u0022: null,\n      \u0022route\u0022: \u0022orally\u0022,\n      \u0022frequency\u0022: \u0022once daily\u0022,\n      \u0022duration\u0022: null,\n      \u0022formulation\u0022: null,\n      \u0022instructions\u0022: \u0022in the evening for stroke prophylaxis.\u0022,\n      \u0022action\u0022: \u0022continue\u0022,\n      \u0022assertionStatus\u0022: \u0022current_medication\u0022,\n      \u0022evidence\u0022: {\n        \u0022quote\u0022: \u0022Warfarin 5 mg orally once daily in the evening for stroke prophylaxis.\u0022,\n        \u0022occurrence\u0022: 1\n      }\n    },\n    {\n      \u0022name\u0022: \u0022Aspirin\u0022,\n      \u0022strength\u0022: \u002281 mg\u0022,\n      \u0022dose\u0022: null,\n      \u0022doseUnit\u0022: null,\n      \u0022route\u0022: \u0022orally\u0022,\n      \u0022frequency\u0022: \u0022once daily\u0022,\n      \u0022duration\u0022: null,\n      \u0022formulation\u0022: null,\n      \u0022instructions\u0022: \u0022in the morning (verify concurrent anticoagulation indication).\u0022,\n      \u0022action\u0022: \u0022continue\u0022,\n      \u0022assertionStatus\u0022: \u0022current_medication\u0022,\n      \u0022evidence\u0022: {\n        \u0022quote\u0022: \u0022Aspirin 81 mg orally once daily in the morning (verify concurrent anticoagulation indication).\u0022,\n        \u0022occurrence\u0022: 1\n      }\n    },\n    {\n      \u0022name\u0022: \u0022Azithromycin\u0022,\n      \u0022strength\u0022: \u0022500 mg\u0022,\n      \u0022dose\u0022: null,\n      \u0022doseUnit\u0022: null,\n      \u0022route\u0022: \u0022orally\u0022,\n      \u0022frequency\u0022: \u0022once daily\u0022,\n      \u0022duration\u0022: \u00223 days\u0022,\n      \u0022formulation\u0022: null,\n      \u0022instructions\u0022: \u0022to complete respiratory course.\u0022,\n      \u0022action\u0022: \u0022continue\u0022,\n      \u0022assertionStatus\u0022: \u0022current_medication\u0022,\n      \u0022evidence\u0022: {\n        \u0022quote\u0022: \u0022Azithromycin 500 mg orally once daily for 3 days to complete respiratory course.\u0022,\n        \u0022occurrence\u0022: 1\n      }\n    },\n    {\n      \u0022name\u0022: \u0022Ondansetron\u0022,\n      \u0022strength\u0022: \u00224 mg\u0022,\n      \u0022dose\u0022: null,\n      \u0022doseUnit\u0022: null,\n      \u0022route\u0022: \u0022orally\u0022,\n      \u0022frequency\u0022: \u0022every 8 hours as needed\u0022,\n      \u0022duration\u0022: null,\n      \u0022formulation\u0022: null,\n      \u0022instructions\u0022: \u0022as needed for nausea.\u0022,\n      \u0022action\u0022: \u0022continue\u0022,\n      \u0022assertionStatus\u0022: \u0022current_medication\u0022,\n      \u0022evidence\u0022: {\n        \u0022quote\u0022: \u0022Ondansetron 4 mg orally every 8 hours as needed for nausea.\u0022,\n        \u0022occurrence\u0022: 1\n      }\n    },\n    {\n      \u0022name\u0022: \u0022Pantoprazole\u0022,\n      \u0022strength\u0022: \u002240 mg\u0022,\n      \u0022dose\u0022: null,\n      \u0022doseUnit\u0022: null,\n      \u0022route\u0022: \u0022orally\u0022,\n      \u0022frequency\u0022: \u0022once daily\u0022,\n      \u0022duration\u0022: \u002230 days\u0022,\n      \u0022formulation\u0022: null,\n      \u0022instructions\u0022: \u0022before breakfast\u0022,\n      \u0022action\u0022: \u0022continue\u0022,\n      \u0022assertionStatus\u0022: \u0022current_medication\u0022,\n      \u0022evidence\u0022: {\n        \u0022quote\u0022: \u0022Pantoprazole 40 mg orally once daily before breakfast for 30 days.\u0022,\n        \u0022occurrence\u0022: 1\n      }\n    }\n  ],\n  \u0022investigations\u0022: [\n    {\n      \u0022name\u0022: \u0022K\u002B\u0022,\n      \u0022timing\u0022: null,\n      \u0022specimen\u0022: \u0022Serum\u0022,\n      \u0022assertionStatus\u0022: \u0022historical\u0022,\n      \u0022status\u0022: \u0022unknown\u0022,\n      \u0022evidence\u0022: {\n        \u0022quote\u0022: \u0022Discharge Vital Signs \u0026 Baseline Labs\\n\\nBlood Pressure Heart Rate Temperature Serum Potassium \u0026 Creatinine\\n\\n124/76 mmHg | 82 bpm (controlled AF) | 36.8 \u00B0C | K\u002B 5.7 mEq/L, Creatinine 1.9 mg/dL\u0022,\n        \u0022occurrence\u0022: 1\n      }\n    },\n    {\n      \u0022name\u0022: \u0022Creatinine\u0022,\n      \u0022timing\u0022: null,\n      \u0022specimen\u0022: \u0022Serum\u0022,\n      \u0022assertionStatus\u0022: \u0022historical\u0022,\n      \u0022status\u0022: \u0022unknown\u0022,\n      \u0022evidence\u0022: {\n        \u0022quote\u0022: \u0022Discharge Vital Signs \u0026 Baseline Labs\\n\\nBlood Pressure Heart Rate Temperature Serum Potassium \u0026 Creatinine\\n\\n124/76 mmHg | 82 bpm (controlled AF) | 36.8 \u00B0C | K\u002B 5.7 mEq/L, Creatinine 1.9 mg/dL\u0022,\n        \u0022occurrence\u0022: 1\n      }\n    },\n    {\n      \u0022name\u0022: \u0022Prothrombin time and INR (PT/INR)\u0022,\n      \u0022timing\u0022: \u0022in 3 days\u0022,\n      \u0022specimen\u0022: null,\n      \u0022assertionStatus\u0022: \u0022new_order\u0022,\n      \u0022status\u0022: \u0022unknown\u0022,\n      \u0022evidence\u0022: {\n        \u0022quote\u0022: \u0022Prothrombin time and INR (PT/INR) in 3 days.\u0022,\n        \u0022occurrence\u0022: 1\n      }\n    },\n    {\n      \u0022name\u0022: \u0022serum potassium\u0022,\n      \u0022timing\u0022: \u0022in 48 hours\u0022,\n      \u0022specimen\u0022: \u0022serum\u0022,\n      \u0022assertionStatus\u0022: \u0022new_order\u0022,\n      \u0022status\u0022: \u0022unknown\u0022,\n      \u0022evidence\u0022: {\n        \u0022quote\u0022: \u0022Repeat serum potassium, serum sodium, and serum creatinine in 48 hours.\u0022,\n        \u0022occurrence\u0022: 1\n      }\n    },\n    {\n      \u0022name\u0022: \u0022serum sodium\u0022,\n      \u0022timing\u0022: \u0022in 48 hours\u0022,\n      \u0022specimen\u0022: \u0022serum\u0022,\n      \u0022assertionStatus\u0022: \u0022new_order\u0022,\n      \u0022status\u0022: \u0022unknown\u0022,\n      \u0022evidence\u0022: {\n        \u0022quote\u0022: \u0022Repeat serum potassium, serum sodium, and serum creatinine in 48 hours.\u0022,\n        \u0022occurrence\u0022: 1\n      }\n    },\n    {\n      \u0022name\u0022: \u0022serum creatinine\u0022,\n      \u0022timing\u0022: \u0022in 48 hours\u0022,\n      \u0022specimen\u0022: \u0022serum\u0022,\n      \u0022assertionStatus\u0022: \u0022new_order\u0022,\n      \u0022status\u0022: \u0022unknown\u0022,\n      \u0022evidence\u0022: {\n        \u0022quote\u0022: \u0022Repeat serum potassium, serum sodium, and serum creatinine in 48 hours.\u0022,\n        \u0022occurrence\u0022: 1\n      }\n    },\n    {\n      \u0022name\u0022: \u0022Complete blood count (CBC)\u0022,\n      \u0022timing\u0022: \u0022at 1-week follow-up\u0022,\n      \u0022specimen\u0022: null,\n      \u0022assertionStatus\u0022: \u0022new_order\u0022,\n      \u0022status\u0022: \u0022unknown\u0022,\n      \u0022evidence\u0022: {\n        \u0022quote\u0022: \u0022Complete blood count (CBC) and C-reactive protein (CRP) at 1-week follow-up.\u0022,\n        \u0022occurrence\u0022: 1\n      }\n    },\n    {\n      \u0022name\u0022: \u0022C-reactive protein (CRP)\u0022,\n      \u0022timing\u0022: \u0022at 1-week follow-up\u0022,\n      \u0022specimen\u0022: null,\n      \u0022assertionStatus\u0022: \u0022new_order\u0022,\n      \u0022status\u0022: \u0022unknown\u0022,\n      \u0022evidence\u0022: {\n        \u0022quote\u0022: \u0022Complete blood count (CBC) and C-reactive protein (CRP) at 1-week follow-up.\u0022,\n        \u0022occurrence\u0022: 1\n      }\n    },\n    {\n      \u0022name\u0022: \u0022chest X-ray (PA view)\u0022,\n      \u0022timing\u0022: \u0022in 2 weeks\u0022,\n      \u0022specimen\u0022: null,\n      \u0022assertionStatus\u0022: \u0022new_order\u0022,\n      \u0022status\u0022: \u0022unknown\u0022,\n      \u0022evidence\u0022: {\n        \u0022quote\u0022: \u0022Follow-up chest X-ray (PA view) and 12-lead ECG in 2 weeks.\u0022,\n        \u0022occurrence\u0022: 1\n      }\n    },\n    {\n      \u0022name\u0022: \u002212-lead ECG\u0022,\n      \u0022timing\u0022: \u0022in 2 weeks\u0022,\n      \u0022specimen\u0022: null,\n      \u0022assertionStatus\u0022: \u0022new_order\u0022,\n      \u0022status\u0022: \u0022unknown\u0022,\n      \u0022evidence\u0022: {\n        \u0022quote\u0022: \u0022Follow-up chest X-ray (PA view) and 12-lead ECG in 2 weeks.\u0022,\n        \u0022occurrence\u0022: 1\n      }\n    }\n  ]\n}",
+          "refusal": null,
+          "role": "assistant"
+        }
+      }
+    ],
+    "created": 1795417742,
+    "id": "chatcmpl-EnIScSepIN5hsQPiMGRNOWw78MWRi",
+    "model": "gpt-6.1-sol-2026-09-29",
+    "object": "chat.completion",
+    "prompt_filter_results": [
+      {
+        "prompt_index": 0,
+        "content_filter_results": {
+          "hate": {
+            "filtered": false,
+            "severity": "safe"
+          },
+          "jailbreak": {
+            "detected": false,
+            "filtered": false
+          },
+          "self_harm": {
+            "filtered": false,
+            "severity": "safe"
+          },
+          "sexual": {
+            "filtered": false,
+            "severity": "safe"
+          },
+          "violence": {
+            "filtered": false,
+            "severity": "safe"
+          }
+        }
+      }
+    ],
+    "routing": {
+      "serving_pipereplica": "d20261118154308-25dc4f88-prefill-r4-dp0-prefill"
+    },
+    "service_tier": "default",
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 2305,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 248,
+        "rejected_prediction_tokens": 0
+      },
+      "latency_checkpoint": {
+        "engine_tbt_ms": 16,
+        "engine_ttft_ms": 1864,
+        "engine_ttlt_ms": 39379,
+        "pre_inference_ms": 112,
+        "service_tbt_ms": 16,
+        "service_ttft_ms": 2852,
+        "service_ttlt_ms": 40356,
+        "user_visible_ttft_ms": 2739
+      },
+      "prompt_tokens": 1255,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cache_write_tokens": 1252,
+        "cached_tokens": 0
+      },
+      "total_tokens": 3560
+    }
+  },
+  "rawStructuredModelContent": {
+    "medications": [
+      {
+        "name": "Penicillin",
+        "strength": null,
+        "dose": null,
+        "doseUnit": null,
+        "route": null,
+        "frequency": null,
+        "duration": null,
+        "formulation": null,
+        "instructions": "anaphylaxis",
+        "action": "allergy",
+        "assertionStatus": "allergy",
+        "evidence": {
+          "quote": "Documented Allergies: Penicillin (anaphylaxis) and Ibuprofen (bronchospasm).",
+          "occurrence": 1
+        }
+      },
+      {
+        "name": "Ibuprofen",
+        "strength": null,
+        "dose": null,
+        "doseUnit": null,
+        "route": null,
+        "frequency": null,
+        "duration": null,
+        "formulation": null,
+        "instructions": "bronchospasm",
+        "action": "allergy",
+        "assertionStatus": "allergy",
+        "evidence": {
+          "quote": "Documented Allergies: Penicillin (anaphylaxis) and Ibuprofen (bronchospasm).",
+          "occurrence": 1
+        }
+      },
+      {
+        "name": "antimicrobial therapy",
+        "strength": null,
+        "dose": null,
+        "doseUnit": null,
+        "route": "intravenous",
+        "frequency": null,
+        "duration": null,
+        "formulation": null,
+        "instructions": null,
+        "action": "none",
+        "assertionStatus": "historical",
+        "evidence": {
+          "quote": "Treated with intravenous antimicrobial therapy",
+          "occurrence": 1
+        }
+      },
+      {
+        "name": "Warfarin",
+        "strength": "5 mg",
+        "dose": null,
+        "doseUnit": null,
+        "route": "orally",
+        "frequency": "once daily",
+        "duration": null,
+        "formulation": null,
+        "instructions": "in the evening for stroke prophylaxis.",
+        "action": "continue",
+        "assertionStatus": "current_medication",
+        "evidence": {
+          "quote": "Warfarin 5 mg orally once daily in the evening for stroke prophylaxis.",
+          "occurrence": 1
+        }
+      },
+      {
+        "name": "Aspirin",
+        "strength": "81 mg",
+        "dose": null,
+        "doseUnit": null,
+        "route": "orally",
+        "frequency": "once daily",
+        "duration": null,
+        "formulation": null,
+        "instructions": "in the morning (verify concurrent anticoagulation indication).",
+        "action": "continue",
+        "assertionStatus": "current_medication",
+        "evidence": {
+          "quote": "Aspirin 81 mg orally once daily in the morning (verify concurrent anticoagulation indication).",
+          "occurrence": 1
+        }
+      },
+      {
+        "name": "Azithromycin",
+        "strength": "500 mg",
+        "dose": null,
+        "doseUnit": null,
+        "route": "orally",
+        "frequency": "once daily",
+        "duration": "3 days",
+        "formulation": null,
+        "instructions": "to complete respiratory course.",
+        "action": "continue",
+        "assertionStatus": "current_medication",
+        "evidence": {
+          "quote": "Azithromycin 500 mg orally once daily for 3 days to complete respiratory course.",
+          "occurrence": 1
+        }
+      },
+      {
+        "name": "Ondansetron",
+        "strength": "4 mg",
+        "dose": null,
+        "doseUnit": null,
+        "route": "orally",
+        "frequency": "every 8 hours as needed",
+        "duration": null,
+        "formulation": null,
+        "instructions": "as needed for nausea.",
+        "action": "continue",
+        "assertionStatus": "current_medication",
+        "evidence": {
+          "quote": "Ondansetron 4 mg orally every 8 hours as needed for nausea.",
+          "occurrence": 1
+        }
+      },
+      {
+        "name": "Pantoprazole",
+        "strength": "40 mg",
+        "dose": null,
+        "doseUnit": null,
+        "route": "orally",
+        "frequency": "once daily",
+        "duration": "30 days",
+        "formulation": null,
+        "instructions": "before breakfast",
+        "action": "continue",
+        "assertionStatus": "current_medication",
+        "evidence": {
+          "quote": "Pantoprazole 40 mg orally once daily before breakfast for 30 days.",
+          "occurrence": 1
+        }
+      }
+    ],
+    "investigations": [
+      {
+        "name": "K\u002B",
+        "timing": null,
+        "specimen": "Serum",
+        "assertionStatus": "historical",
+        "status": "unknown",
+        "evidence": {
+          "quote": "Discharge Vital Signs \u0026 Baseline Labs\n\nBlood Pressure Heart Rate Temperature Serum Potassium \u0026 Creatinine\n\n124/76 mmHg | 82 bpm (controlled AF) | 36.8 \u00B0C | K\u002B 5.7 mEq/L, Creatinine 1.9 mg/dL",
+          "occurrence": 1
+        }
+      },
+      {
+        "name": "Creatinine",
+        "timing": null,
+        "specimen": "Serum",
+        "assertionStatus": "historical",
+        "status": "unknown",
+        "evidence": {
+          "quote": "Discharge Vital Signs \u0026 Baseline Labs\n\nBlood Pressure Heart Rate Temperature Serum Potassium \u0026 Creatinine\n\n124/76 mmHg | 82 bpm (controlled AF) | 36.8 \u00B0C | K\u002B 5.7 mEq/L, Creatinine 1.9 mg/dL",
+          "occurrence": 1
+        }
+      },
+      {
+        "name": "Prothrombin time and INR (PT/INR)",
+        "timing": "in 3 days",
+        "specimen": null,
+        "assertionStatus": "new_order",
+        "status": "unknown",
+        "evidence": {
+          "quote": "Prothrombin time and INR (PT/INR) in 3 days.",
+          "occurrence": 1
+        }
+      },
+      {
+        "name": "serum potassium",
+        "timing": "in 48 hours",
+        "specimen": "serum",
+        "assertionStatus": "new_order",
+        "status": "unknown",
+        "evidence": {
+          "quote": "Repeat serum potassium, serum sodium, and serum creatinine in 48 hours.",
+          "occurrence": 1
+        }
+      },
+      {
+        "name": "serum sodium",
+        "timing": "in 48 hours",
+        "specimen": "serum",
+        "assertionStatus": "new_order",
+        "status": "unknown",
+        "evidence": {
+          "quote": "Repeat serum potassium, serum sodium, and serum creatinine in 48 hours.",
+          "occurrence": 1
+        }
+      },
+      {
+        "name": "serum creatinine",
+        "timing": "in 48 hours",
+        "specimen": "serum",
+        "assertionStatus": "new_order",
+        "status": "unknown",
+        "evidence": {
+          "quote": "Repeat serum potassium, serum sodium, and serum creatinine in 48 hours.",
+          "occurrence": 1
+        }
+      },
+      {
+        "name": "Complete blood count (CBC)",
+        "timing": "at 1-week follow-up",
+        "specimen": null,
+        "assertionStatus": "new_order",
+        "status": "unknown",
+        "evidence": {
+          "quote": "Complete blood count (CBC) and C-reactive protein (CRP) at 1-week follow-up.",
+          "occurrence": 1
+        }
+      },
+      {
+        "name": "C-reactive protein (CRP)",
+        "timing": "at 1-week follow-up",
+        "specimen": null,
+        "assertionStatus": "new_order",
+        "status": "unknown",
+        "evidence": {
+          "quote": "Complete blood count (CBC) and C-reactive protein (CRP) at 1-week follow-up.",
+          "occurrence": 1
+        }
+      },
+      {
+        "name": "chest X-ray (PA view)",
+        "timing": "in 2 weeks",
+        "specimen": null,
+        "assertionStatus": "new_order",
+        "status": "unknown",
+        "evidence": {
+          "quote": "Follow-up chest X-ray (PA view) and 12-lead ECG in 2 weeks.",
+          "occurrence": 1
+        }
+      },
+      {
+        "name": "12-lead ECG",
+        "timing": "in 2 weeks",
+        "specimen": null,
+        "assertionStatus": "new_order",
+        "status": "unknown",
+        "evidence": {
+          "quote": "Follow-up chest X-ray (PA view) and 12-lead ECG in 2 weeks.",
+          "occurrence": 1
+        }
+      }
+    ]
+  }
+}

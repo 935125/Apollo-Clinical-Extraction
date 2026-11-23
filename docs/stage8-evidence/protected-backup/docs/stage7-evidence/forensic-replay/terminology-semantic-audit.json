@@ -1,0 +1,318 @@
+{
+  "verifiedAt": "2026-11-23T10:20:03.4297494+00:00",
+  "rxnormVersion": "02-Nov-2026",
+  "loincVersion": "2.83",
+  "medications": [
+    {
+      "name": "Penicillin",
+      "strength": null,
+      "assertionStatus": "allergy",
+      "origin": "LLM_EXTRACTED",
+      "normalization": {
+        "status": "unmatched",
+        "matchedCode": null,
+        "displayName": null,
+        "confidence": 0,
+        "semanticStatus": "unresolved",
+        "candidateCode": null,
+        "terminologySource": "RxNorm",
+        "terminologyVersion": "02-Nov-2026",
+        "mappingNote": "Unlisted medication mention; routed to OOV quarantine."
+      }
+    },
+    {
+      "name": "Ibuprofen",
+      "strength": null,
+      "assertionStatus": "allergy",
+      "origin": "LLM_AND_RULE_CONFIRMED",
+      "normalization": {
+        "status": "matched",
+        "matchedCode": "5640",
+        "displayName": "Ibuprofen",
+        "confidence": 0.98,
+        "semanticStatus": "exact",
+        "candidateCode": "5640",
+        "terminologySource": "RxNorm",
+        "terminologyVersion": "02-Nov-2026",
+        "mappingNote": "Exact RxNorm ingredient (IN) match for \u0027Ibuprofen\u0027 (RxCUI 5640)."
+      }
+    },
+    {
+      "name": "Warfarin",
+      "strength": "5 mg",
+      "assertionStatus": "current_medication",
+      "origin": "LLM_AND_RULE_CONFIRMED",
+      "normalization": {
+        "status": "matched",
+        "matchedCode": "11289",
+        "displayName": "Warfarin",
+        "confidence": 0.98,
+        "semanticStatus": "exact",
+        "candidateCode": "11289",
+        "terminologySource": "RxNorm",
+        "terminologyVersion": "02-Nov-2026",
+        "mappingNote": "Exact RxNorm ingredient (IN) match for \u0027Warfarin\u0027 (RxCUI 11289); product strength \u00275 mg\u0027 is preserved separately in the strength field."
+      }
+    },
+    {
+      "name": "Aspirin",
+      "strength": "81 mg",
+      "assertionStatus": "current_medication",
+      "origin": "LLM_AND_RULE_CONFIRMED",
+      "normalization": {
+        "status": "matched",
+        "matchedCode": "1191",
+        "displayName": "Aspirin",
+        "confidence": 0.98,
+        "semanticStatus": "exact",
+        "candidateCode": "1191",
+        "terminologySource": "RxNorm",
+        "terminologyVersion": "02-Nov-2026",
+        "mappingNote": "Exact RxNorm ingredient (IN) match for \u0027Aspirin\u0027 (RxCUI 1191); product strength \u002781 mg\u0027 is preserved separately in the strength field."
+      }
+    },
+    {
+      "name": "Azithromycin",
+      "strength": "500 mg",
+      "assertionStatus": "current_medication",
+      "origin": "LLM_AND_RULE_CONFIRMED",
+      "normalization": {
+        "status": "matched",
+        "matchedCode": "18631",
+        "displayName": "Azithromycin",
+        "confidence": 0.98,
+        "semanticStatus": "exact",
+        "candidateCode": "18631",
+        "terminologySource": "RxNorm",
+        "terminologyVersion": "02-Nov-2026",
+        "mappingNote": "Exact RxNorm ingredient (IN) match for \u0027Azithromycin\u0027 (RxCUI 18631); product strength \u0027500 mg\u0027 is preserved separately in the strength field."
+      }
+    },
+    {
+      "name": "Ondansetron",
+      "strength": "4 mg",
+      "assertionStatus": "current_medication",
+      "origin": "LLM_AND_RULE_CONFIRMED",
+      "normalization": {
+        "status": "matched",
+        "matchedCode": "26225",
+        "displayName": "Ondansetron",
+        "confidence": 0.98,
+        "semanticStatus": "exact",
+        "candidateCode": "26225",
+        "terminologySource": "RxNorm",
+        "terminologyVersion": "02-Nov-2026",
+        "mappingNote": "Exact RxNorm ingredient (IN) match for \u0027Ondansetron\u0027 (RxCUI 26225); product strength \u00274 mg\u0027 is preserved separately in the strength field."
+      }
+    },
+    {
+      "name": "Pantoprazole",
+      "strength": "40 mg",
+      "assertionStatus": "current_medication",
+      "origin": "LLM_AND_RULE_CONFIRMED",
+      "normalization": {
+        "status": "matched",
+        "matchedCode": "40790",
+        "displayName": "Pantoprazole",
+        "confidence": 0.98,
+        "semanticStatus": "exact",
+        "candidateCode": "40790",
+        "terminologySource": "RxNorm",
+        "terminologyVersion": "02-Nov-2026",
+        "mappingNote": "Exact RxNorm ingredient (IN) match for \u0027Pantoprazole\u0027 (RxCUI 40790); product strength \u002740 mg\u0027 is preserved separately in the strength field."
+      }
+    }
+  ],
+  "investigations": [
+    {
+      "name": "K\u002B",
+      "clinicalCategory": "laboratory",
+      "timing": null,
+      "specimen": "Serum",
+      "assertionStatus": "historical",
+      "origin": "LLM_AND_RULE_CONFIRMED",
+      "normalization": {
+        "status": "uncertain",
+        "matchedCode": null,
+        "displayName": "Serum Potassium",
+        "confidence": 0.5,
+        "semanticStatus": "narrower",
+        "candidateCode": "2823-3",
+        "terminologySource": "LOINC",
+        "terminologyVersion": "2.83",
+        "mappingNote": "LOINC 2823-3 specifies Serum or Plasma system, whereas shorthand \u0027K\u002B\u0027/\u0027potassium\u0027 does not state specimen (could be serum, plasma, whole blood, or urine)."
+      }
+    },
+    {
+      "name": "Creatinine",
+      "clinicalCategory": "laboratory",
+      "timing": null,
+      "specimen": "Serum",
+      "assertionStatus": "historical",
+      "origin": "LLM_AND_RULE_CONFIRMED",
+      "normalization": {
+        "status": "uncertain",
+        "matchedCode": null,
+        "displayName": "Serum Creatinine",
+        "confidence": 0.5,
+        "semanticStatus": "narrower",
+        "candidateCode": "2160-0",
+        "terminologySource": "LOINC",
+        "terminologyVersion": "2.83",
+        "mappingNote": "LOINC 2160-0 specifies Serum or Plasma system, whereas unqualified \u0027Creatinine\u0027 does not state specimen (serum vs urine)."
+      }
+    },
+    {
+      "name": "Prothrombin time and INR",
+      "clinicalCategory": "laboratory",
+      "timing": "in 3 days",
+      "specimen": null,
+      "assertionStatus": "new_order",
+      "origin": "LLM_AND_RULE_CONFIRMED",
+      "normalization": {
+        "status": "uncertain",
+        "matchedCode": null,
+        "displayName": "International Normalized Ratio",
+        "confidence": 0.5,
+        "semanticStatus": "narrower",
+        "candidateCode": "6301-6",
+        "terminologySource": "LOINC",
+        "terminologyVersion": "2.83",
+        "mappingNote": "LOINC 6301-6 (\u0027INR in Platelet poor plasma by Coagulation assay\u0027) encodes only INR (omitting Prothrombin Time seconds) and assumes platelet-poor plasma coagulation assay."
+      }
+    },
+    {
+      "name": "serum potassium",
+      "clinicalCategory": "laboratory",
+      "timing": "in 48 hours",
+      "specimen": "serum",
+      "assertionStatus": "new_order",
+      "origin": "LLM_AND_RULE_CONFIRMED",
+      "normalization": {
+        "status": "matched",
+        "matchedCode": "2823-3",
+        "displayName": "Serum Potassium",
+        "confidence": 0.98,
+        "semanticStatus": "exact",
+        "candidateCode": "2823-3",
+        "terminologySource": "LOINC",
+        "terminologyVersion": "2.83",
+        "mappingNote": "Verified LOINC 2823-3 matches component, system/specimen, method, and view/lead specificity of \u0027serum potassium\u0027."
+      }
+    },
+    {
+      "name": "serum sodium",
+      "clinicalCategory": "laboratory",
+      "timing": "in 48 hours",
+      "specimen": "serum",
+      "assertionStatus": "new_order",
+      "origin": "LLM_AND_RULE_CONFIRMED",
+      "normalization": {
+        "status": "matched",
+        "matchedCode": "2951-2",
+        "displayName": "Serum Sodium",
+        "confidence": 0.98,
+        "semanticStatus": "exact",
+        "candidateCode": "2951-2",
+        "terminologySource": "LOINC",
+        "terminologyVersion": "2.83",
+        "mappingNote": "Verified LOINC 2951-2 matches component, system/specimen, method, and view/lead specificity of \u0027serum sodium\u0027."
+      }
+    },
+    {
+      "name": "serum creatinine",
+      "clinicalCategory": "laboratory",
+      "timing": "in 48 hours",
+      "specimen": "serum",
+      "assertionStatus": "new_order",
+      "origin": "LLM_AND_RULE_CONFIRMED",
+      "normalization": {
+        "status": "matched",
+        "matchedCode": "2160-0",
+        "displayName": "Serum Creatinine",
+        "confidence": 0.98,
+        "semanticStatus": "exact",
+        "candidateCode": "2160-0",
+        "terminologySource": "LOINC",
+        "terminologyVersion": "2.83",
+        "mappingNote": "Verified LOINC 2160-0 matches component, system/specimen, method, and view/lead specificity of \u0027serum creatinine\u0027."
+      }
+    },
+    {
+      "name": "Complete blood count",
+      "clinicalCategory": "laboratory",
+      "timing": "at 1-week follow-up",
+      "specimen": null,
+      "assertionStatus": "new_order",
+      "origin": "LLM_AND_RULE_CONFIRMED",
+      "normalization": {
+        "status": "uncertain",
+        "matchedCode": null,
+        "displayName": "Complete Blood Count",
+        "confidence": 0.5,
+        "semanticStatus": "narrower",
+        "candidateCode": "58410-2",
+        "terminologySource": "LOINC",
+        "terminologyVersion": "2.83",
+        "mappingNote": "LOINC 58410-2 (\u0027CBC panel - Blood by Automated count\u0027) assumes an automated count method not stated in generic \u0027CBC\u0027."
+      }
+    },
+    {
+      "name": "C-reactive protein",
+      "clinicalCategory": "laboratory",
+      "timing": "at 1-week follow-up",
+      "specimen": null,
+      "assertionStatus": "new_order",
+      "origin": "LLM_AND_RULE_CONFIRMED",
+      "normalization": {
+        "status": "uncertain",
+        "matchedCode": null,
+        "displayName": "C-Reactive Protein",
+        "confidence": 0.5,
+        "semanticStatus": "narrower",
+        "candidateCode": "1988-5",
+        "terminologySource": "LOINC",
+        "terminologyVersion": "2.83",
+        "mappingNote": "LOINC 1988-5 (\u0027C reactive protein [Mass/volume] in Serum or Plasma\u0027) assumes Serum/Plasma mass concentration not stated in unqualified \u0027CRP\u0027."
+      }
+    },
+    {
+      "name": "chest X-ray",
+      "clinicalCategory": "imaging",
+      "timing": "in 2 weeks",
+      "specimen": null,
+      "assertionStatus": "new_order",
+      "origin": "LLM_AND_RULE_CONFIRMED",
+      "normalization": {
+        "status": "uncertain",
+        "matchedCode": null,
+        "displayName": "Chest X-Ray PA",
+        "confidence": 0.5,
+        "semanticStatus": "narrower",
+        "candidateCode": "24648-8",
+        "terminologySource": "LOINC",
+        "terminologyVersion": "2.83",
+        "mappingNote": "LOINC 24648-8 (\u0027XR Chest PA upright\u0027) specifies an upright patient posture not stated in \u0027chest X-ray (PA view)\u0027; withheld from exact match code."
+      }
+    },
+    {
+      "name": "12-lead ECG",
+      "clinicalCategory": "electrophysiology_procedure",
+      "timing": "in 2 weeks",
+      "specimen": null,
+      "assertionStatus": "new_order",
+      "origin": "LLM_AND_RULE_CONFIRMED",
+      "normalization": {
+        "status": "uncertain",
+        "matchedCode": null,
+        "displayName": "Electrocardiogram",
+        "confidence": 0.5,
+        "semanticStatus": "broader",
+        "candidateCode": "11524-6",
+        "terminologySource": "LOINC",
+        "terminologyVersion": "2.83",
+        "mappingNote": "LOINC 11524-6 (\u0027EKG study\u0027) is a general electrocardiogram concept and does not encode the 12-lead configuration stated in \u002712-lead ECG\u0027 (vs LOINC 34534-8); withheld from exact match code."
+      }
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "shell": {
+    "ASPNETCORE_ENVIRONMENT": null,
+    "DOTNET_ENVIRONMENT": null,
+    "Extraction__Provider": null,
+    "Extraction__FallbackProvider": null
+  },
+  "dotenv": {
+    "Foundry__Endpoint": "https://935125-0774-resource.services.ai.azure.com/openai/v1/",
+    "Foundry__DeploymentName": "gpt-6.1-sol",
+    "Foundry__TargetModel": "gpt-6.1-sol",
+    "Foundry__AuthenticationMode": "ApiKey",
+    "apiKeyPresent": true
+  },
+  "userSecrets": {
+    "filePresent": false
+  },
+  "environmentSpecificFiles": [
+    "backend\\appsettings.Development.json"
+  ]
+}

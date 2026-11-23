@@ -1,0 +1,108 @@
+{
+  "executedAt": "2026-11-23T09:36:04.491Z",
+  "browser": "Playwright Chromium 1.65.1 (headless)",
+  "baseUrl": "http://127.0.0.1:4200",
+  "liveFoundryCallsMade": 0,
+  "totalScenarios": 7,
+  "passedScenarios": 7,
+  "failedScenarios": 0,
+  "timings": {
+    "initialLoadMs": 987.83,
+    "savedExtractionRenderMs": 639.14
+  },
+  "pageErrors": [],
+  "results": [
+    {
+      "scenario": "Scenario 1 — Application startup & backend health",
+      "status": "PASS",
+      "durationMs": 1073.58,
+      "details": {
+        "title": "Clinical extraction | Apollo Hospitals",
+        "healthResponseStatus": 200,
+        "listResponseStatus": 200,
+        "initialLoadMs": 987.83,
+        "screenshot": "D:\\AI Extraction\\docs\\stage6-evidence\\playwright\\screenshots\\01-workspace-startup.png"
+      }
+    },
+    {
+      "scenario": "Scenario 2 — Clinical note entry, validation & duplicate submission control",
+      "status": "PASS",
+      "durationMs": 239.93,
+      "details": {
+        "emptyDisabledVerified": true,
+        "whitespaceDisabledVerified": true,
+        "inFlightDuplicateGuardVerified": true,
+        "postCalls": 1,
+        "screenshot": "D:\\AI Extraction\\docs\\stage6-evidence\\playwright\\screenshots\\02-clinical-note-entry-extracted.png"
+      }
+    },
+    {
+      "scenario": "Scenario 3 — PDF upload multipart request & corrupted PDF error handling",
+      "status": "PASS",
+      "durationMs": 215.18,
+      "details": {
+        "multipartVerified": true,
+        "realBackendInvalidPdfAlert": "Invalid PDFThe uploaded file could not be read as a PDF.",
+        "screenshot": "D:\\AI Extraction\\docs\\stage6-evidence\\playwright\\screenshots\\03-corrupted-pdf-error.png"
+      }
+    },
+    {
+      "scenario": "Scenario 4 — Saved extraction 1713c76e-b355-4be3-b02f-e9d581b82415 display & categorization",
+      "status": "PASS",
+      "durationMs": 1133.07,
+      "details": {
+        "savedExtractionRenderMs": 639.14,
+        "activeMedRows": 5,
+        "allergyRows": 2,
+        "plannedInvRows": 8,
+        "historicalInvRows": 2,
+        "highlightedText": "Azithromycin 500 mg orally once daily for 3 days to complete respiratory course.",
+        "screenshots": [
+          "D:\\AI Extraction\\docs\\stage6-evidence\\playwright\\screenshots\\04-saved-extraction-structured.png",
+          "D:\\AI Extraction\\docs\\stage6-evidence\\playwright\\screenshots\\05-saved-extraction-details-alerts.png"
+        ]
+      }
+    },
+    {
+      "scenario": "Scenario 5 — Provider & provenance distinction (Foundry vs ONNX fallback & entity origins)",
+      "status": "PASS",
+      "durationMs": 423.5,
+      "details": {
+        "foundryBannerVerified": true,
+        "llmExtractedVsRuleConfirmedDistinguished": true,
+        "onnxFallbackBannerVerified": true,
+        "screenshot": "D:\\AI Extraction\\docs\\stage6-evidence\\playwright\\screenshots\\06-provider-provenance-onnx-vs-foundry.png"
+      }
+    },
+    {
+      "scenario": "Phase C & D — Entity-level clinical review workflow & persistence across browser refresh",
+      "status": "PASS",
+      "durationMs": 1828.07,
+      "details": {
+        "rejectValidationVerified": true,
+        "warfarinCorrectionSaved": true,
+        "cbcClarificationSaved": true,
+        "persistedAcrossBrowserReload": true,
+        "screenshot": "D:\\AI Extraction\\docs\\stage6-evidence\\playwright\\screenshots\\07-clinical-review-workflow-saved.png"
+      }
+    },
+    {
+      "scenario": "Scenario 6 — Failure handling (HTTP 400, 422, 500, 503 DB failure, empty result, malformed JSON)",
+      "status": "PASS",
+      "durationMs": 1107.16,
+      "details": {
+        "testedFailureModes": [
+          "HTTP_400_BAD_REQUEST",
+          "HTTP_422_VALIDATION_REJECTED",
+          "HTTP_500_INTERNAL_ERROR",
+          "HTTP_503_PERSISTENCE_FAILED",
+          "MALFORMED_JSON_RESPONSE",
+          "EMPTY_RESULT_200_OK"
+        ],
+        "sourceNoteRetainedOnAllErrors": true,
+        "noStackTracesOrSecretsLeaked": true,
+        "screenshot": "D:\\AI Extraction\\docs\\stage6-evidence\\playwright\\screenshots\\08-empty-and-failure-handling.png"
+      }
+    }
+  ]
+}

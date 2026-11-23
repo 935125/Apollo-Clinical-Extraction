@@ -1,0 +1,252 @@
+{
+  "medications": [
+    {
+      "name": "Penicillin",
+      "strength": null,
+      "dose": null,
+      "doseUnit": null,
+      "route": null,
+      "frequency": null,
+      "duration": null,
+      "formulation": null,
+      "instructions": "anaphylaxis",
+      "action": "allergy",
+      "assertionStatus": "allergy",
+      "evidence": {
+        "quote": "Documented Allergies: Penicillin (anaphylaxis) and Ibuprofen (bronchospasm).",
+        "occurrence": 1
+      }
+    },
+    {
+      "name": "Ibuprofen",
+      "strength": null,
+      "dose": null,
+      "doseUnit": null,
+      "route": null,
+      "frequency": null,
+      "duration": null,
+      "formulation": null,
+      "instructions": "bronchospasm",
+      "action": "allergy",
+      "assertionStatus": "allergy",
+      "evidence": {
+        "quote": "Documented Allergies: Penicillin (anaphylaxis) and Ibuprofen (bronchospasm).",
+        "occurrence": 1
+      }
+    },
+    {
+      "name": "antimicrobial therapy",
+      "strength": null,
+      "dose": null,
+      "doseUnit": null,
+      "route": "intravenous",
+      "frequency": null,
+      "duration": null,
+      "formulation": null,
+      "instructions": null,
+      "action": "none",
+      "assertionStatus": "historical",
+      "evidence": {
+        "quote": "Treated with intravenous antimicrobial therapy",
+        "occurrence": 1
+      }
+    },
+    {
+      "name": "Warfarin",
+      "strength": "5 mg",
+      "dose": null,
+      "doseUnit": null,
+      "route": "orally",
+      "frequency": "once daily",
+      "duration": null,
+      "formulation": null,
+      "instructions": "in the evening for stroke prophylaxis.",
+      "action": "continue",
+      "assertionStatus": "current_medication",
+      "evidence": {
+        "quote": "Warfarin 5 mg orally once daily in the evening for stroke prophylaxis.",
+        "occurrence": 1
+      }
+    },
+    {
+      "name": "Aspirin",
+      "strength": "81 mg",
+      "dose": null,
+      "doseUnit": null,
+      "route": "orally",
+      "frequency": "once daily",
+      "duration": null,
+      "formulation": null,
+      "instructions": "in the morning (verify concurrent anticoagulation indication).",
+      "action": "continue",
+      "assertionStatus": "current_medication",
+      "evidence": {
+        "quote": "Aspirin 81 mg orally once daily in the morning (verify concurrent anticoagulation indication).",
+        "occurrence": 1
+      }
+    },
+    {
+      "name": "Azithromycin",
+      "strength": "500 mg",
+      "dose": null,
+      "doseUnit": null,
+      "route": "orally",
+      "frequency": "once daily",
+      "duration": "3 days",
+      "formulation": null,
+      "instructions": "to complete respiratory course.",
+      "action": "continue",
+      "assertionStatus": "current_medication",
+      "evidence": {
+        "quote": "Azithromycin 500 mg orally once daily for 3 days to complete respiratory course.",
+        "occurrence": 1
+      }
+    },
+    {
+      "name": "Ondansetron",
+      "strength": "4 mg",
+      "dose": null,
+      "doseUnit": null,
+      "route": "orally",
+      "frequency": "every 8 hours as needed",
+      "duration": null,
+      "formulation": null,
+      "instructions": "as needed for nausea.",
+      "action": "continue",
+      "assertionStatus": "current_medication",
+      "evidence": {
+        "quote": "Ondansetron 4 mg orally every 8 hours as needed for nausea.",
+        "occurrence": 1
+      }
+    },
+    {
+      "name": "Pantoprazole",
+      "strength": "40 mg",
+      "dose": null,
+      "doseUnit": null,
+      "route": "orally",
+      "frequency": "once daily",
+      "duration": "30 days",
+      "formulation": null,
+      "instructions": "before breakfast",
+      "action": "continue",
+      "assertionStatus": "current_medication",
+      "evidence": {
+        "quote": "Pantoprazole 40 mg orally once daily before breakfast for 30 days.",
+        "occurrence": 1
+      }
+    }
+  ],
+  "investigations": [
+    {
+      "name": "K\u002B",
+      "timing": null,
+      "specimen": "Serum",
+      "assertionStatus": "historical",
+      "status": "unknown",
+      "evidence": {
+        "quote": "Discharge Vital Signs \u0026 Baseline Labs\n\nBlood Pressure Heart Rate Temperature Serum Potassium \u0026 Creatinine\n\n124/76 mmHg | 82 bpm (controlled AF) | 36.8 \u00B0C | K\u002B 5.7 mEq/L, Creatinine 1.9 mg/dL",
+        "occurrence": 1
+      }
+    },
+    {
+      "name": "Creatinine",
+      "timing": null,
+      "specimen": "Serum",
+      "assertionStatus": "historical",
+      "status": "unknown",
+      "evidence": {
+        "quote": "Discharge Vital Signs \u0026 Baseline Labs\n\nBlood Pressure Heart Rate Temperature Serum Potassium \u0026 Creatinine\n\n124/76 mmHg | 82 bpm (controlled AF) | 36.8 \u00B0C | K\u002B 5.7 mEq/L, Creatinine 1.9 mg/dL",
+        "occurrence": 1
+      }
+    },
+    {
+      "name": "Prothrombin time and INR (PT/INR)",
+      "timing": "in 3 days",
+      "specimen": null,
+      "assertionStatus": "new_order",
+      "status": "unknown",
+      "evidence": {
+        "quote": "Prothrombin time and INR (PT/INR) in 3 days.",
+        "occurrence": 1
+      }
+    },
+    {
+      "name": "serum potassium",
+      "timing": "in 48 hours",
+      "specimen": "serum",
+      "assertionStatus": "new_order",
+      "status": "unknown",
+      "evidence": {
+        "quote": "Repeat serum potassium, serum sodium, and serum creatinine in 48 hours.",
+        "occurrence": 1
+      }
+    },
+    {
+      "name": "serum sodium",
+      "timing": "in 48 hours",
+      "specimen": "serum",
+      "assertionStatus": "new_order",
+      "status": "unknown",
+      "evidence": {
+        "quote": "Repeat serum potassium, serum sodium, and serum creatinine in 48 hours.",
+        "occurrence": 1
+      }
+    },
+    {
+      "name": "serum creatinine",
+      "timing": "in 48 hours",
+      "specimen": "serum",
+      "assertionStatus": "new_order",
+      "status": "unknown",
+      "evidence": {
+        "quote": "Repeat serum potassium, serum sodium, and serum creatinine in 48 hours.",
+        "occurrence": 1
+      }
+    },
+    {
+      "name": "Complete blood count (CBC)",
+      "timing": "at 1-week follow-up",
+      "specimen": null,
+      "assertionStatus": "new_order",
+      "status": "unknown",
+      "evidence": {
+        "quote": "Complete blood count (CBC) and C-reactive protein (CRP) at 1-week follow-up.",
+        "occurrence": 1
+      }
+    },
+    {
+      "name": "C-reactive protein (CRP)",
+      "timing": "at 1-week follow-up",
+      "specimen": null,
+      "assertionStatus": "new_order",
+      "status": "unknown",
+      "evidence": {
+        "quote": "Complete blood count (CBC) and C-reactive protein (CRP) at 1-week follow-up.",
+        "occurrence": 1
+      }
+    },
+    {
+      "name": "chest X-ray (PA view)",
+      "timing": "in 2 weeks",
+      "specimen": null,
+      "assertionStatus": "new_order",
+      "status": "unknown",
+      "evidence": {
+        "quote": "Follow-up chest X-ray (PA view) and 12-lead ECG in 2 weeks.",
+        "occurrence": 1
+      }
+    },
+    {
+      "name": "12-lead ECG",
+      "timing": "in 2 weeks",
+      "specimen": null,
+      "assertionStatus": "new_order",
+      "status": "unknown",
+      "evidence": {
+        "quote": "Follow-up chest X-ray (PA view) and 12-lead ECG in 2 weeks.",
+        "occurrence": 1
+      }
+    }
+  ]
+}

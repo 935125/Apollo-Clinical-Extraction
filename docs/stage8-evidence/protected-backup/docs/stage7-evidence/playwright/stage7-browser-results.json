@@ -1,0 +1,15 @@
+{
+  "results": [
+    {
+      "scenario": "Real ONNX readiness and visible source candidate excluded from prescriptions",
+      "status": "PASS"
+    },
+    {
+      "scenario": "Qualified imaging source name retained with unresolved terminology",
+      "status": "PASS"
+    }
+  ],
+  "extractionPosts": 0,
+  "liveFoundryCalls": 0,
+  "pageErrors": []
+}

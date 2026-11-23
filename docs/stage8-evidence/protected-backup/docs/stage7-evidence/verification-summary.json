@@ -1,0 +1,21 @@
+{
+  "backend": {
+    "passed": 173,
+    "failed": 0,
+    "skipped": 10
+  },
+  "explicitPostgresFactTestsPassed": 12,
+  "angular": {
+    "passed": 35,
+    "failed": 0
+  },
+  "productionBuild": "PASS (363.34 kB initial)",
+  "solutionBuild": "PASS (Release; zero warnings/errors)",
+  "chromium": {
+    "passed": 11,
+    "failed": 0
+  },
+  "billableFoundryCalls": 0,
+  "independentEvaluation": "PENDING EXTERNAL REVIEW",
+  "releaseHold": "Preservation incidents documented; clinical evaluation/identity/deployment blockers remain"
+}

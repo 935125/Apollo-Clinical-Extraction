@@ -1,0 +1,20 @@
+{
+  "protected_benchmark_and_sealed_files_unchanged": true,
+  "protected_files": 33,
+  "initial_application_records_unchanged": false,
+  "review_audit_unchanged": true,
+  "after_legacy_fix_application_records_unchanged": true,
+  "changed_nonbenchmark_browser_artifacts": [
+    "backend/artifacts/stage5-release-verification/playwright-e2e-verification.json",
+    "backend/artifacts/stage5-release-verification/screenshots/02-clinical-note-entry-extracted.png",
+    "backend/artifacts/stage5-release-verification/screenshots/04-saved-extraction-structured.png",
+    "backend/artifacts/stage5-release-verification/screenshots/05-saved-extraction-details-alerts.png",
+    "backend/artifacts/stage5-release-verification/screenshots/06-provider-provenance-onnx-vs-foundry.png",
+    "backend/artifacts/stage5-release-verification/screenshots/07-clinical-review-workflow-saved.png",
+    "backend/artifacts/stage5-release-verification/screenshots/08-empty-and-failure-handling.png"
+  ],
+  "incidents": [
+    "Legacy forensic test re-saved reference extraction 1713c76e-b355-4be3-b02f-e9d581b82415 in cx_platform, updating parent and replacing child rows. Side effect removed; duplicate-ID writes now rejected. No speculative restoration attempted.",
+    "Legacy browser runner overwrote prior browser report/screenshots before output routing was corrected. Clinical benchmark JSON and sealed files remained unchanged."
+  ]
+}

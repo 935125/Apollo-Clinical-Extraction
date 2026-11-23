@@ -1,0 +1,13 @@
+{
+  "originalFailureRows": 36,
+  "originalMedicationFn": 16,
+  "originalInvestigationFn": 13,
+  "originalInvestigationFp": 7,
+  "rawModelMedicationOmissions": 9,
+  "postModelMedicationSuppressions": 7,
+  "rawModelOutputsIdentical": true,
+  "remainingOriginalRowsUnderFrozenMatching": 21,
+  "sourceCandidatesTotal": 8,
+  "matchedOriginalSuppressionCandidates": 7,
+  "classification": "Engineering failure audit only; no independent clinical validation"
+}
