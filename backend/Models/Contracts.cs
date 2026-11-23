@@ -118,7 +118,14 @@ public record ModelMetadataDto(
     [property: JsonPropertyName("modelSha256")] string? ModelSha256 = null,
     [property: JsonPropertyName("tokenizerSha256")] string? TokenizerSha256 = null,
     [property: JsonPropertyName("executionMode")] string? ExecutionMode = null,
-    [property: JsonPropertyName("reviewCandidates")] List<SourceReviewCandidateDto>? ReviewCandidates = null
+    [property: JsonPropertyName("reviewCandidates")] List<SourceReviewCandidateDto>? ReviewCandidates = null,
+    [property: JsonPropertyName("requestedPrimaryProvider")] string? RequestedPrimaryProvider = null,
+    [property: JsonPropertyName("finalExecutedProvider")] string? FinalExecutedProvider = null,
+    [property: JsonPropertyName("routingMode")] string? RoutingMode = null,
+    [property: JsonPropertyName("primaryInvocationStatus")] string? PrimaryInvocationStatus = null,
+    [property: JsonPropertyName("fallbackTriggered")] bool? FallbackTriggered = null,
+    [property: JsonPropertyName("extractionStatus")] string? ExtractionStatus = null,
+    [property: JsonPropertyName("validationResult")] string? ValidationResult = null
 );
 
 public record ProviderAttemptDto(
@@ -136,7 +143,9 @@ public record ProviderAttemptDto(
     [property: JsonPropertyName("inferenceDurationMs")] double? InferenceDurationMs = null,
     [property: JsonPropertyName("modelMedicationMentions")] int? ModelMedicationMentions = null,
     [property: JsonPropertyName("ruleMedicationMentions")] int? RuleMedicationMentions = null,
-    [property: JsonPropertyName("ruleInvestigationMentions")] int? RuleInvestigationMentions = null
+    [property: JsonPropertyName("ruleInvestigationMentions")] int? RuleInvestigationMentions = null,
+    [property: JsonPropertyName("httpAttempts")] int? HttpAttempts = null,
+    [property: JsonPropertyName("correlationId")] string? CorrelationId = null
 );
 
 public record ValidationDimensionDto(
@@ -396,3 +405,5 @@ public record ActiveLearningStateDto(
 );
 
 public record SourceReviewCandidateDto(string Name, string Category, double Confidence, EvidenceDto Evidence, string Reason, bool ReviewRequired = true);
+
+public record ExtractionFailureProvenance(string RequestedPrimaryProvider, List<ProviderAttemptDto> Attempts, bool FallbackTriggered, string Reason, string ExtractionStatus);

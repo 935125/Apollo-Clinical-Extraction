@@ -9,7 +9,9 @@ namespace Apollo.Backend.Clinical;
 public sealed class ExtractionOptions
 {
     public const string SectionName = "Extraction";
-    public string Provider { get; set; } = "LocalOnnx";
+    public string Provider { get; set; } = "MicrosoftFoundry";
+    public bool AllowDirectLocal { get; set; }
+    public string? DirectLocalReason { get; set; }
     public string FallbackProvider { get; set; } = "LocalOnnx";
     /// <summary>
     /// Disabled by default for patient data governance. When enabled strictly for synthetic test runs,
@@ -34,6 +36,9 @@ public sealed class FoundryOptions
     public int RetryBaseDelayMs { get; set; } = 250;
     public int MaxCompletionTokens { get; set; } = 16000;
     public bool AllowLocalFallback { get; set; } = true;
+    public bool AllowParsingFallback { get; set; } = false;
+    public int CircuitFailureThreshold { get; set; } = 5;
+    public int CircuitBreakSeconds { get; set; } = 30;
     public string TokenScope { get; set; } = "https://ai.azure.com/.default";
     public string? ManagedIdentityClientId { get; set; }
 
@@ -103,6 +108,7 @@ public sealed class FoundryAttemptException(string reason, ProviderAttemptDto at
 }
 public class ClinicalExtractionException(string code, int status, string safeMessage) : Exception(safeMessage)
 {
+    public ExtractionFailureProvenance? Routing { get; init; }
     public string Code { get; } = code;
     public int Status { get; } = status;
 }

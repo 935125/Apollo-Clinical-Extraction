@@ -17,7 +17,8 @@ public sealed class ExtractionWorkflow(
     IExtractionRepository repository,
     IOptions<FoundryOptions> options,
     IOptions<ExtractionOptions> extractionOptions,
-    ILogger<ExtractionWorkflow> logger)
+    ILogger<ExtractionWorkflow> logger,
+    FoundryCircuitBreaker circuit)
 {
     public async Task<ClinicalExtractionResponse> ExtractAndSaveAsync(
         string noteText,
@@ -37,13 +38,16 @@ public sealed class ExtractionWorkflow(
 
         var watch = Stopwatch.StartNew();
         string extractionId = Guid.NewGuid().ToString("D");
-        string primaryProvider = (extractionOptions.Value.Provider ?? "LocalOnnx").Trim();
+        string primaryProvider = (extractionOptions.Value.Provider ?? "MicrosoftFoundry").Trim();
         ClinicalExtractionResponse accepted;
         FoundryExtraction? capturedAzure = null;
 
         if (primaryProvider.Equals("LocalOnnx", StringComparison.OrdinalIgnoreCase))
         {
+            if (ProviderRoutingPolicy.DirectLocalFault(extractionOptions.Value) is string localFault)
+                throw new ClinicalExtractionException(localFault, 503, "Direct LocalOnnx requires an explicit authorized offline or isolated-test selection.");
             accepted = await local.ExtractAsync(noteText, correlationId, ct);
+            accepted = accepted with { ModelMetadata = accepted.ModelMetadata with { RoutingMode = "explicit_offline", PrimaryInvocationStatus = "not_attempted_offline", FallbackTriggered = false } };
         }
         else if (!primaryProvider.Equals("MicrosoftFoundry", StringComparison.OrdinalIgnoreCase))
         {
@@ -55,11 +59,18 @@ public sealed class ExtractionWorkflow(
         else
         {
             FoundryExtraction? azure = null;
+            string? configurationFault = ProviderRoutingPolicy.ConfigurationFault(options.Value);
+            if (configurationFault != null)
+                throw ProviderRoutingPolicy.Reject(new(configurationFault, new("foundry", options.Value.TargetModel, options.Value.EffectiveDeployment, "blocked_configuration", configurationFault, 0, false, HttpAttempts: 0, CorrelationId: correlationId), true));
             try
             {
+                if (!circuit.Enter(options.Value))
+                    throw new FoundryAttemptException("AZURE_CIRCUIT_OPEN", new("foundry", options.Value.TargetModel, options.Value.EffectiveDeployment, "circuit_open", "AZURE_CIRCUIT_OPEN", 0, false, HttpAttempts: 0, CorrelationId: correlationId));
+                using var invocation = FoundryInvocationContext.Begin(correlationId);
                 azure = await foundry.ExtractAsync(noteText, ct);
                 capturedAzure = azure;
                 accepted = validator.Map(azure.Candidate, noteText, correlationId);
+                circuit.Success();
                 accepted = accepted with
                 {
                     ModelMetadata = new(
@@ -76,18 +87,21 @@ public sealed class ExtractionWorkflow(
                         null,
                         true,
                         [azure.Attempt],
-                        "passed")
+                        "passed", RoutingMode: "primary", PrimaryInvocationStatus: "accepted", FallbackTriggered: false)
                 };
             }
             catch (InvalidClinicalEvidenceException)
             {
+                circuit.Success();
                 logger.LogWarning("Clinical evidence rejected: AZURE_INVALID_EVIDENCE");
                 var attempt = azure!.Attempt with { Outcome = "rejected", Reason = "AZURE_INVALID_EVIDENCE" };
                 capturedAzure = azure with { Attempt = attempt };
-                accepted = await Fallback(noteText, correlationId, new("AZURE_INVALID_EVIDENCE", attempt), ct);
+                throw ProviderRoutingPolicy.Reject(new("AZURE_INVALID_EVIDENCE", attempt));
             }
             catch (FoundryAttemptException failure)
             {
+                if (ProviderRoutingPolicy.IsTransient(failure.Reason) && failure.Reason != "AZURE_CIRCUIT_OPEN") circuit.TransientFailure(options.Value);
+                else if (failure.Reason != "AZURE_CIRCUIT_OPEN") circuit.Success();
                 accepted = await Fallback(noteText, correlationId, failure, ct);
             }
         }
@@ -95,6 +109,14 @@ public sealed class ExtractionWorkflow(
         ct.ThrowIfCancellationRequested();
         accepted = accepted with
         {
+            ModelMetadata = accepted.ModelMetadata with
+            {
+                RequestedPrimaryProvider = primaryProvider,
+                FinalExecutedProvider = accepted.ModelMetadata.Provider == "foundry" ? "MicrosoftFoundry" : "LocalOnnx",
+                ExtractionStatus = "completed_requires_review",
+                ValidationResult = accepted.ValidationSummary.HasErrors ? "review_required" : "source_validated_requires_review",
+                Attempts = accepted.ModelMetadata.Attempts?.Select(a => a with { CorrelationId = correlationId }).ToList()
+            },
             ExtractionId = extractionId,
             CorrelationId = correlationId,
             ExecutionDurationMs = Math.Round(watch.Elapsed.TotalMilliseconds, 2),
@@ -170,29 +192,10 @@ public sealed class ExtractionWorkflow(
         FoundryAttemptException failure,
         CancellationToken ct)
     {
-        if (failure.OperatorFault)
-        {
-            logger.LogError("Foundry configuration/authentication fault: {Reason}", failure.Reason);
-            int status = failure.Reason is "AZURE_CREDENTIALS_INVALID" or "AZURE_CREDENTIALS_MISSING" ? 401 : 503;
-            throw new ClinicalExtractionException(
-                failure.Reason,
-                status,
-                $"Microsoft Foundry failed due to a configuration or authentication error ({failure.Reason}). Local fallback does not conceal credential or configuration faults.");
-        }
-
-        logger.LogWarning("Foundry attempt rejected: {Reason}", failure.Reason);
         ct.ThrowIfCancellationRequested();
-
-        string fallbackProvider = (extractionOptions.Value.FallbackProvider ?? "LocalOnnx").Trim();
-        if (!options.Value.AllowLocalFallback || !fallbackProvider.Equals("LocalOnnx", StringComparison.OrdinalIgnoreCase))
-        {
-            if (failure.Reason is "AZURE_INVALID_EVIDENCE" or "AZURE_UNUSABLE_JSON" or "AZURE_TRUNCATED")
-                throw new ClinicalExtractionException(
-                    failure.Reason,
-                    422,
-                    $"Primary clinical extraction output failed deterministic validation ({failure.Reason}) and local fallback is disabled.");
-            throw new ClinicalExtractionException("EXTRACTION_UNAVAILABLE", 503, "The primary extractor is unavailable and local processing is disabled.");
-        }
+        if (!ProviderRoutingPolicy.AllowsFallback(failure, options.Value, extractionOptions.Value))
+            throw ProviderRoutingPolicy.Reject(failure);
+        logger.LogWarning("Eligible Foundry failure; executing verified fallback: {Reason}", failure.Reason);
 
         try
         {
@@ -203,6 +206,9 @@ public sealed class ExtractionWorkflow(
                 ModelMetadata = result.ModelMetadata with
                 {
                     FallbackReason = failure.Reason,
+                    FallbackTriggered = true,
+                    RoutingMode = "fallback",
+                    PrimaryInvocationStatus = failure.Attempt.Outcome,
                     SchemaValidationStatus = schemaStatus,
                     Attempts = [failure.Attempt, .. result.ModelMetadata.Attempts ?? []]
                 }
