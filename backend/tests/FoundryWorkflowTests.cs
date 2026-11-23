@@ -40,12 +40,16 @@ public sealed class SimulatedAzure : HttpMessageHandler
     public int Calls;
     public string Mode = "success";
     public HttpStatusCode Status = HttpStatusCode.OK;
+    public readonly System.Collections.Concurrent.ConcurrentQueue<HttpStatusCode> StatusSequence = new();
+    public readonly System.Collections.Concurrent.ConcurrentBag<string> CorrelationIds = new();
+    public int? RetryAfterSeconds;
     public string? Source;
     public JsonElement? Request;
     public readonly TaskCompletionSource Started = new(TaskCreationOptions.RunContinuationsAsynchronously);
     protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken ct)
     {
         Interlocked.Increment(ref Calls);
+        CorrelationIds.Add(request.Headers.TryGetValues("X-Correlation-ID", out var correlations) ? correlations.Single() : "not_recorded");
         using var body = JsonDocument.Parse(await request.Content!.ReadAsStringAsync(ct));
         Request = body.RootElement.Clone();
         Source = body.RootElement.GetProperty("messages")[1].GetProperty("content").GetString();
@@ -56,7 +60,13 @@ public sealed class SimulatedAzure : HttpMessageHandler
         Started.TrySetResult();
         if (Mode == "network") throw new HttpRequestException("synthetic connection failure");
         if (Mode == "wait") await Task.Delay(Timeout.InfiniteTimeSpan, ct);
-        if (Status != HttpStatusCode.OK) return new(Status) { Content = JsonContent.Create(new { error = new { code = Mode == "policy" ? "content_filter" : "synthetic_failure" } }) };
+        var currentStatus = StatusSequence.TryDequeue(out var queuedStatus) ? queuedStatus : Status;
+        if (currentStatus != HttpStatusCode.OK)
+        {
+            var failed = new HttpResponseMessage(currentStatus) { Content = JsonContent.Create(new { error = new { code = Mode == "policy" ? "content_filter" : Mode == "context" ? "context_length_exceeded" : "synthetic_failure" } }) };
+            if (RetryAfterSeconds is int seconds) failed.Headers.RetryAfter = new System.Net.Http.Headers.RetryConditionHeaderValue(TimeSpan.FromSeconds(seconds));
+            return failed;
+        }
         if (Mode == "malformed") return new(HttpStatusCode.OK) { Content = new StringContent("{invalid JSON") };
         var candidate = Candidates(Source!);
         if (Mode == "empty") candidate = new([], []);
@@ -98,6 +108,11 @@ public sealed class FoundryFactory : WebApplicationFactory<Program>
     public double TimeoutSeconds = 5;
     public int MaxRetries = 0;
     public bool AllowFallback = true;
+    public bool AllowParsingFallback;
+    public bool AllowDirectLocal = true;
+    public int CircuitThreshold = 5;
+    public TimeProvider? Clock;
+    public string? DeploymentOverride;
     public string? FallbackProvider;
     public string PrimaryProvider = "MicrosoftFoundry";
     public string? EndpointOverride;
@@ -112,14 +127,15 @@ public sealed class FoundryFactory : WebApplicationFactory<Program>
                 sp.GetRequiredService<Microsoft.Extensions.Logging.ILogger<SqlExtractionRepository>>(), DatabaseAutoMigrate));
             services.PostConfigure<ExtractionOptions>(o =>
             {
+                o.AllowDirectLocal = AllowDirectLocal; o.DirectLocalReason = "isolated_test";
                 o.Provider = PrimaryProvider;
                 o.FallbackProvider = FallbackProvider ?? (AllowFallback ? "LocalOnnx" : "None");
             });
             services.PostConfigure<FoundryOptions>(o =>
             {
                 o.Endpoint = EndpointOverride ?? "https://synthetic.openai.azure.com/openai/v1/";
-                o.DeploymentName = "gpt-6.1-sol";
-                o.Deployment = "gpt-6.1-sol";
+                o.DeploymentName = DeploymentOverride ?? "gpt-6.1-sol";
+                o.Deployment = DeploymentOverride ?? "gpt-6.1-sol";
                 o.TargetModel = "gpt-6.1-sol";
                 o.AuthenticationMode = "ApiKey";
                 o.ApiKey = ApiKeyOverride ?? "synthetic-test-key";
@@ -127,7 +143,10 @@ public sealed class FoundryFactory : WebApplicationFactory<Program>
                 o.MaxRetries = MaxRetries;
                 o.RetryBaseDelayMs = 25;
                 o.AllowLocalFallback = AllowFallback;
+                o.AllowParsingFallback = AllowParsingFallback;
+                o.CircuitFailureThreshold = CircuitThreshold;
             });
+            if (Clock != null) { services.RemoveAll<TimeProvider>(); services.AddSingleton(Clock); }
             services.AddHttpClient<IFoundryClinicalExtractor, FoundryClinicalExtractor>().ConfigurePrimaryHttpMessageHandler(() => Azure);
             services.RemoveAll<ILocalClinicalExtractor>();
             services.AddSingleton<ILocalClinicalExtractor>(sp => Local = new CountingLocal(sp));
@@ -189,14 +208,16 @@ public class FoundryWorkflowTests
     [InlineData("truncated", "AZURE_TRUNCATED")]
     [InlineData("bad-schema", "AZURE_UNUSABLE_JSON")]
     [InlineData("malformed", "AZURE_UNUSABLE_JSON")]
-    public async Task RejectedAzureOutput_FallsBackOnce_AndKeepsAzureUsageOnItsAttempt(string mode, string reason)
+    public async Task RejectedAzureOutput_FailsForReview_WithoutLocalFallback(string mode, string reason)
     {
         using var factory = new FoundryFactory(); factory.Azure.Mode = mode;
         using var client = factory.CreateClient(); using var response = await Submit(client, false);
-        response.EnsureSuccessStatusCode(); var result = (await response.Content.ReadFromJsonAsync<ClinicalExtractionResponse>())!;
-        Assert.Equal(reason, result.ModelMetadata.FallbackReason); Assert.Equal(1, factory.Local.Calls); Assert.Equal(1, factory.Repository.Saves);
-        Assert.Null(result.ModelMetadata.TotalTokens);
-        if (mode != "malformed") Assert.Equal(100, result.ModelMetadata.Attempts![0].TotalTokens);
+        Assert.Equal(HttpStatusCode.UnprocessableEntity, response.StatusCode);
+        using var error = JsonDocument.Parse(await response.Content.ReadAsStringAsync());
+        Assert.Equal(reason, error.RootElement.GetProperty("code").GetString());
+        Assert.False(error.RootElement.GetProperty("routing").GetProperty("fallbackTriggered").GetBoolean());
+        Assert.Equal(0, factory.Local.Calls); Assert.Equal(0, factory.Repository.Saves);
+        if (mode != "malformed") Assert.Equal(100, error.RootElement.GetProperty("routing").GetProperty("attempts")[0].GetProperty("totalTokens").GetInt32());
     }
     [Fact]
     public async Task Throttled429_RetriesBeforeActivatingOnnxFallback()

@@ -120,9 +120,18 @@ export interface ProviderAttempt {
   completionTokens?: number | null;
   totalTokens?: number | null;
   onnxWindows?: number | null;
+  httpAttempts?: number | null;
+  correlationId?: string | null;
 }
 
 export interface ModelMetadata {
+  requestedPrimaryProvider?: string | null;
+  finalExecutedProvider?: string | null;
+  routingMode?: string | null;
+  primaryInvocationStatus?: string | null;
+  fallbackTriggered?: boolean | null;
+  extractionStatus?: string | null;
+  validationResult?: string | null;
   modelSha256?: string | null;
   tokenizerSha256?: string | null;
   executionMode?: string | null;

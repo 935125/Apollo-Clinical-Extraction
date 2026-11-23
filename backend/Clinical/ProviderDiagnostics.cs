@@ -34,11 +34,13 @@ public sealed class ProviderConfigurationHealthCheck(IOptions<ExtractionOptions>
     }
 }
 
-public sealed class ProviderStartupDiagnostics(IConfiguration config, IHostEnvironment environment, IOptions<ExtractionOptions> extraction,
+public sealed class ProviderStartupDiagnostics(IHostEnvironment environment, IOptions<ExtractionOptions> extraction,
     IOptions<FoundryOptions> foundry, ILogger<ProviderStartupDiagnostics> logger) : IHostedService
 {
     public Task StartAsync(CancellationToken ct)
     {
+        string? error = ProviderDiagnostics.Error(extraction.Value, foundry.Value);
+        if (error != null) logger.LogError("Provider routing configuration failed: {Code}; no silent provider substitution", error);
         logger.LogInformation("Provider routing: environment {Environment}; primary {Primary}; fallback {Fallback}; local authorization {LocalAllowed}; configuration {ConfigurationStatus}",
             environment.EnvironmentName, extraction.Value.Provider, extraction.Value.FallbackProvider,
             ProviderRoutingPolicy.DirectLocalFault(extraction.Value) == null, ProviderDiagnostics.Error(extraction.Value, foundry.Value) ?? "valid_not_live_verified");

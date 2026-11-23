@@ -383,7 +383,7 @@ public sealed class ForensicPipelineAuditTests
     public async Task CapturedLiveFoundryResponse_ValidatesAllFiveMedications_AllEightOrders_AndPersistsToIsolatedPostgres()
     {
         string inputDir = Path.Combine(HeldOutBenchmarkRunner.Backend, "artifacts", "live-final-verification");
-        string artifactDir = Path.Combine(Environment.GetEnvironmentVariable("APOLLO_EVALUATION_OUTPUT_ROOT") ?? Path.Combine(HeldOutBenchmarkRunner.Backend, "..", "docs", "stage7-evidence"), "forensic-replay");
+        string artifactDir = Path.Combine(Environment.GetEnvironmentVariable("APOLLO_EVALUATION_OUTPUT_ROOT") ?? Path.Combine(HeldOutBenchmarkRunner.Backend, "..", "docs", "stage8-evidence"), "forensic-replay");
         Directory.CreateDirectory(artifactDir);
         string rawResponsePath = Path.Combine(inputDir, "foundry-raw-response.json");
         string rawEnvelopePath = Path.Combine(inputDir, "foundry-raw-http-envelope.json");
@@ -631,7 +631,7 @@ public sealed class ForensicPipelineAuditTests
                 .GroupBy(k => k.Key)
                 .ToDictionary(g => g.Key, g => new Accuracy(g.Sum(v => v.Value.Correct), g.Sum(v => v.Value.Evaluated)));
 
-        string artifactDir = Path.Combine(Environment.GetEnvironmentVariable("APOLLO_EVALUATION_OUTPUT_ROOT") ?? Path.Combine(HeldOutBenchmarkRunner.Backend, "..", "docs", "stage7-evidence"), "legacy-unseen-replay");
+        string artifactDir = Path.Combine(Environment.GetEnvironmentVariable("APOLLO_EVALUATION_OUTPUT_ROOT") ?? Path.Combine(HeldOutBenchmarkRunner.Backend, "..", "docs", "stage8-evidence"), "legacy-unseen-replay");
         Directory.CreateDirectory(artifactDir);
 
         // Also evaluate the same 6 unseen cases through the primary Foundry + C# validation pipeline (offline deterministic replay, 0 live calls)

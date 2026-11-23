@@ -46,7 +46,7 @@ public class Stage7DevelopmentBenchmarkTests
         Recognition Sum(List<EntityEvaluation> scores) => new(scores.Sum(s => s.Normalized.Tp), scores.Sum(s => s.Normalized.Fp), scores.Sum(s => s.Normalized.Fn));
         Dictionary<string, Accuracy> Attributes(List<EntityEvaluation> scores) => scores.SelectMany(s => s.Attributes).GroupBy(p => p.Key)
             .ToDictionary(g => g.Key, g => new Accuracy(g.Sum(p => p.Value.Correct), g.Sum(p => p.Value.Evaluated)));
-        string directory = Path.Combine(backend, "..", "docs", "stage7-evidence"); Directory.CreateDirectory(directory);
+        string directory = Environment.GetEnvironmentVariable("APOLLO_EVALUATION_OUTPUT_ROOT") ?? Path.Combine(backend, "..", "docs", "stage8-evidence"); Directory.CreateDirectory(directory);
         await File.WriteAllTextAsync(Path.Combine(directory, "stage7-development-results.json"), JsonSerializer.Serialize(new
         {
             classification = "Development regression; not independently clinically validated", caseCount = rows.Count, billableFoundryCalls = factory.Azure.Calls,

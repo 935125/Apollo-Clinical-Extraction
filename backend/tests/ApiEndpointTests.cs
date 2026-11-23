@@ -20,7 +20,7 @@ public sealed class TestWebApplicationFactory : WebApplicationFactory<Program>
         {
             services.RemoveAll<IExtractionRepository>();
             services.AddSingleton<IExtractionRepository, InMemoryExtractionRepository>();
-            services.PostConfigure<Apollo.Backend.Clinical.ExtractionOptions>(o => o.Provider = "LocalOnnx");
+            services.PostConfigure<Apollo.Backend.Clinical.ExtractionOptions>(o => { o.AllowDirectLocal = true; o.DirectLocalReason = "isolated_test"; o.Provider = "LocalOnnx"; });
         });
     }
 }

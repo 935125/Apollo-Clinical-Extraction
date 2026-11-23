@@ -26,7 +26,7 @@ public class Stage7BrowserFixtureTests
             await repository.SaveExtractionAsync(local.ExtractionId, local);
             Assert.Equal(2, await database.Count("extraction_runs")); Assert.Equal(0, await database.Count("entity_review_audit"));
             if (retain)
-                await File.WriteAllTextAsync(Path.Combine(backend, "..", "docs/stage7-evidence/browser-fixture.json"), JsonSerializer.Serialize(new
+                await File.WriteAllTextAsync(Path.Combine(Environment.GetEnvironmentVariable("APOLLO_EVALUATION_OUTPUT_ROOT") ?? Path.Combine(backend, "..", "docs", "stage8-evidence"), "browser-fixture.json"), JsonSerializer.Serialize(new
                 {
                     schema = database.Schema, database = "cx_audit_test", seededExtractions = 2, liveFoundryCalls = 0,
                     isolation = "Copied synthetic saved-provider fixtures; no original records or existing review decisions copied/modified"

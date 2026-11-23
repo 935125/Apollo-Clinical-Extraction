@@ -1,0 +1,31 @@
+{
+  "method": "GET",
+  "completionRequests": 0,
+  "billableInferenceRequests": 0,
+  "endpointHost": "935125-0774-resource.services.ai.azure.com",
+  "deployment": "gpt-6.1-sol",
+  "credentialsPrinted": false,
+  "checks": [
+    {
+      "metadataPath": "/models",
+      "status": 200,
+      "configuredModelVisible": true
+    },
+    {
+      "metadataPath": "/models/gpt-6.1-sol",
+      "status": 200,
+      "returnedModelId": "gpt-6.1-sol-2026-09-29",
+      "responseObject": "model",
+      "rootProperties": [
+        "status",
+        "capabilities",
+        "lifecycle_status",
+        "deprecation",
+        "id",
+        "created_at",
+        "object"
+      ]
+    }
+  ],
+  "limitation": "Metadata access does not prove chat-completions authorization, deployed model mapping, structured-output behavior or generation success. No inference POST was sent."
+}

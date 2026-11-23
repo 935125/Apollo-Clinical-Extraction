@@ -1,7 +1,13 @@
+param([switch]$ConfigurationOnly, [switch]$NoBrowser)
 # Apollo Clinical Extraction Platform - Windows one-click launcher
 # Put this file beside Start-Apollo.bat in the D:\AI Extraction folder.
 $ErrorActionPreference = 'Stop'
 $root = Split-Path -Parent $MyInvocation.MyCommand.Path
+. (Join-Path $root 'Apollo-LaunchEnvironment.ps1')
+$routing = Initialize-ApolloLaunchEnvironment $root
+if ($ConfigurationOnly) { $routing | ConvertTo-Json -Compress; return }
+Write-Host ("Environment: {0}; primary: {1}; fallback: {2}" -f $routing.environment, $routing.primaryProvider, $routing.fallbackProvider)
+
 $pgCtl = Join-Path $root 'backend\tools\pgsql\bin\pg_ctl.exe'
 $pgIsReady = Join-Path $root 'backend\tools\pgsql\bin\pg_isready.exe'
 $pgData = Join-Path $root 'backend\tools\data_cx'
@@ -33,7 +39,10 @@ function Start-Terminal([string]$directory, [string]$command, [string]$label) {
     $escapedDir = $directory.Replace("'", "''")
     $content = "`$Host.UI.RawUI.WindowTitle = '$label'; Set-Location -LiteralPath '$escapedDir'; $command"
     $encoded = [Convert]::ToBase64String([Text.Encoding]::Unicode.GetBytes($content))
-    Start-Process -FilePath 'powershell.exe' -WorkingDirectory $directory -ArgumentList @('-NoExit','-EncodedCommand',$encoded) | Out-Null
+    $logDirectory = Join-Path $root 'backend/logs'
+    New-Item -ItemType Directory -Path $logDirectory -Force | Out-Null
+    $logName = $label -replace '[^A-Za-z0-9]', ''
+    Start-Process -FilePath 'powershell.exe' -WorkingDirectory $directory -WindowStyle Hidden -ArgumentList @('-EncodedCommand',$encoded) -RedirectStandardOutput (Join-Path $logDirectory ($logName + '.stdout.log')) -RedirectStandardError (Join-Path $logDirectory ($logName + '.stderr.log')) | Out-Null
 }
 
 Write-Host ''
@@ -66,11 +75,16 @@ if (Test-Path -LiteralPath $pgIsReady) {
 
 Write-Host "`n[2/3] ASP.NET Core API (5000)" -ForegroundColor Cyan
 if (Test-LocalPort 5000) {
-    Write-Host 'Port 5000 is already listening; skipping new backend instance.' -ForegroundColor Yellow
+    try { $activeRouting = Invoke-RestMethod 'http://127.0.0.1:5000/v1/routing' -TimeoutSec 5 }
+    catch { throw 'Existing backend cannot verify its routing. Restart it explicitly; the launcher did not stop or replace it.' }
+    if ($activeRouting.requestedPrimaryProvider -ine $routing.primaryProvider -or $activeRouting.environment -ine $routing.environment) {
+        throw 'Existing backend routing differs from the selected configuration. Restart it explicitly; no existing process was changed.'
+    }
+    Write-Host 'Existing backend routing matches the selected environment and provider.' -ForegroundColor Green
 } else {
     if (-not (Get-Command dotnet -ErrorAction SilentlyContinue)) { throw 'dotnet not found on PATH. Install the .NET SDK.' }
-    Start-Terminal $root "dotnet run --project 'backend/Apollo.Backend.csproj'" 'Apollo Backend'
-    Write-Host 'Launched backend in a separate PowerShell window.'
+    Start-Terminal $root "dotnet run --no-launch-profile --project 'backend/Apollo.Backend.csproj'" 'Apollo Backend'
+    Write-Host 'Launched backend in the background with the selected routing.'
 }
 
 Write-Host "`n[3/3] Angular UI (4200)" -ForegroundColor Cyan
@@ -83,7 +97,7 @@ if (Test-LocalPort 4200) {
         throw 'Missing frontend\node_modules'
     }
     Start-Terminal $frontend 'npm start' 'Apollo Frontend'
-    Write-Host 'Launched Angular in a separate PowerShell window.'
+    Write-Host 'Launched Angular in the background.'
 }
 
 Write-Host "`nChecking application ports..." -ForegroundColor Cyan
@@ -91,11 +105,11 @@ $apiOk = Wait-LocalPort 5000
 $uiOk = Wait-LocalPort 4200
 if ($apiOk -and $uiOk) {
     Write-Host 'Backend 5000 and frontend 4200 are listening.' -ForegroundColor Green
-    Start-Process 'http://localhost:4200/'
+    if (!$NoBrowser) { Start-Process 'http://localhost:4200/' }
     Write-Host 'Opened http://localhost:4200/ in your browser.' -ForegroundColor Green
 } else {
-    if (-not $apiOk) { Write-Warning 'Backend is not listening on 5000. Check the Apollo Backend terminal for startup errors.' }
-    if (-not $uiOk) { Write-Warning 'Frontend is not listening on 4200. Check the Apollo Frontend terminal for startup errors.' }
+    if (-not $apiOk) { Write-Warning 'Backend is not listening on 5000. Inspect backend/logs/ApolloBackend.stderr.log for startup errors.' }
+    if (-not $uiOk) { Write-Warning 'Frontend is not listening on 4200. Inspect backend/logs/ApolloFrontend.stderr.log for startup errors.' }
 }
-Write-Host "`nKeep the backend and frontend terminals open while using Apollo."
+Write-Host "`nServices run in the background."
 Write-Host 'This launcher never stops existing processes or resets your PostgreSQL data.'

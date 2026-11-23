@@ -255,6 +255,12 @@
                 }
               </aside>
             }
+            @if (res.modelMetadata.requestedPrimaryProvider) {
+              <p class="provider-summary" data-testid="routing-provenance">
+                Requested: {{ res.modelMetadata.requestedPrimaryProvider }} ? Executed: {{ res.modelMetadata.finalExecutedProvider }} ?
+                {{ res.modelMetadata.validationResult }} ? Clinical review required
+              </p>
+            }
             <div class="result-meta">
               <span>{{ res.saved ? 'Extraction complete' : 'Extracted · not saved' }} · {{ formattedDuration() }}</span><span>{{
                 res.extractedAt | date: 'MMM d, h:mm a'

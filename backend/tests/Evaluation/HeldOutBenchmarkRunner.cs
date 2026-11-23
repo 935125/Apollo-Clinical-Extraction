@@ -55,7 +55,7 @@ public sealed class HeldOutBenchmarkRunner(ITestOutputHelper output)
         using var factory = new WebApplicationFactory<Program>().WithWebHostBuilder(builder => builder.ConfigureServices(services =>
         {
             services.RemoveAll<IExtractionRepository>(); services.AddSingleton<IExtractionRepository, InMemoryExtractionRepository>();
-            services.PostConfigure<ExtractionOptions>(o => { o.Provider = provider; o.FallbackProvider = "None"; });
+            services.PostConfigure<ExtractionOptions>(o => { o.AllowDirectLocal = true; o.DirectLocalReason = "isolated_test"; o.Provider = provider; o.FallbackProvider = "None"; });
             services.PostConfigure<FoundryOptions>(o => { o.AllowLocalFallback = false; o.MaxRetries = 0; if (budget != null) o.MaxCompletionTokens = 2000; });
             if (budget != null) services.AddHttpClient<IFoundryClinicalExtractor, FoundryClinicalExtractor>().AddHttpMessageHandler(() => new BudgetedFoundryHandler(budget));
         }));

@@ -777,4 +777,14 @@ describe('Clinical extraction workspace', () => {
     expect(html.querySelector('.medication-table')?.textContent).not.toContain('Source candidate');
   });
 
+  it('distinguishes accepted GPT, authorized offline execution, and real fallback', () => {
+    const { app } = workspace();
+    const run = (metadata: any) => ({ ...response, modelMetadata: { ...response.modelMetadata, ...metadata } });
+    expect(app.providerLabel(run({ provider: 'foundry', model: 'gpt-6.1-sol-2026-09-29' }))).toBe('Microsoft Foundry ? GPT-6.1 Sol');
+    expect(app.providerLabel(run({ provider: 'onnx', routingMode: 'explicit_offline', fallbackReason: null }))).toBe('Local ONNX ? Offline Mode');
+    expect(app.providerLabel(run({ provider: 'onnx', routingMode: 'fallback', fallbackReason: 'AZURE_RATE_LIMITED' }))).toContain('Fallback after Microsoft Foundry failure');
+    expect(app.providerLabel(run({ provider: 'onnx', fallbackReason: 'AZURE_INVALID_EVIDENCE' }))).toContain('historical fallback policy');
+    expect(app.providerLabel(run({ provider: 'onnx', fallbackReason: '<untrusted reason>' }))).not.toContain('<untrusted reason>');
+  });
+
 });

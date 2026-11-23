@@ -451,27 +451,22 @@ Investigations:
     const metadata = run.modelMetadata;
     if (metadata.provider === 'foundry') {
       const modelId = (metadata.model || metadata.azureDeployment || metadata.modelDeployment || '').trim();
-      const displayModel = modelId || 'Model not recorded';
-      return `Microsoft Foundry — ${displayModel}`;
+      return `Microsoft Foundry ? ${/^gpt-6\.1-sol(?:-|$)/i.test(modelId) ? 'GPT-6.1 Sol' : modelId || 'Model not recorded'}`;
     }
     if (metadata.provider === 'onnx') {
-      if (!metadata.fallbackReason) return 'Local ONNX';
+      if (metadata.routingMode === 'explicit_offline') return 'Local ONNX ? Offline Mode';
+      if (!metadata.fallbackReason) return 'Local ONNX ? Direct execution (mode not recorded)';
       const reasons: Record<string, string> = {
-        AZURE_TIMEOUT: 'Azure timed out',
-        AZURE_UNREACHABLE: 'Azure was unreachable',
-        AZURE_UNAVAILABLE: 'Azure was unavailable',
-        AZURE_RATE_LIMITED: 'Azure rate limit',
-        AZURE_NOT_CONFIGURED: 'Azure not configured',
-        AZURE_INVALID_EVIDENCE: 'Azure evidence rejected',
-        AZURE_TRUNCATED: 'Azure answer incomplete',
-        AZURE_UNUSABLE_JSON: 'Azure output invalid',
-        AZURE_CREDENTIALS_MISSING: 'Azure credentials missing',
-        AZURE_CREDENTIALS_INVALID: 'Azure credentials invalid',
-        AZURE_DEPLOYMENT_MISCONFIGURED: 'Azure deployment misconfigured',
-        AZURE_MODEL_MISMATCH: 'Azure model mismatch',
-        AZURE_CONTEXT_LIMIT: 'Azure context limit',
+        AZURE_TIMEOUT: 'Microsoft Foundry timed out', AZURE_UNREACHABLE: 'Microsoft Foundry unreachable',
+        AZURE_UNAVAILABLE: 'Microsoft Foundry temporarily unavailable', AZURE_RATE_LIMITED: 'Microsoft Foundry rate limit',
+        AZURE_CIRCUIT_OPEN: 'Microsoft Foundry recovery circuit open', AZURE_TRUNCATED: 'Incomplete primary response',
+        AZURE_UNUSABLE_JSON: 'Primary response could not be parsed',
+        AZURE_INVALID_EVIDENCE: 'Evidence rejected under historical fallback policy; review required',
+        AZURE_NOT_CONFIGURED: 'Historical configuration failure; review required',
+        AZURE_CREDENTIALS_MISSING: 'Historical authentication failure; review required',
+        AZURE_CREDENTIALS_INVALID: 'Historical authentication failure; review required'
       };
-      return `Local ONNX — Fallback · ${reasons[metadata.fallbackReason] || metadata.fallbackReason}`;
+      return `Local ONNX ? Fallback after Microsoft Foundry failure ? ${reasons[metadata.fallbackReason] || 'Provider failure (reason not classified)'}`;
     }
     return 'Provider not recorded (historical run)';
   }

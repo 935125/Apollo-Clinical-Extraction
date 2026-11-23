@@ -70,6 +70,7 @@ public sealed class ExtractionWorkflow(
                 azure = await foundry.ExtractAsync(noteText, ct);
                 capturedAzure = azure;
                 accepted = validator.Map(azure.Candidate, noteText, correlationId);
+                if (accepted.ValidationSummary.HasErrors) throw new InvalidClinicalEvidenceException();
                 circuit.Success();
                 accepted = accepted with
                 {
@@ -203,7 +204,9 @@ public sealed class ExtractionWorkflow(
         try
         {
             var result = await local.ExtractAsync(source, correlationId, ct);
-            string schemaStatus = failure.Reason is "AZURE_UNUSABLE_JSON" or "AZURE_INVALID_EVIDENCE" ? "failed" : "not_applicable";
+            if (result.ValidationSummary.HasErrors)
+                throw new ClinicalExtractionException("ONNX_VALIDATION_REJECTED", 422, "Fallback output requires clinical review and was not accepted.");
+            string schemaStatus = failure.Reason == "AZURE_UNUSABLE_JSON" ? "failed" : failure.Reason == "AZURE_TRUNCATED" ? "incomplete" : "not_applicable";
             return result with
             {
                 ModelMetadata = result.ModelMetadata with
@@ -221,7 +224,8 @@ public sealed class ExtractionWorkflow(
         catch (Exception ex)
         {
             logger.LogError("Local extractor unavailable; error type {ErrorType}", ex.GetType().Name);
-            throw new ClinicalExtractionException("EXTRACTION_UNAVAILABLE", 503, "Neither clinical extractor could produce an accepted result.");
+            throw new ClinicalExtractionException("EXTRACTION_UNAVAILABLE", 503, "Neither clinical extractor could produce an accepted result.")
+            { Routing = new("MicrosoftFoundry", [failure.Attempt, new("onnx", "bc5cdr_int8", null, "rejected", ex is ClinicalExtractionException localFailure ? localFailure.Code : "ONNX_UNAVAILABLE", 0, false, CorrelationId: correlationId)], true, failure.Reason, "failed_requires_review") };
         }
     }
 

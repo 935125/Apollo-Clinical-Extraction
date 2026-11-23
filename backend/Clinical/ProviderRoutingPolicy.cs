@@ -6,12 +6,13 @@ public static class ProviderRoutingPolicy
 {
     public static bool IsTransient(string reason) => reason is "AZURE_TIMEOUT" or "AZURE_UNREACHABLE" or "AZURE_UNAVAILABLE" or "AZURE_RATE_LIMITED" or "AZURE_CIRCUIT_OPEN";
     public static bool AllowsFallback(FoundryAttemptException failure, FoundryOptions foundry, ExtractionOptions extraction) =>
-        !failure.OperatorFault && foundry.AllowLocalFallback && extraction.FallbackProvider.Equals("LocalOnnx", StringComparison.OrdinalIgnoreCase) &&
+        !failure.OperatorFault && foundry.AllowLocalFallback && string.Equals(extraction.FallbackProvider, "LocalOnnx", StringComparison.OrdinalIgnoreCase) &&
         (IsTransient(failure.Reason) || foundry.AllowParsingFallback && failure.Reason is "AZURE_UNUSABLE_JSON" or "AZURE_TRUNCATED");
 
     public static string? ConfigurationFault(FoundryOptions options)
     {
         if (!Uri.TryCreate(options.Endpoint, UriKind.Absolute, out var uri) || uri.Scheme != "https" ||
+            !(uri.Host.EndsWith(".services.ai.azure.com", StringComparison.OrdinalIgnoreCase) || uri.Host.EndsWith(".openai.azure.com", StringComparison.OrdinalIgnoreCase)) ||
             !string.IsNullOrEmpty(uri.UserInfo) || !string.IsNullOrEmpty(uri.Query) || !string.IsNullOrEmpty(uri.Fragment) ||
             !(uri.AbsolutePath.TrimEnd('/') is "" or "/openai/v1") || string.IsNullOrWhiteSpace(options.EffectiveDeployment) ||
             !string.Equals(options.TargetModel, "gpt-6.1-sol", StringComparison.OrdinalIgnoreCase) ||

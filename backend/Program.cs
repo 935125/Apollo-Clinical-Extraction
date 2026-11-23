@@ -138,7 +138,7 @@ app.MapHealthChecks("/health/live", new HealthCheckOptions
     ResponseWriter = async (ctx, report) =>
     {
         ctx.Response.ContentType = "application/json";
-        await ctx.Response.WriteAsync(JsonSerializer.Serialize(new { status = report.Status.ToString() }));
+        await ctx.Response.WriteAsync(JsonSerializer.Serialize(new { status = report.Status.ToString(), checks = report.Entries.Select(e => new { name=e.Key, status=e.Value.Status.ToString(), description=e.Value.Description }) }));
     }
 }).AllowAnonymous();
 
@@ -148,7 +148,7 @@ app.MapHealthChecks("/health/ready", new HealthCheckOptions
     ResponseWriter = async (ctx, report) =>
     {
         ctx.Response.ContentType = "application/json";
-        await ctx.Response.WriteAsync(JsonSerializer.Serialize(new { status = report.Status.ToString() }));
+        await ctx.Response.WriteAsync(JsonSerializer.Serialize(new { status = report.Status.ToString(), checks = report.Entries.Select(e => new { name=e.Key, status=e.Value.Status.ToString(), description=e.Value.Description }) }));
     }
 }).AllowAnonymous();
 

@@ -199,7 +199,7 @@ public sealed class Stage6ReliabilityBenchmarkTests
             cases = caseRows
         };
 
-        string outDir = Environment.GetEnvironmentVariable("APOLLO_EVALUATION_OUTPUT_ROOT") ?? Path.Combine(HeldOutBenchmarkRunner.Backend, "..", "docs", "stage7-evidence");
+        string outDir = Environment.GetEnvironmentVariable("APOLLO_EVALUATION_OUTPUT_ROOT") ?? Path.Combine(HeldOutBenchmarkRunner.Backend, "..", "docs", "stage8-evidence");
         Directory.CreateDirectory(outDir);
         await File.WriteAllTextAsync(Path.Combine(outDir, Environment.GetEnvironmentVariable("STAGE6_BENCHMARK_OUTPUT") ?? "after.json"), JsonSerializer.Serialize(report, Json));
         Assert.Equal("3D2EE6AFD0AC72157C92BDDEEDC43F94511BA170D7985A1F44177CB78EB9AD84", datasetSha);
