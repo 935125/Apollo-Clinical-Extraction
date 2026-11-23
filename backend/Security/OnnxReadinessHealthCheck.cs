@@ -7,8 +7,8 @@ public sealed class OnnxReadinessHealthCheck(IServiceProvider services, IConfigu
 {
     public Task<HealthCheckResult> CheckHealthAsync(HealthCheckContext context, CancellationToken cancellationToken = default)
     {
-        bool needed = config["Extraction:Provider"] == "LocalOnnx" || config["Extraction:FallbackProvider"] == "LocalOnnx";
-        if (!needed) return Task.FromResult(HealthCheckResult.Healthy("Local provider not configured"));
+        bool needed = config["Extraction:Provider"] == "LocalOnnx" || config.GetValue("LocalOnnx:ProbeFallbackReadiness", false);
+        if (!needed) return Task.FromResult(HealthCheckResult.Healthy("Fallback neural probe disabled; artifacts verified only on invocation"));
         try
         {
             var engine = services.GetRequiredService<SlidingWindowOnnxEngine>();

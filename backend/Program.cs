@@ -1,3 +1,4 @@
+using Apollo.Backend.Configuration;
 using Azure.Core;
 using Azure.Identity;
 using Microsoft.Extensions.Options;
@@ -14,9 +15,14 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using UglyToad.PdfPig;
 
-if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development") LoadLocalDotEnv();
-
-var builder = WebApplication.CreateBuilder(args);
+bool diagnosticsOnly = args.Contains("--routing-diagnostics", StringComparer.Ordinal);
+var builder = WebApplication.CreateBuilder(args.Where(a => a != "--routing-diagnostics").ToArray());
+builder.AddLocalDevelopmentDefaults();
+if (diagnosticsOnly)
+{
+    Console.WriteLine(JsonSerializer.Serialize(ProviderDiagnostics.Snapshot(builder.Configuration, builder.Environment), new JsonSerializerOptions(JsonSerializerDefaults.Web)));
+    return;
+}
 // Container/service accounts must not require Windows Event Log write privileges.
 builder.Logging.ClearProviders();
 builder.Logging.AddJsonConsole();
@@ -43,7 +49,8 @@ builder.Services.AddCors(options =>
 // Health Checks
 builder.Services.AddHealthChecks()
     .AddCheck("self", () => HealthCheckResult.Healthy("Backend alive"), tags: ["live"])
-    .AddCheck<OnnxReadinessHealthCheck>("pipeline", tags: ["ready"]);
+    .AddCheck<OnnxReadinessHealthCheck>("pipeline", tags: ["ready"])
+    .AddCheck<ProviderConfigurationHealthCheck>("provider_configuration", tags: ["ready"]);
 
 // NLP & Pipeline Singletons
 builder.Services.AddSingleton<WordPieceTokenizer>(sp =>
@@ -62,6 +69,9 @@ builder.Services.AddSingleton<SlidingWindowOnnxEngine>(sp =>
 builder.AddClinicalApiSecurity();
 
 builder.Services.AddSingleton<ClinicalPipelineService>();
+builder.Services.AddSingleton(TimeProvider.System);
+builder.Services.AddSingleton<FoundryCircuitBreaker>();
+builder.Services.AddHostedService<ProviderStartupDiagnostics>();
 builder.Services.Configure<ExtractionOptions>(builder.Configuration.GetSection(ExtractionOptions.SectionName));
 builder.Services.Configure<FoundryOptions>(builder.Configuration.GetSection(FoundryOptions.SectionName));
 builder.Services.AddSingleton<TokenCredential>(sp => builder.Environment.IsDevelopment()
@@ -96,7 +106,8 @@ app.UseExceptionHandler(handler => handler.Run(async http =>
     app.Logger.LogError("API operation failed; error type {ErrorType}", error?.GetType().Name);
     http.Response.StatusCode = error is ClinicalExtractionException clinical ? clinical.Status : 503;
     await http.Response.WriteAsJsonAsync(new { code = error is ClinicalExtractionException known ? known.Code : "SERVICE_UNAVAILABLE",
-        detail = error is ClinicalExtractionException safe ? safe.Message : "The operation could not complete. Retry after reloading the latest state." });
+        detail = error is ClinicalExtractionException safe ? safe.Message : "The operation could not complete. Retry after reloading the latest state.",
+        routing = (error as ClinicalExtractionException)?.Routing });
 }));
 app.UseRouting();
 app.UseCors("AllowAll");
@@ -141,6 +152,8 @@ app.MapHealthChecks("/health/ready", new HealthCheckOptions
     }
 }).AllowAnonymous();
 
+app.MapGet("/v1/routing", (IConfiguration config, IHostEnvironment environment, IOptions<ExtractionOptions> extraction, IOptions<FoundryOptions> foundry) =>
+    Results.Ok(ProviderDiagnostics.Snapshot(config, environment, extraction.Value, foundry.Value))).AllowAnonymous();
 app.MapGet("/v1/health", () => Results.Ok(new { status = "healthy", version = "2.1.0-dotnet" })).AllowAnonymous();
 app.MapGet("/api/v1/ping", () => Results.Ok(new { status = "active", timestamp = DateTime.UtcNow })).AllowAnonymous();
 
@@ -202,7 +215,7 @@ app.MapPost("/api/v1/extractions", async (
     catch (ClinicalExtractionException ex)
     {
         return Results.Problem(statusCode: ex.Status, title: ex.Code == "PERSISTENCE_FAILED" ? "Extraction could not be saved" : "Extraction unavailable",
-            detail: ex.Message, extensions: new Dictionary<string, object?> { ["code"] = ex.Code, ["correlationId"] = correlationId });
+            detail: ex.Message, extensions: new Dictionary<string, object?> { ["code"] = ex.Code, ["correlationId"] = correlationId, ["routing"] = ex.Routing });
     }
     catch (Exception ex)
     {
@@ -712,7 +725,7 @@ var pdfHandler = async (HttpContext httpContext, ExtractionWorkflow workflow) =>
     catch (ClinicalExtractionException ex)
     {
         return Results.Problem(statusCode: ex.Status, title: ex.Code == "PERSISTENCE_FAILED" ? "Extraction could not be saved" : "Extraction unavailable",
-            detail: ex.Message, extensions: new Dictionary<string, object?> { ["code"] = ex.Code, ["correlationId"] = correlationId });
+            detail: ex.Message, extensions: new Dictionary<string, object?> { ["code"] = ex.Code, ["correlationId"] = correlationId, ["routing"] = ex.Routing });
     }
     catch (Exception ex)
     {
@@ -741,54 +754,5 @@ app.Run();
 // ----------------------------------------------------------------------------
 // Helper to locate model artifacts across workspace directories
 // ----------------------------------------------------------------------------
-static void LoadLocalDotEnv()
-{
-    string cwd = Directory.GetCurrentDirectory();
-    string baseDir = AppContext.BaseDirectory;
-    string[] candidates =
-    [
-        Path.Combine(cwd, ".env"),
-        Path.Combine(cwd, "..", ".env"),
-        Path.Combine(baseDir, "..", "..", "..", "..", ".env"),
-        Path.Combine(baseDir, "..", "..", "..", "..", "..", ".env")
-    ];
-
-    foreach (string candidate in candidates)
-    {
-        string fullPath = Path.GetFullPath(candidate);
-        if (!File.Exists(fullPath))
-            continue;
-
-        foreach (string rawLine in File.ReadLines(fullPath))
-        {
-            string line = rawLine.Trim();
-            if (line.Length == 0 || line.StartsWith('#'))
-                continue;
-
-            int separator = line.IndexOf('=');
-            if (separator <= 0)
-                continue;
-
-            string key = line[..separator].Trim();
-            string value = line[(separator + 1)..].Trim();
-            if (value.Length >= 2 &&
-                ((value[0] == '"' && value[^1] == '"') || (value[0] == '\'' && value[^1] == '\'')))
-            {
-                value = value[1..^1];
-            }
-
-            if (key.Length == 0 || value.Length == 0)
-                continue;
-
-            if (string.IsNullOrEmpty(Environment.GetEnvironmentVariable(key)))
-            {
-                Environment.SetEnvironmentVariable(key, value);
-            }
-        }
-
-        break;
-    }
-}
-
 public partial class Program { }
 

@@ -104,6 +104,9 @@ public sealed class ExtractionWorkflow(
                 else if (failure.Reason != "AZURE_CIRCUIT_OPEN") circuit.Success();
                 accepted = await Fallback(noteText, correlationId, failure, ct);
             }
+            catch (ClinicalExtractionException) { circuit.Success(); throw; }
+            catch (OperationCanceledException) { circuit.Success(); throw; }
+
         }
 
         ct.ThrowIfCancellationRequested();

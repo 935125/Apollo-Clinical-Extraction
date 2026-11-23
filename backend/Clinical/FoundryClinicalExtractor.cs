@@ -47,16 +47,15 @@ public sealed class FoundryClinicalExtractor(HttpClient http, IOptions<FoundryOp
         string? deployment = settings.EffectiveDeployment?.Trim();
         string authMode = settings.EffectiveAuthenticationMode.Trim();
         int? promptTokens = null, completionTokens = null, totalTokens = null;
+        int httpAttempts = 0;
+        string correlationId = FoundryInvocationContext.CorrelationId ?? Guid.NewGuid().ToString("D");
         ProviderAttemptDto Receipt(string outcome, string? reason) => new("foundry", actualModel ?? settings.TargetModel ?? deployment,
             deployment, outcome, reason, Math.Round(watch.Elapsed.TotalMilliseconds, 2), actualModel != null,
-            promptTokens, completionTokens, totalTokens);
+            promptTokens, completionTokens, totalTokens, HttpAttempts: httpAttempts, CorrelationId: correlationId);
         FoundryAttemptException Failure(string reason, bool fault = false) => new(reason, Receipt("rejected", reason), fault);
         ct.ThrowIfCancellationRequested();
-        if (!Uri.TryCreate(settings.Endpoint, UriKind.Absolute, out var endpoint) || endpoint.Scheme != "https" ||
-            !string.IsNullOrEmpty(endpoint.UserInfo) || !string.IsNullOrEmpty(endpoint.Query) ||
-            string.IsNullOrWhiteSpace(deployment) || !double.IsFinite(settings.TimeoutSeconds) || settings.TimeoutSeconds <= 0 || settings.TimeoutSeconds > 300 ||
-            settings.MaxCompletionTokens < 256 || settings.MaxCompletionTokens > 64000)
-            throw Failure("AZURE_NOT_CONFIGURED", true);
+        if (ProviderRoutingPolicy.ConfigurationFault(settings) is string fault) throw Failure(fault, true);
+        var endpoint = new Uri(settings.Endpoint!);
         var basePath = endpoint.AbsoluteUri.TrimEnd('/');
         if (!basePath.EndsWith("/openai/v1", StringComparison.OrdinalIgnoreCase)) basePath += "/openai/v1";
 
@@ -77,7 +76,7 @@ public sealed class FoundryClinicalExtractor(HttpClient http, IOptions<FoundryOp
                 var token = await credential.GetTokenAsync(new TokenRequestContext([settings.TokenScope]), deadline.Token);
                 bearerToken = token.Token;
             }
-            catch (OperationCanceledException) when (!ct.IsCancellationRequested) { throw Failure("AZURE_TIMEOUT"); }
+            catch (OperationCanceledException) when (!ct.IsCancellationRequested) { throw Failure("AZURE_AUTHENTICATION_TIMEOUT", true); }
             catch (OperationCanceledException) { throw; }
             catch (CredentialUnavailableException) { throw Failure("AZURE_CREDENTIALS_MISSING", true); }
             catch (AuthenticationFailedException) { throw Failure("AZURE_CREDENTIALS_INVALID", true); }
@@ -96,6 +95,7 @@ public sealed class FoundryClinicalExtractor(HttpClient http, IOptions<FoundryOp
                 else
                     request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", bearerToken!);
 
+                request.Headers.TryAddWithoutValidation("X-Correlation-ID", correlationId);
                 request.Content = JsonContent.Create(new
                 {
                     model = deployment,
@@ -104,6 +104,7 @@ public sealed class FoundryClinicalExtractor(HttpClient http, IOptions<FoundryOp
                     max_completion_tokens = settings.MaxCompletionTokens,
                     response_format = new { type = "json_schema", json_schema = new { name = "clinical_extraction", strict = true, schema = ClinicalCandidateJson.Schema } }
                 });
+                httpAttempts++;
                 using var response = await http.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, deadline.Token);
                 // Diagnostic logs contain neither request/response bodies nor auth material.
                 if (!response.IsSuccessStatusCode)
@@ -117,9 +118,11 @@ public sealed class FoundryClinicalExtractor(HttpClient http, IOptions<FoundryOp
                     }
                     catch (JsonException) { }
                     if (errorCode is "content_filter" or "ResponsibleAIPolicyViolation")
-                        throw new ClinicalExtractionException("AZURE_CONTENT_POLICY", 422, "The provider declined this note under its content policy.");
+                        throw new ClinicalExtractionException("AZURE_CONTENT_POLICY", 422, "The provider declined this note under its content policy.")
+                        { Routing = new("MicrosoftFoundry", [Receipt("rejected", "AZURE_CONTENT_POLICY")], false, "AZURE_CONTENT_POLICY", "failed_requires_review") };
                     if (response.StatusCode == HttpStatusCode.Forbidden)
-                        throw new ClinicalExtractionException("AZURE_ACCESS_DENIED", 403, "Access to the configured Azure deployment was denied.");
+                        throw new ClinicalExtractionException("AZURE_ACCESS_DENIED", 403, "Access to the configured Azure deployment was denied.")
+                            { Routing = new("MicrosoftFoundry", [Receipt("rejected", "AZURE_ACCESS_DENIED")], false, "AZURE_ACCESS_DENIED", "failed_requires_review") };
                     if (response.StatusCode == HttpStatusCode.Unauthorized) throw Failure("AZURE_CREDENTIALS_INVALID", true);
                     if (errorCode is "context_length_exceeded") throw Failure("AZURE_CONTEXT_LIMIT");
 
@@ -137,6 +140,7 @@ public sealed class FoundryClinicalExtractor(HttpClient http, IOptions<FoundryOp
                         var delta = retryAfter?.Delta ?? (retryAfter?.Date - DateTimeOffset.UtcNow);
                         if (delta > TimeSpan.Zero)
                             delayMs = (int)Math.Min(delta.Value.TotalMilliseconds, int.MaxValue);
+                        if (delayMs >= settings.TimeoutSeconds * 1000 - watch.Elapsed.TotalMilliseconds) throw lastTransient;
                         await Task.Delay(delayMs, deadline.Token);
                         continue;
                     }
@@ -156,7 +160,8 @@ public sealed class FoundryClinicalExtractor(HttpClient http, IOptions<FoundryOp
                 var message = choice.GetProperty("message");
                 if ((message.TryGetProperty("refusal", out var refusal) && refusal.ValueKind == JsonValueKind.String && !string.IsNullOrWhiteSpace(refusal.GetString())) ||
                     choice.GetProperty("finish_reason").GetString() == "content_filter")
-                    throw new ClinicalExtractionException("AZURE_CONTENT_POLICY", 422, "The provider declined this note under its content policy.");
+                    throw new ClinicalExtractionException("AZURE_CONTENT_POLICY", 422, "The provider declined this note under its content policy.")
+                        { Routing = new("MicrosoftFoundry", [Receipt("rejected", "AZURE_CONTENT_POLICY")], false, "AZURE_CONTENT_POLICY", "failed_requires_review") };
                 if (choice.GetProperty("finish_reason").GetString() != "stop") throw Failure("AZURE_TRUNCATED");
                 if (!string.IsNullOrWhiteSpace(settings.TargetModel) &&
                     (string.IsNullOrWhiteSpace(actualModel) || !(actualModel.Equals(settings.TargetModel, StringComparison.OrdinalIgnoreCase) || actualModel.StartsWith(settings.TargetModel + "-", StringComparison.OrdinalIgnoreCase))))
