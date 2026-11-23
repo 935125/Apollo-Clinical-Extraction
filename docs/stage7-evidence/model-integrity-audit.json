@@ -1,0 +1,26 @@
+{
+  "actualModelSha256": "59830ca601c97246f068cc265c215d00c1024e2d3ae3549a5d053723f4a65cd0",
+  "actualTokenizerSha256": "00a99d2e62f065e43eb57d570e38ee7e814b3044f27e2da70755e9587ff33c81",
+  "tokenizerManifestMatches": true,
+  "trainingRunManifestTokenizerSha256": "ecca9768461d7bedb9fb5b24f3afdd485d736065758b85144cfdf76857448cd2",
+  "trainingRunManifestMatches": false,
+  "trainingClassCounts": {
+    "3": 3765,
+    "0": 87337,
+    "1": 3357,
+    "4": 1511,
+    "2": 2597
+  },
+  "labelMap": {
+    "O": 0,
+    "B-CONDITION": 1,
+    "I-CONDITION": 2,
+    "B-MEDICATION": 3,
+    "I-MEDICATION": 4,
+    "B-DOSAGE": 5,
+    "I-DOSAGE": 6,
+    "B-ANATOMICAL_SITE": 7,
+    "I-ANATOMICAL_SITE": 8
+  },
+  "scope": "Runtime pins the unchanged Stage 6 pair and validates graph/real execution. Training-manifest digest discrepancy remains unresolved; original artifacts were not edited."
+}

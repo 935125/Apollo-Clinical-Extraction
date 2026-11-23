@@ -21,8 +21,9 @@ public class InMemoryExtractionRepository : IExtractionRepository
                     response.NoteText ?? string.Join(" ", response.Medications.Select(m => m.Name).Concat(response.Investigations.Select(i => i.Name))))
             };
         ct.ThrowIfCancellationRequested();
+        if (!_extractions.TryAdd(response.ExtractionId, (DateTime.UtcNow, withEmbedding)))
+            throw new InvalidOperationException("Extraction candidates are immutable; the ID already exists.");
         foreach (var item in quarantineItems ?? []) _quarantineItems[item.QuarantineId] = (DateTime.UtcNow, item);
-        _extractions[response.ExtractionId] = (DateTime.UtcNow, withEmbedding);
         return Task.CompletedTask;
     }
 

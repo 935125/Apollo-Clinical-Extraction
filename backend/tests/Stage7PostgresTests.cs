@@ -1,6 +1,8 @@
 using System.Net.Http.Json;
 using Apollo.Backend.Models;
 using Npgsql;
+using Apollo.Backend.Storage;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Apollo.Backend.Tests;
 
@@ -52,4 +54,22 @@ public class Stage7PostgresTests
         Assert.Equal(candidate.Evidence.Quote, note[candidate.Evidence.Start!.Value..candidate.Evidence.End!.Value]);
         Assert.Equal("NEURAL_ONNX", saved.ModelMetadata.ExecutionMode); Assert.Equal(0, factory.Azure.Calls);
     }
+    [PostgresFact]
+    public async Task ExistingExtractionId_CannotOverwriteCandidateOrChildren()
+    {
+        await using var db = new IsolatedDatabase(); await db.Initialize();
+        using var factory = new FoundryFactory { DatabaseConnection = db.ConnectionString };
+        using var client = factory.CreateClient(); using var response = await FoundryWorkflowTests.Submit(client, false); response.EnsureSuccessStatusCode();
+        var original = (await response.Content.ReadFromJsonAsync<ClinicalExtractionResponse>())!;
+        var repo = factory.Services.GetRequiredService<IExtractionRepository>();
+        var error = await Assert.ThrowsAsync<PostgresException>(() => repo.SaveExtractionAsync("duplicate-test", original with { NoteText = "replacement must not persist", Medications = [] }));
+        Assert.Equal("23505", error.SqlState);
+        var unchanged = (await repo.GetExtractionAsync(original.ExtractionId))!;
+        Assert.Equal(original.NoteText, unchanged.NoteText); Assert.Equal(original.Medications.Count, unchanged.Medications.Count);
+        Assert.Equal(original.Medications.Count, await db.Count("extracted_medications")); Assert.Equal(1, await db.Count("extraction_runs"));
+        var memory = new InMemoryExtractionRepository(); await memory.SaveExtractionAsync("first", original);
+        await Assert.ThrowsAsync<InvalidOperationException>(() => memory.SaveExtractionAsync("duplicate", original with { Medications = [] }));
+        Assert.Equal(original.Medications.Count, (await memory.GetExtractionAsync(original.ExtractionId))!.Medications.Count);
+    }
+
 }

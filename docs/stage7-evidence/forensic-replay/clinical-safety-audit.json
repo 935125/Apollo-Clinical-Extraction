@@ -1,0 +1,130 @@
+[
+  {
+    "alertId": "DDI-d61d9ccb",
+    "severity": "HIGH",
+    "category": "DRUG_INTERACTION",
+    "title": "Major Bleeding Risk: Warfarin \u002B Antiplatelet/NSAID",
+    "description": "Derived interpretation: Concurrent active documentation of Warfarin with Aspirin, Clopidogrel, or NSAIDs significantly increases the risk of major gastrointestinal and intracranial hemorrhage.",
+    "involvedEntities": [
+      "Warfarin",
+      "Aspirin"
+    ],
+    "recommendation": "Review the source note and reconcile this finding with a qualified clinician. This extraction does not recommend treatment changes.",
+    "alertType": "INTERACTION_RISK_REVIEW",
+    "temporality": "CURRENT_ACTIVE",
+    "thresholdCriterion": "Active co-prescription of Vitamin K antagonist (Warfarin) \u002B Antiplatelet/NSAID",
+    "observedFact": "Active co-prescription of Warfarin (5 mg) and Aspirin (81 mg).",
+    "evidenceQuote": "Warfarin 5 mg orally once daily in the evening for stroke prophylaxis. | Aspirin 81 mg orally once daily in the morning (verify concurrent anticoagulation indication).",
+    "startChar": 979,
+    "endChar": 1145
+  },
+  {
+    "alertId": "DDI-8278fad1",
+    "severity": "MODERATE",
+    "category": "DRUG_INTERACTION",
+    "title": "QTc Prolongation Risk: Macrolide/Fluoroquinolone \u002B Ondansetron",
+    "description": "Derived interpretation: Co-administration of QT-prolonging antimicrobials with Ondansetron increases the risk of ventricular arrhythmia / Torsades de Pointes.",
+    "involvedEntities": [
+      "Azithromycin",
+      "Ondansetron"
+    ],
+    "recommendation": "Review the source note and reconcile this finding with a qualified clinician. This extraction does not recommend treatment changes.",
+    "alertType": "INTERACTION_RISK_REVIEW",
+    "temporality": "CURRENT_ACTIVE",
+    "thresholdCriterion": "Active co-prescription of QT-prolonging antimicrobial (Macrolide/Fluoroquinolone) \u002B 5-HT3 antagonist (Ondansetron)",
+    "observedFact": "Active co-prescription of Azithromycin and Ondansetron.",
+    "evidenceQuote": "Azithromycin 500 mg orally once daily for 3 days to complete respiratory course. | Ondansetron 4 mg orally every 8 hours as needed for nausea.",
+    "startChar": 1147,
+    "endChar": 1288
+  },
+  {
+    "alertId": "ALG-b960fd5b",
+    "severity": "MODERATE",
+    "category": "ALLERGY_CONFLICT",
+    "title": "Documented Drug Allergy Vigilance: Penicillin",
+    "description": "Observed data: Patient note documents allergy/reaction to Penicillin (evidence: \u0022Documented Allergies: Penicillin (anaphylaxis) and Ibuprofen (bronchospasm).\u0022). Ensure all newly prescribed agents avoid cross-reactivity.",
+    "involvedEntities": [
+      "Penicillin"
+    ],
+    "recommendation": "Review the source note and reconcile this finding with a qualified clinician. This extraction does not recommend treatment changes.",
+    "alertType": "OBSERVED_FACT_WARNING",
+    "temporality": "CURRENT_ACTIVE",
+    "thresholdCriterion": null,
+    "observedFact": "Documented Allergies: Penicillin (anaphylaxis) and Ibuprofen (bronchospasm).",
+    "evidenceQuote": "Documented Allergies: Penicillin (anaphylaxis) and Ibuprofen (bronchospasm).",
+    "startChar": 87,
+    "endChar": 163
+  },
+  {
+    "alertId": "ALG-d4b9a9d9",
+    "severity": "MODERATE",
+    "category": "ALLERGY_CONFLICT",
+    "title": "Documented Drug Allergy Vigilance: Ibuprofen",
+    "description": "Observed data: Patient note documents allergy/reaction to Ibuprofen (evidence: \u0022Documented Allergies: Penicillin (anaphylaxis) and Ibuprofen (bronchospasm).\u0022). Ensure all newly prescribed agents avoid cross-reactivity.",
+    "involvedEntities": [
+      "Ibuprofen"
+    ],
+    "recommendation": "Review the source note and reconcile this finding with a qualified clinician. This extraction does not recommend treatment changes.",
+    "alertType": "OBSERVED_FACT_WARNING",
+    "temporality": "CURRENT_ACTIVE",
+    "thresholdCriterion": null,
+    "observedFact": "Documented Allergies: Penicillin (anaphylaxis) and Ibuprofen (bronchospasm).",
+    "evidenceQuote": "Documented Allergies: Penicillin (anaphylaxis) and Ibuprofen (bronchospasm).",
+    "startChar": 87,
+    "endChar": 163
+  },
+  {
+    "alertId": "LAB-fd8cc16d",
+    "severity": "CRITICAL",
+    "category": "LAB_ANOMALY",
+    "title": "Critical Potassium Value (5.7 mEq/L)",
+    "description": "Observed data (BASELINE_MEASUREMENT): Potassium = 5.7 mEq/L (evidence: \u0022K\u002B 5.7 mEq/L\u0022 at [714..726]). Derived interpretation (configured institutional threshold: K\u002B \u003E 5.5 or \u003C 3.0 mEq/L; reference range 3.5\u20135.1 mEq/L): Exceeds hyperkalemia threshold (\u003E 5.5 mEq/L) and carries arrhythmia risk.",
+    "involvedEntities": [
+      "Potassium: 5.7 mEq/L"
+    ],
+    "recommendation": "Review the source note and reconcile this finding with a qualified clinician. This extraction does not recommend treatment changes.",
+    "alertType": "DERIVED_CLINICAL_INFERENCE",
+    "temporality": "BASELINE_MEASUREMENT",
+    "thresholdCriterion": "Configured rule threshold: Serum Potassium \u003E 5.5 mEq/L or \u003C 3.0 mEq/L (reference interval 3.5\u20135.1 mEq/L)",
+    "observedFact": "Potassium = 5.7 mEq/L",
+    "evidenceQuote": "K\u002B 5.7 mEq/L",
+    "startChar": 714,
+    "endChar": 726
+  },
+  {
+    "alertId": "LAB-4f20058f",
+    "severity": "HIGH",
+    "category": "LAB_ANOMALY",
+    "title": "Elevated Serum Creatinine (1.9 mg/dL)",
+    "description": "Observed data (BASELINE_MEASUREMENT): Serum Creatinine = 1.9 mg/dL (evidence: \u0022Creatinine 1.9 mg/dL\u0022 at [728..748]). Derived interpretation (configured threshold: SCr \u003E= 1.8 mg/dL): Potentially elevated serum creatinine requiring clinical interpretation and renal dose review.",
+    "involvedEntities": [
+      "Serum Creatinine: 1.9 mg/dL"
+    ],
+    "recommendation": "Review the source note and reconcile this finding with a qualified clinician. This extraction does not recommend treatment changes.",
+    "alertType": "DERIVED_CLINICAL_INFERENCE",
+    "temporality": "BASELINE_MEASUREMENT",
+    "thresholdCriterion": "Configured rule threshold: Serum Creatinine \u003E= 1.8 mg/dL",
+    "observedFact": "Serum Creatinine = 1.9 mg/dL",
+    "evidenceQuote": "Creatinine 1.9 mg/dL",
+    "startChar": 728,
+    "endChar": 748
+  },
+  {
+    "alertId": "VIT-0a1d4e75",
+    "severity": "MODERATE",
+    "category": "LAB_ANOMALY",
+    "title": "Historical Admission Finding \u2014 Significant Pyrexia (38.9\u00B0C)",
+    "description": "Observed data (HISTORICAL_ADMISSION_COURSE): Temperature = 38.9\u00B0C (evidence: \u0022fever of 38.9 \u00B0C\u0022 at [412..428]). Derived interpretation (configured threshold: Temp \u003E= 38.5\u00B0C): High fever documented in historical admission course context.",
+    "involvedEntities": [
+      "Temperature: 38.9\u00B0C"
+    ],
+    "recommendation": "Review the source note and reconcile this finding with a qualified clinician. This extraction does not recommend treatment changes.",
+    "alertType": "DERIVED_CLINICAL_INFERENCE",
+    "temporality": "HISTORICAL_ADMISSION_COURSE",
+    "thresholdCriterion": "Configured rule threshold: Temperature \u003E= 38.5\u00B0C",
+    "observedFact": "Temperature = 38.9\u00B0C",
+    "evidenceQuote": "fever of 38.9 \u00B0C",
+    "startChar": 412,
+    "endChar": 428
+  }
+]

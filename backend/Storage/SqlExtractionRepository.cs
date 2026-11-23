@@ -224,19 +224,7 @@ public class SqlExtractionRepository : IExtractionRepository
                     @estimated_cost_usd, @has_errors, @error_count, @warning_count, @sections_json,
                     @safety_alerts_json, @note_embedding::vector, @provider_metadata
                 )
-                ON CONFLICT (extraction_id) DO UPDATE SET
-                    correlation_id = EXCLUDED.correlation_id,
-                    note_text = EXCLUDED.note_text,
-                    source_type = EXCLUDED.source_type,
-                    source_file_name = EXCLUDED.source_file_name,
-                    saved_at = EXCLUDED.saved_at,
-                    execution_duration_ms = EXCLUDED.execution_duration_ms,
-                    has_errors = EXCLUDED.has_errors,
-                    error_count = EXCLUDED.error_count,
-                    warning_count = EXCLUDED.warning_count,
-                    safety_alerts_json = EXCLUDED.safety_alerts_json,
-                    note_embedding = EXCLUDED.note_embedding,
-                    provider_metadata = EXCLUDED.provider_metadata;
+                ;
                 """;
 
             await using (var runCmd = new NpgsqlCommand(insertRunSql, conn, tx))
@@ -277,18 +265,8 @@ public class SqlExtractionRepository : IExtractionRepository
                 await runCmd.ExecuteNonQueryAsync(ct);
             }
 
-            // Clear existing child records on re-save
-            await using (var delMeds = new NpgsqlCommand("DELETE FROM extracted_medications WHERE extraction_id = @id;", conn, tx))
-            {
-                delMeds.Parameters.AddWithValue("id", extractionUuid);
-                await delMeds.ExecuteNonQueryAsync(ct);
-            }
-
-            await using (var delInvs = new NpgsqlCommand("DELETE FROM extracted_investigations WHERE extraction_id = @id;", conn, tx))
-            {
-                delInvs.Parameters.AddWithValue("id", extractionUuid);
-                await delInvs.ExecuteNonQueryAsync(ct);
-            }
+            // Extraction candidates are immutable. Duplicate IDs fail at the parent
+            // INSERT before any child or audit rows can change.
 
             const string insertMedSql = """
                 INSERT INTO extracted_medications (

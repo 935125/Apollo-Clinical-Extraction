@@ -1,5 +1,5 @@
 {
-  "executedAt": "2026-11-23T10:07:47.428Z",
+  "executedAt": "2026-11-23T10:14:39.304Z",
   "browser": "Playwright Chromium 1.65.1 (headless)",
   "baseUrl": "http://127.0.0.1:5107",
   "liveFoundryCallsMade": 0,
@@ -7,27 +7,27 @@
   "passedScenarios": 7,
   "failedScenarios": 0,
   "timings": {
-    "initialLoadMs": 596.59,
-    "savedExtractionRenderMs": 572.69
+    "initialLoadMs": 927.83,
+    "savedExtractionRenderMs": 607.11
   },
   "pageErrors": [],
   "results": [
     {
       "scenario": "Scenario 1 — Application startup & backend health",
       "status": "PASS",
-      "durationMs": 686.04,
+      "durationMs": 1023.62,
       "details": {
         "title": "Clinical extraction | Apollo Hospitals",
         "healthResponseStatus": 200,
         "listResponseStatus": 200,
-        "initialLoadMs": 596.59,
+        "initialLoadMs": 927.83,
         "screenshot": "D:\\AI Extraction\\docs\\stage7-evidence\\playwright\\screenshots\\01-workspace-startup.png"
       }
     },
     {
       "scenario": "Scenario 2 — Clinical note entry, validation & duplicate submission control",
       "status": "PASS",
-      "durationMs": 284.96,
+      "durationMs": 256.17,
       "details": {
         "emptyDisabledVerified": true,
         "whitespaceDisabledVerified": true,
@@ -39,7 +39,7 @@
     {
       "scenario": "Scenario 3 — PDF upload multipart request & corrupted PDF error handling",
       "status": "PASS",
-      "durationMs": 158.9,
+      "durationMs": 225.07,
       "details": {
         "multipartVerified": true,
         "realBackendInvalidPdfAlert": "Invalid PDFThe uploaded file could not be read as a PDF.",
@@ -49,9 +49,9 @@
     {
       "scenario": "Scenario 4 — Saved extraction 1713c76e-b355-4be3-b02f-e9d581b82415 display & categorization",
       "status": "PASS",
-      "durationMs": 1109.63,
+      "durationMs": 1118.99,
       "details": {
-        "savedExtractionRenderMs": 572.69,
+        "savedExtractionRenderMs": 607.11,
         "activeMedRows": 5,
         "allergyRows": 2,
         "plannedInvRows": 8,
@@ -66,7 +66,7 @@
     {
       "scenario": "Scenario 5 — Provider & provenance distinction (Foundry vs ONNX fallback & entity origins)",
       "status": "PASS",
-      "durationMs": 316.45,
+      "durationMs": 336.22,
       "details": {
         "foundryBannerVerified": true,
         "llmExtractedVsRuleConfirmedDistinguished": true,
@@ -77,7 +77,7 @@
     {
       "scenario": "Phase C & D — Entity-level clinical review workflow & persistence across browser refresh",
       "status": "PASS",
-      "durationMs": 1654.76,
+      "durationMs": 1788.26,
       "details": {
         "rejectValidationVerified": true,
         "warfarinCorrectionSaved": true,
@@ -89,7 +89,7 @@
     {
       "scenario": "Scenario 6 — Failure handling (HTTP 400, 422, 500, 503 DB failure, empty result, malformed JSON)",
       "status": "PASS",
-      "durationMs": 1179.48,
+      "durationMs": 1070.46,
       "details": {
         "testedFailureModes": [
           "HTTP_400_BAD_REQUEST",

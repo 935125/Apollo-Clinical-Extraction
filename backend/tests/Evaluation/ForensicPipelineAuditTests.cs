@@ -382,9 +382,11 @@ public sealed class ForensicPipelineAuditTests
     [Fact]
     public async Task CapturedLiveFoundryResponse_ValidatesAllFiveMedications_AllEightOrders_AndPersistsToIsolatedPostgres()
     {
-        string artifactDir = Path.Combine(HeldOutBenchmarkRunner.Backend, "artifacts", "live-final-verification");
-        string rawResponsePath = Path.Combine(artifactDir, "foundry-raw-response.json");
-        string rawEnvelopePath = Path.Combine(artifactDir, "foundry-raw-http-envelope.json");
+        string inputDir = Path.Combine(HeldOutBenchmarkRunner.Backend, "artifacts", "live-final-verification");
+        string artifactDir = Path.Combine(Environment.GetEnvironmentVariable("APOLLO_EVALUATION_OUTPUT_ROOT") ?? Path.Combine(HeldOutBenchmarkRunner.Backend, "..", "docs", "stage7-evidence"), "forensic-replay");
+        Directory.CreateDirectory(artifactDir);
+        string rawResponsePath = Path.Combine(inputDir, "foundry-raw-response.json");
+        string rawEnvelopePath = Path.Combine(inputDir, "foundry-raw-http-envelope.json");
         if (!File.Exists(rawResponsePath) || !File.Exists(rawEnvelopePath))
             return;
 
@@ -392,7 +394,7 @@ public sealed class ForensicPipelineAuditTests
         var rawCapture = rawCaptureDoc.RootElement;
         string correlationId = rawCapture.GetProperty("correlationId").GetString()!;
         string rawHttpEnvelope = await File.ReadAllTextAsync(rawEnvelopePath);
-        var rawCandidate = JsonSerializer.Deserialize<ClinicalCandidate>(await File.ReadAllTextAsync(Path.Combine(artifactDir, "foundry-deserialized-candidate.json")), ClinicalCandidateJson.Options)!;
+        var rawCandidate = JsonSerializer.Deserialize<ClinicalCandidate>(await File.ReadAllTextAsync(Path.Combine(inputDir, "foundry-deserialized-candidate.json")), ClinicalCandidateJson.Options)!;
 
         string pdfPath = ResolveDischargeSummaryPdfPath();
         byte[] pdfBytes = await File.ReadAllBytesAsync(pdfPath);
@@ -528,24 +530,8 @@ public sealed class ForensicPipelineAuditTests
         };
         await File.WriteAllTextAsync(Path.Combine(artifactDir, "terminology-semantic-audit.json"), JsonSerializer.Serialize(terminologyAudit, Json));
 
-        // Also persist the validated live extraction into the non-destructive application database (cx_platform) if available
-        try
-        {
-            const string appConnStr = "Host=127.0.0.1;Port=5432;Database=cx_platform;Username=postgres;Password=postgres";
-            var appRepo = new Apollo.Backend.Storage.SqlExtractionRepository(
-                appConnStr,
-                Microsoft.Extensions.Logging.Abstractions.NullLogger<Apollo.Backend.Storage.SqlExtractionRepository>.Instance,
-                autoInitializeSchema: false);
-            if (await appRepo.HealthCheckAsync())
-            {
-                var persistentCopy = finalExtraction with { ExtractionId = "1713c76e-b355-4be3-b02f-e9d581b82415" };
-                await appRepo.SaveExtractionAsync(persistentCopy.NoteText ?? "", persistentCopy);
-            }
-        }
-        catch
-        {
-            // Ignore if local cx_platform is not active in CI
-        }
+        // Replay verification is isolated-only. Never connect to the application
+        // database or re-save a historical extraction as a test side effect.
 
         // Write entity-level comparison CSV
         var csvLines = new List<string>
@@ -645,7 +631,7 @@ public sealed class ForensicPipelineAuditTests
                 .GroupBy(k => k.Key)
                 .ToDictionary(g => g.Key, g => new Accuracy(g.Sum(v => v.Value.Correct), g.Sum(v => v.Value.Evaluated)));
 
-        string artifactDir = Path.Combine(HeldOutBenchmarkRunner.Backend, "artifacts", "live-final-verification");
+        string artifactDir = Path.Combine(Environment.GetEnvironmentVariable("APOLLO_EVALUATION_OUTPUT_ROOT") ?? Path.Combine(HeldOutBenchmarkRunner.Backend, "..", "docs", "stage7-evidence"), "legacy-unseen-replay");
         Directory.CreateDirectory(artifactDir);
 
         // Also evaluate the same 6 unseen cases through the primary Foundry + C# validation pipeline (offline deterministic replay, 0 live calls)
