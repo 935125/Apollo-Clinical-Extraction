@@ -1,0 +1,48 @@
+[
+  {
+    "id": "future-eval-001-cardiorenal",
+    "classification": "SYNTHETIC_PRELIMINARY_UNANNOTATED_TEMPLATE",
+    "clinically_annotated": false,
+    "specialty": "Cardiology / Nephrology",
+    "note_text": "Reason for Visit: 72-year-old male with HFrEF (LVEF 35%) and CKD stage 3a.\nAllergies: Lisinopril (angioedema).\nCurrent Meds: Carvedilol 12.5mg PO BD, Furosemide 40mg PO daily.\nPlan:\n1. Start Empagliflozin 10mg PO once daily in the morning.\n2. Order Serum Creatinine and Serum Electrolytes in 10 days.\n3. Consider 2D Echocardiogram if dyspnea worsens.",
+    "expected_medications": [],
+    "expected_investigations": []
+  },
+  {
+    "id": "future-eval-002-rheum-safety",
+    "classification": "SYNTHETIC_PRELIMINARY_UNANNOTATED_TEMPLATE",
+    "clinically_annotated": false,
+    "specialty": "Rheumatology",
+    "note_text": "Impression: Psoriatic arthritis flare.\nPlan:\n1. Prescribe Methotrexate 15mg PO once weekly on Mondays (never take daily).\n2. Prescribe Folic Acid 5mg PO once weekly on Wednesdays.\n3. Order baseline Complete Blood Count and Liver Function Tests today.",
+    "expected_medications": [],
+    "expected_investigations": []
+  },
+  {
+    "id": "future-eval-003-pediatric-weight",
+    "classification": "SYNTHETIC_PRELIMINARY_UNANNOTATED_TEMPLATE",
+    "clinically_annotated": false,
+    "specialty": "Pediatrics",
+    "note_text": "Patient: 4-year-old female weighing 16 kg with acute otitis media.\nAllergies: Penicillin (anaphylaxis).\nPlan:\n1. Prescribe Cefdinir 14 mg/kg/day PO divided BD for 10 days.\n2. Paracetamol oral suspension 240mg PO every 6 hours PRN for fever > 38.5 C.",
+    "expected_medications": [],
+    "expected_investigations": []
+  },
+  {
+    "id": "future-eval-004-anticoagulation",
+    "classification": "SYNTHETIC_PRELIMINARY_UNANNOTATED_TEMPLATE",
+    "clinically_annotated": false,
+    "specialty": "Hematology",
+    "note_text": "Assessment: Atrial fibrillation on Warfarin with supratherapeutic INR of 4.2 today.\nPlan:\n1. Hold Warfarin 5mg for 2 days, then recheck INR.\n2. Avoid NSAIDs including Ibuprofen.",
+    "expected_medications": [],
+    "expected_investigations": []
+  },
+  {
+    "id": "future-eval-005-endocrine-insulin",
+    "classification": "SYNTHETIC_PRELIMINARY_UNANNOTATED_TEMPLATE",
+    "clinically_annotated": false,
+    "specialty": "Endocrinology",
+    "note_text": "Impression: Type 2 Diabetes Mellitus with fasting hyperglycemia. Repeat HbA1c today was 9.1%.\nPlan:\n1. Continue Metformin 1000mg PO BD.\n2. Start Insulin Glargine 100 units/mL, inject 10 units SC at bedtime.\n3. Order Fasting Lipid Profile and Urine Albumin-Creatinine Ratio in 3 months.",
+    "expected_medications": [],
+    "expected_investigations": []
+  }
+]
+

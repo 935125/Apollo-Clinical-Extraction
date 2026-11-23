@@ -1,0 +1,6 @@
+<Solution>
+  <Folder Name="/backend/">
+    <Project Path="backend/Apollo.Backend.csproj" />
+    <Project Path="backend/tests/Apollo.Backend.Tests.csproj" />
+  </Folder>
+</Solution>

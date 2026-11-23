@@ -1,0 +1,304 @@
+﻿{
+    "schemaVersion":  "1.0.0",
+    "extractionId":  "223eb66d-c79e-4d7b-a861-feb2aec92f4b",
+    "correlationId":  "STAGE2-E2E-20261120150729",
+    "extractedAt":  "2026-11-20T09:37:36+00:00",
+    "executionDurationMs":  6895.66,
+    "modelMetadata":  {
+                          "adapterType":  "microsoft_foundry",
+                          "modelDeployment":  "gpt-6.1-sol",
+                          "promptVersion":  "clinical-v3",
+                          "promptTokens":  697,
+                          "completionTokens":  415,
+                          "totalTokens":  1112,
+                          "estimatedCostUsd":  null,
+                          "provider":  "foundry",
+                          "model":  "gpt-6.1-sol-2026-09-29",
+                          "azureDeployment":  "gpt-6.1-sol",
+                          "fallbackReason":  null,
+                          "inferenceExecuted":  true,
+                          "attempts":  [
+                                           {
+                                               "provider":  "foundry",
+                                               "model":  "gpt-6.1-sol-2026-09-29",
+                                               "deployment":  "gpt-6.1-sol",
+                                               "outcome":  "accepted",
+                                               "reason":  null,
+                                               "durationMs":  6817.22,
+                                               "inferenceExecuted":  true,
+                                               "promptTokens":  697,
+                                               "completionTokens":  415,
+                                               "totalTokens":  1112,
+                                               "onnxWindows":  null
+                                           }
+                                       ],
+                          "schemaValidationStatus":  "passed"
+                      },
+    "preprocessed":  {
+                         "charLength":  309,
+                         "sections":  [
+                                          {
+                                              "code":  "OTHER",
+                                              "heading":  "Body",
+                                              "start":  0,
+                                              "end":  309
+                                          }
+                                      ]
+                     },
+    "medications":  [
+                        {
+                            "name":  "metformin",
+                            "strength":  "500 mg",
+                            "dose":  null,
+                            "route":  "orally",
+                            "frequency":  "twice daily",
+                            "duration":  "14 days",
+                            "formulation":  null,
+                            "instructions":  "Continue metformin 500 mg orally twice daily for 14 days.",
+                            "assertionStatus":  "current_medication",
+                            "evidence":  {
+                                             "quote":  "Continue metformin 500 mg orally twice daily for 14 days.",
+                                             "verified":  true,
+                                             "start":  78,
+                                             "end":  135
+                                         },
+                            "qualityFlags":  [
+
+                                             ],
+                            "findings":  [
+
+                                         ],
+                            "normalization":  {
+                                                  "status":  "matched",
+                                                  "matchedCode":  "RX-MET-500",
+                                                  "displayName":  "Metformin",
+                                                  "confidence":  0.98
+                                              },
+                            "doseUnit":  null,
+                            "action":  "continue"
+                        },
+                        {
+                            "name":  "amoxicillin",
+                            "strength":  "500 mg",
+                            "dose":  null,
+                            "route":  "orally",
+                            "frequency":  "three times daily",
+                            "duration":  "5 days",
+                            "formulation":  null,
+                            "instructions":  "Start amoxicillin 500 mg orally three times daily for 5 days.",
+                            "assertionStatus":  "new_order",
+                            "evidence":  {
+                                             "quote":  "Start amoxicillin 500 mg orally three times daily for 5 days.",
+                                             "verified":  true,
+                                             "start":  136,
+                                             "end":  197
+                                         },
+                            "qualityFlags":  [
+
+                                             ],
+                            "findings":  [
+
+                                         ],
+                            "normalization":  {
+                                                  "status":  "matched",
+                                                  "matchedCode":  "RX-AMX-500",
+                                                  "displayName":  "Amoxicillin",
+                                                  "confidence":  0.98
+                                              },
+                            "doseUnit":  null,
+                            "action":  "start"
+                        },
+                        {
+                            "name":  "penicillin",
+                            "strength":  null,
+                            "dose":  null,
+                            "route":  null,
+                            "frequency":  null,
+                            "duration":  null,
+                            "formulation":  null,
+                            "instructions":  null,
+                            "assertionStatus":  "negated",
+                            "evidence":  {
+                                             "quote":  "Patient denies penicillin allergy.",
+                                             "verified":  true,
+                                             "start":  275,
+                                             "end":  309
+                                         },
+                            "qualityFlags":  [
+
+                                             ],
+                            "findings":  [
+
+                                         ],
+                            "normalization":  {
+                                                  "status":  "matched",
+                                                  "matchedCode":  "RX-PEN-500",
+                                                  "displayName":  "Penicillin",
+                                                  "confidence":  0.98
+                                              },
+                            "doseUnit":  null,
+                            "action":  "none"
+                        }
+                    ],
+    "investigations":  [
+                           {
+                               "name":  "CBC",
+                               "timing":  null,
+                               "specimen":  null,
+                               "assertionStatus":  "new_order",
+                               "evidence":  {
+                                                "quote":  "Order CBC and serum creatinine.",
+                                                "verified":  true,
+                                                "start":  198,
+                                                "end":  229
+                                            },
+                               "qualityFlags":  [
+
+                                                ],
+                               "findings":  [
+
+                                            ],
+                               "normalization":  {
+                                                     "status":  "matched",
+                                                     "matchedCode":  "58410-2",
+                                                     "displayName":  "Complete Blood Count",
+                                                     "confidence":  0.98
+                                                 },
+                               "matchedCode":  "58410-2",
+                               "displayName":  "Complete Blood Count",
+                               "status":  "unknown"
+                           },
+                           {
+                               "name":  "serum creatinine",
+                               "timing":  null,
+                               "specimen":  "serum",
+                               "assertionStatus":  "new_order",
+                               "evidence":  {
+                                                "quote":  "Order CBC and serum creatinine.",
+                                                "verified":  true,
+                                                "start":  198,
+                                                "end":  229
+                                            },
+                               "qualityFlags":  [
+
+                                                ],
+                               "findings":  [
+
+                                            ],
+                               "normalization":  {
+                                                     "status":  "matched",
+                                                     "matchedCode":  "2160-0",
+                                                     "displayName":  "Serum Creatinine",
+                                                     "confidence":  0.98
+                                                 },
+                               "matchedCode":  "2160-0",
+                               "displayName":  "Serum Creatinine",
+                               "status":  "unknown"
+                           },
+                           {
+                               "name":  "chest X-ray",
+                               "timing":  "only if cough persists",
+                               "specimen":  null,
+                               "assertionStatus":  "conditional",
+                               "evidence":  {
+                                                "quote":  "Consider chest X-ray only if cough persists.",
+                                                "verified":  true,
+                                                "start":  230,
+                                                "end":  274
+                                            },
+                               "qualityFlags":  [
+
+                                                ],
+                               "findings":  [
+
+                                            ],
+                               "normalization":  {
+                                                     "status":  "matched",
+                                                     "matchedCode":  "36643-5",
+                                                     "displayName":  "Chest X-Ray",
+                                                     "confidence":  0.98
+                                                 },
+                               "matchedCode":  "36643-5",
+                               "displayName":  "Chest X-Ray",
+                               "status":  "unknown"
+                           }
+                       ],
+    "validationSummary":  {
+                              "hasErrors":  false,
+                              "errorCount":  0,
+                              "warningCount":  0
+                          },
+    "safetyAlerts":  [
+
+                     ],
+    "embedding":  [
+                      0.208278,
+                      0.104139,
+                      0.208278,
+                      0,
+                      0,
+                      0,
+                      0.104139,
+                      0,
+                      0,
+                      0,
+                      0,
+                      0,
+                      0,
+                      0.104139,
+                      0,
+                      0,
+                      -0.270762,
+                      -0.02777,
+                      0.138852,
+                      -0.204807,
+                      0.048598,
+                      -0.329774,
+                      -0.006943,
+                      0.111082,
+                      0.142323,
+                      -0.062483,
+                      -0.211749,
+                      -0.048598,
+                      -0.086783,
+                      -0.048598,
+                      -0.086783,
+                      0.118024,
+                      -0.031242,
+                      -0.069426,
+                      0.017357,
+                      0.183979,
+                      -0.138852,
+                      0,
+                      -0.104139,
+                      -0.114553,
+                      0.038184,
+                      0.156209,
+                      0.086783,
+                      0.086783,
+                      -0.111082,
+                      0,
+                      -0.229106,
+                      -0.177036,
+                      0.02777,
+                      -0.093725,
+                      0.048598,
+                      0.055541,
+                      0.194393,
+                      0.354073,
+                      -0.135381,
+                      -0.090254,
+                      -0.104139,
+                      0.131909,
+                      0.121496,
+                      0.062483,
+                      -0.15968,
+                      0.145795,
+                      -0.024299,
+                      -0.003471
+                  ],
+    "noteText":  "Synthetic test STAGE2-E2E-20261120150729. Adult patient with type 2 diabetes. Continue metformin 500 mg orally twice daily for 14 days. Start amoxicillin 500 mg orally three times daily for 5 days. Order CBC and serum creatinine. Consider chest X-ray only if cough persists. Patient denies penicillin allergy.",
+    "inputType":  "text",
+    "sourceFileName":  null,
+    "saved":  true
+}

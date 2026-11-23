@@ -1,6 +1,0 @@
-<Project>
-  <PropertyGroup>
-    <RunSettingsFilePath>$(MSBuildThisFileDirectory).runsettings</RunSettingsFilePath>
-  </PropertyGroup>
-</Project>
-

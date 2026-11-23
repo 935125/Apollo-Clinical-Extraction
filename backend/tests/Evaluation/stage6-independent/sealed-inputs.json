@@ -1,0 +1,50 @@
+[
+  {
+    "id": "ind-001",
+    "note_text": "Continue atorvastatin 20 mg, one tablet by mouth nightly. Order serum ALT tomorrow."
+  },
+  {
+    "id": "ind-002",
+    "note_text": "Start methotrexate 10 mg PO once weekly on Fridays, never daily. Check CBC in 10 days."
+  },
+  {
+    "id": "ind-003",
+    "note_text": "Start salbutamol 100 mcg, two puffs inhaled every 4 hours as needed for wheeze. Consider chest X-ray if symptoms persist."
+  },
+  {
+    "id": "ind-004",
+    "note_text": "Previous treatment: amoxicillin 250 mg PO three times daily, completed last month. Today order urine culture."
+  },
+  {
+    "id": "ind-005",
+    "note_text": "Increase metformin from 500 mg twice daily to 1000 mg twice daily. Repeat HbA1c in 10 weeks."
+  },
+  {
+    "id": "ind-006",
+    "note_text": "Serum sodium 136 mmol/L yesterday. Order plasma glucose tomorrow and serum potassium in 5 days."
+  },
+  {
+    "id": "ind-007",
+    "note_text": "Start paracetamol oral suspension 120 mg/5 mL, 7.5 mL orally as needed for pain for 2 days. No investigations ordered."
+  },
+  {
+    "id": "ind-008",
+    "note_text": "Allergies: penicillin caused rash. Continue pantoprazole 40 mg PO daily. Obtain CBC and CRP in 12 days."
+  },
+  {
+    "id": "ind-009",
+    "note_text": "Hold warfarin pending review. INR was 3.6 yesterday. Order Prothrombin time and INR tomorrow."
+  },
+  {
+    "id": "ind-010",
+    "note_text": "Start ondansetron 4 mg PO every 12 hours as needed for nausea. Duration not specified. Order ECG before discharge."
+  },
+  {
+    "id": "ind-011",
+    "note_text": "Continue levothyroxine 50 mcg orally each morning. Order serum TSH in 7 weeks. Do not order CT."
+  },
+  {
+    "id": "ind-012",
+    "note_text": "Start ibuprofen 200 mg orally twice daily for 4 days, then stop. Check creatinine in 6 days. Specimen not specified."
+  }
+]

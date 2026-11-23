@@ -1,0 +1,92 @@
+{
+  "fixtureMode": false,
+  "backendIntegrationTested": true,
+  "realFoundryVerified": true,
+  "records": [
+    {
+      "inputType": "text",
+      "extractionId": "0bfa3e57-94ae-4816-b1f5-49846ca5b64f",
+      "modelMetadata": {
+        "adapterType": "microsoft_foundry",
+        "modelDeployment": "gpt-6.1-sol",
+        "promptVersion": "clinical-v3",
+        "promptTokens": 670,
+        "completionTokens": 359,
+        "totalTokens": 1029,
+        "estimatedCostUsd": null,
+        "provider": "foundry",
+        "model": "gpt-6.1-sol-2026-09-29",
+        "azureDeployment": "gpt-6.1-sol",
+        "fallbackReason": null,
+        "inferenceExecuted": true,
+        "attempts": [
+          {
+            "provider": "foundry",
+            "model": "gpt-6.1-sol-2026-09-29",
+            "deployment": "gpt-6.1-sol",
+            "outcome": "accepted",
+            "reason": null,
+            "durationMs": 6171.58,
+            "inferenceExecuted": true,
+            "promptTokens": 670,
+            "completionTokens": 359,
+            "totalTokens": 1029,
+            "onnxWindows": null
+          }
+        ],
+        "schemaValidationStatus": "passed"
+      },
+      "medicationCount": 3,
+      "investigationCount": 2,
+      "exactEvidenceVerified": true,
+      "sourceRestored": true
+    },
+    {
+      "inputType": "pdf",
+      "extractionId": "1f18f906-b059-42ed-9fa5-f021d6960cd4",
+      "modelMetadata": {
+        "adapterType": "microsoft_foundry",
+        "modelDeployment": "gpt-6.1-sol",
+        "promptVersion": "clinical-v3",
+        "promptTokens": 670,
+        "completionTokens": 359,
+        "totalTokens": 1029,
+        "estimatedCostUsd": null,
+        "provider": "foundry",
+        "model": "gpt-6.1-sol-2026-09-29",
+        "azureDeployment": "gpt-6.1-sol",
+        "fallbackReason": null,
+        "inferenceExecuted": true,
+        "attempts": [
+          {
+            "provider": "foundry",
+            "model": "gpt-6.1-sol-2026-09-29",
+            "deployment": "gpt-6.1-sol",
+            "outcome": "accepted",
+            "reason": null,
+            "durationMs": 6501.53,
+            "inferenceExecuted": true,
+            "promptTokens": 670,
+            "completionTokens": 359,
+            "totalTokens": 1029,
+            "onnxWindows": null
+          }
+        ],
+        "schemaValidationStatus": "passed"
+      },
+      "medicationCount": 3,
+      "investigationCount": 2,
+      "exactEvidenceVerified": true,
+      "sourceRestored": true
+    }
+  ],
+  "checks": [
+    "API is reachable through Angular",
+    "text: real persisted extraction, scoped dose/action/allergy, conditional investigation and every evidence highlight",
+    "pdf: real persisted extraction, scoped dose/action/allergy, conditional investigation and every evidence highlight",
+    "Actual provider and attempt details render at desktop and mobile widths",
+    "History restores the saved provider and the PDF run source",
+    "No browser runtime errors"
+  ],
+  "runtimeErrors": []
+}

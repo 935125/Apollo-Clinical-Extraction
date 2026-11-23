@@ -1,0 +1,93 @@
+[
+  {
+    "id": "indep-001-cardio-anticoag",
+    "specialty": "Cardiology / Anticoagulation",
+    "note_text": "Discharge Summary — Cardiology\nAllergies: Penicillin (anaphylaxis). Denies Ibuprofen allergy.\nBaseline Labs: Serum potassium 5.8 mEq/L, Serum creatinine 2.1 mg/dL, BP 132/84 mmHg.\nDischarge Medications:\n1. Warfarin 5 mg orally once daily in the evening.\n2. Aspirin 81 mg orally once daily in the morning.\n3. Pantoprazole 40 mg orally once daily before breakfast for 30 days.\nOutpatient Follow-Up Investigations:\n• Order Serum potassium and Serum creatinine in 48 hours.\n• Order 12-lead ECG in 2 weeks.",
+    "expected_medications": [
+      { "name": "Penicillin", "strength": null, "assertion_status": "allergy" },
+      { "name": "Ibuprofen", "strength": null, "assertion_status": "negated" },
+      { "name": "Warfarin", "strength": "5 mg", "route": "orally", "frequency": "once daily", "assertion_status": "current_medication" },
+      { "name": "Aspirin", "strength": "81 mg", "route": "orally", "frequency": "once daily", "assertion_status": "current_medication" },
+      { "name": "Pantoprazole", "strength": "40 mg", "route": "orally", "frequency": "once daily", "duration": "30 days", "assertion_status": "current_medication" }
+    ],
+    "expected_investigations": [
+      { "name": "Serum potassium", "assertion_status": "historical" },
+      { "name": "Serum creatinine", "assertion_status": "historical" },
+      { "name": "Serum potassium", "assertion_status": "new_order" },
+      { "name": "Serum creatinine", "assertion_status": "new_order" },
+      { "name": "12-lead ECG", "assertion_status": "new_order" }
+    ]
+  },
+  {
+    "id": "indep-002-pulm-cap",
+    "specialty": "Pulmonology",
+    "note_text": "Presenting Complaint: 67-year-old female with community-acquired pneumonia.\nPast Medical History: Took Allopurinol 100 mg daily previously, stopped last year.\nPlan:\n1. Start Azithromycin 500 mg PO once daily for 3 days.\n2. Start Amoxicillin 500 mg PO TDS for 7 days.\n3. Order Chest X-ray (PA view) in 2 weeks.\n4. Order Complete Blood Count (CBC) and C-reactive protein (CRP) today.",
+    "expected_medications": [
+      { "name": "Allopurinol", "strength": "100 mg", "frequency": "daily", "assertion_status": "historical" },
+      { "name": "Azithromycin", "strength": "500 mg", "route": "PO", "frequency": "once daily", "duration": "3 days", "assertion_status": "new_order" },
+      { "name": "Amoxicillin", "strength": "500 mg", "route": "PO", "frequency": "TDS", "duration": "7 days", "assertion_status": "new_order" }
+    ],
+    "expected_investigations": [
+      { "name": "Chest X-ray", "assertion_status": "new_order" },
+      { "name": "Complete Blood Count", "assertion_status": "new_order" },
+      { "name": "C-reactive protein", "assertion_status": "new_order" }
+    ]
+  },
+  {
+    "id": "indep-003-rheum-mtx",
+    "specialty": "Rheumatology",
+    "note_text": "Assessment: Active rheumatoid arthritis.\nPlan:\n1. Prescribe Methotrexate 15 mg PO once weekly.\n2. Prescribe Folic Acid 5 mg PO once weekly.\n3. Hold Ibuprofen if gastrointestinal bleeding occurs.\n4. Order Liver Function Tests and Serum creatinine today.",
+    "expected_medications": [
+      { "name": "Methotrexate", "strength": "15 mg", "route": "PO", "frequency": "once weekly", "assertion_status": "new_order" },
+      { "name": "Folic Acid", "strength": "5 mg", "route": "PO", "frequency": "once weekly", "assertion_status": "new_order" },
+      { "name": "Ibuprofen", "strength": null, "assertion_status": "conditional" }
+    ],
+    "expected_investigations": [
+      { "name": "Liver Function Tests", "assertion_status": "new_order" },
+      { "name": "Serum creatinine", "assertion_status": "new_order" }
+    ]
+  },
+  {
+    "id": "indep-004-nephro-ckd",
+    "specialty": "Nephrology",
+    "note_text": "Impression: CKD Stage 4 with metabolic acidosis and hyperkalemia.\nMedications: Discontinue Lisinopril 10 mg immediately.\nPlan:\n1. Start Sodium Bicarbonate 650 mg PO BID.\n2. Continue Amlodipine 5 mg PO once daily.\n3. Order Serum electrolytes and Complete Urine Examination (CUE) today.",
+    "expected_medications": [
+      { "name": "Lisinopril", "strength": "10 mg", "assertion_status": "discontinued" },
+      { "name": "Sodium Bicarbonate", "strength": "650 mg", "route": "PO", "frequency": "BID", "assertion_status": "new_order" },
+      { "name": "Amlodipine", "strength": "5 mg", "route": "PO", "frequency": "once daily", "assertion_status": "current_medication" }
+    ],
+    "expected_investigations": [
+      { "name": "Serum electrolytes", "assertion_status": "new_order" },
+      { "name": "Complete Urine Examination", "assertion_status": "new_order" }
+    ]
+  },
+  {
+    "id": "indep-005-endo-diabetes",
+    "specialty": "Endocrinology",
+    "note_text": "Chief Complaint: Type 2 diabetes mellitus follow-up.\nCurrent Medications: Metformin 500 mg PO BID.\nPlan:\n1. Start Empagliflozin 10 mg PO once daily.\n2. Start Atorvastatin 20 mg PO at bedtime.\n3. Order HbA1c and Fasting Lipid Profile today.\n4. Order Serum TSH if fatigue persists.",
+    "expected_medications": [
+      { "name": "Metformin", "strength": "500 mg", "route": "PO", "frequency": "BID", "assertion_status": "current_medication" },
+      { "name": "Empagliflozin", "strength": "10 mg", "route": "PO", "frequency": "once daily", "assertion_status": "new_order" },
+      { "name": "Atorvastatin", "strength": "20 mg", "route": "PO", "frequency": "at bedtime", "assertion_status": "new_order" }
+    ],
+    "expected_investigations": [
+      { "name": "HbA1c", "assertion_status": "new_order" },
+      { "name": "Lipid Profile", "assertion_status": "new_order" },
+      { "name": "Serum TSH", "assertion_status": "conditional" }
+    ]
+  },
+  {
+    "id": "indep-006-onc-emesis",
+    "specialty": "Oncology Supportive Care",
+    "note_text": "Assessment: Chemotherapy-induced nausea prophylaxis.\nAllergies: No known drug allergies (NKDA).\nPlan:\n1. Start Ondansetron 4 mg PO every 8 hours as needed.\n2. Start Dexamethasone 4 mg PO once daily for 3 days.\n3. Order Complete Blood Count and Serum sodium today.",
+    "expected_medications": [
+      { "name": "Ondansetron", "strength": "4 mg", "route": "PO", "frequency": "every 8 hours", "assertion_status": "new_order" },
+      { "name": "Dexamethasone", "strength": "4 mg", "route": "PO", "frequency": "once daily", "duration": "3 days", "assertion_status": "new_order" }
+    ],
+    "expected_investigations": [
+      { "name": "Complete Blood Count", "assertion_status": "new_order" },
+      { "name": "Serum sodium", "assertion_status": "new_order" }
+    ]
+  }
+]
+

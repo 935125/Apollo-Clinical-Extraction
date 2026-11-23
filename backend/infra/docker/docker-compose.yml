@@ -1,0 +1,22 @@
+services:
+  cx-postgres:
+    image: pgvector/pgvector:pg18
+    container_name: cx-postgres
+    environment:
+      POSTGRES_USER: cx_admin
+      POSTGRES_PASSWORD: dev_password_only
+      POSTGRES_DB: cx_platform
+    ports:
+      - "5432:5432"
+    volumes:
+      - cx_postgres_data:/var/lib/postgresql/data
+      - ../../db/platform/migrations:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U cx_admin -d cx_platform"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  cx_postgres_data:
+

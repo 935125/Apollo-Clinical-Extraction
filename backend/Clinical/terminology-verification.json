@@ -1,0 +1,480 @@
+{
+    "loincSource":  "https://tx.fhir.org/r4/CodeSystem/$lookup",
+    "rxnormVersion":  "02-Nov-2026",
+    "medications":  {
+                        "10582":  {
+                                      "active":  true,
+                                      "name":  "levothyroxine",
+                                      "termType":  "IN"
+                                  },
+                        "4511":  {
+                                     "active":  true,
+                                     "name":  "folic acid",
+                                     "termType":  "IN"
+                                 },
+                        "83367":  {
+                                      "active":  true,
+                                      "name":  "atorvastatin",
+                                      "termType":  "IN"
+                                  },
+                        "617320":  {
+                                       "active":  true,
+                                       "name":  "atorvastatin 40 MG Oral Tablet [Lipitor]",
+                                       "termType":  "SBD"
+                                   },
+                        "25480":  {
+                                      "active":  true,
+                                      "name":  "gabapentin",
+                                      "termType":  "IN"
+                                  },
+                        "1001472":  {
+                                        "active":  true,
+                                        "name":  "dutasteride / tamsulosin",
+                                        "termType":  "MIN"
+                                    },
+                        "36676":  {
+                                      "active":  true,
+                                      "name":  "sodium bicarbonate",
+                                      "termType":  "IN"
+                                  },
+                        "9997":  {
+                                     "active":  true,
+                                     "name":  "spironolactone",
+                                     "termType":  "IN"
+                                 },
+                        "77492":  {
+                                      "active":  true,
+                                      "name":  "tamsulosin",
+                                      "termType":  "IN"
+                                  },
+                        "435":  {
+                                    "active":  true,
+                                    "name":  "albuterol",
+                                    "termType":  "IN"
+                                },
+                        "1488564":  {
+                                        "active":  true,
+                                        "name":  "dapagliflozin",
+                                        "termType":  "IN"
+                                    },
+                        "18631":  {
+                                      "active":  true,
+                                      "name":  "azithromycin",
+                                      "termType":  "IN"
+                                  },
+                        "8638":  {
+                                     "active":  true,
+                                     "name":  "prednisolone",
+                                     "termType":  "IN"
+                                 },
+                        "25025":  {
+                                      "active":  true,
+                                      "name":  "finasteride",
+                                      "termType":  "IN"
+                                  },
+                        "1545653":  {
+                                        "active":  true,
+                                        "name":  "empagliflozin",
+                                        "termType":  "IN"
+                                    },
+                        "161":  {
+                                    "active":  true,
+                                    "name":  "acetaminophen",
+                                    "termType":  "IN"
+                                },
+                        "7980":  {
+                                     "active":  true,
+                                     "name":  "penicillin G",
+                                     "termType":  "IN"
+                                 },
+                        "7646":  {
+                                     "active":  true,
+                                     "name":  "omeprazole",
+                                     "termType":  "IN"
+                                 },
+                        "519":  {
+                                    "active":  true,
+                                    "name":  "allopurinol",
+                                    "termType":  "IN"
+                                },
+                        "7984":  {
+                                     "active":  true,
+                                     "name":  "penicillin V",
+                                     "termType":  "IN"
+                                 },
+                        "1514":  {
+                                     "active":  true,
+                                     "name":  "betamethasone",
+                                     "termType":  "IN"
+                                 },
+                        "617318":  {
+                                       "active":  true,
+                                       "name":  "atorvastatin 20 MG Oral Tablet [Lipitor]",
+                                       "termType":  "SBD"
+                                   },
+                        "6851":  {
+                                     "active":  true,
+                                     "name":  "methotrexate",
+                                     "termType":  "IN"
+                                 },
+                        "5640":  {
+                                     "active":  true,
+                                     "name":  "ibuprofen",
+                                     "termType":  "IN"
+                                 },
+                        "69749":  {
+                                      "active":  true,
+                                      "name":  "valsartan",
+                                      "termType":  "IN"
+                                  },
+                        "1100699":  {
+                                        "active":  true,
+                                        "name":  "linagliptin",
+                                        "termType":  "IN"
+                                    },
+                        "17767":  {
+                                      "active":  true,
+                                      "name":  "amlodipine",
+                                      "termType":  "IN"
+                                  },
+                        "139462":  {
+                                       "active":  true,
+                                       "name":  "moxifloxacin",
+                                       "termType":  "IN"
+                                   },
+                        "3264":  {
+                                     "active":  true,
+                                     "name":  "dexamethasone",
+                                     "termType":  "IN"
+                                 },
+                        "40790":  {
+                                      "active":  true,
+                                      "name":  "pantoprazole",
+                                      "termType":  "IN"
+                                  },
+                        "1656339":  {
+                                        "active":  true,
+                                        "name":  "sacubitril / valsartan",
+                                        "termType":  "MIN"
+                                    },
+                        "860975":  {
+                                       "active":  true,
+                                       "name":  "24 HR metformin hydrochloride 500 MG Extended Release Oral Tablet",
+                                       "termType":  "SCD"
+                                   },
+                        "1656328":  {
+                                        "active":  true,
+                                        "name":  "sacubitril",
+                                        "termType":  "IN"
+                                    },
+                        "7454":  {
+                                     "active":  true,
+                                     "name":  "nitrofurantoin",
+                                     "termType":  "IN"
+                                 },
+                        "26225":  {
+                                      "active":  true,
+                                      "name":  "ondansetron",
+                                      "termType":  "IN"
+                                  },
+                        "723":  {
+                                    "active":  true,
+                                    "name":  "amoxicillin",
+                                    "termType":  "IN"
+                                },
+                        "2555":  {
+                                     "active":  true,
+                                     "name":  "cisplatin",
+                                     "termType":  "IN"
+                                 },
+                        "327361":  {
+                                       "active":  true,
+                                       "name":  "adalimumab",
+                                       "termType":  "IN"
+                                   },
+                        "19711":  {
+                                      "active":  true,
+                                      "name":  "amoxicillin / clavulanate",
+                                      "termType":  "MIN"
+                                  },
+                        "21212":  {
+                                      "active":  true,
+                                      "name":  "clarithromycin",
+                                      "termType":  "IN"
+                                  },
+                        "2551":  {
+                                     "active":  true,
+                                     "name":  "ciprofloxacin",
+                                     "termType":  "IN"
+                                 },
+                        "617314":  {
+                                       "active":  true,
+                                       "name":  "atorvastatin 10 MG Oral Tablet [Lipitor]",
+                                       "termType":  "SBD"
+                                   },
+                        "966224":  {
+                                       "active":  true,
+                                       "name":  "levothyroxine sodium 0.125 MG Oral Tablet",
+                                       "termType":  "SCD"
+                                   },
+                        "2231":  {
+                                     "active":  true,
+                                     "name":  "cephalexin",
+                                     "termType":  "IN"
+                                 },
+                        "11289":  {
+                                      "active":  true,
+                                      "name":  "warfarin",
+                                      "termType":  "IN"
+                                  },
+                        "68446":  {
+                                      "active":  true,
+                                      "name":  "pemetrexed",
+                                      "termType":  "IN"
+                                  },
+                        "6809":  {
+                                     "active":  true,
+                                     "name":  "metformin",
+                                     "termType":  "IN"
+                                 },
+                        "36437":  {
+                                      "active":  true,
+                                      "name":  "sertraline",
+                                      "termType":  "IN"
+                                  },
+                        "29046":  {
+                                      "active":  true,
+                                      "name":  "lisinopril",
+                                      "termType":  "IN"
+                                  },
+                        "19484":  {
+                                      "active":  true,
+                                      "name":  "bisoprolol",
+                                      "termType":  "IN"
+                                  },
+                        "198440":  {
+                                       "active":  true,
+                                       "name":  "acetaminophen 500 MG Oral Tablet",
+                                       "termType":  "SCD"
+                                   },
+                        "6915":  {
+                                     "active":  true,
+                                     "name":  "metoclopramide",
+                                     "termType":  "IN"
+                                 },
+                        "1191":  {
+                                     "active":  true,
+                                     "name":  "aspirin",
+                                     "termType":  "IN"
+                                 },
+                        "52175":  {
+                                      "active":  true,
+                                      "name":  "losartan",
+                                      "termType":  "IN"
+                                  },
+                        "32968":  {
+                                      "active":  true,
+                                      "name":  "clopidogrel",
+                                      "termType":  "IN"
+                                  },
+                        "15996":  {
+                                      "active":  true,
+                                      "name":  "mirtazapine",
+                                      "termType":  "IN"
+                                  },
+                        "73494":  {
+                                      "active":  true,
+                                      "name":  "telmisartan",
+                                      "termType":  "IN"
+                                  },
+                        "114477":  {
+                                       "active":  true,
+                                       "name":  "levetiracetam",
+                                       "termType":  "IN"
+                                   }
+                    },
+    "investigations":  {
+                           "600-7":  {
+                                         "display":  "Bacteria identified in Blood by Culture",
+                                         "exists":  true,
+                                         "version":  "2.83"
+                                     },
+                           "4548-4":  {
+                                          "display":  "Hemoglobin A1c/Hemoglobin.total in Blood",
+                                          "exists":  true,
+                                          "version":  "2.83"
+                                      },
+                           "25056-3":  {
+                                           "display":  "MR Unspecified body region",
+                                           "exists":  true,
+                                           "version":  "2.83"
+                                       },
+                           "5196-1":  {
+                                          "display":  "Hepatitis B virus surface Ag [Presence] in Serum or Plasma by Immunoassay",
+                                          "exists":  true,
+                                          "version":  "2.83"
+                                      },
+                           "11524-6":  {
+                                           "display":  "EKG study",
+                                           "exists":  true,
+                                           "version":  "2.83"
+                                       },
+                           "630-4":  {
+                                         "display":  "Bacteria identified in Urine by Culture",
+                                         "exists":  true,
+                                         "version":  "2.83"
+                                     },
+                           "2857-1":  {
+                                          "display":  "Prostate specific Ag [Mass/volume] in Serum or Plasma",
+                                          "exists":  true,
+                                          "version":  "2.83"
+                                      },
+                           "24331-1":  {
+                                           "display":  "Lipid 1996 panel - Serum or Plasma",
+                                           "exists":  true,
+                                           "version":  "2.83"
+                                       },
+                           "6598-7":  {
+                                          "display":  "Troponin T.cardiac [Mass/volume] in Serum or Plasma",
+                                          "exists":  true,
+                                          "version":  "2.83"
+                                      },
+                           "24604-1":  {
+                                           "display":  "MG Breast Diagnostic Limited Views",
+                                           "exists":  true,
+                                           "version":  "2.83"
+                                       },
+                           "25045-6":  {
+                                           "display":  "CT Unspecified body region",
+                                           "exists":  true,
+                                           "version":  "2.83"
+                                       },
+                           "4537-7":  {
+                                          "display":  "Erythrocyte [Sedimentation Rate] in Blood by Westergren method",
+                                          "exists":  true,
+                                          "version":  "2.83"
+                                      },
+                           "58410-2":  {
+                                           "display":  "CBC panel - Blood by Automated count",
+                                           "exists":  true,
+                                           "version":  "2.83"
+                                       },
+                           "24325-3":  {
+                                           "display":  "Hepatic function 2000 panel - Serum or Plasma",
+                                           "exists":  true,
+                                           "version":  "2.83"
+                                       },
+                           "3084-1":  {
+                                          "display":  "Urate [Mass/volume] in Serum or Plasma",
+                                          "exists":  true,
+                                          "version":  "2.83"
+                                      },
+                           "24356-8":  {
+                                           "display":  "Urinalysis complete panel - Urine",
+                                           "exists":  true,
+                                           "version":  "2.83"
+                                       },
+                           "48065-7":  {
+                                           "display":  "Fibrin D-dimer FEU [Mass/volume] in Platelet poor plasma",
+                                           "exists":  true,
+                                           "version":  "2.83"
+                                       },
+                           "2160-0":  {
+                                          "display":  "Creatinine [Mass/volume] in Serum or Plasma",
+                                          "exists":  true,
+                                          "version":  "2.83"
+                                      },
+                           "43468-8":  {
+                                           "display":  "XR Unspecified body region Views",
+                                           "exists":  true,
+                                           "version":  "2.83"
+                                       },
+                           "24326-1":  {
+                                           "display":  "Electrolytes 1998 panel - Serum or Plasma",
+                                           "exists":  true,
+                                           "version":  "2.83"
+                                       },
+                           "6301-6":  {
+                                          "display":  "INR in Platelet poor plasma by Coagulation assay",
+                                          "exists":  true,
+                                          "version":  "2.83"
+                                      },
+                           "2823-3":  {
+                                          "display":  "Potassium [Moles/volume] in Serum or Plasma",
+                                          "exists":  true,
+                                          "version":  "2.83"
+                                      },
+                           "2951-2":  {
+                                          "display":  "Sodium [Moles/volume] in Serum or Plasma",
+                                          "exists":  true,
+                                          "version":  "2.83"
+                                      },
+                           "24648-8":  {
+                                           "display":  "XR Chest PA upright",
+                                           "exists":  true,
+                                           "version":  "2.83"
+                                       },
+                           "24362-6":  {
+                                           "display":  "Renal function 2000 panel - Serum or Plasma",
+                                           "exists":  true,
+                                           "version":  "2.83"
+                                       },
+                           "1988-5":  {
+                                          "display":  "C reactive protein [Mass/volume] in Serum or Plasma",
+                                          "exists":  true,
+                                          "version":  "2.83"
+                                      },
+                           "71447-7":  {
+                                           "display":  "Received scheduled pain medication regimen during assessment period [CMS Assessment]",
+                                           "exists":  true,
+                                           "version":  "2.83"
+                                       },
+                           "11502-2":  {
+                                           "display":  "Laboratory report",
+                                           "exists":  true,
+                                           "version":  "2.83"
+                                       },
+                           "25061-3":  {
+                                           "display":  "US Unspecified body region",
+                                           "exists":  true,
+                                           "version":  "2.83"
+                                       },
+                           "24558-9":  {
+                                           "display":  "US Abdomen",
+                                           "exists":  true,
+                                           "version":  "2.83"
+                                       },
+                           "34552-0":  {
+                                           "display":  "Cardiac 2D echo panel",
+                                           "exists":  true,
+                                           "version":  "2.83"
+                                       },
+                           "3024-7":  {
+                                          "display":  "Thyroxine (T4) free [Mass/volume] in Serum or Plasma",
+                                          "exists":  true,
+                                          "version":  "2.83"
+                                      },
+                           "3016-3":  {
+                                          "display":  "Thyrotropin [Units/volume] in Serum or Plasma",
+                                          "exists":  true,
+                                          "version":  "2.83"
+                                      },
+                           "81459-0":  {
+                                           "display":  "Spirometry panel",
+                                           "exists":  true,
+                                           "version":  "2.83"
+                                       },
+                           "5198-7":  {
+                                          "display":  "Hepatitis C virus Ab [Units/volume] in Serum by Immunoassay",
+                                          "exists":  true,
+                                          "version":  "2.83"
+                                      },
+                           "36643-5":  {
+                                           "display":  "XR Chest 2 Views",
+                                           "exists":  true,
+                                           "version":  "2.83"
+                                       }
+                       },
+    "rxnormSource":  "https://rxnav.nlm.nih.gov/REST/",
+    "verifiedAt":  "2026-11-20T16:11:00.2801997+05:30"
+}

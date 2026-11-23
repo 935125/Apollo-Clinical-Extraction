@@ -1,8 +1,11 @@
-# Local binaries and databases
-tools/
-tools/data_cx/
-tools/data_emr/
-tools/pgsql/
+# Local binaries, logs, model junction, and local databases
+backend/tools/
+backend/tools/data_cx/
+backend/tools/data_emr/
+backend/tools/pgsql/
+backend/logs/
+backend/.integration-postgres/
+backend/artifacts/
 
 # .NET
 bin/

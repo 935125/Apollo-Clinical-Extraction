@@ -1,6 +1,0 @@
-@Cx.PlatformApi_HostAddress = http://localhost:5182
-
-GET {{Cx.PlatformApi_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###

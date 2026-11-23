@@ -17,32 +17,11 @@ jobs:
         with:
           dotnet-version: '10.0.x'
       - name: Restore dependencies
-        run: dotnet restore src/backend/Cx.Platform.sln
+        run: dotnet restore AIExtraction.slnx
       - name: Build Solution
-        run: dotnet build src/backend/Cx.Platform.sln --no-restore --configuration Release
+        run: dotnet build AIExtraction.slnx --no-restore --configuration Release
       - name: Run Tests
-        run: dotnet test src/backend/Cx.Platform.sln --no-build --configuration Release --verbosity normal
-
-  worker:
-    name: AI Worker (Python 3.13)
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Install uv
-        uses: astral-sh/setup-uv@v3
-        with:
-          version: "latest"
-      - name: Setup Python
-        run: uv python install 3.13
-      - name: Run Linting (ruff)
-        working-directory: src/worker
-        run: uv run ruff check
-      - name: Run Type Checking (mypy)
-        working-directory: src/worker
-        run: uv run mypy cx_worker
-      - name: Run Unit Tests (pytest)
-        working-directory: src/worker
-        run: uv run pytest
+        run: dotnet test backend/tests/Apollo.Backend.Tests.csproj --no-build --configuration Release --verbosity normal
 
   frontend:
     name: Frontend (Angular 21 LTS)
@@ -54,12 +33,12 @@ jobs:
         with:
           node-version: '24.12.0'
       - name: Install Dependencies
-        working-directory: src/cx-review-ui
+        working-directory: frontend
         run: npm ci
       - name: Run Unit Tests
-        working-directory: src/cx-review-ui
+        working-directory: frontend
         run: npm test -- --watch=false
       - name: Build Application
-        working-directory: src/cx-review-ui
+        working-directory: frontend
         run: npm run build
 

@@ -1,0 +1,270 @@
+[
+  {
+    "id": "heldout-001-geriatric",
+    "specialty": "Geriatrics / Nephrology",
+    "note_text": "Reason for Visit: 78-year-old male with CKD stage 3b and gout for quarterly review.\nCurrent Meds: Allopurinol 100mg PO daily, Lisinopril 10mg daily.\nAssessment: Stable eGFR of 38 mL/min. Recurrent podagra attack last week.\nPlan:\n1. Increase Allopurinol to 200mg PO daily after meals.\n2. Hold Lisinopril 10mg if systolic blood pressure drops below 110 mmHg.\n3. Order Serum Creatinine and Serum Electrolytes in 2 weeks.\n4. Order Serum Uric Acid.",
+    "expected_medications": [
+      { "name": "Allopurinol", "strength": "200mg", "route": "PO", "frequency": "daily", "assertion_status": "new_order" },
+      { "name": "Lisinopril", "strength": "10mg", "route": null, "frequency": "daily", "assertion_status": "conditional" }
+    ],
+    "expected_investigations": [
+      { "name": "Serum Creatinine", "assertion_status": "new_order" },
+      { "name": "Serum Electrolytes", "assertion_status": "new_order" },
+      { "name": "Serum Uric Acid", "assertion_status": "new_order" }
+    ]
+  },
+  {
+    "id": "heldout-002-cardiology",
+    "specialty": "Cardiology",
+    "note_text": "Subjective: 61-year-old female status-post DES placement to LAD 2 weeks ago.\nAllergies: Penicillin (severe urticaria). Denies Aspirin allergy.\nMedications: Metformin 500mg BD.\nPlan:\n1. Prescribe Aspirin 100mg PO OD after food for 12 months.\n2. Prescribe Atorvastatin 40mg PO daily at night.\n3. Order Fasting Lipid Profile in 6 weeks.\n4. Order Complete Blood Count (CBC).\n5. 2D Echocardiogram in 3 months to re-evaluate LVEF.",
+    "expected_medications": [
+      { "name": "Aspirin", "strength": "100mg", "route": "PO", "frequency": "OD", "duration": "12 months", "assertion_status": "new_order" },
+      { "name": "Atorvastatin", "strength": "40mg", "route": "PO", "frequency": "daily", "assertion_status": "new_order" },
+      { "name": "Metformin", "strength": "500mg", "route": null, "frequency": "BD", "assertion_status": "current_medication" }
+    ],
+    "expected_investigations": [
+      { "name": "Lipid Profile", "assertion_status": "new_order" },
+      { "name": "Complete Blood Count", "assertion_status": "new_order" },
+      { "name": "2D Echocardiogram", "assertion_status": "new_order" }
+    ]
+  },
+  {
+    "id": "heldout-003-hematology",
+    "specialty": "Hematology",
+    "note_text": "History: 69-year-old male on long-term anticoagulation for mechanical mitral valve presenting before elective colonoscopy.\nMedication Change: Discontinue Warfarin 5mg 5 days prior to procedure.\nPlan:\n1. Prescribe Paracetamol 500mg PO PRN for tension headache; avoid NSAIDs like Ibuprofen.\n2. Check INR on morning of procedure.\n3. Order Complete Blood Count today.",
+    "expected_medications": [
+      { "name": "Warfarin", "strength": "5mg", "assertion_status": "discontinued" },
+      { "name": "Paracetamol", "strength": "500mg", "route": "PO", "frequency": "PRN", "assertion_status": "new_order" },
+      { "name": "Ibuprofen", "strength": null, "assertion_status": "negated" }
+    ],
+    "expected_investigations": [
+      { "name": "INR", "assertion_status": "new_order" },
+      { "name": "Complete Blood Count", "assertion_status": "new_order" }
+    ]
+  },
+  {
+    "id": "heldout-004-endocrinology",
+    "specialty": "Endocrinology",
+    "note_text": "Impression: Suboptimally controlled Type 2 Diabetes with microalbuminuria. Current HbA1c 8.6%.\nPast Meds: Patient previously took Metformin 500mg BD, ceased last year due to severe bloating.\nPlan:\n1. Start Empagliflozin 10mg PO OD in the morning.\n2. Start Linagliptin 5mg PO daily.\n3. Order HbA1c and Serum Creatinine in 3 months.\n4. Order Urinalysis for albumin-creatinine ratio.",
+    "expected_medications": [
+      { "name": "Empagliflozin", "strength": "10mg", "route": "PO", "frequency": "OD", "assertion_status": "new_order" },
+      { "name": "Linagliptin", "strength": "5mg", "route": "PO", "frequency": "daily", "assertion_status": "new_order" },
+      { "name": "Metformin", "strength": "500mg", "route": null, "frequency": "BD", "assertion_status": "historical" }
+    ],
+    "expected_investigations": [
+      { "name": "HbA1c", "assertion_status": "new_order" },
+      { "name": "Serum Creatinine", "assertion_status": "new_order" },
+      { "name": "Urinalysis", "assertion_status": "new_order" }
+    ]
+  },
+  {
+    "id": "heldout-005-pulmonology",
+    "specialty": "Pulmonology",
+    "note_text": "Exam: Bilateral expiratory wheezes, peak flow 65% of predicted.\nPlan:\n1. Prescribe Prednisolone 40mg PO OD for 5 days.\n2. Salbutamol 100mcg 2 puffs inhaled QDS PRN for bronchospasm.\n3. Order Chest X-ray PA view to rule out secondary consolidation.",
+    "expected_medications": [
+      { "name": "Prednisolone", "strength": "40mg", "route": "PO", "frequency": "OD", "duration": "5 days", "assertion_status": "new_order" },
+      { "name": "Salbutamol", "strength": "100mcg", "route": "inhaled", "frequency": "QDS", "assertion_status": "new_order" }
+    ],
+    "expected_investigations": [
+      { "name": "Chest X-ray", "assertion_status": "new_order" }
+    ]
+  },
+  {
+    "id": "heldout-006-rheumatology",
+    "specialty": "Rheumatology",
+    "note_text": "Diagnosis: Seropositive Rheumatoid Arthritis with bilateral MCP synovitis.\nPlan:\n1. Prescribe Methotrexate 15mg PO once weekly on Sundays.\n2. Prescribe Folic Acid 5mg PO once weekly on Tuesdays (never on Methotrexate day).\n3. Order baseline Liver Function Tests (LFT) and Complete Blood Count.\n4. Repeat Serum Creatinine in 4 weeks.",
+    "expected_medications": [
+      { "name": "Methotrexate", "strength": "15mg", "route": "PO", "frequency": "weekly", "assertion_status": "new_order" },
+      { "name": "Folic Acid", "strength": "5mg", "route": "PO", "frequency": "weekly", "assertion_status": "new_order" }
+    ],
+    "expected_investigations": [
+      { "name": "Liver Function Tests", "assertion_status": "new_order" },
+      { "name": "Complete Blood Count", "assertion_status": "new_order" },
+      { "name": "Serum Creatinine", "assertion_status": "new_order" }
+    ]
+  },
+  {
+    "id": "heldout-007-gastroenterology",
+    "specialty": "Gastroenterology",
+    "note_text": "Subjective: Endoscopy confirmed benign antral gastric ulcer. Positive rapid urease test.\nPlan:\n1. Prescribe Omeprazole 20mg PO BD 30 minutes before meals for 14 days.\n2. Prescribe Amoxicillin 1000mg PO BD for 14 days.\n3. Prescribe Clarithromycin 500mg PO BD for 14 days.\n4. Order Complete Blood Count in 4 weeks to check hemoglobin stability.",
+    "expected_medications": [
+      { "name": "Omeprazole", "strength": "20mg", "route": "PO", "frequency": "BD", "duration": "14 days", "assertion_status": "new_order" },
+      { "name": "Amoxicillin", "strength": "1000mg", "route": "PO", "frequency": "BD", "duration": "14 days", "assertion_status": "new_order" },
+      { "name": "Clarithromycin", "strength": "500mg", "route": "PO", "frequency": "BD", "duration": "14 days", "assertion_status": "new_order" }
+    ],
+    "expected_investigations": [
+      { "name": "Complete Blood Count", "assertion_status": "new_order" }
+    ]
+  },
+  {
+    "id": "heldout-008-infectious-disease",
+    "specialty": "Infectious Disease",
+    "note_text": "Assessment: Resolving right lower extremity cellulitis following 48 hours of IV cefazolin.\nPlan:\n1. Step down to Cephalexin 500mg PO QID to complete a 10-day total course.\n2. Paracetamol 650mg PO TDS PRN for local tenderness.\n3. Order Complete Blood Count (CBC) and Erythrocyte Sedimentation Rate (ESR) if erythema spreads.",
+    "expected_medications": [
+      { "name": "Cephalexin", "strength": "500mg", "route": "PO", "frequency": "QID", "assertion_status": "new_order" },
+      { "name": "Paracetamol", "strength": "650mg", "route": "PO", "frequency": "TDS", "assertion_status": "new_order" }
+    ],
+    "expected_investigations": [
+      { "name": "Complete Blood Count", "assertion_status": "conditional" },
+      { "name": "ESR", "assertion_status": "conditional" }
+    ]
+  },
+  {
+    "id": "heldout-009-neurology",
+    "specialty": "Neurology",
+    "note_text": "Impression: Recurrent focal seizures with impaired awareness.\nCurrent Therapy: Levetiracetam 500mg BD.\nPlan:\n1. Increase Levetiracetam to 750mg PO BD.\n2. Order baseline Complete Blood Count and Liver Function Tests.\n3. Order routine 30-minute EEG.",
+    "expected_medications": [
+      { "name": "Levetiracetam", "strength": "750mg", "route": "PO", "frequency": "BD", "assertion_status": "new_order" },
+      { "name": "Levetiracetam", "strength": "500mg", "route": null, "frequency": "BD", "assertion_status": "current_medication" }
+    ],
+    "expected_investigations": [
+      { "name": "Complete Blood Count", "assertion_status": "new_order" },
+      { "name": "Liver Function Tests", "assertion_status": "new_order" },
+      { "name": "EEG", "assertion_status": "new_order" }
+    ]
+  },
+  {
+    "id": "heldout-010-nephrology",
+    "specialty": "Nephrology",
+    "note_text": "Assessment: CKD stage 4 (eGFR 24 mL/min). Serum potassium 5.4 mEq/L.\nMedication Changes:\n1. Discontinue Lisinopril 20mg immediately due to progressive hyperkalemia.\nPlan:\n1. Start Amlodipine 5mg PO daily for blood pressure control.\n2. Sodium Bicarbonate 650mg PO BD for metabolic acidosis.\n3. Order Serum Electrolytes and Serum Creatinine in 7 days.\n4. Order 12-lead ECG.",
+    "expected_medications": [
+      { "name": "Lisinopril", "strength": "20mg", "assertion_status": "discontinued" },
+      { "name": "Amlodipine", "strength": "5mg", "route": "PO", "frequency": "daily", "assertion_status": "new_order" },
+      { "name": "Sodium Bicarbonate", "strength": "650mg", "route": "PO", "frequency": "BD", "assertion_status": "new_order" }
+    ],
+    "expected_investigations": [
+      { "name": "Serum Electrolytes", "assertion_status": "new_order" },
+      { "name": "Serum Creatinine", "assertion_status": "new_order" },
+      { "name": "ECG", "assertion_status": "new_order" }
+    ]
+  },
+  {
+    "id": "heldout-011-oncology",
+    "specialty": "Medical Oncology",
+    "note_text": "Chief Complaint: Cycle 2 adjuvant chemotherapy review for breast adenocarcinoma.\nAllergies: NKDA.\nPlan:\n1. Prescribe Ondansetron 8mg PO BD for 3 days post-chemo.\n2. Dexamethasone 4mg PO daily for 3 days.\n3. Metoclopramide 10mg PO TDS PRN for breakthrough nausea.\n4. Order Complete Blood Count (CBC) on day 10 to check absolute neutrophil count.",
+    "expected_medications": [
+      { "name": "Ondansetron", "strength": "8mg", "route": "PO", "frequency": "BD", "duration": "3 days", "assertion_status": "new_order" },
+      { "name": "Dexamethasone", "strength": "4mg", "route": "PO", "frequency": "daily", "duration": "3 days", "assertion_status": "new_order" },
+      { "name": "Metoclopramide", "strength": "10mg", "route": "PO", "frequency": "TDS", "assertion_status": "new_order" }
+    ],
+    "expected_investigations": [
+      { "name": "Complete Blood Count", "assertion_status": "new_order" }
+    ]
+  },
+  {
+    "id": "heldout-012-hfref",
+    "specialty": "Heart Failure Clinic",
+    "note_text": "Impression: Non-ischemic dilated cardiomyopathy with NYHA Class II symptoms. EF 32%.\nPlan:\n1. Initiate Sacubitril/Valsartan 24/26mg PO BD.\n2. Start Dapagliflozin 10mg PO daily.\n3. Continue Bisoprolol 5mg PO daily.\n4. Spironolactone 25mg PO daily.\n5. Order Serum Electrolytes and Serum Creatinine in 14 days.",
+    "expected_medications": [
+      { "name": "Sacubitril/Valsartan", "strength": "24/26mg", "route": "PO", "frequency": "BD", "assertion_status": "new_order" },
+      { "name": "Dapagliflozin", "strength": "10mg", "route": "PO", "frequency": "daily", "assertion_status": "new_order" },
+      { "name": "Bisoprolol", "strength": "5mg", "route": "PO", "frequency": "daily", "assertion_status": "new_order" },
+      { "name": "Spironolactone", "strength": "25mg", "route": "PO", "frequency": "daily", "assertion_status": "new_order" }
+    ],
+    "expected_investigations": [
+      { "name": "Serum Electrolytes", "assertion_status": "new_order" },
+      { "name": "Serum Creatinine", "assertion_status": "new_order" }
+    ]
+  },
+  {
+    "id": "heldout-013-dermatology",
+    "specialty": "Dermatology",
+    "note_text": "Assessment: Severe plaque psoriasis involving 18% BSA unresponsive to topical betamethasone.\nPlan:\n1. Screen for latent infections prior to initiating adalimumab therapy.\n2. Order Quantiferon-TB Gold.\n3. Order Hepatitis B Surface Antigen and Hepatitis C Antibody.\n4. Order Complete Blood Count and Liver Function Tests.",
+    "expected_medications": [
+      { "name": "Betamethasone", "strength": null, "assertion_status": "historical" },
+      { "name": "Adalimumab", "strength": null, "assertion_status": "conditional" }
+    ],
+    "expected_investigations": [
+      { "name": "Quantiferon-TB Gold", "assertion_status": "new_order" },
+      { "name": "Hepatitis B Surface Antigen", "assertion_status": "new_order" },
+      { "name": "Hepatitis C Antibody", "assertion_status": "new_order" },
+      { "name": "Complete Blood Count", "assertion_status": "new_order" },
+      { "name": "Liver Function Tests", "assertion_status": "new_order" }
+    ]
+  },
+  {
+    "id": "heldout-014-psychiatry",
+    "specialty": "Psychiatry",
+    "note_text": "Impression: Major depressive episode with partial response and excessive sedation on mirtazapine.\nPlan:\n1. Taper Mirtazapine 15mg to 7.5mg PO at night for 7 days, then cease.\n2. Initiate Sertraline 50mg PO every morning with food.\n3. Order baseline 12-lead ECG to evaluate QTc interval.",
+    "expected_medications": [
+      { "name": "Mirtazapine", "strength": "7.5mg", "route": "PO", "frequency": "night", "duration": "7 days", "assertion_status": "discontinued" },
+      { "name": "Sertraline", "strength": "50mg", "route": "PO", "frequency": "morning", "assertion_status": "new_order" }
+    ],
+    "expected_investigations": [
+      { "name": "ECG", "assertion_status": "new_order" }
+    ]
+  },
+  {
+    "id": "heldout-015-pain",
+    "specialty": "Pain Medicine",
+    "note_text": "Subjective: 54-year-old female with persistent post-herpetic neuralgia in T5 distribution.\nPlan:\n1. Prescribe Gabapentin 300mg PO at bedtime for 3 days, then titrate to 300mg BD.\n2. Prescribe Paracetamol 650mg PO SOS.\n3. Order Serum Creatinine prior to dose escalation above 900mg/day.",
+    "expected_medications": [
+      { "name": "Gabapentin", "strength": "300mg", "route": "PO", "frequency": "bedtime", "assertion_status": "new_order" },
+      { "name": "Paracetamol", "strength": "650mg", "route": "PO", "frequency": "SOS", "assertion_status": "new_order" }
+    ],
+    "expected_investigations": [
+      { "name": "Serum Creatinine", "assertion_status": "conditional" }
+    ]
+  },
+  {
+    "id": "heldout-016-urology",
+    "specialty": "Urology",
+    "note_text": "Assessment: Lower urinary tract symptoms secondary to benign prostatic hyperplasia. IPSS score 22.\nPlan:\n1. Prescribe Tamsulosin 0.4mg PO daily after breakfast.\n2. Prescribe Finasteride 5mg PO daily.\n3. Order Serum PSA (Prostate Specific Antigen) today.\n4. Order Ultrasound Kidneys, Ureters, and Bladder with post-void residual.",
+    "expected_medications": [
+      { "name": "Tamsulosin", "strength": "0.4mg", "route": "PO", "frequency": "daily", "assertion_status": "new_order" },
+      { "name": "Finasteride", "strength": "5mg", "route": "PO", "frequency": "daily", "assertion_status": "new_order" }
+    ],
+    "expected_investigations": [
+      { "name": "Serum PSA", "assertion_status": "new_order" },
+      { "name": "Ultrasound", "assertion_status": "new_order" }
+    ]
+  },
+  {
+    "id": "heldout-017-pediatrics",
+    "specialty": "Pediatrics",
+    "note_text": "Patient: 6-year-old child (weight 20 kg) with bulging erythematous left tympanic membrane.\nPlan:\n1. Prescribe Amoxicillin 800mg PO BD for 10 days (high-dose regimen 80 mg/kg/day).\n2. Paracetamol oral suspension 300mg PO every 6 hours PRN for fever.\n3. Review in clinic if fever persists beyond 48 hours.",
+    "expected_medications": [
+      { "name": "Amoxicillin", "strength": "800mg", "route": "PO", "frequency": "BD", "duration": "10 days", "assertion_status": "new_order" },
+      { "name": "Paracetamol", "strength": "300mg", "route": "PO", "frequency": "PRN", "assertion_status": "new_order" }
+    ],
+    "expected_investigations": []
+  },
+  {
+    "id": "heldout-018-ophthalmology",
+    "specialty": "Ophthalmology",
+    "note_text": "Post-Op Day 1: Uncomplicated phacoemulsification with posterior chamber IOL right eye.\nPlan:\n1. Prednisolone acetate 1% ophthalmic suspension 1 drop right eye QID for 1 week, then taper.\n2. Moxifloxacin 0.5% eye drops 1 drop right eye TDS for 7 days.\n3. Hold Aspirin if intraocular hemorrhage occurs.",
+    "expected_medications": [
+      { "name": "Prednisolone", "strength": "1%", "route": "ophthalmic", "frequency": "QID", "duration": "1 week", "assertion_status": "new_order" },
+      { "name": "Moxifloxacin", "strength": "0.5%", "route": "eye drops", "frequency": "TDS", "duration": "7 days", "assertion_status": "new_order" },
+      { "name": "Aspirin", "strength": null, "assertion_status": "conditional" }
+    ],
+    "expected_investigations": []
+  },
+  {
+    "id": "heldout-019-thyroid",
+    "specialty": "Endocrinology",
+    "note_text": "History: 45-year-old female post-total thyroidectomy for multinodular goiter 6 weeks ago.\nCurrent Meds: Levothyroxine 100mcg PO daily.\nPlan:\n1. Increase Levothyroxine to 125mcg PO daily in morning 30 minutes before breakfast.\n2. Order Serum TSH (Thyroid Stimulating Hormone) in 6 weeks.\n3. Order Serum Free T4.",
+    "expected_medications": [
+      { "name": "Levothyroxine", "strength": "125mcg", "route": "PO", "frequency": "daily", "assertion_status": "new_order" },
+      { "name": "Levothyroxine", "strength": "100mcg", "route": "PO", "frequency": "daily", "assertion_status": "current_medication" }
+    ],
+    "expected_investigations": [
+      { "name": "Serum TSH", "assertion_status": "new_order" },
+      { "name": "Free T4", "assertion_status": "new_order" }
+    ]
+  },
+  {
+    "id": "heldout-020-allergy",
+    "specialty": "Allergy & Clinical Immunology",
+    "note_text": "Diagnosis: Syphilis in penicillin-allergic pregnant patient. History of anaphylaxis to Amoxicillin.\nAllergies: Amoxicillin (anaphylaxis - absolute contraindication outside ICU).\nPlan:\n1. Transfer to ICU for oral penicillin desensitization protocol.\n2. Ensure continuous cardiac monitoring and IV access.\n3. Order baseline Complete Blood Count, Serum Creatinine, and 12-lead ECG prior to protocol.",
+    "expected_medications": [
+      { "name": "Amoxicillin", "strength": null, "assertion_status": "negated" }
+    ],
+    "expected_investigations": [
+      { "name": "Complete Blood Count", "assertion_status": "new_order" },
+      { "name": "Serum Creatinine", "assertion_status": "new_order" },
+      { "name": "ECG", "assertion_status": "new_order" }
+    ]
+  }
+]
+

@@ -1,0 +1,116 @@
+{
+  "fixtureMode": false,
+  "backendIntegrationTested": true,
+  "realFoundryVerified": false,
+  "records": [
+    {
+      "inputType": "text",
+      "extractionId": "5d02718a-1529-42a8-a264-ef0f648fdd3c",
+      "modelMetadata": {
+        "adapterType": "onnx_neurosymbolic_int8",
+        "modelDeployment": "bc5cdr_int8",
+        "promptVersion": "v2.1.0",
+        "promptTokens": null,
+        "completionTokens": null,
+        "totalTokens": null,
+        "estimatedCostUsd": null,
+        "provider": "onnx",
+        "model": "bc5cdr_int8",
+        "azureDeployment": null,
+        "fallbackReason": "AZURE_CREDENTIALS_MISSING",
+        "inferenceExecuted": true,
+        "attempts": [
+          {
+            "provider": "foundry",
+            "model": "gpt-6.1-sol",
+            "deployment": "gpt-6.1-sol",
+            "outcome": "rejected",
+            "reason": "AZURE_CREDENTIALS_MISSING",
+            "durationMs": 78.54,
+            "inferenceExecuted": false,
+            "promptTokens": null,
+            "completionTokens": null,
+            "totalTokens": null,
+            "onnxWindows": null
+          },
+          {
+            "provider": "onnx",
+            "model": "bc5cdr_int8",
+            "deployment": null,
+            "outcome": "accepted",
+            "reason": null,
+            "durationMs": 270.21,
+            "inferenceExecuted": true,
+            "promptTokens": null,
+            "completionTokens": null,
+            "totalTokens": null,
+            "onnxWindows": 1
+          }
+        ]
+      },
+      "medicationCount": 3,
+      "investigationCount": 2,
+      "exactEvidenceVerified": true,
+      "sourceRestored": true
+    },
+    {
+      "inputType": "pdf",
+      "extractionId": "8da99258-a03c-4a0f-a9d8-cb1fbbad6291",
+      "modelMetadata": {
+        "adapterType": "onnx_neurosymbolic_int8",
+        "modelDeployment": "bc5cdr_int8",
+        "promptVersion": "v2.1.0",
+        "promptTokens": null,
+        "completionTokens": null,
+        "totalTokens": null,
+        "estimatedCostUsd": null,
+        "provider": "onnx",
+        "model": "bc5cdr_int8",
+        "azureDeployment": null,
+        "fallbackReason": "AZURE_CREDENTIALS_MISSING",
+        "inferenceExecuted": true,
+        "attempts": [
+          {
+            "provider": "foundry",
+            "model": "gpt-6.1-sol",
+            "deployment": "gpt-6.1-sol",
+            "outcome": "rejected",
+            "reason": "AZURE_CREDENTIALS_MISSING",
+            "durationMs": 49.4,
+            "inferenceExecuted": false,
+            "promptTokens": null,
+            "completionTokens": null,
+            "totalTokens": null,
+            "onnxWindows": null
+          },
+          {
+            "provider": "onnx",
+            "model": "bc5cdr_int8",
+            "deployment": null,
+            "outcome": "accepted",
+            "reason": null,
+            "durationMs": 43.49,
+            "inferenceExecuted": true,
+            "promptTokens": null,
+            "completionTokens": null,
+            "totalTokens": null,
+            "onnxWindows": 1
+          }
+        ]
+      },
+      "medicationCount": 3,
+      "investigationCount": 2,
+      "exactEvidenceVerified": true,
+      "sourceRestored": true
+    }
+  ],
+  "checks": [
+    "API is reachable through Angular",
+    "text: real persisted extraction, scoped dose/action/allergy, conditional investigation and every evidence highlight",
+    "pdf: real persisted extraction, scoped dose/action/allergy, conditional investigation and every evidence highlight",
+    "Actual provider and attempt details render at desktop and mobile widths",
+    "History restores the saved provider and the PDF run source",
+    "No browser runtime errors"
+  ],
+  "runtimeErrors": []
+}

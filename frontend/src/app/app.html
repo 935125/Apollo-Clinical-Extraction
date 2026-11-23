@@ -1,0 +1,1113 @@
+<header class="site-header">
+  <a class="brand" href="./" aria-label="Apollo Hospitals home"
+    ><span class="brand-name">Apollo</span><span class="brand-subtitle">HOSPITALS</span></a
+  >
+  <nav aria-label="Main navigation">
+    <button
+      [class.active]="activeNav() === 'extraction'"
+      [attr.aria-current]="activeNav() === 'extraction' ? 'page' : null"
+      (click)="setNav('extraction')"
+    >
+      Workspace
+    </button>
+    <button
+      [class.active]="activeNav() === 'history'"
+      [attr.aria-current]="activeNav() === 'history' ? 'page' : null"
+      (click)="setNav('history')"
+    >
+      History
+    </button>
+  </nav>
+</header>
+<main>
+  @if (activeNav() === 'history') {
+    <div class="page-heading">
+      <div>
+        <p class="eyebrow">YOUR WORKSPACE</p>
+        <h1>Extraction history</h1>
+      </div>
+      <button class="button" (click)="setNav('extraction')">Back to workspace</button>
+    </div>
+    <form class="history-search" (ngSubmit)="onSemanticSearch()">
+      <label for="history-query">Search saved extractions</label>
+      <div>
+        <input
+          id="history-query"
+          name="query"
+          [ngModel]="searchQuery()"
+          (ngModelChange)="searchQuery.set($event)"
+          placeholder="Search clinical notes"
+        /><button class="button primary" type="submit">Search</button
+        ><button class="text-button" type="button" (click)="toggleHistorySort()">
+          {{ historySortAsc() ? 'Oldest first' : 'Newest first' }}
+        </button>
+      </div>
+    </form>
+    <div class="history-list">
+      @for (run of sortedHistoryRuns(); track run.extractionId) {
+        <button class="history-item" (click)="selectHistoryRun(run)">
+          <span
+            ><strong>{{
+              run.sourceFileName || (run.inputType === 'pdf' ? 'PDF document' : 'Clinical note')
+            }}</strong
+            ><span>{{ run.extractedAt | date: 'medium' }}</span
+            ><span>{{ providerLabel(run) }}</span></span
+          ><span
+            >{{ run.medications.length }} medications ·
+            {{ run.investigations.length }} investigations</span
+          >
+        </button>
+      } @empty {
+        <div class="empty-state">
+          <h3>No saved extractions</h3>
+          <p>Your saved notes will appear here.</p>
+        </div>
+      }
+    </div>
+  } @else {
+    <div class="page-heading">
+      <div><h1 class="app-title">Clinical extraction</h1></div>
+      <p class="page-description">From clinical notes to structured care.</p>
+    </div>
+    <div class="workspace">
+      <section class="source-column" aria-labelledby="source-heading">
+        <div class="document-frame" [attr.aria-busy]="isExtracting() || isOpeningHistory()">
+          <div class="document-header">
+            <h2 id="source-heading">Source note</h2>
+            <button class="edit-button" (click)="beginEdit()" [disabled]="editorMode() === 'edit'">
+              Edit
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="m16 3 5 5-12 12-6 1 1-6zM13 6l5 5" />
+              </svg>
+            </button>
+          </div>
+          <div class="paper-stack">
+            <div class="paper">
+              <div class="paper-label">
+                <span class="document-icon" aria-hidden="true">▤</span
+                ><span>{{ documentLabel() }}</span
+                ><span class="paper-type">{{
+                  uploadedFileName() ? 'PDF' : selectedPresetId() ? 'EXAMPLE' : 'TEXT'
+                }}</span>
+              </div>
+              @if (editorMode() === 'edit') {
+                <label class="sr-only" for="clinical-note">Clinical source note</label
+                ><textarea
+                  id="clinical-note"
+                  class="clinical-textarea"
+                  [ngModel]="noteText()"
+                  (ngModelChange)="onNoteChange($event)"
+                  placeholder="Paste your clinical note here…&#10;&#10;Include the assessment, medications and investigations you would like to extract."
+                  spellcheck="false"
+                ></textarea>
+              } @else {
+                @if (sourceUnavailable()) {
+                  <p class="source-notice">Source text is unavailable for this saved extraction.</p>
+                }
+                <div class="clinical-narrative">
+                  @for (segment of narrativeSegments(); track $index) {
+                    @if (segment.isHighlight) {
+                      <mark class="evidence-highlight">{{ segment.text }}</mark>
+                    } @else {
+                      <span>{{ segment.text }}</span>
+                    }
+                  }
+                </div>
+              }
+              <div class="paper-meta">
+                <span>{{ wordCount() }} words</span><span>{{ characterCount() }} characters</span>
+              </div>
+            </div>
+          </div>
+          <div class="document-footer">
+            <input
+              #pdfInput
+              class="sr-only"
+              type="file"
+              accept="application/pdf,.pdf"
+              (change)="onPdfSelected($event)"
+              aria-label="Upload PDF"
+            /><button class="upload-button" (click)="pdfInput.click()" [disabled]="isExtracting()">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 16V3m-4 4 4-4 4 4M4 15v5h16v-5" /></svg
+              >Upload PDF</button
+            ><button
+              class="button extract-button"
+              (click)="onExtract()"
+              [disabled]="isExtracting() || isOpeningHistory() || !noteText().trim()"
+            >
+              @if (isExtracting()) {
+                <span class="spinner" aria-hidden="true"></span>Extracting…
+              } @else {
+                Extract
+              }
+            </button>
+          </div>
+        </div>
+        <div class="source-actions">
+          <details class="example-picker" #examples>
+            <summary>Try an example <span aria-hidden="true">⌄</span></summary>
+            <div class="example-menu">
+              @for (preset of presets; track preset.id) {
+                <button (click)="loadPreset(preset); examples.removeAttribute('open')">
+                  {{ preset.title }}
+                </button>
+              }
+            </div>
+          </details>
+          <button class="text-button" (click)="clear()" [disabled]="!noteText() && !result()">
+            Clear
+          </button>
+        </div>
+        @if (error(); as problem) {
+          <div class="inline-error alert-error" role="alert">
+            @if (problem.code === 'PERSISTENCE_FAILED') {
+              <strong>Could not save extraction.</strong>
+              <p>Your note is retained. Please try again.</p>
+            } @else {
+              <strong>{{ problem.title || 'Extraction failed' }}</strong>
+              <p>{{ problem.detail || 'Your note is retained. Please try again.' }}</p>
+            }
+          </div>
+        }
+        @if (!backendOnline()) {
+          <p class="connection-note">The extraction service is currently unavailable.</p>
+        }
+      </section>
+      <section
+        class="results-column"
+        aria-labelledby="results-heading"
+        [attr.aria-busy]="isExtracting() || isOpeningHistory()"
+      >
+        <div class="results-header">
+          <h2 id="results-heading">Extracted results</h2>
+          <div class="export-control" (keydown.escape)="exportDropdownOpen.set(false)">
+            <button
+              class="button export-button"
+              [disabled]="!result()"
+              [attr.aria-expanded]="exportDropdownOpen()"
+              aria-controls="export-menu"
+              (click)="toggleExportDropdown()"
+            >
+              Export <span aria-hidden="true">⌄</span>
+            </button>
+            @if (exportDropdownOpen()) {
+              <div id="export-menu" class="export-menu">
+                <button (click)="exportJson()">Download JSON</button
+                ><button (click)="exportCsv()">Download CSV</button
+                ><button (click)="exportFhirBundle()">Download FHIR</button>
+              </div>
+            }
+          </div>
+        </div>
+        <div
+          class="result-tabs"
+          role="tablist"
+          aria-label="Result views"
+          (keydown)="onTabsKey($event)"
+        >
+          @for (tab of ['structured', 'source', 'details']; track tab) {
+            <button
+              role="tab"
+              [id]="'tab-' + tab"
+              [attr.aria-controls]="'panel-' + tab"
+              [attr.aria-selected]="activeResultTab() === tab"
+              [attr.tabindex]="activeResultTab() === tab ? 0 : -1"
+              [class.active]="activeResultTab() === tab"
+              (click)="setResultTab($any(tab))"
+            >
+              {{ tab | titlecase }}
+            </button>
+          }
+        </div>
+        <div
+          class="result-content"
+          role="tabpanel"
+          [id]="'panel-' + activeResultTab()"
+          [attr.aria-labelledby]="'tab-' + activeResultTab()"
+          aria-live="polite"
+        >
+          @if (isExtracting() || isOpeningHistory()) {
+            <div class="empty-state loading-state" role="status">
+              <span class="spinner" aria-hidden="true"></span>
+              <h3>
+                {{ isOpeningHistory() ? 'Opening saved extraction' : 'Reading your clinical note' }}
+              </h3>
+              <p>
+                {{
+                  isOpeningHistory()
+                    ? 'Restoring the source and results.'
+                    : 'Extracting medications and investigations…'
+                }}
+              </p>
+            </div>
+          } @else if (result(); as res) {
+            <p class="provider-summary" role="status">{{ providerLabel(res) }}</p>
+            @if (res.modelMetadata.provider === 'onnx') {
+              <p class="provider-summary" role="note">LocalOnnx has reduced coverage. BC5CDR detects medication mentions; attributes and investigations use source-based rules. Not documented means missing or unresolved information. Review the source before accepting.</p>
+            }
+            @if (res.modelMetadata.reviewCandidates?.length) {
+              <aside class="validation-notice" data-testid="source-review-candidates">
+                <strong>Source candidates requiring review</strong>
+                <p>These neural mentions were withheld from extracted prescriptions. Review the source; no dose or clinical approval is implied.</p>
+                @for (candidate of res.modelMetadata.reviewCandidates; track $index) {
+                  <p>{{ candidate.name }} ? confidence {{ candidate.confidence | number:'1.3-3' }} ? {{ candidate.reason }}<br><q>{{ candidate.evidence.quote }}</q></p>
+                }
+              </aside>
+            }
+            <div class="result-meta">
+              <span>{{ res.saved ? 'Extraction complete' : 'Extracted · not saved' }} · {{ formattedDuration() }}</span><span>{{
+                res.extractedAt | date: 'MMM d, h:mm a'
+              }}</span>
+            </div>
+            @if (res.validationSummary.warningCount || res.validationSummary.errorCount) {
+              <div class="validation-notice">
+                {{ res.validationSummary.warningCount }} warnings ·
+                {{ res.validationSummary.errorCount }} validation errors
+                <button class="text-button" (click)="setResultTab('details')">View details</button>
+              </div>
+            }
+            @if (activeResultTab() === 'structured') {
+              <section class="entity-section" aria-labelledby="medications-heading">
+                <div class="section-heading">
+                  <h3 id="medications-heading">
+                    Medications <span class="count">{{ res.medications.length }}</span>
+                  </h3>
+                  <span class="section-hint" data-testid="medication-category-breakdown">
+                    {{ activePrescriptionsCount() }} active prescriptions ·
+                    {{ documentedAllergiesCount() }} documented allergies · Select a row to review
+                  </span>
+                </div>
+                <div class="table-scroll">
+                  <table class="medication-table">
+                    <caption class="sr-only">
+                      Extracted medications
+                    </caption>
+                    <thead>
+                      <tr>
+                        <th scope="col">Medication</th>
+                        <th scope="col">Strength</th>
+                        <th scope="col">Dose</th>
+                        <th scope="col">Frequency</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      @for (med of res.medications; track $index) {
+                        <tr
+                          class="result-row"
+                          [class.selected]="selectedEntity() === med"
+                          [attr.data-assertion]="med.assertionStatus"
+                          [attr.data-review-status]="entityReviewStatus('MEDICATION', $index)"
+                          (click)="selectEntity(med)"
+                        >
+                          <td class="td-name">
+                            <button
+                              class="entity-button"
+                              [attr.aria-expanded]="selectedEntity() === med"
+                              (click)="$event.stopPropagation(); selectEntity(med)"
+                            >
+                              {{ med.name }}</button><span class="entity-status">{{
+                              status(med.assertionStatus)
+                            }}</span>
+                            @if (entityReviewStatus('MEDICATION', $index) !== 'PENDING_REVIEW') {
+                              <span
+                                class="review-status-pill"
+                                [attr.data-status]="entityReviewStatus('MEDICATION', $index)"
+                              >
+                                {{ entityReviewStatus('MEDICATION', $index) }}
+                              </span>
+                            }
+                          </td>
+                          <td>{{ display(med.strength) }}</td>
+                          <td>{{ display(med.dose) }}</td>
+                          <td>{{ display(med.frequency) }}</td>
+                        </tr>
+                        @if (selectedEntity() === med) {
+                          <tr class="row-details">
+                            <td colspan="4">
+                              <dl class="medication-details">
+                                <div>
+                                  <dt>Action</dt>
+                                  <dd>{{ display(med.action) }}</dd>
+                                </div>
+                                <div>
+                                  <dt>Dose unit</dt>
+                                  <dd>{{ display(med.doseUnit) }}</dd>
+                                </div>
+                                <div>
+                                  <dt>Formulation</dt>
+                                  <dd>{{ display(med.formulation) }}</dd>
+                                </div>
+                                <div>
+                                  <dt>Route</dt>
+                                  <dd>{{ display(med.route) }}</dd>
+                                </div>
+                                <div>
+                                  <dt>Duration</dt>
+                                  <dd>{{ display(med.duration) }}</dd>
+                                </div>
+                                <div>
+                                  <dt>Instructions</dt>
+                                  <dd>{{ display(med.instructions) }}</dd>
+                                </div>
+                                <div>
+                                  <dt>Terminology</dt>
+                                  <dd>{{ terminologyLabel(med) }}</dd>
+                                </div>
+                                <div>
+                                  <dt>Origin</dt>
+                                  <dd>{{ originLabel(med) }}</dd>
+                                </div>
+                                <div>
+                                  <dt>Review status</dt>
+                                  <dd data-testid="med-review-status">
+                                    {{ entityReviewStatus('MEDICATION', $index) }}
+                                  </dd>
+                                </div>
+                              </dl>
+
+                              <div class="clinical-review-panel" data-testid="medication-review-panel">
+                                <div class="review-panel-header">
+                                  <strong>Clinical Review Workflow</strong>
+                                  <span class="demo-mode-badge">
+                                    Unauthenticated Session · Local Demonstration Mode
+                                  </span>
+                                </div>
+                                <div class="review-action-bar">
+                                  <button
+                                    type="button"
+                                    class="button review-btn accept-btn"
+                                    data-testid="review-accept-btn"
+                                    [disabled]="isSubmittingReview()"
+                                    (click)="submitReviewDecision('MEDICATION', $index, 'ACCEPTED')"
+                                  >
+                                    Accept
+                                  </button>
+                                  <button
+                                    type="button"
+                                    class="button review-btn correct-btn"
+                                    data-testid="review-edit-btn"
+                                    [disabled]="isSubmittingReview()"
+                                    (click)="openCorrectionEditor('MEDICATION', $index, med)"
+                                  >
+                                    Edit / Correct
+                                  </button>
+                                  <button
+                                    type="button"
+                                    class="button review-btn clarify-btn"
+                                    data-testid="review-clarify-btn"
+                                    [disabled]="isSubmittingReview()"
+                                    (click)="submitReviewDecision('MEDICATION', $index, 'NEEDS_CLARIFICATION')"
+                                  >
+                                    Needs Clarification
+                                  </button>
+                                  <button
+                                    type="button"
+                                    class="button review-btn reject-btn"
+                                    data-testid="review-reject-btn"
+                                    [disabled]="isSubmittingReview()"
+                                    (click)="submitReviewDecision('MEDICATION', $index, 'REJECTED')"
+                                  >
+                                    Reject
+                                  </button>
+                                </div>
+                                <div class="review-comment-row">
+                                  <input
+                                    type="text"
+                                    class="review-comment-input"
+                                    data-testid="review-comment-input"
+                                    placeholder="Clinical review comment or rationale (required for Reject / Needs Clarification)…"
+                                    [ngModel]="reviewCommentDraft()"
+                                    (ngModelChange)="reviewCommentDraft.set($event)"
+                                  />
+                                </div>
+
+                                @if (editingCorrectionKey() === entityKey('MEDICATION', $index)) {
+                                  <div class="correction-editor" data-testid="medication-correction-editor">
+                                    <h4>Correct Medication Attributes (Original AI candidate is preserved)</h4>
+                                    <div class="correction-grid">
+                                      <label>
+                                        Medication Name
+                                        <input
+                                          data-testid="corr-med-name"
+                                          [ngModel]="correctionForm()['name']"
+                                          (ngModelChange)="updateCorrectionField('name', $event)"
+                                        />
+                                      </label>
+                                      <label>
+                                        Strength
+                                        <input
+                                          data-testid="corr-med-strength"
+                                          [ngModel]="correctionForm()['strength']"
+                                          (ngModelChange)="updateCorrectionField('strength', $event)"
+                                        />
+                                      </label>
+                                      <label>
+                                        Administered Dose
+                                        <input
+                                          data-testid="corr-med-dose"
+                                          [ngModel]="correctionForm()['dose']"
+                                          (ngModelChange)="updateCorrectionField('dose', $event)"
+                                        />
+                                      </label>
+                                      <label>
+                                        Formulation
+                                        <input
+                                          data-testid="corr-med-formulation"
+                                          [ngModel]="correctionForm()['formulation']"
+                                          (ngModelChange)="updateCorrectionField('formulation', $event)"
+                                        />
+                                      </label>
+                                      <label>
+                                        Route
+                                        <input
+                                          data-testid="corr-med-route"
+                                          [ngModel]="correctionForm()['route']"
+                                          (ngModelChange)="updateCorrectionField('route', $event)"
+                                        />
+                                      </label>
+                                      <label>
+                                        Frequency
+                                        <input
+                                          data-testid="corr-med-frequency"
+                                          [ngModel]="correctionForm()['frequency']"
+                                          (ngModelChange)="updateCorrectionField('frequency', $event)"
+                                        />
+                                      </label>
+                                      <label>
+                                        Duration
+                                        <input
+                                          data-testid="corr-med-duration"
+                                          [ngModel]="correctionForm()['duration']"
+                                          (ngModelChange)="updateCorrectionField('duration', $event)"
+                                        />
+                                      </label>
+                                      <label>
+                                        Action
+                                        <input
+                                          data-testid="corr-med-action"
+                                          [ngModel]="correctionForm()['action']"
+                                          (ngModelChange)="updateCorrectionField('action', $event)"
+                                        />
+                                      </label>
+                                      <label>
+                                        Assertion Status
+                                        <input
+                                          data-testid="corr-med-assertion"
+                                          [ngModel]="correctionForm()['assertionStatus']"
+                                          (ngModelChange)="updateCorrectionField('assertionStatus', $event)"
+                                        />
+                                      </label>
+                                      <label>
+                                        RxNorm Concept (RxCUI)
+                                        <input
+                                          data-testid="corr-med-rxnorm"
+                                          [ngModel]="correctionForm()['rxNormCode']"
+                                          (ngModelChange)="updateCorrectionField('rxNormCode', $event)"
+                                        />
+                                      </label>
+                                    </div>
+                                    <div class="correction-actions">
+                                      <button
+                                        type="button"
+                                        class="button primary"
+                                        data-testid="save-correction-btn"
+                                        [disabled]="isSubmittingReview()"
+                                        (click)="submitReviewDecision('MEDICATION', $index, 'CORRECTED')"
+                                      >
+                                        Save Correction
+                                      </button>
+                                      <button
+                                        type="button"
+                                        class="text-button"
+                                        (click)="cancelCorrectionEditor()"
+                                      >
+                                        Cancel
+                                      </button>
+                                    </div>
+                                  </div>
+                                }
+
+                                @if (reviewError(); as rErr) {
+                                  <p class="review-feedback error" role="alert" data-testid="review-error-msg">
+                                    {{ rErr }}
+                                  </p>
+                                }
+                                @if (reviewSuccess(); as rOk) {
+                                  <p class="review-feedback success" role="status" data-testid="review-success-msg">
+                                    {{ rOk }}
+                                  </p>
+                                }
+
+                                @if (latestEntityReview('MEDICATION', $index)?.correctedEntity; as corr) {
+                                  <div class="corrected-comparison" data-testid="corrected-values-summary">
+                                    <strong>Reviewer Corrected Values (AI Original Preserved Above):</strong>
+                                    <span>
+                                      Name: {{ corr['name'] || med.name }} ·
+                                      Strength: {{ corr['strength'] || '—' }} ·
+                                      Dose: {{ corr['dose'] || '—' }} ·
+                                      Route: {{ corr['route'] || '—' }} ·
+                                      Frequency: {{ corr['frequency'] || '—' }} ·
+                                      Duration: {{ corr['duration'] || '—' }} ·
+                                      Assertion: {{ corr['assertionStatus'] || '—' }} ·
+                                      RxNorm: {{ corr['rxNormCode'] || '—' }}
+                                    </span>
+                                  </div>
+                                }
+
+                                @if (entityReviewHistory('MEDICATION', $index).length > 0) {
+                                  <div class="review-audit-trail" data-testid="entity-review-history">
+                                    <strong>Audit History ({{ entityReviewHistory('MEDICATION', $index).length }})</strong>
+                                    @for (rev of entityReviewHistory('MEDICATION', $index); track rev.reviewId) {
+                                      <div class="audit-entry">
+                                        <span>
+                                          v{{ rev.versionNumber }} · <strong>{{ rev.reviewStatus }}</strong> ·
+                                          {{ rev.reviewerIdentity }} · {{ rev.reviewedAt | date: 'short' }}
+                                        </span>
+                                        @if (rev.reviewComment) {
+                                          <p class="audit-comment">"{{ rev.reviewComment }}"</p>
+                                        }
+                                      </div>
+                                    }
+                                  </div>
+                                }
+                              </div>
+
+                              <ng-container
+                                [ngTemplateOutlet]="evidence"
+                                [ngTemplateOutletContext]="{ $implicit: med }"
+                              />
+                            </td>
+                          </tr>
+                        }
+                      } @empty {
+                        <tr>
+                          <td colspan="4" class="no-entities">
+                            No medications found in this note.
+                          </td>
+                        </tr>
+                      }
+                    </tbody>
+                  </table>
+                </div>
+              </section>
+              <section
+                class="entity-section investigations"
+                aria-labelledby="investigations-heading"
+              >
+                <div class="section-heading">
+                  <h3 id="investigations-heading">
+                    Investigations <span class="count">{{ res.investigations.length }}</span>
+                  </h3>
+                  <span class="section-hint" data-testid="investigation-category-breakdown">
+                    {{ plannedInvestigationsCount() }} planned investigations ·
+                    {{ historicalLabsCount() }} historical lab results
+                  </span>
+                </div>
+                <div class="table-scroll">
+                  <table class="investigation-table">
+                    <caption class="sr-only">
+                      Extracted investigations
+                    </caption>
+                    <thead>
+                      <tr>
+                        <th scope="col">Investigation</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Context</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      @for (inv of res.investigations; track $index) {
+                        <tr
+                          class="result-row"
+                          [class.selected]="selectedEntity() === inv"
+                          [attr.data-assertion]="inv.assertionStatus"
+                          [attr.data-review-status]="entityReviewStatus('INVESTIGATION', $index)"
+                          (click)="selectEntity(inv)"
+                        >
+                          <td class="td-name">
+                            <button
+                              class="entity-button"
+                              [attr.aria-expanded]="selectedEntity() === inv"
+                              (click)="$event.stopPropagation(); selectEntity(inv)"
+                            >
+                              {{ inv.name }}
+                            </button>
+                            @if (entityReviewStatus('INVESTIGATION', $index) !== 'PENDING_REVIEW') {
+                              <span
+                                class="review-status-pill"
+                                [attr.data-status]="entityReviewStatus('INVESTIGATION', $index)"
+                              >
+                                {{ entityReviewStatus('INVESTIGATION', $index) }}
+                              </span>
+                            }
+                          </td>
+                          <td class="status-cell">{{ status(inv.assertionStatus) }}</td>
+                          <td class="context-cell">{{ context(inv) }}</td>
+                        </tr>
+                        @if (selectedEntity() === inv) {
+                          <tr class="row-details">
+                            <td colspan="3">
+                              <dl class="medication-details">
+                                <div>
+                                  <dt>Timing</dt>
+                                  <dd>{{ display(inv.timing) }}</dd>
+                                </div>
+                                <div>
+                                  <dt>Specimen</dt>
+                                  <dd>{{ display(inv.specimen) }}</dd>
+                                </div>
+                                <div>
+                                  <dt>Method</dt>
+                                  <dd>{{ display(inv.method) }}</dd>
+                                </div>
+                                <div>
+                                  <dt>Category</dt>
+                                  <dd>{{ display(inv.clinicalCategory) }}</dd>
+                                </div>
+                                <div>
+                                  <dt>Result value</dt>
+                                  <dd>{{ display(inv.resultValue) }}</dd>
+                                </div>
+                                <div>
+                                  <dt>Terminology</dt>
+                                  <dd>{{ terminologyLabel(inv) }}</dd>
+                                </div>
+                                <div>
+                                  <dt>Origin</dt>
+                                  <dd>{{ originLabel(inv) }}</dd>
+                                </div>
+                                <div>
+                                  <dt>Review status</dt>
+                                  <dd data-testid="inv-review-status">
+                                    {{ entityReviewStatus('INVESTIGATION', $index) }}
+                                  </dd>
+                                </div>
+                              </dl>
+
+                              <div class="clinical-review-panel" data-testid="investigation-review-panel">
+                                <div class="review-panel-header">
+                                  <strong>Clinical Review Workflow</strong>
+                                  <span class="demo-mode-badge">
+                                    Unauthenticated Session · Local Demonstration Mode
+                                  </span>
+                                </div>
+                                <div class="review-action-bar">
+                                  <button
+                                    type="button"
+                                    class="button review-btn accept-btn"
+                                    data-testid="review-accept-btn"
+                                    [disabled]="isSubmittingReview()"
+                                    (click)="submitReviewDecision('INVESTIGATION', $index, 'ACCEPTED')"
+                                  >
+                                    Accept
+                                  </button>
+                                  <button
+                                    type="button"
+                                    class="button review-btn correct-btn"
+                                    data-testid="review-edit-btn"
+                                    [disabled]="isSubmittingReview()"
+                                    (click)="openCorrectionEditor('INVESTIGATION', $index, inv)"
+                                  >
+                                    Edit / Correct
+                                  </button>
+                                  <button
+                                    type="button"
+                                    class="button review-btn clarify-btn"
+                                    data-testid="review-clarify-btn"
+                                    [disabled]="isSubmittingReview()"
+                                    (click)="submitReviewDecision('INVESTIGATION', $index, 'NEEDS_CLARIFICATION')"
+                                  >
+                                    Needs Clarification
+                                  </button>
+                                  <button
+                                    type="button"
+                                    class="button review-btn reject-btn"
+                                    data-testid="review-reject-btn"
+                                    [disabled]="isSubmittingReview()"
+                                    (click)="submitReviewDecision('INVESTIGATION', $index, 'REJECTED')"
+                                  >
+                                    Reject
+                                  </button>
+                                </div>
+                                <div class="review-comment-row">
+                                  <input
+                                    type="text"
+                                    class="review-comment-input"
+                                    data-testid="review-comment-input"
+                                    placeholder="Clinical review comment or rationale (required for Reject / Needs Clarification)…"
+                                    [ngModel]="reviewCommentDraft()"
+                                    (ngModelChange)="reviewCommentDraft.set($event)"
+                                  />
+                                </div>
+
+                                @if (editingCorrectionKey() === entityKey('INVESTIGATION', $index)) {
+                                  <div class="correction-editor" data-testid="investigation-correction-editor">
+                                    <h4>Correct Investigation Attributes (Original AI candidate is preserved)</h4>
+                                    <div class="correction-grid">
+                                      <label>
+                                        Investigation Name
+                                        <input
+                                          data-testid="corr-inv-name"
+                                          [ngModel]="correctionForm()['name']"
+                                          (ngModelChange)="updateCorrectionField('name', $event)"
+                                        />
+                                      </label>
+                                      <label>
+                                        Timing
+                                        <input
+                                          data-testid="corr-inv-timing"
+                                          [ngModel]="correctionForm()['timing']"
+                                          (ngModelChange)="updateCorrectionField('timing', $event)"
+                                        />
+                                      </label>
+                                      <label>
+                                        Specimen
+                                        <input
+                                          data-testid="corr-inv-specimen"
+                                          [ngModel]="correctionForm()['specimen']"
+                                          (ngModelChange)="updateCorrectionField('specimen', $event)"
+                                        />
+                                      </label>
+                                      <label>
+                                        Method
+                                        <input
+                                          data-testid="corr-inv-method"
+                                          [ngModel]="correctionForm()['method']"
+                                          (ngModelChange)="updateCorrectionField('method', $event)"
+                                        />
+                                      </label>
+                                      <label>
+                                        Assertion Status
+                                        <input
+                                          data-testid="corr-inv-assertion"
+                                          [ngModel]="correctionForm()['assertionStatus']"
+                                          (ngModelChange)="updateCorrectionField('assertionStatus', $event)"
+                                        />
+                                      </label>
+                                      <label>
+                                        LOINC Concept
+                                        <input
+                                          data-testid="corr-inv-loinc"
+                                          [ngModel]="correctionForm()['loincCode']"
+                                          (ngModelChange)="updateCorrectionField('loincCode', $event)"
+                                        />
+                                      </label>
+                                      <label>
+                                        Clinical Category
+                                        <input
+                                          data-testid="corr-inv-category"
+                                          [ngModel]="correctionForm()['clinicalCategory']"
+                                          (ngModelChange)="updateCorrectionField('clinicalCategory', $event)"
+                                        />
+                                      </label>
+                                    </div>
+                                    <div class="correction-actions">
+                                      <button
+                                        type="button"
+                                        class="button primary"
+                                        data-testid="save-correction-btn"
+                                        [disabled]="isSubmittingReview()"
+                                        (click)="submitReviewDecision('INVESTIGATION', $index, 'CORRECTED')"
+                                      >
+                                        Save Correction
+                                      </button>
+                                      <button
+                                        type="button"
+                                        class="text-button"
+                                        (click)="cancelCorrectionEditor()"
+                                      >
+                                        Cancel
+                                      </button>
+                                    </div>
+                                  </div>
+                                }
+
+                                @if (reviewError(); as rErr) {
+                                  <p class="review-feedback error" role="alert" data-testid="review-error-msg">
+                                    {{ rErr }}
+                                  </p>
+                                }
+                                @if (reviewSuccess(); as rOk) {
+                                  <p class="review-feedback success" role="status" data-testid="review-success-msg">
+                                    {{ rOk }}
+                                  </p>
+                                }
+
+                                @if (latestEntityReview('INVESTIGATION', $index)?.correctedEntity; as corr) {
+                                  <div class="corrected-comparison" data-testid="corrected-values-summary">
+                                    <strong>Reviewer Corrected Values (AI Original Preserved Above):</strong>
+                                    <span>
+                                      Name: {{ corr['name'] || inv.name }} ·
+                                      Timing: {{ corr['timing'] || '—' }} ·
+                                      Specimen: {{ corr['specimen'] || '—' }} ·
+                                      Method: {{ corr['method'] || '—' }} ·
+                                      Assertion: {{ corr['assertionStatus'] || '—' }} ·
+                                      LOINC: {{ corr['loincCode'] || '—' }} ·
+                                      Category: {{ corr['clinicalCategory'] || '—' }}
+                                    </span>
+                                  </div>
+                                }
+
+                                @if (entityReviewHistory('INVESTIGATION', $index).length > 0) {
+                                  <div class="review-audit-trail" data-testid="entity-review-history">
+                                    <strong>Audit History ({{ entityReviewHistory('INVESTIGATION', $index).length }})</strong>
+                                    @for (rev of entityReviewHistory('INVESTIGATION', $index); track rev.reviewId) {
+                                      <div class="audit-entry">
+                                        <span>
+                                          v{{ rev.versionNumber }} · <strong>{{ rev.reviewStatus }}</strong> ·
+                                          {{ rev.reviewerIdentity }} · {{ rev.reviewedAt | date: 'short' }}
+                                        </span>
+                                        @if (rev.reviewComment) {
+                                          <p class="audit-comment">"{{ rev.reviewComment }}"</p>
+                                        }
+                                      </div>
+                                    }
+                                  </div>
+                                }
+                              </div>
+
+                              <ng-container
+                                [ngTemplateOutlet]="evidence"
+                                [ngTemplateOutletContext]="{ $implicit: inv }"
+                              />
+                            </td>
+                          </tr>
+                        }
+                      } @empty {
+                        <tr>
+                          <td colspan="3" class="no-entities">
+                            No investigations found in this note.
+                          </td>
+                        </tr>
+                      }
+                    </tbody>
+                  </table>
+                </div>
+              </section>
+              <p class="results-footnote">Select an item to trace it back to the source note.</p>
+            } @else if (activeResultTab() === 'source') {
+              <section class="source-result">
+                <h3>Submitted source</h3>
+                <p class="muted">
+                  {{
+                    sourceUnavailable()
+                      ? 'Source text is unavailable for this extraction.'
+                      : 'Select a result in Structured to highlight its source evidence.'
+                  }}
+                </p>
+                <div class="clinical-narrative">
+                  @for (segment of narrativeSegments(); track $index) {
+                    @if (segment.isHighlight) {
+                      <mark class="evidence-highlight">{{ segment.text }}</mark>
+                    } @else {
+                      <span>{{ segment.text }}</span>
+                    }
+                  }
+                </div>
+              </section>
+            } @else {
+              <section class="details-view">
+                <h3>Extraction details</h3>
+                <dl class="run-details">
+                  <div>
+                    <dt>Extraction ID</dt>
+                    <dd>{{ res.extractionId }}</dd>
+                  </div>
+                  <div>
+                    <dt>Duration</dt>
+                    <dd>{{ formattedDuration() }}</dd>
+                  </div>
+                  <div>
+                    <dt>Source</dt>
+                    <dd>{{ res.inputType }} · {{ documentLabel() }}</dd>
+                  </div>
+                  <div>
+                    <dt>Saved</dt>
+                    <dd>{{ res.saved ? 'Yes' : 'No' }}</dd>
+                  </div>
+                </dl>
+                <details open>
+                  <summary>
+                    Validation
+                    <span
+                      >{{ res.validationSummary.warningCount }} warnings ·
+                      {{ res.validationSummary.errorCount }} errors</span
+                    >
+                  </summary>
+                  @for (finding of allFindings(); track $index) {
+                    <div class="finding">
+                      <strong>{{ finding.entity }} · {{ finding.severity }}</strong>
+                      <p>{{ finding.message }}</p>
+                      <small>{{ finding.code }} {{ finding.field }}</small>
+                    </div>
+                  } @empty {
+                    <p class="muted">No validation findings returned.</p>
+                  }
+                </details>
+                @for (alert of res.safetyAlerts || []; track alert.alertId) {
+                  <div class="safety-alert">
+                    <strong>{{ alert.severity }} · {{ alert.title }}</strong>
+                    <p>{{ alert.description }}</p>
+                    @if (alert.alertType || alert.temporality) {
+                      <small>{{ alert.alertType }} · {{ alert.temporality }}</small>
+                    }
+                    <p>{{ alert.recommendation }}</p>
+                  </div>
+                }
+                <details>
+                  <summary>Model information</summary>
+                  <dl class="run-details">
+                    <div>
+                      <dt>Provider</dt>
+                      <dd>{{ res.modelMetadata.provider || 'Not recorded (historical run)' }}</dd>
+                    </div>
+                    <div>
+                      <dt>Executed model</dt>
+                      <dd>{{ res.modelMetadata.model || res.modelMetadata.modelDeployment }}</dd>
+                    </div>
+                    <div>
+                      <dt>Fallback reason</dt>
+                      <dd>{{ res.modelMetadata.fallbackReason || 'None recorded' }}</dd>
+                    </div>
+                    <div>
+                      <dt>Inference executed</dt>
+                      <dd>
+                        {{
+                          res.modelMetadata.inferenceExecuted == null
+                            ? 'Not recorded'
+                            : res.modelMetadata.inferenceExecuted
+                              ? 'Yes'
+                              : 'No'
+                        }}
+                      </dd>
+                    </div>
+                    <div>
+                      <dt>Azure deployment</dt>
+                      <dd>
+                        {{
+                          res.modelMetadata.azureDeployment ||
+                            (res.modelMetadata.provider === 'onnx'
+                              ? 'N/A'
+                              : res.modelMetadata.modelDeployment)
+                        }}
+                      </dd>
+                    </div>
+                    <div>
+                      <dt>Adapter</dt>
+                      <dd>{{ res.modelMetadata.adapterType }}</dd>
+                    </div>
+                    <div>
+                      <dt>Prompt version</dt>
+                      <dd>{{ res.modelMetadata.promptVersion }}</dd>
+                    </div>
+                    <div>
+                      <dt>Schema validation</dt>
+                      <dd>{{ res.modelMetadata.schemaValidationStatus || 'Not recorded' }}</dd>
+                    </div>
+                    <div>
+                      <dt>Total tokens</dt>
+                      <dd>{{ tokenValue(res, res.modelMetadata.totalTokens) }}</dd>
+                    </div>
+                    <div>
+                      <dt>Prompt / completion tokens</dt>
+                      <dd>
+                        {{ tokenValue(res, res.modelMetadata.promptTokens) }} /
+                        {{ tokenValue(res, res.modelMetadata.completionTokens) }}
+                      </dd>
+                    </div>
+                    <div>
+                      <dt>Estimated cost</dt>
+                      <dd>
+                        {{
+                          res.modelMetadata.estimatedCostUsd == null ||
+                          res.modelMetadata.provider === 'onnx' ||
+                          res.modelMetadata.adapterType.startsWith('onnx')
+                            ? 'N/A (unknown)'
+                            : '$' + res.modelMetadata.estimatedCostUsd
+                        }}
+                      </dd>
+                    </div>
+                  </dl>
+                  @for (attempt of res.modelMetadata.attempts || []; track $index) {
+                    <div class="provider-attempt">
+                      <strong>{{ attempt.provider }}: {{ attempt.outcome }}</strong>
+                      <p>
+                        {{ attempt.model || 'Unknown model'
+                        }}{{ attempt.deployment ? ' / ' + attempt.deployment : '' }} &middot;
+                        {{ attempt.durationMs }} ms
+                      </p>
+                      @if (attempt.reason) {
+                        <p>{{ attempt.reason }}</p>
+                      }
+                      <p>
+                        Inference executed:
+                        {{ attempt.inferenceExecuted ? 'Yes' : 'Not confirmed' }}
+                        @if (attempt.onnxWindows != null) {
+                          &middot; {{ attempt.onnxWindows }} ONNX windows
+                        }
+                      </p>
+                      <p>
+                        Prompt / completion / total tokens: {{ attempt.promptTokens ?? 'N/A' }} /
+                        {{ attempt.completionTokens ?? 'N/A' }} / {{ attempt.totalTokens ?? 'N/A' }}
+                      </p>
+                    </div>
+                  }
+                </details>
+                <details>
+                  <summary>JSON response</summary>
+                  <pre>{{ res | json }}</pre>
+                </details>
+              </section>
+            }
+          } @else {
+            <div class="empty-state" [class.failed-state]="!!error()">
+              <div class="empty-icon" aria-hidden="true">
+                <svg viewBox="0 0 40 40">
+                  <path d="M11 5h13l6 6v24H11zM24 5v7h6M16 19h9m-9 6h9" />
+                </svg>
+              </div>
+              <h3>
+                {{
+                  error() ? 'Extraction needs attention' : 'A clearer view of your clinical note'
+                }}
+              </h3>
+              <p>
+                {{
+                  error()
+                    ? 'Your source note is retained. Review the message and try again.'
+                    : 'Paste a note or upload a PDF, then extract to review medications and investigations here.'
+                }}
+              </p>
+              <span class="empty-caption">{{
+                error() ? 'No results attached' : 'Your source stays alongside the results.'
+              }}</span>
+            </div>
+          }
+        </div>
+      </section>
+    </div>
+    <footer class="workspace-footer">
+      <span>Apollo Hospitals <span aria-hidden="true">/</span> Clinical workspace</span
+      ><span>Review extracted information against the source note.</span>
+    </footer>
+  }
+</main>
+<ng-template #evidence let-entity
+  ><div class="source-evidence">
+    <span class="evidence-label">Source evidence</span>
+    <blockquote>{{ entity.evidence?.quote || 'Not documented' }}</blockquote>
+    @if (entity.evidence?.quote && !evidenceLocated()) {
+      <p class="row-finding">Returned evidence could not be located in the submitted source.</p>
+    }
+    <span class="evidence-verification">{{
+      entity.evidence?.verified ? 'Verified against source' : 'Evidence not verified'
+    }}</span>
+    @for (finding of entity.findings; track $index) {
+      <p class="row-finding">{{ finding.severity }}: {{ finding.message }}</p>
+    }
+    @for (flag of entity.qualityFlags; track $index) {
+      <p class="row-finding">{{ flag }}</p>
+    }
+  </div></ng-template
+>

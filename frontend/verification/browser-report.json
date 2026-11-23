@@ -1,0 +1,41 @@
+{
+  "fixtureMode": true,
+  "backendIntegrationTested": false,
+  "viewports": [
+    "1440×900",
+    "390×844"
+  ],
+  "checks": [
+    "Empty workspace opens in edit mode without placeholder navigation or sample text",
+    "Exact submitted paragraphs, actual counts, separate strength and dose columns",
+    "1440×900 desktop layout: 39/61 split, 32px gap, selected amber row and exact chest X-ray evidence",
+    "Name-only API evidence highlights only the returned entity name",
+    "Medication row details retain route, duration, instructions and missing-field labels",
+    "JSON, CSV and FHIR export actions create downloads with separate strength and dose in CSV",
+    "Source tab preserves exact submitted note; Details exposes validation, model and JSON",
+    "390×844 mobile layout stacks source above results with no page or table overflow",
+    "Edit restores the same source and detaches all previous results and highlights",
+    "PERSISTENCE_FAILED preserves the exact input and displays a concise inline save error",
+    "Loading state is distinct and a late response cannot attach to a newer note",
+    "History restores its own source, filename, conditional status and backend validation finding",
+    "PDF uses the existing multipart API contract and restores returned text and actual filename",
+    "Successful extraction with zero entities is distinct from empty, loading and failure states",
+    "No browser runtime errors"
+  ],
+  "runtimeErrors": [],
+  "screenshots": [
+    "desktop-1440x900.png",
+    "desktop-empty.png",
+    "desktop-full.png",
+    "foundry-live-desktop.png",
+    "foundry-live-mobile.png",
+    "foundry-live-pdf-details.png",
+    "foundry-live-text-details.png",
+    "live-connection-restored.png",
+    "mobile-390x844.png",
+    "mobile-evidence-390x844.png",
+    "mobile-full.png",
+    "mobile-results-390x844.png",
+    "mobile-save-failure.png"
+  ]
+}

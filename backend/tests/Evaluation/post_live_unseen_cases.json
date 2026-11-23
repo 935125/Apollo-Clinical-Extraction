@@ -1,0 +1,115 @@
+[
+  {
+    "id": "unseen-001-infectious-cap",
+    "specialty": "Infectious Disease / Pulmonology",
+    "note_text": "Hospital Course & Clinical Presentation\n71-year-old male admitted with fever of 39.1 °C and right lower lobe pneumonia.\nDocumented Allergies: Penicillin (urticaria).\nDischarge Vital Signs & Baseline Labs\nBP 128/78 mmHg | HR 76 bpm | Serum Potassium 4.4 mEq/L, Serum Creatinine 1.1 mg/dL\nDischarge Medications\nAzithromycin 500 mg orally once daily for 3 days.\nParacetamol 650 mg orally every 8 hours as needed for fever.\nOutpatient Follow-Up Investigations\nOrder Complete blood count (CBC) and C-reactive protein (CRP) in 1 week.\nOrder Serum creatinine and Serum potassium in 48 hours.",
+    "expected_medications": [
+      { "name": "Penicillin", "strength": null, "assertion_status": "allergy" },
+      { "name": "Azithromycin", "strength": "500 mg", "route": "orally", "frequency": "once daily", "duration": "3 days", "assertion_status": "current_medication" },
+      { "name": "Paracetamol", "strength": "650 mg", "route": "orally", "frequency": "every 8 hours", "assertion_status": "current_medication" }
+    ],
+    "expected_investigations": [
+      { "name": "Serum Potassium", "assertion_status": "historical" },
+      { "name": "Serum Creatinine", "assertion_status": "historical" },
+      { "name": "Complete blood count", "assertion_status": "new_order" },
+      { "name": "C-reactive protein", "assertion_status": "new_order" },
+      { "name": "Serum creatinine", "assertion_status": "new_order" },
+      { "name": "Serum potassium", "assertion_status": "new_order" }
+    ],
+    "expected_alerts": [
+      { "category": "ALLERGY_CONFLICT", "temporality": "CURRENT_ACTIVE" },
+      { "category": "LAB_ANOMALY", "temporality": "HISTORICAL_ADMISSION_COURSE" }
+    ]
+  },
+  {
+    "id": "unseen-002-cardio-afib",
+    "specialty": "Cardiology",
+    "note_text": "Allergies: Denies Aspirin allergy.\nDischarge Vital Signs & Baseline Labs\nBP 134/82 mmHg | K+ 5.9 mEq/L, Creatinine 2.2 mg/dL\nPlan:\n1. Start Warfarin 5 mg PO once daily.\n2. Start Aspirin 81 mg PO once daily.\n3. Continue Bisoprolol 5 mg PO once daily.\nOutpatient Follow-Up Investigations:\nOrder Serum potassium and Serum sodium in 48 hours.\nOrder ECG today.",
+    "expected_medications": [
+      { "name": "Warfarin", "strength": "5 mg", "route": "PO", "frequency": "once daily", "assertion_status": "new_order" },
+      { "name": "Aspirin", "strength": "81 mg", "route": "PO", "frequency": "once daily", "assertion_status": "new_order" },
+      { "name": "Bisoprolol", "strength": "5 mg", "route": "PO", "frequency": "once daily", "assertion_status": "current_medication" }
+    ],
+    "expected_investigations": [
+      { "name": "K+", "assertion_status": "historical" },
+      { "name": "Creatinine", "assertion_status": "historical" },
+      { "name": "Serum potassium", "assertion_status": "new_order" },
+      { "name": "Serum sodium", "assertion_status": "new_order" },
+      { "name": "ECG", "assertion_status": "new_order" }
+    ],
+    "expected_alerts": [
+      { "category": "DRUG_INTERACTION", "temporality": "CURRENT_ACTIVE" },
+      { "category": "LAB_ANOMALY", "temporality": "BASELINE_MEASUREMENT" }
+    ]
+  },
+  {
+    "id": "unseen-003-rheum-weekly",
+    "specialty": "Rheumatology",
+    "note_text": "Past Medical History: Patient previously took Allopurinol 100 mg daily, stopped last year.\nPlan:\n1. Prescribe Methotrexate 15 mg PO once weekly.\n2. Prescribe Folic Acid 5 mg PO once weekly.\n3. Order Liver Function Tests and Complete Urine Examination (CUE) today.\n4. Order Chest X-ray if cough develops.",
+    "expected_medications": [
+      { "name": "Allopurinol", "strength": "100 mg", "frequency": "daily", "assertion_status": "historical" },
+      { "name": "Methotrexate", "strength": "15 mg", "route": "PO", "frequency": "once weekly", "assertion_status": "new_order" },
+      { "name": "Folic Acid", "strength": "5 mg", "route": "PO", "frequency": "once weekly", "assertion_status": "new_order" }
+    ],
+    "expected_investigations": [
+      { "name": "Liver Function Tests", "assertion_status": "new_order" },
+      { "name": "Complete Urine Examination", "assertion_status": "new_order" },
+      { "name": "Chest X-ray", "assertion_status": "conditional" }
+    ],
+    "expected_alerts": []
+  },
+  {
+    "id": "unseen-004-gi-qtc",
+    "specialty": "Gastroenterology / Oncology",
+    "note_text": "Documented Allergies: Ibuprofen (bronchospasm).\nPlan:\n1. Start Ciprofloxacin 500 mg PO twice daily for 7 days.\n2. Start Ondansetron 4 mg PO every 8 hours as needed.\n3. Start Pantoprazole 40 mg PO once daily for 14 days.\nInvestigations:\nOrder Serum electrolytes and Ultrasound Abdomen today.",
+    "expected_medications": [
+      { "name": "Ibuprofen", "strength": null, "assertion_status": "allergy" },
+      { "name": "Ciprofloxacin", "strength": "500 mg", "route": "PO", "frequency": "twice daily", "duration": "7 days", "assertion_status": "new_order" },
+      { "name": "Ondansetron", "strength": "4 mg", "route": "PO", "frequency": "every 8 hours", "assertion_status": "new_order" },
+      { "name": "Pantoprazole", "strength": "40 mg", "route": "PO", "frequency": "once daily", "duration": "14 days", "assertion_status": "new_order" }
+    ],
+    "expected_investigations": [
+      { "name": "Serum electrolytes", "assertion_status": "new_order" },
+      { "name": "Ultrasound Abdomen", "assertion_status": "new_order" }
+    ],
+    "expected_alerts": [
+      { "category": "DRUG_INTERACTION", "temporality": "CURRENT_ACTIVE" },
+      { "category": "ALLERGY_CONFLICT", "temporality": "CURRENT_ACTIVE" }
+    ]
+  },
+  {
+    "id": "unseen-005-endo-thyroid-dm",
+    "specialty": "Endocrinology",
+    "note_text": "Current Medications: Levothyroxine 50 mcg PO once daily, Metformin 500 mg PO twice daily.\nPlan:\n1. Start Dapagliflozin 10 mg PO once daily.\n2. Discontinue Amlodipine 5 mg.\nInvestigations:\nOrder HbA1c, Serum TSH, and Serum Free T4 today.",
+    "expected_medications": [
+      { "name": "Levothyroxine", "strength": "50 mcg", "route": "PO", "frequency": "once daily", "assertion_status": "current_medication" },
+      { "name": "Metformin", "strength": "500 mg", "route": "PO", "frequency": "twice daily", "assertion_status": "current_medication" },
+      { "name": "Dapagliflozin", "strength": "10 mg", "route": "PO", "frequency": "once daily", "assertion_status": "new_order" },
+      { "name": "Amlodipine", "strength": "5 mg", "assertion_status": "discontinued" }
+    ],
+    "expected_investigations": [
+      { "name": "HbA1c", "assertion_status": "new_order" },
+      { "name": "Serum TSH", "assertion_status": "new_order" },
+      { "name": "Serum Free T4", "assertion_status": "new_order" }
+    ],
+    "expected_alerts": []
+  },
+  {
+    "id": "unseen-006-nephro-conflict",
+    "specialty": "Nephrology",
+    "note_text": "Baseline Labs: Serum Creatinine 1.2 mg/dL. Repeat Labs: Serum Creatinine 2.5 mg/dL.\nPlan:\n1. Hold Lisinopril 10 mg if potassium exceeds 5.5 mEq/L.\n2. Start Sodium Bicarbonate 650 mg PO twice daily.\nInvestigations:\nOrder Serum uric acid and Blood culture today.",
+    "expected_medications": [
+      { "name": "Lisinopril", "strength": "10 mg", "assertion_status": "conditional" },
+      { "name": "Sodium Bicarbonate", "strength": "650 mg", "route": "PO", "frequency": "twice daily", "assertion_status": "new_order" }
+    ],
+    "expected_investigations": [
+      { "name": "Serum Creatinine", "assertion_status": "historical" },
+      { "name": "Serum Creatinine", "assertion_status": "historical" },
+      { "name": "Serum uric acid", "assertion_status": "new_order" },
+      { "name": "Blood culture", "assertion_status": "new_order" }
+    ],
+    "expected_alerts": [
+      { "category": "DATA_QUALITY_WARNING", "temporality": "CURRENT_ACTIVE" }
+    ]
+  }
+]

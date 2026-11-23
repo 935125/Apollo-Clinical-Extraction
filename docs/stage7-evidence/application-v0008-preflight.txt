@@ -1,0 +1,55 @@
+BEGIN
+ current_database | current_schema 
+------------------+----------------
+ cx_platform      | public
+(1 row)
+
+ review_rows 
+-------------
+          12
+(1 row)
+
+ extraction_id | entity_type | entity_index | version_number | duplicates 
+---------------+-------------+--------------+----------------+------------
+(0 rows)
+
+ invalid_review_keys 
+---------------------
+                   0
+(1 row)
+
+ orphan_reviews 
+----------------
+              0
+(1 row)
+
+       relname       |  owner   | relacl 
+---------------------+----------+--------
+ entity_review_audit | cx_admin | 
+(1 row)
+
+              indexname               |                                                                        indexdef                                                                        
+--------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------
+ entity_review_audit_pkey             | CREATE UNIQUE INDEX entity_review_audit_pkey ON public.entity_review_audit USING btree (review_id)
+ ix_entity_review_audit_extraction_id | CREATE INDEX ix_entity_review_audit_extraction_id ON public.entity_review_audit USING btree (extraction_id, entity_type, entity_index, version_number)
+(2 rows)
+
+                    conname                     |                                  pg_get_constraintdef                                   
+------------------------------------------------+-----------------------------------------------------------------------------------------
+ entity_review_audit_auth_mode_not_null         | NOT NULL auth_mode
+ entity_review_audit_entity_index_not_null      | NOT NULL entity_index
+ entity_review_audit_entity_type_not_null       | NOT NULL entity_type
+ entity_review_audit_evidence_json_not_null     | NOT NULL evidence_json
+ entity_review_audit_extraction_id_fkey         | FOREIGN KEY (extraction_id) REFERENCES extraction_runs(extraction_id) ON DELETE CASCADE
+ entity_review_audit_extraction_id_not_null     | NOT NULL extraction_id
+ entity_review_audit_original_json_not_null     | NOT NULL original_json
+ entity_review_audit_pkey                       | PRIMARY KEY (review_id)
+ entity_review_audit_review_action_not_null     | NOT NULL review_action
+ entity_review_audit_review_id_not_null         | NOT NULL review_id
+ entity_review_audit_review_status_not_null     | NOT NULL review_status
+ entity_review_audit_reviewed_at_not_null       | NOT NULL reviewed_at
+ entity_review_audit_reviewer_identity_not_null | NOT NULL reviewer_identity
+ entity_review_audit_version_number_not_null    | NOT NULL version_number
+(14 rows)
+
+COMMIT

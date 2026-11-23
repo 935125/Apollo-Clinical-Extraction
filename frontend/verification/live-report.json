@@ -1,0 +1,11 @@
+{
+  "fixtureMode": false,
+  "backendIntegrationTested": true,
+  "httpStatus": 200,
+  "saved": true,
+  "medicationCount": 1,
+  "investigationCount": 1,
+  "exactSourceRestored": true,
+  "selectedEvidence": "Plan: Start Metformin 500 mg PO twice daily. Order Chest X-ray.",
+  "runtimeErrors": []
+}

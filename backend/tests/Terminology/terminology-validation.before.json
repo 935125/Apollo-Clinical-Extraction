@@ -1,0 +1,1744 @@
+﻿{
+    "generatedAt":  "2026-11-20T14:48:26.1245253+05:30",
+    "rxnormSource":  "NLM RxNav REST API",
+    "rxnormVersion":  "02-Nov-2026",
+    "loincSource":  "tx.fhir.org R4 CodeSystem/$lookup (http://loinc.org)",
+    "medications":  [
+                        {
+                            "mention":  "atorvastatin",
+                            "standardName":  "Atorvastatin",
+                            "catalogCode":  "RX-ATO-20",
+                            "rxcui":  "617318",
+                            "rxnav":  {
+                                          "exists":  true,
+                                          "name":  "atorvastatin 20 MG Oral Tablet [Lipitor]",
+                                          "tty":  "SBD",
+                                          "status":  "Active"
+                                      },
+                            "ingredientRxcui":  "",
+                            "ingredientRxnav":  null
+                        },
+                        {
+                            "mention":  "atorva",
+                            "standardName":  "Atorvastatin",
+                            "catalogCode":  "RX-ATO-20",
+                            "rxcui":  "617318",
+                            "rxnav":  {
+                                          "exists":  true,
+                                          "name":  "atorvastatin 20 MG Oral Tablet [Lipitor]",
+                                          "tty":  "SBD",
+                                          "status":  "Active"
+                                      },
+                            "ingredientRxcui":  "",
+                            "ingredientRxnav":  null
+                        },
+                        {
+                            "mention":  "atorva 10",
+                            "standardName":  "Atorvastatin",
+                            "catalogCode":  "RX-ATO-10",
+                            "rxcui":  "617314",
+                            "rxnav":  {
+                                          "exists":  true,
+                                          "name":  "atorvastatin 10 MG Oral Tablet [Lipitor]",
+                                          "tty":  "SBD",
+                                          "status":  "Active"
+                                      },
+                            "ingredientRxcui":  "",
+                            "ingredientRxnav":  null
+                        },
+                        {
+                            "mention":  "atorva 20",
+                            "standardName":  "Atorvastatin",
+                            "catalogCode":  "RX-ATO-20",
+                            "rxcui":  "617318",
+                            "rxnav":  {
+                                          "exists":  true,
+                                          "name":  "atorvastatin 20 MG Oral Tablet [Lipitor]",
+                                          "tty":  "SBD",
+                                          "status":  "Active"
+                                      },
+                            "ingredientRxcui":  "",
+                            "ingredientRxnav":  null
+                        },
+                        {
+                            "mention":  "atorva 40",
+                            "standardName":  "Atorvastatin",
+                            "catalogCode":  "RX-ATO-40",
+                            "rxcui":  "617320",
+                            "rxnav":  {
+                                          "exists":  true,
+                                          "name":  "atorvastatin 40 MG Oral Tablet [Lipitor]",
+                                          "tty":  "SBD",
+                                          "status":  "Active"
+                                      },
+                            "ingredientRxcui":  "",
+                            "ingredientRxnav":  null
+                        },
+                        {
+                            "mention":  "lipitor",
+                            "standardName":  "Atorvastatin",
+                            "catalogCode":  "RX-ATO-20",
+                            "rxcui":  "617318",
+                            "rxnav":  {
+                                          "exists":  true,
+                                          "name":  "atorvastatin 20 MG Oral Tablet [Lipitor]",
+                                          "tty":  "SBD",
+                                          "status":  "Active"
+                                      },
+                            "ingredientRxcui":  "",
+                            "ingredientRxnav":  null
+                        },
+                        {
+                            "mention":  "thyronorm",
+                            "standardName":  "Levothyroxine",
+                            "catalogCode":  "RX-LEV-50",
+                            "rxcui":  "966224",
+                            "rxnav":  {
+                                          "exists":  true,
+                                          "name":  "levothyroxine sodium 0.125 MG Oral Tablet",
+                                          "tty":  "SCD",
+                                          "status":  "Active"
+                                      },
+                            "ingredientRxcui":  "",
+                            "ingredientRxnav":  null
+                        },
+                        {
+                            "mention":  "eltroxin",
+                            "standardName":  "Levothyroxine",
+                            "catalogCode":  "RX-LEV-50",
+                            "rxcui":  "966224",
+                            "rxnav":  {
+                                          "exists":  true,
+                                          "name":  "levothyroxine sodium 0.125 MG Oral Tablet",
+                                          "tty":  "SCD",
+                                          "status":  "Active"
+                                      },
+                            "ingredientRxcui":  "",
+                            "ingredientRxnav":  null
+                        },
+                        {
+                            "mention":  "levothyroxine",
+                            "standardName":  "Levothyroxine",
+                            "catalogCode":  "RX-LEV-50",
+                            "rxcui":  "966224",
+                            "rxnav":  {
+                                          "exists":  true,
+                                          "name":  "levothyroxine sodium 0.125 MG Oral Tablet",
+                                          "tty":  "SCD",
+                                          "status":  "Active"
+                                      },
+                            "ingredientRxcui":  "",
+                            "ingredientRxnav":  null
+                        },
+                        {
+                            "mention":  "synthroid",
+                            "standardName":  "Levothyroxine",
+                            "catalogCode":  "RX-LEV-50",
+                            "rxcui":  "966224",
+                            "rxnav":  {
+                                          "exists":  true,
+                                          "name":  "levothyroxine sodium 0.125 MG Oral Tablet",
+                                          "tty":  "SCD",
+                                          "status":  "Active"
+                                      },
+                            "ingredientRxcui":  "",
+                            "ingredientRxnav":  null
+                        },
+                        {
+                            "mention":  "nitrofurantoin",
+                            "standardName":  "Nitrofurantoin",
+                            "catalogCode":  "RX-NIT-100",
+                            "rxcui":  "7454",
+                            "rxnav":  {
+                                          "exists":  true,
+                                          "name":  "nitrofurantoin",
+                                          "tty":  "IN",
+                                          "status":  "Active"
+                                      },
+                            "ingredientRxcui":  "",
+                            "ingredientRxnav":  null
+                        },
+                        {
+                            "mention":  "niftas",
+                            "standardName":  "Nitrofurantoin",
+                            "catalogCode":  "RX-NIT-100",
+                            "rxcui":  "7454",
+                            "rxnav":  {
+                                          "exists":  true,
+                                          "name":  "nitrofurantoin",
+                                          "tty":  "IN",
+                                          "status":  "Active"
+                                      },
+                            "ingredientRxcui":  "",
+                            "ingredientRxnav":  null
+                        },
+                        {
+                            "mention":  "furadantin",
+                            "standardName":  "Nitrofurantoin",
+                            "catalogCode":  "RX-NIT-100",
+                            "rxcui":  "7454",
+                            "rxnav":  {
+                                          "exists":  true,
+                                          "name":  "nitrofurantoin",
+                                          "tty":  "IN",
+                                          "status":  "Active"
+                                      },
+                            "ingredientRxcui":  "",
+                            "ingredientRxnav":  null
+                        },
+                        {
+                            "mention":  "macrobid",
+                            "standardName":  "Nitrofurantoin",
+                            "catalogCode":  "RX-NIT-100",
+                            "rxcui":  "7454",
+                            "rxnav":  {
+                                          "exists":  true,
+                                          "name":  "nitrofurantoin",
+                                          "tty":  "IN",
+                                          "status":  "Active"
+                                      },
+                            "ingredientRxcui":  "",
+                            "ingredientRxnav":  null
+                        },
+                        {
+                            "mention":  "metformin",
+                            "standardName":  "Metformin",
+                            "catalogCode":  "RX-MET-500",
+                            "rxcui":  "860975",
+                            "rxnav":  {
+                                          "exists":  true,
+                                          "name":  "24 HR metformin hydrochloride 500 MG Extended Release Oral Tablet",
+                                          "tty":  "SCD",
+                                          "status":  "Active"
+                                      },
+                            "ingredientRxcui":  "",
+                            "ingredientRxnav":  null
+                        },
+                        {
+                            "mention":  "glycomet",
+                            "standardName":  "Metformin",
+                            "catalogCode":  "RX-MET-500",
+                            "rxcui":  "860975",
+                            "rxnav":  {
+                                          "exists":  true,
+                                          "name":  "24 HR metformin hydrochloride 500 MG Extended Release Oral Tablet",
+                                          "tty":  "SCD",
+                                          "status":  "Active"
+                                      },
+                            "ingredientRxcui":  "",
+                            "ingredientRxnav":  null
+                        },
+                        {
+                            "mention":  "glycomet 500",
+                            "standardName":  "Metformin",
+                            "catalogCode":  "RX-MET-500",
+                            "rxcui":  "860975",
+                            "rxnav":  {
+                                          "exists":  true,
+                                          "name":  "24 HR metformin hydrochloride 500 MG Extended Release Oral Tablet",
+                                          "tty":  "SCD",
+                                          "status":  "Active"
+                                      },
+                            "ingredientRxcui":  "",
+                            "ingredientRxnav":  null
+                        },
+                        {
+                            "mention":  "glycomet gp",
+                            "standardName":  "Metformin",
+                            "catalogCode":  "RX-MET-500",
+                            "rxcui":  "860975",
+                            "rxnav":  {
+                                          "exists":  true,
+                                          "name":  "24 HR metformin hydrochloride 500 MG Extended Release Oral Tablet",
+                                          "tty":  "SCD",
+                                          "status":  "Active"
+                                      },
+                            "ingredientRxcui":  "",
+                            "ingredientRxnav":  null
+                        },
+                        {
+                            "mention":  "glucophage",
+                            "standardName":  "Metformin",
+                            "catalogCode":  "RX-MET-500",
+                            "rxcui":  "860975",
+                            "rxnav":  {
+                                          "exists":  true,
+                                          "name":  "24 HR metformin hydrochloride 500 MG Extended Release Oral Tablet",
+                                          "tty":  "SCD",
+                                          "status":  "Active"
+                                      },
+                            "ingredientRxcui":  "",
+                            "ingredientRxnav":  null
+                        },
+                        {
+                            "mention":  "telma",
+                            "standardName":  "Telmisartan",
+                            "catalogCode":  "RX-TEL-40",
+                            "rxcui":  "247000",
+                            "rxnav":  {
+                                          "exists":  false,
+                                          "name":  null,
+                                          "tty":  null,
+                                          "status":  "NotCurrent"
+                                      },
+                            "ingredientRxcui":  "",
+                            "ingredientRxnav":  null
+                        },
+                        {
+                            "mention":  "telmisartan",
+                            "standardName":  "Telmisartan",
+                            "catalogCode":  "RX-TEL-40",
+                            "rxcui":  "247000",
+                            "rxnav":  {
+                                          "exists":  false,
+                                          "name":  null,
+                                          "tty":  null,
+                                          "status":  "NotCurrent"
+                                      },
+                            "ingredientRxcui":  "",
+                            "ingredientRxnav":  null
+                        },
+                        {
+                            "mention":  "telma 40",
+                            "standardName":  "Telmisartan",
+                            "catalogCode":  "RX-TEL-40",
+                            "rxcui":  "247000",
+                            "rxnav":  {
+                                          "exists":  false,
+                                          "name":  null,
+                                          "tty":  null,
+                                          "status":  "NotCurrent"
+                                      },
+                            "ingredientRxcui":  "",
+                            "ingredientRxnav":  null
+                        },
+                        {
+                            "mention":  "telma 80",
+                            "standardName":  "Telmisartan",
+                            "catalogCode":  "RX-TEL-80",
+                            "rxcui":  "247001",
+                            "rxnav":  {
+                                          "exists":  false,
+                                          "name":  null,
+                                          "tty":  null,
+                                          "status":  "NotCurrent"
+                                      },
+                            "ingredientRxcui":  "",
+                            "ingredientRxnav":  null
+                        },
+                        {
+                            "mention":  "micardis",
+                            "standardName":  "Telmisartan",
+                            "catalogCode":  "RX-TEL-40",
+                            "rxcui":  "247000",
+                            "rxnav":  {
+                                          "exists":  false,
+                                          "name":  null,
+                                          "tty":  null,
+                                          "status":  "NotCurrent"
+                                      },
+                            "ingredientRxcui":  "",
+                            "ingredientRxnav":  null
+                        },
+                        {
+                            "mention":  "ecosprin",
+                            "standardName":  "Aspirin",
+                            "catalogCode":  "RX-ASP-75",
+                            "rxcui":  "315429",
+                            "rxnav":  {
+                                          "exists":  true,
+                                          "name":  "aspirin 75 MG",
+                                          "tty":  "SCDC",
+                                          "status":  "Active"
+                                      },
+                            "ingredientRxcui":  "",
+                            "ingredientRxnav":  null
+                        },
+                        {
+                            "mention":  "aspirin",
+                            "standardName":  "Aspirin",
+                            "catalogCode":  "RX-ASP-100",
+                            "rxcui":  "315431",
+                            "rxnav":  {
+                                          "exists":  true,
+                                          "name":  "aspirin 81 MG",
+                                          "tty":  "SCDC",
+                                          "status":  "Active"
+                                      },
+                            "ingredientRxcui":  "",
+                            "ingredientRxnav":  null
+                        },
+                        {
+                            "mention":  "disprin",
+                            "standardName":  "Aspirin",
+                            "catalogCode":  "RX-ASP-100",
+                            "rxcui":  "315431",
+                            "rxnav":  {
+                                          "exists":  true,
+                                          "name":  "aspirin 81 MG",
+                                          "tty":  "SCDC",
+                                          "status":  "Active"
+                                      },
+                            "ingredientRxcui":  "",
+                            "ingredientRxnav":  null
+                        },
+                        {
+                            "mention":  "ecotrin",
+                            "standardName":  "Aspirin",
+                            "catalogCode":  "RX-ASP-100",
+                            "rxcui":  "315431",
+                            "rxnav":  {
+                                          "exists":  true,
+                                          "name":  "aspirin 81 MG",
+                                          "tty":  "SCDC",
+                                          "status":  "Active"
+                                      },
+                            "ingredientRxcui":  "",
+                            "ingredientRxnav":  null
+                        },
+                        {
+                            "mention":  "paracetamol",
+                            "standardName":  "Paracetamol",
+                            "catalogCode":  "RX-PCM-650",
+                            "rxcui":  "198440",
+                            "rxnav":  {
+                                          "exists":  true,
+                                          "name":  "acetaminophen 500 MG Oral Tablet",
+                                          "tty":  "SCD",
+                                          "status":  "Active"
+                                      },
+                            "ingredientRxcui":  "",
+                            "ingredientRxnav":  null
+                        },
+                        {
+                            "mention":  "dolo 650",
+                            "standardName":  "Paracetamol",
+                            "catalogCode":  "RX-PCM-650",
+                            "rxcui":  "198440",
+                            "rxnav":  {
+                                          "exists":  true,
+                                          "name":  "acetaminophen 500 MG Oral Tablet",
+                                          "tty":  "SCD",
+                                          "status":  "Active"
+                                      },
+                            "ingredientRxcui":  "",
+                            "ingredientRxnav":  null
+                        },
+                        {
+                            "mention":  "dolo",
+                            "standardName":  "Paracetamol",
+                            "catalogCode":  "RX-PCM-650",
+                            "rxcui":  "198440",
+                            "rxnav":  {
+                                          "exists":  true,
+                                          "name":  "acetaminophen 500 MG Oral Tablet",
+                                          "tty":  "SCD",
+                                          "status":  "Active"
+                                      },
+                            "ingredientRxcui":  "",
+                            "ingredientRxnav":  null
+                        },
+                        {
+                            "mention":  "crocin",
+                            "standardName":  "Paracetamol",
+                            "catalogCode":  "RX-PCM-500",
+                            "rxcui":  "198438",
+                            "rxnav":  {
+                                          "exists":  false,
+                                          "name":  null,
+                                          "tty":  null,
+                                          "status":  "NotCurrent"
+                                      },
+                            "ingredientRxcui":  "",
+                            "ingredientRxnav":  null
+                        },
+                        {
+                            "mention":  "calpol",
+                            "standardName":  "Paracetamol",
+                            "catalogCode":  "RX-PCM-500",
+                            "rxcui":  "198438",
+                            "rxnav":  {
+                                          "exists":  false,
+                                          "name":  null,
+                                          "tty":  null,
+                                          "status":  "NotCurrent"
+                                      },
+                            "ingredientRxcui":  "",
+                            "ingredientRxnav":  null
+                        },
+                        {
+                            "mention":  "acetaminophen",
+                            "standardName":  "Paracetamol",
+                            "catalogCode":  "RX-PCM-650",
+                            "rxcui":  "198440",
+                            "rxnav":  {
+                                          "exists":  true,
+                                          "name":  "acetaminophen 500 MG Oral Tablet",
+                                          "tty":  "SCD",
+                                          "status":  "Active"
+                                      },
+                            "ingredientRxcui":  "",
+                            "ingredientRxnav":  null
+                        },
+                        {
+                            "mention":  "pan 40",
+                            "standardName":  "Pantoprazole",
+                            "catalogCode":  "RX-PAN-40",
+                            "rxcui":  "284635",
+                            "rxnav":  {
+                                          "exists":  true,
+                                          "name":  "fluticasone / salmeterol",
+                                          "tty":  "MIN",
+                                          "status":  "Active"
+                                      },
+                            "ingredientRxcui":  "",
+                            "ingredientRxnav":  null
+                        },
+                        {
+                            "mention":  "pantocid",
+                            "standardName":  "Pantoprazole",
+                            "catalogCode":  "RX-PAN-40",
+                            "rxcui":  "284635",
+                            "rxnav":  {
+                                          "exists":  true,
+                                          "name":  "fluticasone / salmeterol",
+                                          "tty":  "MIN",
+                                          "status":  "Active"
+                                      },
+                            "ingredientRxcui":  "",
+                            "ingredientRxnav":  null
+                        },
+                        {
+                            "mention":  "pantoprazole",
+                            "standardName":  "Pantoprazole",
+                            "catalogCode":  "RX-PAN-40",
+                            "rxcui":  "284635",
+                            "rxnav":  {
+                                          "exists":  true,
+                                          "name":  "fluticasone / salmeterol",
+                                          "tty":  "MIN",
+                                          "status":  "Active"
+                                      },
+                            "ingredientRxcui":  "",
+                            "ingredientRxnav":  null
+                        },
+                        {
+                            "mention":  "amoxicillin-clavulanate",
+                            "standardName":  "Amoxicillin/Clavulanate",
+                            "catalogCode":  "RX-AMX-CLV-875",
+                            "rxcui":  "308184",
+                            "rxnav":  {
+                                          "exists":  false,
+                                          "name":  null,
+                                          "tty":  null,
+                                          "status":  "NotCurrent"
+                                      },
+                            "ingredientRxcui":  "",
+                            "ingredientRxnav":  null
+                        },
+                        {
+                            "mention":  "amoxicillin/clavulanate",
+                            "standardName":  "Amoxicillin/Clavulanate",
+                            "catalogCode":  "RX-AMX-CLV-875",
+                            "rxcui":  "308184",
+                            "rxnav":  {
+                                          "exists":  false,
+                                          "name":  null,
+                                          "tty":  null,
+                                          "status":  "NotCurrent"
+                                      },
+                            "ingredientRxcui":  "",
+                            "ingredientRxnav":  null
+                        },
+                        {
+                            "mention":  "amoxicillin clavulanate",
+                            "standardName":  "Amoxicillin/Clavulanate",
+                            "catalogCode":  "RX-AMX-CLV-500",
+                            "rxcui":  "308182",
+                            "rxnav":  {
+                                          "exists":  true,
+                                          "name":  "amoxicillin 250 MG Oral Capsule",
+                                          "tty":  "SCD",
+                                          "status":  "Active"
+                                      },
+                            "ingredientRxcui":  "",
+                            "ingredientRxnav":  null
+                        },
+                        {
+                            "mention":  "co-amoxiclav",
+                            "standardName":  "Amoxicillin/Clavulanate",
+                            "catalogCode":  "RX-AMX-CLV-500",
+                            "rxcui":  "308182",
+                            "rxnav":  {
+                                          "exists":  true,
+                                          "name":  "amoxicillin 250 MG Oral Capsule",
+                                          "tty":  "SCD",
+                                          "status":  "Active"
+                                      },
+                            "ingredientRxcui":  "",
+                            "ingredientRxnav":  null
+                        },
+                        {
+                            "mention":  "augmentin",
+                            "standardName":  "Amoxicillin/Clavulanate",
+                            "catalogCode":  "RX-AMX-CLV-500",
+                            "rxcui":  "308182",
+                            "rxnav":  {
+                                          "exists":  true,
+                                          "name":  "amoxicillin 250 MG Oral Capsule",
+                                          "tty":  "SCD",
+                                          "status":  "Active"
+                                      },
+                            "ingredientRxcui":  "",
+                            "ingredientRxnav":  null
+                        },
+                        {
+                            "mention":  "amoxicillin",
+                            "standardName":  "Amoxicillin",
+                            "catalogCode":  "RX-AMX-500",
+                            "rxcui":  "213169",
+                            "rxnav":  {
+                                          "exists":  true,
+                                          "name":  "clopidogrel 75 MG Oral Tablet [Plavix]",
+                                          "tty":  "SBD",
+                                          "status":  "Active"
+                                      },
+                            "ingredientRxcui":  "",
+                            "ingredientRxnav":  null
+                        },
+                        {
+                            "mention":  "azithromycin",
+                            "standardName":  "Azithromycin",
+                            "catalogCode":  "RX-AZI-500",
+                            "rxcui":  "248656",
+                            "rxnav":  {
+                                          "exists":  true,
+                                          "name":  "azithromycin 500 MG Oral Tablet",
+                                          "tty":  "SCD",
+                                          "status":  "Active"
+                                      },
+                            "ingredientRxcui":  "",
+                            "ingredientRxnav":  null
+                        },
+                        {
+                            "mention":  "azee 500",
+                            "standardName":  "Azithromycin",
+                            "catalogCode":  "RX-AZI-500",
+                            "rxcui":  "248656",
+                            "rxnav":  {
+                                          "exists":  true,
+                                          "name":  "azithromycin 500 MG Oral Tablet",
+                                          "tty":  "SCD",
+                                          "status":  "Active"
+                                      },
+                            "ingredientRxcui":  "",
+                            "ingredientRxnav":  null
+                        },
+                        {
+                            "mention":  "tamsulosin",
+                            "standardName":  "Tamsulosin",
+                            "catalogCode":  "RX-TAM-04",
+                            "rxcui":  "1009147",
+                            "rxnav":  {
+                                          "exists":  true,
+                                          "name":  "amphetamine aspartate 1.875 MG / amphetamine sulfate 1.875 MG / dextroamphetamine saccharate 1.875 MG / dextroamphetamine sulfate 1.875 MG Oral Tablet [Adderall]",
+                                          "tty":  "SBD",
+                                          "status":  "Active"
+                                      },
+                            "ingredientRxcui":  "",
+                            "ingredientRxnav":  null
+                        },
+                        {
+                            "mention":  "combodart",
+                            "standardName":  "Tamsulosin/Finasteride",
+                            "catalogCode":  "RX-TAM-FIN-04-5",
+                            "rxcui":  "1009147",
+                            "rxnav":  {
+                                          "exists":  true,
+                                          "name":  "amphetamine aspartate 1.875 MG / amphetamine sulfate 1.875 MG / dextroamphetamine saccharate 1.875 MG / dextroamphetamine sulfate 1.875 MG Oral Tablet [Adderall]",
+                                          "tty":  "SBD",
+                                          "status":  "Active"
+                                      },
+                            "ingredientRxcui":  "",
+                            "ingredientRxnav":  null
+                        },
+                        {
+                            "mention":  "warfarin",
+                            "standardName":  "Warfarin",
+                            "catalogCode":  "RX-WAR-5",
+                            "rxcui":  "855332",
+                            "rxnav":  {
+                                          "exists":  true,
+                                          "name":  "warfarin sodium 5 MG Oral Tablet",
+                                          "tty":  "SCD",
+                                          "status":  "Active"
+                                      },
+                            "ingredientRxcui":  "",
+                            "ingredientRxnav":  null
+                        },
+                        {
+                            "mention":  "lisinopril",
+                            "standardName":  "Lisinopril",
+                            "catalogCode":  "RX-LIS-10",
+                            "rxcui":  "314076",
+                            "rxnav":  {
+                                          "exists":  true,
+                                          "name":  "lisinopril 10 MG Oral Tablet",
+                                          "tty":  "SCD",
+                                          "status":  "Active"
+                                      },
+                            "ingredientRxcui":  "",
+                            "ingredientRxnav":  null
+                        },
+                        {
+                            "mention":  "omeprazole",
+                            "standardName":  "Omeprazole",
+                            "catalogCode":  "RX-OME-20",
+                            "rxcui":  "312065",
+                            "rxnav":  {
+                                          "exists":  false,
+                                          "name":  null,
+                                          "tty":  null,
+                                          "status":  "Obsolete"
+                                      },
+                            "ingredientRxcui":  "",
+                            "ingredientRxnav":  null
+                        },
+                        {
+                            "mention":  "allopurinol",
+                            "standardName":  "Allopurinol",
+                            "catalogCode":  "RX-ALP-100",
+                            "rxcui":  "308136",
+                            "rxnav":  {
+                                          "exists":  true,
+                                          "name":  "amlodipine 2.5 MG Oral Tablet",
+                                          "tty":  "SCD",
+                                          "status":  "Active"
+                                      },
+                            "ingredientRxcui":  "",
+                            "ingredientRxnav":  null
+                        },
+                        {
+                            "mention":  "ibuprofen",
+                            "standardName":  "Ibuprofen",
+                            "catalogCode":  "RX-IBU-400",
+                            "rxcui":  "197806",
+                            "rxnav":  {
+                                          "exists":  true,
+                                          "name":  "ibuprofen 600 MG Oral Tablet",
+                                          "tty":  "SCD",
+                                          "status":  "Active"
+                                      },
+                            "ingredientRxcui":  "",
+                            "ingredientRxnav":  null
+                        },
+                        {
+                            "mention":  "ciprofloxacin",
+                            "standardName":  "Ciprofloxacin",
+                            "catalogCode":  "RX-CIP-500",
+                            "rxcui":  "309309",
+                            "rxnav":  {
+                                          "exists":  true,
+                                          "name":  "ciprofloxacin 500 MG Oral Tablet",
+                                          "tty":  "SCD",
+                                          "status":  "Active"
+                                      },
+                            "ingredientRxcui":  "",
+                            "ingredientRxnav":  null
+                        },
+                        {
+                            "mention":  "losartan",
+                            "standardName":  "Losartan",
+                            "catalogCode":  "RX-LOS-50",
+                            "rxcui":  "316049",
+                            "rxnav":  {
+                                          "exists":  true,
+                                          "name":  "hydrochlorothiazide 25 MG",
+                                          "tty":  "SCDC",
+                                          "status":  "Active"
+                                      },
+                            "ingredientRxcui":  "",
+                            "ingredientRxnav":  null
+                        },
+                        {
+                            "mention":  "amlodipine",
+                            "standardName":  "Amlodipine",
+                            "catalogCode":  "RX-AML-5",
+                            "rxcui":  "197361",
+                            "rxnav":  {
+                                          "exists":  true,
+                                          "name":  "amlodipine 5 MG Oral Tablet",
+                                          "tty":  "SCD",
+                                          "status":  "Active"
+                                      },
+                            "ingredientRxcui":  "",
+                            "ingredientRxnav":  null
+                        },
+                        {
+                            "mention":  "salbutamol",
+                            "standardName":  "Salbutamol",
+                            "catalogCode":  "RX-SAL-100",
+                            "rxcui":  "1649556",
+                            "rxnav":  {
+                                          "exists":  false,
+                                          "name":  null,
+                                          "tty":  null,
+                                          "status":  "NotCurrent"
+                                      },
+                            "ingredientRxcui":  "",
+                            "ingredientRxnav":  null
+                        },
+                        {
+                            "mention":  "prednisolone",
+                            "standardName":  "Prednisolone",
+                            "catalogCode":  "RX-PRED-40",
+                            "rxcui":  "312615",
+                            "rxnav":  {
+                                          "exists":  true,
+                                          "name":  "prednisone 20 MG Oral Tablet",
+                                          "tty":  "SCD",
+                                          "status":  "Active"
+                                      },
+                            "ingredientRxcui":  "",
+                            "ingredientRxnav":  null
+                        },
+                        {
+                            "mention":  "clopidogrel",
+                            "standardName":  "Clopidogrel",
+                            "catalogCode":  "RX-CLO-75",
+                            "rxcui":  "309362",
+                            "rxnav":  {
+                                          "exists":  true,
+                                          "name":  "clopidogrel 75 MG Oral Tablet",
+                                          "tty":  "SCD",
+                                          "status":  "Active"
+                                      },
+                            "ingredientRxcui":  "",
+                            "ingredientRxnav":  null
+                        },
+                        {
+                            "mention":  "ondansetron",
+                            "standardName":  "Ondansetron",
+                            "catalogCode":  "RX-OND-4",
+                            "rxcui":  "312086",
+                            "rxnav":  {
+                                          "exists":  true,
+                                          "name":  "ondansetron 8 MG Oral Tablet",
+                                          "tty":  "SCD",
+                                          "status":  "Active"
+                                      },
+                            "ingredientRxcui":  "",
+                            "ingredientRxnav":  null
+                        },
+                        {
+                            "mention":  "cisplatin",
+                            "standardName":  "Cisplatin",
+                            "catalogCode":  "RX-CIS-50",
+                            "rxcui":  "2555",
+                            "rxnav":  {
+                                          "exists":  true,
+                                          "name":  "cisplatin",
+                                          "tty":  "IN",
+                                          "status":  "Active"
+                                      },
+                            "ingredientRxcui":  "",
+                            "ingredientRxnav":  null
+                        },
+                        {
+                            "mention":  "pemetrexed",
+                            "standardName":  "Pemetrexed",
+                            "catalogCode":  "RX-PEM-500",
+                            "rxcui":  "404941",
+                            "rxnav":  {
+                                          "exists":  false,
+                                          "name":  null,
+                                          "tty":  null,
+                                          "status":  "NotCurrent"
+                                      },
+                            "ingredientRxcui":  "",
+                            "ingredientRxnav":  null
+                        }
+                    ],
+    "investigations":  [
+                           {
+                               "mention":  "cue",
+                               "standardName":  "Complete Urine Examination",
+                               "catalogCode":  "LAB-URINE",
+                               "loinc":  "24356-8",
+                               "lookup":  {
+                                              "exists":  true,
+                                              "display":  "Urinalysis complete panel - Urine",
+                                              "version":  "2.83"
+                                          }
+                           },
+                           {
+                               "mention":  "complete urine examination",
+                               "standardName":  "Complete Urine Examination",
+                               "catalogCode":  "LAB-URINE",
+                               "loinc":  "24356-8",
+                               "lookup":  {
+                                              "exists":  true,
+                                              "display":  "Urinalysis complete panel - Urine",
+                                              "version":  "2.83"
+                                          }
+                           },
+                           {
+                               "mention":  "urinalysis",
+                               "standardName":  "Urinalysis",
+                               "catalogCode":  "LAB-URINE",
+                               "loinc":  "24356-8",
+                               "lookup":  {
+                                              "exists":  true,
+                                              "display":  "Urinalysis complete panel - Urine",
+                                              "version":  "2.83"
+                                          }
+                           },
+                           {
+                               "mention":  "urine routine",
+                               "standardName":  "Urinalysis",
+                               "catalogCode":  "LAB-URINE",
+                               "loinc":  "24356-8",
+                               "lookup":  {
+                                              "exists":  true,
+                                              "display":  "Urinalysis complete panel - Urine",
+                                              "version":  "2.83"
+                                          }
+                           },
+                           {
+                               "mention":  "routine urine examination",
+                               "standardName":  "Urinalysis",
+                               "catalogCode":  "LAB-URINE",
+                               "loinc":  "24356-8",
+                               "lookup":  {
+                                              "exists":  true,
+                                              "display":  "Urinalysis complete panel - Urine",
+                                              "version":  "2.83"
+                                          }
+                           },
+                           {
+                               "mention":  "urine culture \u0026 sensitivity",
+                               "standardName":  "Urine Culture and Sensitivity",
+                               "catalogCode":  "LAB-URINE-CS",
+                               "loinc":  "630-4",
+                               "lookup":  {
+                                              "exists":  true,
+                                              "display":  "Bacteria identified in Urine by Culture",
+                                              "version":  "2.83"
+                                          }
+                           },
+                           {
+                               "mention":  "urine culture and sensitivity",
+                               "standardName":  "Urine Culture and Sensitivity",
+                               "catalogCode":  "LAB-URINE-CS",
+                               "loinc":  "630-4",
+                               "lookup":  {
+                                              "exists":  true,
+                                              "display":  "Bacteria identified in Urine by Culture",
+                                              "version":  "2.83"
+                                          }
+                           },
+                           {
+                               "mention":  "urine culture",
+                               "standardName":  "Urine Culture",
+                               "catalogCode":  "LAB-URINE-CS",
+                               "loinc":  "630-4",
+                               "lookup":  {
+                                              "exists":  true,
+                                              "display":  "Bacteria identified in Urine by Culture",
+                                              "version":  "2.83"
+                                          }
+                           },
+                           {
+                               "mention":  "urine c/s",
+                               "standardName":  "Urine Culture and Sensitivity",
+                               "catalogCode":  "LAB-URINE-CS",
+                               "loinc":  "630-4",
+                               "lookup":  {
+                                              "exists":  true,
+                                              "display":  "Bacteria identified in Urine by Culture",
+                                              "version":  "2.83"
+                                          }
+                           },
+                           {
+                               "mention":  "rft",
+                               "standardName":  "Renal Function Test",
+                               "catalogCode":  "LAB-RFT",
+                               "loinc":  "24362-6",
+                               "lookup":  {
+                                              "exists":  true,
+                                              "display":  "Renal function 2000 panel - Serum or Plasma",
+                                              "version":  "2.83"
+                                          }
+                           },
+                           {
+                               "mention":  "renal function test",
+                               "standardName":  "Renal Function Test",
+                               "catalogCode":  "LAB-RFT",
+                               "loinc":  "24362-6",
+                               "lookup":  {
+                                              "exists":  true,
+                                              "display":  "Renal function 2000 panel - Serum or Plasma",
+                                              "version":  "2.83"
+                                          }
+                           },
+                           {
+                               "mention":  "renal function tests",
+                               "standardName":  "Renal Function Test",
+                               "catalogCode":  "LAB-RFT",
+                               "loinc":  "24362-6",
+                               "lookup":  {
+                                              "exists":  true,
+                                              "display":  "Renal function 2000 panel - Serum or Plasma",
+                                              "version":  "2.83"
+                                          }
+                           },
+                           {
+                               "mention":  "kft",
+                               "standardName":  "Kidney Function Test",
+                               "catalogCode":  "LAB-RFT",
+                               "loinc":  "24362-6",
+                               "lookup":  {
+                                              "exists":  true,
+                                              "display":  "Renal function 2000 panel - Serum or Plasma",
+                                              "version":  "2.83"
+                                          }
+                           },
+                           {
+                               "mention":  "kidney function test",
+                               "standardName":  "Kidney Function Test",
+                               "catalogCode":  "LAB-RFT",
+                               "loinc":  "24362-6",
+                               "lookup":  {
+                                              "exists":  true,
+                                              "display":  "Renal function 2000 panel - Serum or Plasma",
+                                              "version":  "2.83"
+                                          }
+                           },
+                           {
+                               "mention":  "u\u0026e",
+                               "standardName":  "Urea and Electrolytes",
+                               "catalogCode":  "LAB-RFT",
+                               "loinc":  "24362-6",
+                               "lookup":  {
+                                              "exists":  true,
+                                              "display":  "Renal function 2000 panel - Serum or Plasma",
+                                              "version":  "2.83"
+                                          }
+                           },
+                           {
+                               "mention":  "urea and electrolytes",
+                               "standardName":  "Urea and Electrolytes",
+                               "catalogCode":  "LAB-RFT",
+                               "loinc":  "24362-6",
+                               "lookup":  {
+                                              "exists":  true,
+                                              "display":  "Renal function 2000 panel - Serum or Plasma",
+                                              "version":  "2.83"
+                                          }
+                           },
+                           {
+                               "mention":  "serum creatinine",
+                               "standardName":  "Serum Creatinine",
+                               "catalogCode":  "LAB-CREAT",
+                               "loinc":  "2160-0",
+                               "lookup":  {
+                                              "exists":  true,
+                                              "display":  "Creatinine [Mass/volume] in Serum or Plasma",
+                                              "version":  "2.83"
+                                          }
+                           },
+                           {
+                               "mention":  "creatinine",
+                               "standardName":  "Serum Creatinine",
+                               "catalogCode":  "LAB-CREAT",
+                               "loinc":  "2160-0",
+                               "lookup":  {
+                                              "exists":  true,
+                                              "display":  "Creatinine [Mass/volume] in Serum or Plasma",
+                                              "version":  "2.83"
+                                          }
+                           },
+                           {
+                               "mention":  "fasting lipid profile",
+                               "standardName":  "Lipid Profile",
+                               "catalogCode":  "LAB-LIPID",
+                               "loinc":  "24331-1",
+                               "lookup":  {
+                                              "exists":  true,
+                                              "display":  "Lipid 1996 panel - Serum or Plasma",
+                                              "version":  "2.83"
+                                          }
+                           },
+                           {
+                               "mention":  "lipid profile",
+                               "standardName":  "Lipid Profile",
+                               "catalogCode":  "LAB-LIPID",
+                               "loinc":  "24331-1",
+                               "lookup":  {
+                                              "exists":  true,
+                                              "display":  "Lipid 1996 panel - Serum or Plasma",
+                                              "version":  "2.83"
+                                          }
+                           },
+                           {
+                               "mention":  "lipid panel",
+                               "standardName":  "Lipid Profile",
+                               "catalogCode":  "LAB-LIPID",
+                               "loinc":  "24331-1",
+                               "lookup":  {
+                                              "exists":  true,
+                                              "display":  "Lipid 1996 panel - Serum or Plasma",
+                                              "version":  "2.83"
+                                          }
+                           },
+                           {
+                               "mention":  "lipids",
+                               "standardName":  "Lipid Profile",
+                               "catalogCode":  "LAB-LIPID",
+                               "loinc":  "24331-1",
+                               "lookup":  {
+                                              "exists":  true,
+                                              "display":  "Lipid 1996 panel - Serum or Plasma",
+                                              "version":  "2.83"
+                                          }
+                           },
+                           {
+                               "mention":  "complete blood count (cbc)",
+                               "standardName":  "Complete Blood Count",
+                               "catalogCode":  "LAB-CBC",
+                               "loinc":  "58410-2",
+                               "lookup":  {
+                                              "exists":  true,
+                                              "display":  "CBC panel - Blood by Automated count",
+                                              "version":  "2.83"
+                                          }
+                           },
+                           {
+                               "mention":  "complete blood count",
+                               "standardName":  "Complete Blood Count",
+                               "catalogCode":  "LAB-CBC",
+                               "loinc":  "58410-2",
+                               "lookup":  {
+                                              "exists":  true,
+                                              "display":  "CBC panel - Blood by Automated count",
+                                              "version":  "2.83"
+                                          }
+                           },
+                           {
+                               "mention":  "cbc",
+                               "standardName":  "Complete Blood Count",
+                               "catalogCode":  "LAB-CBC",
+                               "loinc":  "58410-2",
+                               "lookup":  {
+                                              "exists":  true,
+                                              "display":  "CBC panel - Blood by Automated count",
+                                              "version":  "2.83"
+                                          }
+                           },
+                           {
+                               "mention":  "hemogram",
+                               "standardName":  "Complete Blood Count",
+                               "catalogCode":  "LAB-CBC",
+                               "loinc":  "58410-2",
+                               "lookup":  {
+                                              "exists":  true,
+                                              "display":  "CBC panel - Blood by Automated count",
+                                              "version":  "2.83"
+                                          }
+                           },
+                           {
+                               "mention":  "liver function tests",
+                               "standardName":  "Liver Function Tests",
+                               "catalogCode":  "LAB-LFT",
+                               "loinc":  "24325-3",
+                               "lookup":  {
+                                              "exists":  true,
+                                              "display":  "Hepatic function 2000 panel - Serum or Plasma",
+                                              "version":  "2.83"
+                                          }
+                           },
+                           {
+                               "mention":  "liver function test",
+                               "standardName":  "Liver Function Tests",
+                               "catalogCode":  "LAB-LFT",
+                               "loinc":  "24325-3",
+                               "lookup":  {
+                                              "exists":  true,
+                                              "display":  "Hepatic function 2000 panel - Serum or Plasma",
+                                              "version":  "2.83"
+                                          }
+                           },
+                           {
+                               "mention":  "lft",
+                               "standardName":  "Liver Function Tests",
+                               "catalogCode":  "LAB-LFT",
+                               "loinc":  "24325-3",
+                               "lookup":  {
+                                              "exists":  true,
+                                              "display":  "Hepatic function 2000 panel - Serum or Plasma",
+                                              "version":  "2.83"
+                                          }
+                           },
+                           {
+                               "mention":  "liver panel",
+                               "standardName":  "Liver Function Tests",
+                               "catalogCode":  "LAB-LFT",
+                               "loinc":  "24325-3",
+                               "lookup":  {
+                                              "exists":  true,
+                                              "display":  "Hepatic function 2000 panel - Serum or Plasma",
+                                              "version":  "2.83"
+                                          }
+                           },
+                           {
+                               "mention":  "hba1c",
+                               "standardName":  "Hemoglobin A1c",
+                               "catalogCode":  "LAB-HBA1C",
+                               "loinc":  "4548-4",
+                               "lookup":  {
+                                              "exists":  true,
+                                              "display":  "Hemoglobin A1c/Hemoglobin.total in Blood",
+                                              "version":  "2.83"
+                                          }
+                           },
+                           {
+                               "mention":  "glycated hemoglobin",
+                               "standardName":  "Hemoglobin A1c",
+                               "catalogCode":  "LAB-HBA1C",
+                               "loinc":  "4548-4",
+                               "lookup":  {
+                                              "exists":  true,
+                                              "display":  "Hemoglobin A1c/Hemoglobin.total in Blood",
+                                              "version":  "2.83"
+                                          }
+                           },
+                           {
+                               "mention":  "hemoglobin a1c",
+                               "standardName":  "Hemoglobin A1c",
+                               "catalogCode":  "LAB-HBA1C",
+                               "loinc":  "4548-4",
+                               "lookup":  {
+                                              "exists":  true,
+                                              "display":  "Hemoglobin A1c/Hemoglobin.total in Blood",
+                                              "version":  "2.83"
+                                          }
+                           },
+                           {
+                               "mention":  "a1c",
+                               "standardName":  "Hemoglobin A1c",
+                               "catalogCode":  "LAB-HBA1C",
+                               "loinc":  "4548-4",
+                               "lookup":  {
+                                              "exists":  true,
+                                              "display":  "Hemoglobin A1c/Hemoglobin.total in Blood",
+                                              "version":  "2.83"
+                                          }
+                           },
+                           {
+                               "mention":  "thyroid stimulating hormone",
+                               "standardName":  "Thyroid Stimulating Hormone",
+                               "catalogCode":  "LAB-TSH",
+                               "loinc":  "3016-3",
+                               "lookup":  {
+                                              "exists":  true,
+                                              "display":  "Thyrotropin [Units/volume] in Serum or Plasma",
+                                              "version":  "2.83"
+                                          }
+                           },
+                           {
+                               "mention":  "serum tsh",
+                               "standardName":  "Thyroid Stimulating Hormone",
+                               "catalogCode":  "LAB-TSH",
+                               "loinc":  "3016-3",
+                               "lookup":  {
+                                              "exists":  true,
+                                              "display":  "Thyrotropin [Units/volume] in Serum or Plasma",
+                                              "version":  "2.83"
+                                          }
+                           },
+                           {
+                               "mention":  "tsh",
+                               "standardName":  "Thyroid Stimulating Hormone",
+                               "catalogCode":  "LAB-TSH",
+                               "loinc":  "3016-3",
+                               "lookup":  {
+                                              "exists":  true,
+                                              "display":  "Thyrotropin [Units/volume] in Serum or Plasma",
+                                              "version":  "2.83"
+                                          }
+                           },
+                           {
+                               "mention":  "c-reactive protein",
+                               "standardName":  "C-Reactive Protein",
+                               "catalogCode":  "LAB-CRP",
+                               "loinc":  "1988-5",
+                               "lookup":  {
+                                              "exists":  true,
+                                              "display":  "C reactive protein [Mass/volume] in Serum or Plasma",
+                                              "version":  "2.83"
+                                          }
+                           },
+                           {
+                               "mention":  "crp",
+                               "standardName":  "C-Reactive Protein",
+                               "catalogCode":  "LAB-CRP",
+                               "loinc":  "1988-5",
+                               "lookup":  {
+                                              "exists":  true,
+                                              "display":  "C reactive protein [Mass/volume] in Serum or Plasma",
+                                              "version":  "2.83"
+                                          }
+                           },
+                           {
+                               "mention":  "erythrocyte sedimentation rate",
+                               "standardName":  "Erythrocyte Sedimentation Rate",
+                               "catalogCode":  "LAB-ESR",
+                               "loinc":  "4537-7",
+                               "lookup":  {
+                                              "exists":  true,
+                                              "display":  "Erythrocyte [Sedimentation Rate] in Blood by Westergren method",
+                                              "version":  "2.83"
+                                          }
+                           },
+                           {
+                               "mention":  "esr",
+                               "standardName":  "Erythrocyte Sedimentation Rate",
+                               "catalogCode":  "LAB-ESR",
+                               "loinc":  "4537-7",
+                               "lookup":  {
+                                              "exists":  true,
+                                              "display":  "Erythrocyte [Sedimentation Rate] in Blood by Westergren method",
+                                              "version":  "2.83"
+                                          }
+                           },
+                           {
+                               "mention":  "12-lead ecg",
+                               "standardName":  "Electrocardiogram",
+                               "catalogCode":  "IMG-ECG",
+                               "loinc":  "11524-6",
+                               "lookup":  {
+                                              "exists":  true,
+                                              "display":  "EKG study",
+                                              "version":  "2.83"
+                                          }
+                           },
+                           {
+                               "mention":  "12 lead ecg",
+                               "standardName":  "Electrocardiogram",
+                               "catalogCode":  "IMG-ECG",
+                               "loinc":  "11524-6",
+                               "lookup":  {
+                                              "exists":  true,
+                                              "display":  "EKG study",
+                                              "version":  "2.83"
+                                          }
+                           },
+                           {
+                               "mention":  "electrocardiogram",
+                               "standardName":  "Electrocardiogram",
+                               "catalogCode":  "IMG-ECG",
+                               "loinc":  "11524-6",
+                               "lookup":  {
+                                              "exists":  true,
+                                              "display":  "EKG study",
+                                              "version":  "2.83"
+                                          }
+                           },
+                           {
+                               "mention":  "ecg",
+                               "standardName":  "Electrocardiogram",
+                               "catalogCode":  "IMG-ECG",
+                               "loinc":  "11524-6",
+                               "lookup":  {
+                                              "exists":  true,
+                                              "display":  "EKG study",
+                                              "version":  "2.83"
+                                          }
+                           },
+                           {
+                               "mention":  "ekg",
+                               "standardName":  "Electrocardiogram",
+                               "catalogCode":  "IMG-ECG",
+                               "loinc":  "11524-6",
+                               "lookup":  {
+                                              "exists":  true,
+                                              "display":  "EKG study",
+                                              "version":  "2.83"
+                                          }
+                           },
+                           {
+                               "mention":  "chest x-ray pa view",
+                               "standardName":  "Chest X-Ray",
+                               "catalogCode":  "IMG-CXR",
+                               "loinc":  "36643-5",
+                               "lookup":  {
+                                              "exists":  true,
+                                              "display":  "XR Chest 2 Views",
+                                              "version":  "2.83"
+                                          }
+                           },
+                           {
+                               "mention":  "chest x-ray",
+                               "standardName":  "Chest X-Ray",
+                               "catalogCode":  "IMG-CXR",
+                               "loinc":  "36643-5",
+                               "lookup":  {
+                                              "exists":  true,
+                                              "display":  "XR Chest 2 Views",
+                                              "version":  "2.83"
+                                          }
+                           },
+                           {
+                               "mention":  "chest radiograph",
+                               "standardName":  "Chest X-Ray",
+                               "catalogCode":  "IMG-CXR",
+                               "loinc":  "36643-5",
+                               "lookup":  {
+                                              "exists":  true,
+                                              "display":  "XR Chest 2 Views",
+                                              "version":  "2.83"
+                                          }
+                           },
+                           {
+                               "mention":  "x-ray chest",
+                               "standardName":  "Chest X-Ray",
+                               "catalogCode":  "IMG-CXR",
+                               "loinc":  "36643-5",
+                               "lookup":  {
+                                              "exists":  true,
+                                              "display":  "XR Chest 2 Views",
+                                              "version":  "2.83"
+                                          }
+                           },
+                           {
+                               "mention":  "cxr",
+                               "standardName":  "Chest X-Ray",
+                               "catalogCode":  "IMG-CXR",
+                               "loinc":  "36643-5",
+                               "lookup":  {
+                                              "exists":  true,
+                                              "display":  "XR Chest 2 Views",
+                                              "version":  "2.83"
+                                          }
+                           },
+                           {
+                               "mention":  "x-ray",
+                               "standardName":  "Radiologic Examination",
+                               "catalogCode":  "IMG-CXR",
+                               "loinc":  "36643-5",
+                               "lookup":  {
+                                              "exists":  true,
+                                              "display":  "XR Chest 2 Views",
+                                              "version":  "2.83"
+                                          }
+                           },
+                           {
+                               "mention":  "2d echocardiogram",
+                               "standardName":  "2D Echocardiogram",
+                               "catalogCode":  "IMG-ECHO-2D",
+                               "loinc":  "34552-0",
+                               "lookup":  {
+                                              "exists":  true,
+                                              "display":  "Cardiac 2D echo panel",
+                                              "version":  "2.83"
+                                          }
+                           },
+                           {
+                               "mention":  "2d echo",
+                               "standardName":  "2D Echocardiogram",
+                               "catalogCode":  "IMG-ECHO-2D",
+                               "loinc":  "34552-0",
+                               "lookup":  {
+                                              "exists":  true,
+                                              "display":  "Cardiac 2D echo panel",
+                                              "version":  "2.83"
+                                          }
+                           },
+                           {
+                               "mention":  "echocardiogram",
+                               "standardName":  "2D Echocardiogram",
+                               "catalogCode":  "IMG-ECHO-2D",
+                               "loinc":  "34552-0",
+                               "lookup":  {
+                                              "exists":  true,
+                                              "display":  "Cardiac 2D echo panel",
+                                              "version":  "2.83"
+                                          }
+                           },
+                           {
+                               "mention":  "echo",
+                               "standardName":  "2D Echocardiogram",
+                               "catalogCode":  "IMG-ECHO-2D",
+                               "loinc":  "34552-0",
+                               "lookup":  {
+                                              "exists":  true,
+                                              "display":  "Cardiac 2D echo panel",
+                                              "version":  "2.83"
+                                          }
+                           },
+                           {
+                               "mention":  "ultrasound abdomen",
+                               "standardName":  "Ultrasound Abdomen",
+                               "catalogCode":  "IMG-USG-ABD",
+                               "loinc":  "79103-8",
+                               "lookup":  {
+                                              "exists":  true,
+                                              "display":  "CT Abdomen W contrast IV",
+                                              "version":  "2.83"
+                                          }
+                           },
+                           {
+                               "mention":  "usg abdomen",
+                               "standardName":  "Ultrasound Abdomen",
+                               "catalogCode":  "IMG-USG-ABD",
+                               "loinc":  "79103-8",
+                               "lookup":  {
+                                              "exists":  true,
+                                              "display":  "CT Abdomen W contrast IV",
+                                              "version":  "2.83"
+                                          }
+                           },
+                           {
+                               "mention":  "ultrasound renal",
+                               "standardName":  "Ultrasound Renal",
+                               "catalogCode":  "IMG-USG-RENAL",
+                               "loinc":  "24987-0",
+                               "lookup":  {
+                                              "exists":  true,
+                                              "display":  "CT Spine W contrast IV",
+                                              "version":  "2.83"
+                                          }
+                           },
+                           {
+                               "mention":  "usg renal",
+                               "standardName":  "Ultrasound Renal",
+                               "catalogCode":  "IMG-USG-RENAL",
+                               "loinc":  "24987-0",
+                               "lookup":  {
+                                              "exists":  true,
+                                              "display":  "CT Spine W contrast IV",
+                                              "version":  "2.83"
+                                          }
+                           },
+                           {
+                               "mention":  "ultrasound",
+                               "standardName":  "Ultrasound",
+                               "catalogCode":  "IMG-USG-ABD",
+                               "loinc":  "79103-8",
+                               "lookup":  {
+                                              "exists":  true,
+                                              "display":  "CT Abdomen W contrast IV",
+                                              "version":  "2.83"
+                                          }
+                           },
+                           {
+                               "mention":  "usg",
+                               "standardName":  "Ultrasound",
+                               "catalogCode":  "IMG-USG-ABD",
+                               "loinc":  "79103-8",
+                               "lookup":  {
+                                              "exists":  true,
+                                              "display":  "CT Abdomen W contrast IV",
+                                              "version":  "2.83"
+                                          }
+                           },
+                           {
+                               "mention":  "ct scan",
+                               "standardName":  "CT Scan",
+                               "catalogCode":  "IMG-CT",
+                               "loinc":  "24725-4",
+                               "lookup":  {
+                                              "exists":  true,
+                                              "display":  "CT Head",
+                                              "version":  "2.83"
+                                          }
+                           },
+                           {
+                               "mention":  "ncct",
+                               "standardName":  "CT Scan",
+                               "catalogCode":  "IMG-CT",
+                               "loinc":  "24725-4",
+                               "lookup":  {
+                                              "exists":  true,
+                                              "display":  "CT Head",
+                                              "version":  "2.83"
+                                          }
+                           },
+                           {
+                               "mention":  "cect",
+                               "standardName":  "CT Scan",
+                               "catalogCode":  "IMG-CT",
+                               "loinc":  "24725-4",
+                               "lookup":  {
+                                              "exists":  true,
+                                              "display":  "CT Head",
+                                              "version":  "2.83"
+                                          }
+                           },
+                           {
+                               "mention":  "ct",
+                               "standardName":  "CT Scan",
+                               "catalogCode":  "IMG-CT",
+                               "loinc":  "24725-4",
+                               "lookup":  {
+                                              "exists":  true,
+                                              "display":  "CT Head",
+                                              "version":  "2.83"
+                                          }
+                           },
+                           {
+                               "mention":  "mri scan",
+                               "standardName":  "MRI Study",
+                               "catalogCode":  "IMG-MRI",
+                               "loinc":  "24590-2",
+                               "lookup":  {
+                                              "exists":  true,
+                                              "display":  "MR Brain",
+                                              "version":  "2.83"
+                                          }
+                           },
+                           {
+                               "mention":  "mri",
+                               "standardName":  "MRI Study",
+                               "catalogCode":  "IMG-MRI",
+                               "loinc":  "24590-2",
+                               "lookup":  {
+                                              "exists":  true,
+                                              "display":  "MR Brain",
+                                              "version":  "2.83"
+                                          }
+                           },
+                           {
+                               "mention":  "troponin-i",
+                               "standardName":  "Troponin",
+                               "catalogCode":  "LAB-TROP",
+                               "loinc":  "6598-7",
+                               "lookup":  {
+                                              "exists":  true,
+                                              "display":  "Troponin T.cardiac [Mass/volume] in Serum or Plasma",
+                                              "version":  "2.83"
+                                          }
+                           },
+                           {
+                               "mention":  "troponin t",
+                               "standardName":  "Troponin",
+                               "catalogCode":  "LAB-TROP",
+                               "loinc":  "6598-7",
+                               "lookup":  {
+                                              "exists":  true,
+                                              "display":  "Troponin T.cardiac [Mass/volume] in Serum or Plasma",
+                                              "version":  "2.83"
+                                          }
+                           },
+                           {
+                               "mention":  "trop-i",
+                               "standardName":  "Troponin",
+                               "catalogCode":  "LAB-TROP",
+                               "loinc":  "6598-7",
+                               "lookup":  {
+                                              "exists":  true,
+                                              "display":  "Troponin T.cardiac [Mass/volume] in Serum or Plasma",
+                                              "version":  "2.83"
+                                          }
+                           },
+                           {
+                               "mention":  "troponin",
+                               "standardName":  "Troponin",
+                               "catalogCode":  "LAB-TROP",
+                               "loinc":  "6598-7",
+                               "lookup":  {
+                                              "exists":  true,
+                                              "display":  "Troponin T.cardiac [Mass/volume] in Serum or Plasma",
+                                              "version":  "2.83"
+                                          }
+                           },
+                           {
+                               "mention":  "d-dimer",
+                               "standardName":  "Fibrin D-dimer",
+                               "catalogCode":  "LAB-DDIMER",
+                               "loinc":  "48065-7",
+                               "lookup":  {
+                                              "exists":  true,
+                                              "display":  "Fibrin D-dimer FEU [Mass/volume] in Platelet poor plasma",
+                                              "version":  "2.83"
+                                          }
+                           },
+                           {
+                               "mention":  "d dimer",
+                               "standardName":  "Fibrin D-dimer",
+                               "catalogCode":  "LAB-DDIMER",
+                               "loinc":  "48065-7",
+                               "lookup":  {
+                                              "exists":  true,
+                                              "display":  "Fibrin D-dimer FEU [Mass/volume] in Platelet poor plasma",
+                                              "version":  "2.83"
+                                          }
+                           },
+                           {
+                               "mention":  "serum electrolytes",
+                               "standardName":  "Serum Electrolytes",
+                               "catalogCode":  "LAB-ELECT",
+                               "loinc":  "24326-1",
+                               "lookup":  {
+                                              "exists":  true,
+                                              "display":  "Electrolytes 1998 panel - Serum or Plasma",
+                                              "version":  "2.83"
+                                          }
+                           },
+                           {
+                               "mention":  "electrolytes",
+                               "standardName":  "Serum Electrolytes",
+                               "catalogCode":  "LAB-ELECT",
+                               "loinc":  "24326-1",
+                               "lookup":  {
+                                              "exists":  true,
+                                              "display":  "Electrolytes 1998 panel - Serum or Plasma",
+                                              "version":  "2.83"
+                                          }
+                           },
+                           {
+                               "mention":  "blood culture \u0026 sensitivity",
+                               "standardName":  "Blood Culture",
+                               "catalogCode":  "LAB-BLD-CS",
+                               "loinc":  "600-7",
+                               "lookup":  {
+                                              "exists":  true,
+                                              "display":  "Bacteria identified in Blood by Culture",
+                                              "version":  "2.83"
+                                          }
+                           },
+                           {
+                               "mention":  "blood culture",
+                               "standardName":  "Blood Culture",
+                               "catalogCode":  "LAB-BLD-CS",
+                               "loinc":  "600-7",
+                               "lookup":  {
+                                              "exists":  true,
+                                              "display":  "Bacteria identified in Blood by Culture",
+                                              "version":  "2.83"
+                                          }
+                           },
+                           {
+                               "mention":  "pulmonary function test",
+                               "standardName":  "Pulmonary Function Test",
+                               "catalogCode":  "LAB-PFT",
+                               "loinc":  "81459-0",
+                               "lookup":  {
+                                              "exists":  true,
+                                              "display":  "Spirometry panel",
+                                              "version":  "2.83"
+                                          }
+                           },
+                           {
+                               "mention":  "pft",
+                               "standardName":  "Pulmonary Function Test",
+                               "catalogCode":  "LAB-PFT",
+                               "loinc":  "81459-0",
+                               "lookup":  {
+                                              "exists":  true,
+                                              "display":  "Spirometry panel",
+                                              "version":  "2.83"
+                                          }
+                           }
+                       ]
+}

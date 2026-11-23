@@ -1,0 +1,14 @@
+{
+    "extractionId":  "1713c76e-b355-4be3-b02f-e9d581b82415",
+    "originalWarfarinDose":  null,
+    "medicationCount":  7,
+    "investigationCount":  10,
+    "auditRows":  12,
+    "authModes":  [
+                      "LOCAL_DEMO_MODE"
+                  ],
+    "identityLabels":  [
+                           "Unauthenticated Session (Local Demonstration Mode)"
+                       ],
+    "versionGapsOrDuplicates":  0
+}

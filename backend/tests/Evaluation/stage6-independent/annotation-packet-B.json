@@ -1,0 +1,110 @@
+[
+  {
+    "id": "ind-001",
+    "note_text_sha256": "8fcb50205eaf11e595e7961caf7df7475869289c993c0cf14cb623e336d182bc",
+    "expected_medications": null,
+    "expected_investigations": null,
+    "expected_alerts": null,
+    "reviewer_id": null,
+    "annotation_status": "NOT_ANNOTATED"
+  },
+  {
+    "id": "ind-002",
+    "note_text_sha256": "8c1587ceb75f0acbd7cfac0be943923855175cd190edae8a9880299a80a406e0",
+    "expected_medications": null,
+    "expected_investigations": null,
+    "expected_alerts": null,
+    "reviewer_id": null,
+    "annotation_status": "NOT_ANNOTATED"
+  },
+  {
+    "id": "ind-003",
+    "note_text_sha256": "91372d8695f80b4996081a28952bda013bd4324ccacd0857855f11cd0cef5272",
+    "expected_medications": null,
+    "expected_investigations": null,
+    "expected_alerts": null,
+    "reviewer_id": null,
+    "annotation_status": "NOT_ANNOTATED"
+  },
+  {
+    "id": "ind-004",
+    "note_text_sha256": "15d314fd74ffc2065e89fec6d533fb76c2210a8cfc30e4084bf8be6af227ec7b",
+    "expected_medications": null,
+    "expected_investigations": null,
+    "expected_alerts": null,
+    "reviewer_id": null,
+    "annotation_status": "NOT_ANNOTATED"
+  },
+  {
+    "id": "ind-005",
+    "note_text_sha256": "a3fc37bf152642639cd79f94bc86c3a66e3f2fec7f262b2f4e114f2fbee1ff2c",
+    "expected_medications": null,
+    "expected_investigations": null,
+    "expected_alerts": null,
+    "reviewer_id": null,
+    "annotation_status": "NOT_ANNOTATED"
+  },
+  {
+    "id": "ind-006",
+    "note_text_sha256": "31f1c9aac0d05c9f8132eff6156596fd50fd768e57be68a688efd15cc7e85a46",
+    "expected_medications": null,
+    "expected_investigations": null,
+    "expected_alerts": null,
+    "reviewer_id": null,
+    "annotation_status": "NOT_ANNOTATED"
+  },
+  {
+    "id": "ind-007",
+    "note_text_sha256": "41d7e98731854e2f3246029fb6b02c90e4d42a4a3a499a4d7169c0d28f24aec9",
+    "expected_medications": null,
+    "expected_investigations": null,
+    "expected_alerts": null,
+    "reviewer_id": null,
+    "annotation_status": "NOT_ANNOTATED"
+  },
+  {
+    "id": "ind-008",
+    "note_text_sha256": "994f3ec019dc41377b333d573aed6f5a6b8ee500d2f30eaec3528efdc3c45120",
+    "expected_medications": null,
+    "expected_investigations": null,
+    "expected_alerts": null,
+    "reviewer_id": null,
+    "annotation_status": "NOT_ANNOTATED"
+  },
+  {
+    "id": "ind-009",
+    "note_text_sha256": "8c3185a653fc9283e8c9eaf918b19afac2067533d09acf5779f9a9aca5527293",
+    "expected_medications": null,
+    "expected_investigations": null,
+    "expected_alerts": null,
+    "reviewer_id": null,
+    "annotation_status": "NOT_ANNOTATED"
+  },
+  {
+    "id": "ind-010",
+    "note_text_sha256": "a429ae6f45345bbaf5f821f9f5d4c564e1efd6c6e09ed48f48e4f139a2894e47",
+    "expected_medications": null,
+    "expected_investigations": null,
+    "expected_alerts": null,
+    "reviewer_id": null,
+    "annotation_status": "NOT_ANNOTATED"
+  },
+  {
+    "id": "ind-011",
+    "note_text_sha256": "7419656a53945210d0e5eda5716bfd082006bacc475513b47ce5378534e60878",
+    "expected_medications": null,
+    "expected_investigations": null,
+    "expected_alerts": null,
+    "reviewer_id": null,
+    "annotation_status": "NOT_ANNOTATED"
+  },
+  {
+    "id": "ind-012",
+    "note_text_sha256": "c855a3f8b734e51a1ec5bac915f9b4146aee975630abfb57a25e980ac3ccb9ed",
+    "expected_medications": null,
+    "expected_investigations": null,
+    "expected_alerts": null,
+    "reviewer_id": null,
+    "annotation_status": "NOT_ANNOTATED"
+  }
+]

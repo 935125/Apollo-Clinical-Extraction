@@ -1,0 +1,17 @@
+{
+  "classification": "Sealed prospective synthetic evaluation inputs; independent clinical annotations pending",
+  "input_sha256": "1b7731b534c5e28a942a410089067e9e9cab42000d50f4fa642de64faeb131ec",
+  "case_count": 12,
+  "model_or_pipeline_executed_on_cases": false,
+  "independent_annotations_available": false,
+  "eligible_for_final_evaluation": false,
+  "annotation_packets": [
+    "annotation-packet-A.json",
+    "annotation-packet-B.json"
+  ],
+  "gold_annotations_sha256": null,
+  "adjudicator_id": null,
+  "status": "PENDING EXTERNAL REVIEW",
+  "implementation_snapshot": "docs/stage6-evidence/implementation-sha256.json",
+  "implementation_snapshot_sha256": "dd99c68a079d8f547c58f8bbfbbfa3465549abd656d9c27c8697fd1a59a95c9f"
+}

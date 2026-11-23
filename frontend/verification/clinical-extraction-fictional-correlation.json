@@ -1,0 +1,210 @@
+{
+  "schemaVersion": "1.0.0",
+  "extractionId": "fictional-desktop-run",
+  "correlationId": "fictional-correlation",
+  "extractedAt": "2026-11-20T06:00:00Z",
+  "executionDurationMs": 721,
+  "modelMetadata": {
+    "adapterType": "fictional_browser_fixture",
+    "modelDeployment": "fictional-model",
+    "promptVersion": "test-v1",
+    "totalTokens": 800
+  },
+  "preprocessed": {
+    "charLength": 508,
+    "sections": []
+  },
+  "medications": [
+    {
+      "name": "Amoxicillin-clavulanate",
+      "strength": "875/125 mg",
+      "dose": "1 tablet",
+      "frequency": "Twice daily",
+      "assertionStatus": "new_order",
+      "route": "oral",
+      "duration": "7 days",
+      "formulation": null,
+      "instructions": null,
+      "evidence": {
+        "quote": "Start amoxicillin-clavulanate 875/125 mg, 1 tablet orally twice daily for 7 days.",
+        "start": 187,
+        "end": 268,
+        "verified": true
+      },
+      "findings": [],
+      "qualityFlags": [],
+      "normalization": {
+        "status": "unresolved",
+        "matchedCode": null,
+        "displayName": null,
+        "confidence": 0
+      }
+    },
+    {
+      "name": "Azithromycin",
+      "strength": "500 mg",
+      "dose": null,
+      "frequency": "Once daily",
+      "assertionStatus": "new_order",
+      "route": "oral",
+      "duration": null,
+      "formulation": null,
+      "instructions": "500 mg on day 1, then 250 mg once daily for 4 more days.",
+      "evidence": {
+        "quote": "Azithromycin 500 mg on day 1, then 250 mg once daily for 4 more days.",
+        "start": 271,
+        "end": 340,
+        "verified": true
+      },
+      "findings": [],
+      "qualityFlags": [],
+      "normalization": {
+        "status": "unresolved",
+        "matchedCode": null,
+        "displayName": null,
+        "confidence": 0
+      }
+    },
+    {
+      "name": "Metformin",
+      "strength": "500 mg",
+      "dose": null,
+      "frequency": "Twice daily",
+      "assertionStatus": "current_medication",
+      "route": "oral",
+      "duration": null,
+      "formulation": null,
+      "instructions": null,
+      "evidence": {
+        "quote": "metformin",
+        "start": 352,
+        "end": 361,
+        "verified": true
+      },
+      "findings": [],
+      "qualityFlags": [],
+      "normalization": {
+        "status": "unresolved",
+        "matchedCode": null,
+        "displayName": null,
+        "confidence": 0
+      }
+    },
+    {
+      "name": "Amlodipine",
+      "strength": "10 mg",
+      "dose": null,
+      "frequency": "Once daily",
+      "assertionStatus": "current_medication",
+      "route": "oral",
+      "duration": null,
+      "formulation": null,
+      "instructions": null,
+      "evidence": {
+        "quote": "Increase amlodipine to 10 mg once daily.",
+        "start": 384,
+        "end": 424,
+        "verified": true
+      },
+      "findings": [],
+      "qualityFlags": [],
+      "normalization": {
+        "status": "unresolved",
+        "matchedCode": null,
+        "displayName": null,
+        "confidence": 0
+      }
+    }
+  ],
+  "investigations": [
+    {
+      "name": "Chest X-ray",
+      "timing": "today",
+      "specimen": null,
+      "assertionStatus": "new_order",
+      "evidence": {
+        "quote": "Chest X-ray to rule out consolidation.",
+        "start": 444,
+        "end": 482,
+        "verified": true
+      },
+      "findings": [],
+      "qualityFlags": [],
+      "normalization": {
+        "status": "unresolved",
+        "matchedCode": null,
+        "displayName": null,
+        "confidence": 0
+      }
+    },
+    {
+      "name": "Complete blood count",
+      "timing": "today",
+      "specimen": null,
+      "assertionStatus": "new_order",
+      "evidence": {
+        "quote": "CBC",
+        "start": 485,
+        "end": 488,
+        "verified": true
+      },
+      "findings": [],
+      "qualityFlags": [],
+      "normalization": {
+        "status": "unresolved",
+        "matchedCode": null,
+        "displayName": null,
+        "confidence": 0
+      }
+    },
+    {
+      "name": "C-reactive protein",
+      "timing": "today",
+      "specimen": null,
+      "assertionStatus": "new_order",
+      "evidence": {
+        "quote": "CRP",
+        "start": 490,
+        "end": 493,
+        "verified": true
+      },
+      "findings": [],
+      "qualityFlags": [],
+      "normalization": {
+        "status": "unresolved",
+        "matchedCode": null,
+        "displayName": null,
+        "confidence": 0
+      }
+    },
+    {
+      "name": "Urea & electrolytes",
+      "timing": "today",
+      "specimen": null,
+      "assertionStatus": "new_order",
+      "evidence": {
+        "quote": "U&E",
+        "start": 498,
+        "end": 501,
+        "verified": true
+      },
+      "findings": [],
+      "qualityFlags": [],
+      "normalization": {
+        "status": "unresolved",
+        "matchedCode": null,
+        "displayName": null,
+        "confidence": 0
+      }
+    }
+  ],
+  "validationSummary": {
+    "hasErrors": false,
+    "errorCount": 0,
+    "warningCount": 0
+  },
+  "noteText": "Fictional patient, 62 years old, with type 2 diabetes and hypertension. Three days of fever, productive cough and shortness of breath.\n\nAssessment: Community acquired pneumonia.\n\nPlan:\n• Start amoxicillin-clavulanate 875/125 mg, 1 tablet orally twice daily for 7 days.\n• Azithromycin 500 mg on day 1, then 250 mg once daily for 4 more days.\n• Continue metformin 500 mg twice daily.\n• Increase amlodipine to 10 mg once daily.\n\nInvestigations:\n• Chest X-ray to rule out consolidation.\n• CBC, CRP and U&E today.",
+  "inputType": "text",
+  "sourceFileName": null,
+  "saved": true
+}
