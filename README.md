@@ -6,12 +6,7 @@ Apollo transforms unstructured clinical notes and text-based PDFs into structure
 
 **Angular 21 · ASP.NET Core / .NET 10 · Microsoft Foundry · ONNX · PostgreSQL / pgvector**
 
-<<<<<<< HEAD
-> [!IMPORTANT]
-> **Status: engineering demonstration / development candidate, not hospital-production ready.** Independent clinical validation, institutional authentication and access controls, security governance, and deployment approvals remain outstanding. Use synthetic data unless the institution explicitly authorizes real clinical data processing.
-=======
-**Quick links:** [Live UI gallery](#frontend-screenshots) · [One-click Windows startup](#option-a-one-click-windows-launcher) · [Frontend walkthrough](#frontend-walkthrough) · [Architecture](#architecture) · [API reference](#api-overview) · [Testing](#verify-the-application)
->>>>>>> b3d60bef6e66be92604ddf34657ee58597b25264
+
 
 ## Contents
 
