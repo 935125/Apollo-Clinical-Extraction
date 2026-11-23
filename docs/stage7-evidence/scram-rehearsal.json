@@ -1,0 +1,9 @@
+{
+    "database":  "fresh isolated cluster, port 55447",
+    "scramCorrectPassword":  true,
+    "incorrectPasswordRejected":  true,
+    "rejectRuleVerified":  true,
+    "hbaRollbackVerified":  true,
+    "existingClusterChanged":  false,
+    "tlsTested":  false
+}

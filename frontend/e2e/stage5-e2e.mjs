@@ -6,7 +6,7 @@ import { fileURLToPath } from 'node:url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const repoRoot = path.resolve(__dirname, '..', '..');
-const artifactDir = path.join(repoRoot, 'backend', 'artifacts', 'stage5-release-verification');
+const artifactDir = process.env.E2E_ARTIFACT_DIR || path.join(repoRoot, 'docs', 'stage7-evidence', 'playwright');
 const screenshotDir = path.join(artifactDir, 'screenshots');
 fs.mkdirSync(screenshotDir, { recursive: true });
 

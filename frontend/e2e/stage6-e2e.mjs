@@ -5,7 +5,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
-const directory = path.join(root, 'docs/stage6-evidence/playwright');
+const directory = process.env.E2E_ARTIFACT_DIR || path.join(root, 'docs/stage7-evidence/playwright');
 fs.mkdirSync(directory, { recursive: true });
 const capture = JSON.parse(fs.readFileSync(path.join(root, 'docs/stage6-evidence/after.json'), 'utf8'));
 const browser = await chromium.launch({ headless: true });
@@ -22,7 +22,7 @@ await page.route('**/api/v1/extractions', async route => {
   else await route.continue();
 });
 try {
-  await page.goto('http://127.0.0.1:4200/?extractionId=stage6-offline-preview', { waitUntil: 'networkidle' });
+  await page.goto(`${process.env.E2E_BASE_URL || 'http://127.0.0.1:4200'}/?extractionId=stage6-offline-preview`, { waitUntil: 'networkidle' });
   await page.locator('.medication-table button.entity-button', { hasText: 'Methotrexate' }).click();
   await page.locator('.row-details').waitFor({ state: 'visible' });
   const text = await page.locator('.result-content').innerText();
