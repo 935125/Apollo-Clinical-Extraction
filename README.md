@@ -16,10 +16,7 @@
 
 </div>
 
-> [!IMPORTANT]
-> **Engineering demonstration — not approved for hospital production or autonomous clinical decision-making.** The system has been exercised with synthetic data. Institutional authentication, security/privacy assessments, prospective clinical validation, operational monitoring, and deployment authorization are required before processing real patient records. References to Apollo describe the project context and interface; they do not establish institutional production approval.
 
----
 
 ## Overview
 
