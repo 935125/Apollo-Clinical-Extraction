@@ -1,8 +1,11 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { TestBed } from '@angular/core/testing';
 import { of, Subject, throwError } from 'rxjs';
+import { provideRouter } from '@angular/router';
+import { provideHttpClient } from '@angular/common/http';
 import { App } from './app';
 import { ExtractionService } from './services/extraction.service';
+import { EmrApi } from './emr/emr-api';
 import { ClinicalExtractionResponse } from './models/extraction.model';
 
 const source =
@@ -106,7 +109,11 @@ describe('Clinical extraction workspace', () => {
     };
     await TestBed.configureTestingModule({
       imports: [App],
-      providers: [{ provide: ExtractionService, useValue: service }],
+      providers: [
+        { provide: ExtractionService, useValue: service },
+        provideRouter([]),
+        provideHttpClient(),
+      ],
     }).compileComponents();
   });
   function workspace() {
@@ -519,7 +526,7 @@ describe('Clinical extraction workspace', () => {
     service.extract.mockReturnValue(of(recovered));
     const { app, html, fixture } = extract();
     expect(html.querySelector('.provider-summary')?.textContent).toContain('Local ONNX — Fallback');
-    expect(html.querySelector('.provider-summary')?.textContent).toContain('Azure timed out');
+    expect(html.querySelector('.provider-summary')?.textContent).toContain('Microsoft Foundry timed out');
     app.setResultTab('details');
     fixture.detectChanges();
     expect(app.tokenValue(recovered, null)).toBe('N/A');
@@ -780,11 +787,71 @@ describe('Clinical extraction workspace', () => {
   it('distinguishes accepted GPT, authorized offline execution, and real fallback', () => {
     const { app } = workspace();
     const run = (metadata: any) => ({ ...response, modelMetadata: { ...response.modelMetadata, ...metadata } });
-    expect(app.providerLabel(run({ provider: 'foundry', model: 'gpt-6.1-sol-2026-09-29' }))).toBe('Microsoft Foundry ? GPT-6.1 Sol');
-    expect(app.providerLabel(run({ provider: 'onnx', routingMode: 'explicit_offline', fallbackReason: null }))).toBe('Local ONNX ? Offline Mode');
+    expect(app.providerLabel(run({ provider: 'foundry', model: 'gpt-6.1-sol' }))).toBe('Microsoft Foundry — GPT-6.1 Sol');
+    expect(app.providerLabel(run({ provider: 'foundry', model: 'gpt-6.1-sol-2026-09-29' }))).toBe('Microsoft Foundry — gpt-6.1-sol-2026-09-29 (GPT-6.1 Sol)');
+    expect(app.providerLabel(run({ provider: 'onnx', routingMode: 'explicit_offline', fallbackReason: null }))).toBe('Local ONNX — Offline Mode');
     expect(app.providerLabel(run({ provider: 'onnx', routingMode: 'fallback', fallbackReason: 'AZURE_RATE_LIMITED' }))).toContain('Fallback after Microsoft Foundry failure');
     expect(app.providerLabel(run({ provider: 'onnx', fallbackReason: 'AZURE_INVALID_EVIDENCE' }))).toContain('historical fallback policy');
     expect(app.providerLabel(run({ provider: 'onnx', fallbackReason: '<untrusted reason>' }))).not.toContain('<untrusted reason>');
+  });
+
+  it('restricts direct extraction when a Doctor session is active and displays OP EMR view', () => {
+    const { app, html, fixture } = workspace();
+    const emr = TestBed.inject(EmrApi);
+    emr.doctor.set({ id: 'doc-1', login: 'doctor.krishnan@apollo.local', displayName: 'Dr. K. Krishnan', role: 'Doctor' });
+    fixture.detectChanges();
+
+    // 1. Verify doctor heading is displayed instead of standalone heading
+    expect(app.isDoctor()).toBe(true);
+    expect(html.querySelector('.doctor-heading')).toBeTruthy();
+    expect(html.querySelector('.site-header')).toBeNull();
+
+    // 2. Direct extraction controls are omitted for doctor sessions
+    expect(html.querySelector('.extract-button')).toBeNull();
+    expect(html.querySelector('.upload-button')).toBeNull();
+    expect(html.querySelector('.example-picker')).toBeNull();
+
+    // 3. Triggering onExtract directly is blocked with CLINICAL_ACCESS_DENIED problem
+    (service.extract as any).mockClear();
+    app.onNoteChange('Patient consultation text.');
+    app.onExtract();
+    expect(service.extract).not.toHaveBeenCalled();
+    expect(app.error()).toEqual({
+      title: 'Direct Extraction Restricted',
+      detail: 'Direct extraction is reserved for clinical review staff. Outpatient clinical notes must be documented and signed within assigned encounters in OP EMR.',
+      code: 'CLINICAL_ACCESS_DENIED',
+      status: 403,
+    });
+  });
+
+  it('translates CLINICAL_ACCESS_DENIED and CSRF_INVALID HTTP errors into clear clinical messages', () => {
+    let handledProblem: any;
+    TestBed.runInInjectionContext(() => {
+      const realService = new ExtractionService();
+      (realService as any).handleHttpError({
+        status: 403,
+        error: { code: 'CLINICAL_ACCESS_DENIED' }
+      }).subscribe({
+        error: (prob: any) => { handledProblem = prob; }
+      });
+    });
+    expect(handledProblem.title).toBe('Direct Extraction Restricted');
+    expect(handledProblem.detail).toContain('Direct extraction is reserved for clinical review staff');
+    expect(handledProblem.code).toBe('CLINICAL_ACCESS_DENIED');
+
+    let csrfProblem: any;
+    TestBed.runInInjectionContext(() => {
+      const realService = new ExtractionService();
+      (realService as any).handleHttpError({
+        status: 400,
+        error: { code: 'CSRF_INVALID' }
+      }).subscribe({
+        error: (prob: any) => { csrfProblem = prob; }
+      });
+    });
+    expect(csrfProblem.title).toBe('Security Token Expired');
+    expect(csrfProblem.detail).toContain('Your verification token has expired or is invalid');
+    expect(csrfProblem.code).toBe('CSRF_INVALID');
   });
 
 });

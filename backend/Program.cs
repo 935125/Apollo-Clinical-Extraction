@@ -1,4 +1,5 @@
 using Apollo.Backend.Configuration;
+using Apollo.Backend.Emr;
 using Azure.Core;
 using Azure.Identity;
 using Microsoft.Extensions.Options;
@@ -18,6 +19,11 @@ using UglyToad.PdfPig;
 bool diagnosticsOnly = args.Contains("--routing-diagnostics", StringComparer.Ordinal);
 var builder = WebApplication.CreateBuilder(args.Where(a => a != "--routing-diagnostics").ToArray());
 builder.AddLocalDevelopmentDefaults();
+if (args.Contains("--emr-migrate") || args.Contains("--emr-seed"))
+{
+    await EmrAdmin.Run(builder, args.Contains("--emr-migrate"), args.Contains("--emr-seed"));
+    return;
+}
 if (diagnosticsOnly)
 {
     Console.WriteLine(JsonSerializer.Serialize(ProviderDiagnostics.Snapshot(builder.Configuration, builder.Environment), new JsonSerializerOptions(JsonSerializerDefaults.Web)));
@@ -67,6 +73,7 @@ builder.Services.AddSingleton<SlidingWindowOnnxEngine>(sp =>
 });
 
 builder.AddClinicalApiSecurity();
+builder.AddDoctorEmr();
 
 builder.Services.AddSingleton<ClinicalPipelineService>();
 builder.Services.AddSingleton(TimeProvider.System);
@@ -74,13 +81,23 @@ builder.Services.AddSingleton<FoundryCircuitBreaker>();
 builder.Services.AddHostedService<ProviderStartupDiagnostics>();
 builder.Services.Configure<ExtractionOptions>(builder.Configuration.GetSection(ExtractionOptions.SectionName));
 builder.Services.Configure<FoundryOptions>(builder.Configuration.GetSection(FoundryOptions.SectionName));
-builder.Services.AddSingleton<TokenCredential>(sp => builder.Environment.IsDevelopment()
-    ? new AzureCliCredential()
-    : new DefaultAzureCredential(new DefaultAzureCredentialOptions
+builder.Services.AddSingleton<TokenCredential>(sp =>
+{
+    string apolloAz = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "ApolloTools", "AzureCLI", "bin");
+    if (Directory.Exists(apolloAz))
+    {
+        string currentPath = Environment.GetEnvironmentVariable("PATH") ?? "";
+        if (!currentPath.Contains(apolloAz, StringComparison.OrdinalIgnoreCase))
+        {
+            Environment.SetEnvironmentVariable("PATH", apolloAz + Path.PathSeparator + currentPath);
+        }
+    }
+    return new DefaultAzureCredential(new DefaultAzureCredentialOptions
     {
         ExcludeInteractiveBrowserCredential = true,
         ManagedIdentityClientId = sp.GetRequiredService<IOptions<FoundryOptions>>().Value.ManagedIdentityClientId
-    }));
+    });
+});
 builder.Services.AddHttpClient<IFoundryClinicalExtractor, FoundryClinicalExtractor>(client => client.Timeout = Timeout.InfiniteTimeSpan)
     .ConfigurePrimaryHttpMessageHandler(() => new SocketsHttpHandler { AllowAutoRedirect = false });
 builder.Services.AddSingleton<ILocalClinicalExtractor, OnnxClinicalExtractor>();
@@ -112,6 +129,7 @@ app.UseExceptionHandler(handler => handler.Run(async http =>
 app.UseRouting();
 app.UseCors("AllowAll");
 app.UseClinicalApiSecurity();
+app.MapDoctorEmr();
 
 // Serve static frontend assets if directory exists
 string staticDir = Path.Combine(app.Environment.ContentRootPath, "..", "frontend", "dist", "cx-review-ui", "browser");

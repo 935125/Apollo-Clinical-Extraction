@@ -1,26 +1,28 @@
-<header class="site-header">
-  <a class="brand" href="./" aria-label="Apollo Hospitals home"
-    ><span class="brand-name">Apollo</span><span class="brand-subtitle">HOSPITALS</span></a
-  >
-  <nav aria-label="Main navigation">
-    <button
-      [class.active]="activeNav() === 'extraction'"
-      [attr.aria-current]="activeNav() === 'extraction' ? 'page' : null"
-      (click)="setNav('extraction')"
+@if (!isDoctor()) {
+  <header class="site-header">
+    <a class="brand" href="./" aria-label="Apollo Hospitals home"
+      ><span class="brand-name">Apollo</span><span class="brand-subtitle">HOSPITALS</span></a
     >
-      Workspace
-    </button>
-    <button
-      [class.active]="activeNav() === 'history'"
-      [attr.aria-current]="activeNav() === 'history' ? 'page' : null"
-      (click)="setNav('history')"
-    >
-      History
-    </button>
-  </nav>
-</header>
+    <nav aria-label="Main navigation">
+      <button
+        [class.active]="activeNav() === 'extraction'"
+        [attr.aria-current]="activeNav() === 'extraction' ? 'page' : null"
+        (click)="setNav('extraction')"
+      >
+        Workspace
+      </button>
+      <button
+        [class.active]="activeNav() === 'history'"
+        [attr.aria-current]="activeNav() === 'history' ? 'page' : null"
+        (click)="setNav('history')"
+      >
+        History
+      </button>
+    </nav>
+  </header>
+}
 <main>
-  @if (activeNav() === 'history') {
+  @if (activeNav() === 'history' && !isDoctor()) {
     <div class="page-heading">
       <div>
         <p class="eyebrow">YOUR WORKSPACE</p>
@@ -65,21 +67,49 @@
       }
     </div>
   } @else {
-    <div class="page-heading">
-      <div><h1 class="app-title">Clinical extraction</h1></div>
-      <p class="page-description">From clinical notes to structured care.</p>
-    </div>
+    @if (isDoctor()) {
+      <div class="page-heading doctor-heading">
+        <div>
+          <p class="eyebrow">OP EMR CLINICAL EXTRACTION</p>
+          <h1 class="app-title">Extraction results</h1>
+          <p class="page-description">
+            @if (patientRefParam()) { Patient: <strong>{{ patientRefParam() }}</strong> · }
+            Source-grounded clinical entities extracted from your signed encounter note.
+          </p>
+        </div>
+        <div class="doctor-heading-actions">
+          @if (noteIdParam()) {
+            <a class="button secondary" [routerLink]="['/emr/notes', noteIdParam(), 'edit']">View Note in EMR</a>
+          }
+          <a class="button primary" routerLink="/emr">Back to Dashboard</a>
+        </div>
+      </div>
+    } @else {
+      <div class="page-heading">
+        <div><h1 class="app-title">Clinical extraction</h1></div>
+        <p class="page-description">From clinical notes to structured care.</p>
+      </div>
+    }
     <div class="workspace">
       <section class="source-column" aria-labelledby="source-heading">
         <div class="document-frame" [attr.aria-busy]="isExtracting() || isOpeningHistory()">
           <div class="document-header">
             <h2 id="source-heading">Source note</h2>
-            <button class="edit-button" (click)="beginEdit()" [disabled]="editorMode() === 'edit'">
-              Edit
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path d="m16 3 5 5-12 12-6 1 1-6zM13 6l5 5" />
-              </svg>
-            </button>
+            @if (!isDoctor()) {
+              <button class="edit-button" (click)="beginEdit()" [disabled]="editorMode() === 'edit'">
+                Edit
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="m16 3 5 5-12 12-6 1 1-6zM13 6l5 5" />
+                </svg>
+              </button>
+            } @else if (noteIdParam()) {
+              <a class="edit-button doctor-link-btn" [routerLink]="['/emr/notes', noteIdParam(), 'edit']" title="Open encounter note in OP EMR editor">
+                Edit in EMR
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="m16 3 5 5-12 12-6 1 1-6zM13 6l5 5" />
+                </svg>
+              </a>
+            }
           </div>
           <div class="paper-stack">
             <div class="paper">
@@ -90,7 +120,7 @@
                   uploadedFileName() ? 'PDF' : selectedPresetId() ? 'EXAMPLE' : 'TEXT'
                 }}</span>
               </div>
-              @if (editorMode() === 'edit') {
+              @if (editorMode() === 'edit' && !isDoctor()) {
                 <label class="sr-only" for="clinical-note">Clinical source note</label
                 ><textarea
                   id="clinical-note"
@@ -119,55 +149,80 @@
               </div>
             </div>
           </div>
-          <div class="document-footer">
-            <input
-              #pdfInput
-              class="sr-only"
-              type="file"
-              accept="application/pdf,.pdf"
-              (change)="onPdfSelected($event)"
-              aria-label="Upload PDF"
-            /><button class="upload-button" (click)="pdfInput.click()" [disabled]="isExtracting()">
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M12 16V3m-4 4 4-4 4 4M4 15v5h16v-5" /></svg
-              >Upload PDF</button
-            ><button
-              class="button extract-button"
-              (click)="onExtract()"
-              [disabled]="isExtracting() || isOpeningHistory() || !noteText().trim()"
-            >
-              @if (isExtracting()) {
-                <span class="spinner" aria-hidden="true"></span>Extracting…
-              } @else {
-                Extract
-              }
+          @if (!isDoctor()) {
+            <div class="document-footer">
+              <input
+                #pdfInput
+                class="sr-only"
+                type="file"
+                accept="application/pdf,.pdf"
+                (change)="onPdfSelected($event)"
+                aria-label="Upload PDF"
+              /><button class="upload-button" (click)="pdfInput.click()" [disabled]="isExtracting()">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M12 16V3m-4 4 4-4 4 4M4 15v5h16v-5" /></svg
+                >Upload PDF</button
+              ><button
+                class="button extract-button"
+                (click)="onExtract()"
+                [disabled]="isExtracting() || isOpeningHistory() || !noteText().trim()"
+              >
+                @if (isExtracting()) {
+                  <span class="spinner" aria-hidden="true"></span>Extracting…
+                } @else {
+                  Extract
+                }
+              </button>
+            </div>
+          } @else {
+            <div class="document-footer doctor-footer">
+              <div class="emr-source-badge">
+                <svg viewBox="0 0 24 24" aria-hidden="true" width="16" height="16"><path fill="none" stroke="currentColor" stroke-width="2" d="M12 3 4 6v6c0 4 8 9 8 9s8-5 8-9V6z"/><path fill="none" stroke="currentColor" stroke-width="2" d="m9 12 2 2 4-4"/></svg>
+                <span>Signed encounter note · Audit locked</span>
+              </div>
+              <a class="button secondary small" routerLink="/emr">Back to OP EMR</a>
+            </div>
+          }
+        </div>
+        @if (!isDoctor()) {
+          <div class="source-actions">
+            <details class="example-picker" #examples>
+              <summary>Try an example <span aria-hidden="true">⌄</span></summary>
+              <div class="example-menu">
+                @for (preset of presets; track preset.id) {
+                  <button (click)="loadPreset(preset); examples.removeAttribute('open')">
+                    {{ preset.title }}
+                  </button>
+                }
+              </div>
+            </details>
+            <button class="text-button" (click)="clear()" [disabled]="!noteText() && !result()">
+              Clear
             </button>
           </div>
-        </div>
-        <div class="source-actions">
-          <details class="example-picker" #examples>
-            <summary>Try an example <span aria-hidden="true">⌄</span></summary>
-            <div class="example-menu">
-              @for (preset of presets; track preset.id) {
-                <button (click)="loadPreset(preset); examples.removeAttribute('open')">
-                  {{ preset.title }}
-                </button>
-              }
-            </div>
-          </details>
-          <button class="text-button" (click)="clear()" [disabled]="!noteText() && !result()">
-            Clear
-          </button>
-        </div>
+        }
         @if (error(); as problem) {
           <div class="inline-error alert-error" role="alert">
             @if (problem.code === 'PERSISTENCE_FAILED') {
               <strong>Could not save extraction.</strong>
               <p>Your note is retained. Please try again.</p>
+            } @else if (problem.code === 'CLINICAL_ACCESS_DENIED') {
+              <strong>{{ problem.title || 'Direct Extraction Restricted' }}</strong>
+              <p>{{ problem.detail || 'Direct extraction is reserved for clinical review staff. Outpatient clinical notes must be documented and signed within assigned encounters in OP EMR.' }}</p>
+              @if (isDoctor()) {
+                <div class="alert-actions">
+                  <a class="button primary small" routerLink="/emr">Go to OP EMR Dashboard</a>
+                </div>
+              }
             } @else {
               <strong>{{ problem.title || 'Extraction failed' }}</strong>
               <p>{{ problem.detail || 'Your note is retained. Please try again.' }}</p>
             }
+          </div>
+        }
+        @if (isDoctor() && !result() && !isOpeningHistory() && !noteText()) {
+          <div class="emr-empty-prompt">
+            <p>Select an encounter with an extraction from your <a routerLink="/emr">Doctor Dashboard</a> or <a routerLink="/extraction">Clinical Extraction</a> list to review results.</p>
           </div>
         }
         @if (!backendOnline()) {
@@ -251,14 +306,14 @@
                 <strong>Source candidates requiring review</strong>
                 <p>These neural mentions were withheld from extracted prescriptions. Review the source; no dose or clinical approval is implied.</p>
                 @for (candidate of res.modelMetadata.reviewCandidates; track $index) {
-                  <p>{{ candidate.name }} ? confidence {{ candidate.confidence | number:'1.3-3' }} ? {{ candidate.reason }}<br><q>{{ candidate.evidence.quote }}</q></p>
+                  <p>{{ candidate.name }} · confidence {{ candidate.confidence | number:'1.3-3' }} · {{ candidate.reason }}<br><q>{{ candidate.evidence.quote }}</q></p>
                 }
               </aside>
             }
             @if (res.modelMetadata.requestedPrimaryProvider) {
               <p class="provider-summary" data-testid="routing-provenance">
-                Requested: {{ res.modelMetadata.requestedPrimaryProvider }} ? Executed: {{ res.modelMetadata.finalExecutedProvider }} ?
-                {{ res.modelMetadata.validationResult }} ? Clinical review required
+                Requested: {{ res.modelMetadata.requestedPrimaryProvider }} · Executed: {{ res.modelMetadata.finalExecutedProvider }} ·
+                {{ res.modelMetadata.validationResult }} · Clinical review required
               </p>
             }
             <div class="result-meta">

@@ -1,0 +1,2052 @@
+{
+  "generatedAt": "2026-11-24T09:10:14.1052281+00:00",
+  "classification": "Preliminary synthetic engineering evaluation (gold labels engineering-authored from source text; not clinician-reviewed)",
+  "dataset": "stage5_independent_benchmark_35cases.json",
+  "datasetSha256": "3D2EE6AFD0AC72157C92BDDEEDC43F94511BA170D7985A1F44177CB78EB9AD84",
+  "caseCount": 35,
+  "specialties": {
+    "Cardiology": 5,
+    "Pulmonology": 4,
+    "Endocrinology": 4,
+    "Pediatrics": 4,
+    "Oncology": 4,
+    "Nephrology": 4,
+    "Neurology": 4,
+    "General Medicine": 6
+  },
+  "providerThatGeneratedEveryPrediction": "LocalOnnx (bc5cdr_int8 INT8 ONNX \u002B deterministic posology/ontology pipeline)",
+  "liveFoundryCalls": 0,
+  "foundryEvaluation": "NOT EVALUATED \u2014 no saved GPT-6.1 Sol responses exist for these 35 notes and new billable calls were prohibited.",
+  "medicationsMicro": {
+    "tp": 72,
+    "fp": 0,
+    "fn": 16,
+    "precision": 1,
+    "recall": 0.8181818181818182,
+    "f1": 0.9
+  },
+  "medicationAttributes": {
+    "strength": {
+      "correct": 72,
+      "evaluated": 88,
+      "rate": 0.8181818181818182
+    },
+    "dose": {
+      "correct": 60,
+      "evaluated": 69,
+      "rate": 0.8695652173913043
+    },
+    "route": {
+      "correct": 67,
+      "evaluated": 79,
+      "rate": 0.8481012658227848
+    },
+    "frequency": {
+      "correct": 67,
+      "evaluated": 81,
+      "rate": 0.8271604938271605
+    },
+    "assertion_status": {
+      "correct": 72,
+      "evaluated": 88,
+      "rate": 0.8181818181818182
+    },
+    "duration": {
+      "correct": 21,
+      "evaluated": 25,
+      "rate": 0.84
+    },
+    "formulation": {
+      "correct": 2,
+      "evaluated": 3,
+      "rate": 0.6666666666666666
+    }
+  },
+  "investigationsMicro": {
+    "tp": 75,
+    "fp": 1,
+    "fn": 4,
+    "precision": 0.9868421052631579,
+    "recall": 0.9493670886075949,
+    "f1": 0.967741935483871
+  },
+  "investigationAttributes": {
+    "timing": {
+      "correct": 66,
+      "evaluated": 70,
+      "rate": 0.9428571428571428
+    },
+    "clinical_category": {
+      "correct": 75,
+      "evaluated": 79,
+      "rate": 0.9493670886075949
+    },
+    "assertion_status": {
+      "correct": 75,
+      "evaluated": 79,
+      "rate": 0.9493670886075949
+    },
+    "specimen": {
+      "correct": 20,
+      "evaluated": 24,
+      "rate": 0.8333333333333334
+    }
+  },
+  "terminology": {
+    "note": "Gold labels contain no reference codes; exact-code precision against gold is NOT MEASURED. Reported: assignment coverage, catalog validity of assigned codes, candidate coverage and abstention.",
+    "rxNorm": {
+      "extracted": 72,
+      "exactAssigned": 60,
+      "exactAssignedCatalogValid": 60,
+      "candidateIdentified": 60,
+      "abstained": 12,
+      "ambiguousFlagged": 0
+    },
+    "loinc": {
+      "extracted": 76,
+      "exactAssigned": 32,
+      "exactAssignedCatalogValid": 32,
+      "candidateIdentified": 67,
+      "abstained": 44,
+      "ambiguousFlagged": 0
+    }
+  },
+  "evidence": {
+    "total": 148,
+    "quoteValid": 148,
+    "offsetValid": 148
+  },
+  "safety": {
+    "expectedAlerts": 14,
+    "matchedCategoryAndTemporality": 14,
+    "emittedAlerts": 15,
+    "groundedAlerts": 15,
+    "unsupportedAlerts": 0,
+    "labAnomalyAlerts": 6,
+    "labAnomalyAlertsMeasurementGrounded": 6,
+    "clinicianSeverityAgreement": "NOT AVAILABLE (no clinician review)"
+  },
+  "latencyMs": {
+    "mean": 217.16,
+    "p50": 180.34,
+    "p95": 417.52,
+    "max": 630.97
+  },
+  "errorCategories": {
+    "FN:unrecognized": 20,
+    "attribute:attribute_mismatch:assertion_status": 20,
+    "attribute:attribute_mismatch:strength": 16,
+    "attribute:attribute_mismatch:frequency": 14,
+    "attribute:attribute_mismatch:route": 12,
+    "attribute:attribute_mismatch:dose": 9,
+    "attribute:attribute_mismatch:specimen": 4,
+    "attribute:attribute_mismatch:timing": 4,
+    "attribute:attribute_mismatch:clinical_category": 4,
+    "attribute:attribute_mismatch:duration": 4,
+    "FP:Evaluation matching error / incomplete gold (unadjudicated)": 1,
+    "attribute:attribute_mismatch:formulation": 1
+  },
+  "cases": [
+    {
+      "id": "stage5-001-cardio-afib-multi",
+      "specialty": "Cardiology",
+      "challenge": "Multiple medications in a single sentence \u002B Warfarin/Aspirin DDI \u002B PT/INR \u0026 12-lead ECG",
+      "latencyMs": 630.97,
+      "medications": {
+        "tp": 3,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1,
+        "recall": 1,
+        "f1": 1
+      },
+      "investigations": {
+        "tp": 2,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1,
+        "recall": 1,
+        "f1": 1
+      },
+      "expectedAlerts": 1,
+      "matchedAlerts": 1,
+      "emittedAlerts": [
+        {
+          "category": "DRUG_INTERACTION",
+          "temporality": "CURRENT_ACTIVE",
+          "severity": "HIGH",
+          "title": "Major Bleeding Risk: Warfarin \u002B Antiplatelet/NSAID"
+        }
+      ],
+      "failures": []
+    },
+    {
+      "id": "stage5-002-cardio-hf-baseline",
+      "specialty": "Cardiology",
+      "challenge": "Baseline lab hyperkalemia \u002B elevated creatinine \u002B discontinuation \u002B shared timing investigations",
+      "latencyMs": 342.88,
+      "medications": {
+        "tp": 2,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1,
+        "recall": 1,
+        "f1": 1
+      },
+      "investigations": {
+        "tp": 5,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1,
+        "recall": 1,
+        "f1": 1
+      },
+      "expectedAlerts": 1,
+      "matchedAlerts": 1,
+      "emittedAlerts": [
+        {
+          "category": "LAB_ANOMALY",
+          "temporality": "BASELINE_MEASUREMENT",
+          "severity": "CRITICAL",
+          "title": "Critical Potassium Value (5.8 mEq/L)"
+        },
+        {
+          "category": "LAB_ANOMALY",
+          "temporality": "BASELINE_MEASUREMENT",
+          "severity": "HIGH",
+          "title": "Elevated Serum Creatinine (2.1 mg/dL)"
+        }
+      ],
+      "failures": [
+        {
+          "kind": "attribute",
+          "category": "attribute_mismatch",
+          "entity": "K\u002B",
+          "field": "specimen",
+          "expected": "Serum",
+          "actual": null
+        },
+        {
+          "kind": "attribute",
+          "category": "attribute_mismatch",
+          "entity": "Creatinine",
+          "field": "specimen",
+          "expected": "Serum",
+          "actual": null
+        }
+      ]
+    },
+    {
+      "id": "stage5-003-cardio-acs-negated",
+      "specialty": "Cardiology",
+      "challenge": "Negated allergy \u002B dual antiplatelet \u002B high-sensitivity troponin \u0026 fasting lipid profile",
+      "latencyMs": 317.23,
+      "medications": {
+        "tp": 3,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1,
+        "recall": 1,
+        "f1": 1
+      },
+      "investigations": {
+        "tp": 2,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1,
+        "recall": 1,
+        "f1": 1
+      },
+      "expectedAlerts": 0,
+      "matchedAlerts": 0,
+      "emittedAlerts": [],
+      "failures": []
+    },
+    {
+      "id": "stage5-004-cardio-htn-titration",
+      "specialty": "Cardiology",
+      "challenge": "Dose titration \u002B 2D Echocardiogram \u002B Renal Function Test",
+      "latencyMs": 378.78,
+      "medications": {
+        "tp": 3,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1,
+        "recall": 1,
+        "f1": 1
+      },
+      "investigations": {
+        "tp": 2,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1,
+        "recall": 1,
+        "f1": 1
+      },
+      "expectedAlerts": 0,
+      "matchedAlerts": 0,
+      "emittedAlerts": [],
+      "failures": []
+    },
+    {
+      "id": "stage5-005-cardio-ntprobnp",
+      "specialty": "Cardiology",
+      "challenge": "NT-proBNP \u002B imaging view distinction (Chest X-ray PA view) \u002B Spironolactone",
+      "latencyMs": 252.47,
+      "medications": {
+        "tp": 2,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1,
+        "recall": 1,
+        "f1": 1
+      },
+      "investigations": {
+        "tp": 0,
+        "fp": 1,
+        "fn": 2,
+        "precision": 0,
+        "recall": 0,
+        "f1": 0
+      },
+      "expectedAlerts": 0,
+      "matchedAlerts": 0,
+      "emittedAlerts": [],
+      "failures": [
+        {
+          "kind": "FN",
+          "category": "unrecognized",
+          "entity": "NT-proBNP",
+          "field": "name",
+          "expected": "NT-proBNP",
+          "actual": null
+        },
+        {
+          "kind": "attribute",
+          "category": "attribute_mismatch",
+          "entity": "NT-proBNP",
+          "field": "timing",
+          "expected": "today",
+          "actual": null
+        },
+        {
+          "kind": "attribute",
+          "category": "attribute_mismatch",
+          "entity": "NT-proBNP",
+          "field": "clinical_category",
+          "expected": "laboratory",
+          "actual": null
+        },
+        {
+          "kind": "attribute",
+          "category": "attribute_mismatch",
+          "entity": "NT-proBNP",
+          "field": "assertion_status",
+          "expected": "new_order",
+          "actual": null
+        },
+        {
+          "kind": "FN",
+          "category": "unrecognized",
+          "entity": "Chest X-ray",
+          "field": "name",
+          "expected": "Chest X-ray",
+          "actual": null
+        },
+        {
+          "kind": "attribute",
+          "category": "attribute_mismatch",
+          "entity": "Chest X-ray",
+          "field": "timing",
+          "expected": "in 1 week",
+          "actual": null
+        },
+        {
+          "kind": "attribute",
+          "category": "attribute_mismatch",
+          "entity": "Chest X-ray",
+          "field": "clinical_category",
+          "expected": "imaging",
+          "actual": null
+        },
+        {
+          "kind": "attribute",
+          "category": "attribute_mismatch",
+          "entity": "Chest X-ray",
+          "field": "assertion_status",
+          "expected": "new_order",
+          "actual": null
+        },
+        {
+          "kind": "FP",
+          "category": "Evaluation matching error / incomplete gold (unadjudicated)",
+          "entity": "Chest X-ray (PA view)",
+          "field": "assertion_status",
+          "expected": null,
+          "actual": "new_order"
+        }
+      ]
+    },
+    {
+      "id": "stage5-006-pulm-cap-admission-fever",
+      "specialty": "Pulmonology",
+      "challenge": "Historical admission fever 39.2 C \u002B Penicillin allergy \u002B PRN paracetamol \u002B shared timing CBC/CRP",
+      "latencyMs": 319.61,
+      "medications": {
+        "tp": 3,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1,
+        "recall": 1,
+        "f1": 1
+      },
+      "investigations": {
+        "tp": 3,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1,
+        "recall": 1,
+        "f1": 1
+      },
+      "expectedAlerts": 2,
+      "matchedAlerts": 2,
+      "emittedAlerts": [
+        {
+          "category": "ALLERGY_CONFLICT",
+          "temporality": "CURRENT_ACTIVE",
+          "severity": "MODERATE",
+          "title": "Documented Drug Allergy Vigilance: Penicillin"
+        },
+        {
+          "category": "LAB_ANOMALY",
+          "temporality": "HISTORICAL_ADMISSION_COURSE",
+          "severity": "MODERATE",
+          "title": "Historical Admission Finding \u2014 Significant Pyrexia (39.2\u00B0C)"
+        }
+      ],
+      "failures": []
+    },
+    {
+      "id": "stage5-007-pulm-asthma-inhaler",
+      "specialty": "Pulmonology",
+      "challenge": "Inhaled bronchodilator formulation \u002B oral steroid taper \u002B conditional Chest X-ray",
+      "latencyMs": 417.52,
+      "medications": {
+        "tp": 2,
+        "fp": 0,
+        "fn": 1,
+        "precision": 1,
+        "recall": 0.6666666666666666,
+        "f1": 0.8
+      },
+      "investigations": {
+        "tp": 1,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1,
+        "recall": 1,
+        "f1": 1
+      },
+      "expectedAlerts": 0,
+      "matchedAlerts": 0,
+      "emittedAlerts": [],
+      "failures": [
+        {
+          "kind": "FN",
+          "category": "unrecognized",
+          "entity": "Montelukast",
+          "field": "name",
+          "expected": "Montelukast",
+          "actual": null
+        },
+        {
+          "kind": "attribute",
+          "category": "attribute_mismatch",
+          "entity": "Montelukast",
+          "field": "strength",
+          "expected": "10 mg",
+          "actual": null
+        },
+        {
+          "kind": "attribute",
+          "category": "attribute_mismatch",
+          "entity": "Montelukast",
+          "field": "dose",
+          "expected": "1 tablet",
+          "actual": null
+        },
+        {
+          "kind": "attribute",
+          "category": "attribute_mismatch",
+          "entity": "Montelukast",
+          "field": "route",
+          "expected": "PO",
+          "actual": null
+        },
+        {
+          "kind": "attribute",
+          "category": "attribute_mismatch",
+          "entity": "Montelukast",
+          "field": "frequency",
+          "expected": "at bedtime",
+          "actual": null
+        },
+        {
+          "kind": "attribute",
+          "category": "attribute_mismatch",
+          "entity": "Montelukast",
+          "field": "assertion_status",
+          "expected": "current_medication",
+          "actual": null
+        }
+      ]
+    },
+    {
+      "id": "stage5-008-pulm-copd-iv",
+      "specialty": "Pulmonology",
+      "challenge": "IV antimicrobial \u002B historical medication \u002B Blood culture \u0026 Serum electrolytes",
+      "latencyMs": 248.87,
+      "medications": {
+        "tp": 2,
+        "fp": 0,
+        "fn": 1,
+        "precision": 1,
+        "recall": 0.6666666666666666,
+        "f1": 0.8
+      },
+      "investigations": {
+        "tp": 2,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1,
+        "recall": 1,
+        "f1": 1
+      },
+      "expectedAlerts": 0,
+      "matchedAlerts": 0,
+      "emittedAlerts": [],
+      "failures": [
+        {
+          "kind": "FN",
+          "category": "unrecognized",
+          "entity": "Theophylline",
+          "field": "name",
+          "expected": "Theophylline",
+          "actual": null
+        },
+        {
+          "kind": "attribute",
+          "category": "attribute_mismatch",
+          "entity": "Theophylline",
+          "field": "strength",
+          "expected": "200 mg",
+          "actual": null
+        },
+        {
+          "kind": "attribute",
+          "category": "attribute_mismatch",
+          "entity": "Theophylline",
+          "field": "frequency",
+          "expected": "daily",
+          "actual": null
+        },
+        {
+          "kind": "attribute",
+          "category": "attribute_mismatch",
+          "entity": "Theophylline",
+          "field": "assertion_status",
+          "expected": "historical",
+          "actual": null
+        }
+      ]
+    },
+    {
+      "id": "stage5-009-pulm-pe-anticoag",
+      "specialty": "Pulmonology",
+      "challenge": "Subcutaneous low-molecular-weight heparin \u002B oral anticoagulant transition",
+      "latencyMs": 363.64,
+      "medications": {
+        "tp": 0,
+        "fp": 0,
+        "fn": 2,
+        "precision": null,
+        "recall": 0,
+        "f1": 0
+      },
+      "investigations": {
+        "tp": 2,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1,
+        "recall": 1,
+        "f1": 1
+      },
+      "expectedAlerts": 0,
+      "matchedAlerts": 0,
+      "emittedAlerts": [],
+      "failures": [
+        {
+          "kind": "FN",
+          "category": "unrecognized",
+          "entity": "Enoxaparin",
+          "field": "name",
+          "expected": "Enoxaparin",
+          "actual": null
+        },
+        {
+          "kind": "attribute",
+          "category": "attribute_mismatch",
+          "entity": "Enoxaparin",
+          "field": "strength",
+          "expected": "60 mg",
+          "actual": null
+        },
+        {
+          "kind": "attribute",
+          "category": "attribute_mismatch",
+          "entity": "Enoxaparin",
+          "field": "route",
+          "expected": "SC",
+          "actual": null
+        },
+        {
+          "kind": "attribute",
+          "category": "attribute_mismatch",
+          "entity": "Enoxaparin",
+          "field": "frequency",
+          "expected": "twice daily",
+          "actual": null
+        },
+        {
+          "kind": "attribute",
+          "category": "attribute_mismatch",
+          "entity": "Enoxaparin",
+          "field": "assertion_status",
+          "expected": "discontinued",
+          "actual": null
+        },
+        {
+          "kind": "FN",
+          "category": "unrecognized",
+          "entity": "Apixaban",
+          "field": "name",
+          "expected": "Apixaban",
+          "actual": null
+        },
+        {
+          "kind": "attribute",
+          "category": "attribute_mismatch",
+          "entity": "Apixaban",
+          "field": "strength",
+          "expected": "5 mg",
+          "actual": null
+        },
+        {
+          "kind": "attribute",
+          "category": "attribute_mismatch",
+          "entity": "Apixaban",
+          "field": "dose",
+          "expected": "1 tablet",
+          "actual": null
+        },
+        {
+          "kind": "attribute",
+          "category": "attribute_mismatch",
+          "entity": "Apixaban",
+          "field": "route",
+          "expected": "PO",
+          "actual": null
+        },
+        {
+          "kind": "attribute",
+          "category": "attribute_mismatch",
+          "entity": "Apixaban",
+          "field": "frequency",
+          "expected": "twice daily",
+          "actual": null
+        },
+        {
+          "kind": "attribute",
+          "category": "attribute_mismatch",
+          "entity": "Apixaban",
+          "field": "duration",
+          "expected": "90 days",
+          "actual": null
+        },
+        {
+          "kind": "attribute",
+          "category": "attribute_mismatch",
+          "entity": "Apixaban",
+          "field": "assertion_status",
+          "expected": "new_order",
+          "actual": null
+        }
+      ]
+    },
+    {
+      "id": "stage5-010-endo-dm2-titration",
+      "specialty": "Endocrinology",
+      "challenge": "Metformin titration \u002B SGLT2 inhibitor \u002B HbA1c, Fasting Blood Sugar \u0026 Urine Microalbumin",
+      "latencyMs": 405.97,
+      "medications": {
+        "tp": 3,
+        "fp": 0,
+        "fn": 1,
+        "precision": 1,
+        "recall": 0.75,
+        "f1": 0.8571428571428571
+      },
+      "investigations": {
+        "tp": 3,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1,
+        "recall": 1,
+        "f1": 1
+      },
+      "expectedAlerts": 0,
+      "matchedAlerts": 0,
+      "emittedAlerts": [],
+      "failures": [
+        {
+          "kind": "FN",
+          "category": "unrecognized",
+          "entity": "Glimepiride",
+          "field": "name",
+          "expected": "Glimepiride",
+          "actual": null
+        },
+        {
+          "kind": "attribute",
+          "category": "attribute_mismatch",
+          "entity": "Glimepiride",
+          "field": "strength",
+          "expected": "2 mg",
+          "actual": null
+        },
+        {
+          "kind": "attribute",
+          "category": "attribute_mismatch",
+          "entity": "Glimepiride",
+          "field": "dose",
+          "expected": "1 tablet",
+          "actual": null
+        },
+        {
+          "kind": "attribute",
+          "category": "attribute_mismatch",
+          "entity": "Glimepiride",
+          "field": "route",
+          "expected": "PO",
+          "actual": null
+        },
+        {
+          "kind": "attribute",
+          "category": "attribute_mismatch",
+          "entity": "Glimepiride",
+          "field": "frequency",
+          "expected": "once daily",
+          "actual": null
+        },
+        {
+          "kind": "attribute",
+          "category": "attribute_mismatch",
+          "entity": "Glimepiride",
+          "field": "assertion_status",
+          "expected": "current_medication",
+          "actual": null
+        }
+      ]
+    },
+    {
+      "id": "stage5-011-endo-hypothyroid-indian",
+      "specialty": "Endocrinology",
+      "challenge": "Indian brand synonyms (Thyronorm, Atorva) \u002B Serum TSH and Serum Free T4",
+      "latencyMs": 275.36,
+      "medications": {
+        "tp": 2,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1,
+        "recall": 1,
+        "f1": 1
+      },
+      "investigations": {
+        "tp": 2,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1,
+        "recall": 1,
+        "f1": 1
+      },
+      "expectedAlerts": 0,
+      "matchedAlerts": 0,
+      "emittedAlerts": [],
+      "failures": []
+    },
+    {
+      "id": "stage5-012-endo-insulin-basal",
+      "specialty": "Endocrinology",
+      "challenge": "Subcutaneous units dosing \u002B oral agent continuation \u002B Serum potassium",
+      "latencyMs": 85.54,
+      "medications": {
+        "tp": 0,
+        "fp": 0,
+        "fn": 2,
+        "precision": null,
+        "recall": 0,
+        "f1": 0
+      },
+      "investigations": {
+        "tp": 2,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1,
+        "recall": 1,
+        "f1": 1
+      },
+      "expectedAlerts": 0,
+      "matchedAlerts": 0,
+      "emittedAlerts": [],
+      "failures": [
+        {
+          "kind": "FN",
+          "category": "unrecognized",
+          "entity": "Insulin Glargine",
+          "field": "name",
+          "expected": "Insulin Glargine",
+          "actual": null
+        },
+        {
+          "kind": "attribute",
+          "category": "attribute_mismatch",
+          "entity": "Insulin Glargine",
+          "field": "strength",
+          "expected": "10 units",
+          "actual": null
+        },
+        {
+          "kind": "attribute",
+          "category": "attribute_mismatch",
+          "entity": "Insulin Glargine",
+          "field": "route",
+          "expected": "SC",
+          "actual": null
+        },
+        {
+          "kind": "attribute",
+          "category": "attribute_mismatch",
+          "entity": "Insulin Glargine",
+          "field": "frequency",
+          "expected": "at bedtime",
+          "actual": null
+        },
+        {
+          "kind": "attribute",
+          "category": "attribute_mismatch",
+          "entity": "Insulin Glargine",
+          "field": "assertion_status",
+          "expected": "new_order",
+          "actual": null
+        },
+        {
+          "kind": "FN",
+          "category": "unrecognized",
+          "entity": "Sitagliptin",
+          "field": "name",
+          "expected": "Sitagliptin",
+          "actual": null
+        },
+        {
+          "kind": "attribute",
+          "category": "attribute_mismatch",
+          "entity": "Sitagliptin",
+          "field": "strength",
+          "expected": "100 mg",
+          "actual": null
+        },
+        {
+          "kind": "attribute",
+          "category": "attribute_mismatch",
+          "entity": "Sitagliptin",
+          "field": "dose",
+          "expected": "1 tablet",
+          "actual": null
+        },
+        {
+          "kind": "attribute",
+          "category": "attribute_mismatch",
+          "entity": "Sitagliptin",
+          "field": "route",
+          "expected": "PO",
+          "actual": null
+        },
+        {
+          "kind": "attribute",
+          "category": "attribute_mismatch",
+          "entity": "Sitagliptin",
+          "field": "frequency",
+          "expected": "once daily",
+          "actual": null
+        },
+        {
+          "kind": "attribute",
+          "category": "attribute_mismatch",
+          "entity": "Sitagliptin",
+          "field": "assertion_status",
+          "expected": "current_medication",
+          "actual": null
+        }
+      ]
+    },
+    {
+      "id": "stage5-013-endo-gout-allopurinol",
+      "specialty": "Endocrinology",
+      "challenge": "Historical stopped Colchicine \u002B new Allopurinol \u002B Serum uric acid \u0026 Liver Function Tests",
+      "latencyMs": 293.27,
+      "medications": {
+        "tp": 1,
+        "fp": 0,
+        "fn": 2,
+        "precision": 1,
+        "recall": 0.3333333333333333,
+        "f1": 0.5
+      },
+      "investigations": {
+        "tp": 2,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1,
+        "recall": 1,
+        "f1": 1
+      },
+      "expectedAlerts": 0,
+      "matchedAlerts": 0,
+      "emittedAlerts": [],
+      "failures": [
+        {
+          "kind": "FN",
+          "category": "unrecognized",
+          "entity": "Colchicine",
+          "field": "name",
+          "expected": "Colchicine",
+          "actual": null
+        },
+        {
+          "kind": "attribute",
+          "category": "attribute_mismatch",
+          "entity": "Colchicine",
+          "field": "strength",
+          "expected": "0.5 mg",
+          "actual": null
+        },
+        {
+          "kind": "attribute",
+          "category": "attribute_mismatch",
+          "entity": "Colchicine",
+          "field": "frequency",
+          "expected": "daily",
+          "actual": null
+        },
+        {
+          "kind": "attribute",
+          "category": "attribute_mismatch",
+          "entity": "Colchicine",
+          "field": "assertion_status",
+          "expected": "historical",
+          "actual": null
+        },
+        {
+          "kind": "FN",
+          "category": "unrecognized",
+          "entity": "Febuxostat",
+          "field": "name",
+          "expected": "Febuxostat",
+          "actual": null
+        },
+        {
+          "kind": "attribute",
+          "category": "attribute_mismatch",
+          "entity": "Febuxostat",
+          "field": "strength",
+          "expected": "40 mg",
+          "actual": null
+        },
+        {
+          "kind": "attribute",
+          "category": "attribute_mismatch",
+          "entity": "Febuxostat",
+          "field": "dose",
+          "expected": "1 tablet",
+          "actual": null
+        },
+        {
+          "kind": "attribute",
+          "category": "attribute_mismatch",
+          "entity": "Febuxostat",
+          "field": "route",
+          "expected": "PO",
+          "actual": null
+        },
+        {
+          "kind": "attribute",
+          "category": "attribute_mismatch",
+          "entity": "Febuxostat",
+          "field": "frequency",
+          "expected": "once daily",
+          "actual": null
+        },
+        {
+          "kind": "attribute",
+          "category": "attribute_mismatch",
+          "entity": "Febuxostat",
+          "field": "assertion_status",
+          "expected": "conditional",
+          "actual": null
+        }
+      ]
+    },
+    {
+      "id": "stage5-014-peds-otitis-weight",
+      "specialty": "Pediatrics",
+      "challenge": "Pediatric oral suspension formulation \u002B mL dose \u002B PRN antipyretic",
+      "latencyMs": 320.78,
+      "medications": {
+        "tp": 2,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1,
+        "recall": 1,
+        "f1": 1
+      },
+      "investigations": {
+        "tp": 1,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1,
+        "recall": 1,
+        "f1": 1
+      },
+      "expectedAlerts": 0,
+      "matchedAlerts": 0,
+      "emittedAlerts": [],
+      "failures": []
+    },
+    {
+      "id": "stage5-015-peds-croup-wheeze",
+      "specialty": "Pediatrics",
+      "challenge": "Single-dose Dexamethasone \u002B nebulized Salbutamol \u002B conditional Chest X-ray",
+      "latencyMs": 170.58,
+      "medications": {
+        "tp": 2,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1,
+        "recall": 1,
+        "f1": 1
+      },
+      "investigations": {
+        "tp": 1,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1,
+        "recall": 1,
+        "f1": 1
+      },
+      "expectedAlerts": 0,
+      "matchedAlerts": 0,
+      "emittedAlerts": [],
+      "failures": []
+    },
+    {
+      "id": "stage5-016-peds-uti-culture",
+      "specialty": "Pediatrics",
+      "challenge": "Cefixime oral suspension \u002B Urine Culture \u0026 Ultrasound Abdomen",
+      "latencyMs": 114.45,
+      "medications": {
+        "tp": 1,
+        "fp": 0,
+        "fn": 1,
+        "precision": 1,
+        "recall": 0.5,
+        "f1": 0.6666666666666666
+      },
+      "investigations": {
+        "tp": 3,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1,
+        "recall": 1,
+        "f1": 1
+      },
+      "expectedAlerts": 1,
+      "matchedAlerts": 1,
+      "emittedAlerts": [
+        {
+          "category": "ALLERGY_CONFLICT",
+          "temporality": "CURRENT_ACTIVE",
+          "severity": "MODERATE",
+          "title": "Documented Drug Allergy Vigilance: Ibuprofen"
+        }
+      ],
+      "failures": [
+        {
+          "kind": "FN",
+          "category": "unrecognized",
+          "entity": "Cefixime",
+          "field": "name",
+          "expected": "Cefixime",
+          "actual": null
+        },
+        {
+          "kind": "attribute",
+          "category": "attribute_mismatch",
+          "entity": "Cefixime",
+          "field": "strength",
+          "expected": "100 mg",
+          "actual": null
+        },
+        {
+          "kind": "attribute",
+          "category": "attribute_mismatch",
+          "entity": "Cefixime",
+          "field": "dose",
+          "expected": "5 mL",
+          "actual": null
+        },
+        {
+          "kind": "attribute",
+          "category": "attribute_mismatch",
+          "entity": "Cefixime",
+          "field": "formulation",
+          "expected": "oral suspension",
+          "actual": null
+        },
+        {
+          "kind": "attribute",
+          "category": "attribute_mismatch",
+          "entity": "Cefixime",
+          "field": "route",
+          "expected": "PO",
+          "actual": null
+        },
+        {
+          "kind": "attribute",
+          "category": "attribute_mismatch",
+          "entity": "Cefixime",
+          "field": "frequency",
+          "expected": "twice daily",
+          "actual": null
+        },
+        {
+          "kind": "attribute",
+          "category": "attribute_mismatch",
+          "entity": "Cefixime",
+          "field": "duration",
+          "expected": "7 days",
+          "actual": null
+        },
+        {
+          "kind": "attribute",
+          "category": "attribute_mismatch",
+          "entity": "Cefixime",
+          "field": "assertion_status",
+          "expected": "new_order",
+          "actual": null
+        }
+      ]
+    },
+    {
+      "id": "stage5-017-peds-epilepsy-neuro",
+      "specialty": "Pediatrics",
+      "challenge": "Levetiracetam twice daily \u002B Vitamin D3 weekly dosing",
+      "latencyMs": 174.13,
+      "medications": {
+        "tp": 1,
+        "fp": 0,
+        "fn": 1,
+        "precision": 1,
+        "recall": 0.5,
+        "f1": 0.6666666666666666
+      },
+      "investigations": {
+        "tp": 1,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1,
+        "recall": 1,
+        "f1": 1
+      },
+      "expectedAlerts": 0,
+      "matchedAlerts": 0,
+      "emittedAlerts": [],
+      "failures": [
+        {
+          "kind": "FN",
+          "category": "unrecognized",
+          "entity": "Cholecalciferol",
+          "field": "name",
+          "expected": "Cholecalciferol",
+          "actual": null
+        },
+        {
+          "kind": "attribute",
+          "category": "attribute_mismatch",
+          "entity": "Cholecalciferol",
+          "field": "strength",
+          "expected": "60000 IU",
+          "actual": null
+        },
+        {
+          "kind": "attribute",
+          "category": "attribute_mismatch",
+          "entity": "Cholecalciferol",
+          "field": "dose",
+          "expected": "1 capsule",
+          "actual": null
+        },
+        {
+          "kind": "attribute",
+          "category": "attribute_mismatch",
+          "entity": "Cholecalciferol",
+          "field": "route",
+          "expected": "PO",
+          "actual": null
+        },
+        {
+          "kind": "attribute",
+          "category": "attribute_mismatch",
+          "entity": "Cholecalciferol",
+          "field": "frequency",
+          "expected": "once weekly",
+          "actual": null
+        },
+        {
+          "kind": "attribute",
+          "category": "attribute_mismatch",
+          "entity": "Cholecalciferol",
+          "field": "duration",
+          "expected": "8 weeks",
+          "actual": null
+        },
+        {
+          "kind": "attribute",
+          "category": "attribute_mismatch",
+          "entity": "Cholecalciferol",
+          "field": "assertion_status",
+          "expected": "new_order",
+          "actual": null
+        }
+      ]
+    },
+    {
+      "id": "stage5-018-onc-methotrexate-weekly",
+      "specialty": "Oncology",
+      "challenge": "Weekly Methotrexate \u002B Weekly Folic Acid \u002B PRN Ondansetron \u002B CBC/LFT monitoring",
+      "latencyMs": 180.34,
+      "medications": {
+        "tp": 3,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1,
+        "recall": 1,
+        "f1": 1
+      },
+      "investigations": {
+        "tp": 2,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1,
+        "recall": 1,
+        "f1": 1
+      },
+      "expectedAlerts": 0,
+      "matchedAlerts": 0,
+      "emittedAlerts": [],
+      "failures": []
+    },
+    {
+      "id": "stage5-019-onc-qtc-interaction",
+      "specialty": "Oncology",
+      "challenge": "Ciprofloxacin \u002B Ondansetron QTc prolongation DDI \u002B 12-lead ECG \u0026 Serum potassium",
+      "latencyMs": 205.82,
+      "medications": {
+        "tp": 3,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1,
+        "recall": 1,
+        "f1": 1
+      },
+      "investigations": {
+        "tp": 3,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1,
+        "recall": 1,
+        "f1": 1
+      },
+      "expectedAlerts": 1,
+      "matchedAlerts": 1,
+      "emittedAlerts": [
+        {
+          "category": "DRUG_INTERACTION",
+          "temporality": "CURRENT_ACTIVE",
+          "severity": "MODERATE",
+          "title": "QTc Prolongation Risk: Macrolide/Fluoroquinolone \u002B Ondansetron"
+        }
+      ],
+      "failures": []
+    },
+    {
+      "id": "stage5-020-onc-febrile-neutropenia",
+      "specialty": "Oncology",
+      "challenge": "Admission fever 38.8 C \u002B IV Piperacillin-Tazobactam \u002B Blood culture \u0026 CRP",
+      "latencyMs": 104.16,
+      "medications": {
+        "tp": 1,
+        "fp": 0,
+        "fn": 1,
+        "precision": 1,
+        "recall": 0.5,
+        "f1": 0.6666666666666666
+      },
+      "investigations": {
+        "tp": 3,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1,
+        "recall": 1,
+        "f1": 1
+      },
+      "expectedAlerts": 1,
+      "matchedAlerts": 1,
+      "emittedAlerts": [
+        {
+          "category": "LAB_ANOMALY",
+          "temporality": "HISTORICAL_ADMISSION_COURSE",
+          "severity": "MODERATE",
+          "title": "Historical Admission Finding \u2014 Significant Pyrexia (38.8\u00B0C)"
+        }
+      ],
+      "failures": [
+        {
+          "kind": "FN",
+          "category": "unrecognized",
+          "entity": "Filgrastim",
+          "field": "name",
+          "expected": "Filgrastim",
+          "actual": null
+        },
+        {
+          "kind": "attribute",
+          "category": "attribute_mismatch",
+          "entity": "Filgrastim",
+          "field": "strength",
+          "expected": "300 mcg",
+          "actual": null
+        },
+        {
+          "kind": "attribute",
+          "category": "attribute_mismatch",
+          "entity": "Filgrastim",
+          "field": "route",
+          "expected": "SC",
+          "actual": null
+        },
+        {
+          "kind": "attribute",
+          "category": "attribute_mismatch",
+          "entity": "Filgrastim",
+          "field": "frequency",
+          "expected": "once daily",
+          "actual": null
+        },
+        {
+          "kind": "attribute",
+          "category": "attribute_mismatch",
+          "entity": "Filgrastim",
+          "field": "duration",
+          "expected": "5 days",
+          "actual": null
+        },
+        {
+          "kind": "attribute",
+          "category": "attribute_mismatch",
+          "entity": "Filgrastim",
+          "field": "assertion_status",
+          "expected": "current_medication",
+          "actual": null
+        }
+      ]
+    },
+    {
+      "id": "stage5-021-onc-prostate-psa",
+      "specialty": "Oncology",
+      "challenge": "Serum PSA \u002B Bone pain analgesic \u002B Tramadol PRN",
+      "latencyMs": 128.82,
+      "medications": {
+        "tp": 2,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1,
+        "recall": 1,
+        "f1": 1
+      },
+      "investigations": {
+        "tp": 2,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1,
+        "recall": 1,
+        "f1": 1
+      },
+      "expectedAlerts": 0,
+      "matchedAlerts": 0,
+      "emittedAlerts": [],
+      "failures": []
+    },
+    {
+      "id": "stage5-022-nephro-conflicting-scr",
+      "specialty": "Nephrology",
+      "challenge": "Conflicting Serum Creatinine (1.1 vs 2.4 mg/dL) DATA_QUALITY_WARNING \u002B conditional Lisinopril hold",
+      "latencyMs": 184.95,
+      "medications": {
+        "tp": 1,
+        "fp": 0,
+        "fn": 1,
+        "precision": 1,
+        "recall": 0.5,
+        "f1": 0.6666666666666666
+      },
+      "investigations": {
+        "tp": 4,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1,
+        "recall": 1,
+        "f1": 1
+      },
+      "expectedAlerts": 1,
+      "matchedAlerts": 1,
+      "emittedAlerts": [
+        {
+          "category": "DATA_QUALITY_WARNING",
+          "temporality": "CURRENT_ACTIVE",
+          "severity": "WARNING",
+          "title": "Ambiguous or Conflicting Serum Creatinine Measurement"
+        }
+      ],
+      "failures": [
+        {
+          "kind": "FN",
+          "category": "unrecognized",
+          "entity": "Ramipril",
+          "field": "name",
+          "expected": "Ramipril",
+          "actual": null
+        },
+        {
+          "kind": "attribute",
+          "category": "attribute_mismatch",
+          "entity": "Ramipril",
+          "field": "strength",
+          "expected": "5 mg",
+          "actual": null
+        },
+        {
+          "kind": "attribute",
+          "category": "attribute_mismatch",
+          "entity": "Ramipril",
+          "field": "assertion_status",
+          "expected": "conditional",
+          "actual": null
+        }
+      ]
+    },
+    {
+      "id": "stage5-023-nephro-ckd-anemia",
+      "specialty": "Nephrology",
+      "challenge": "Baseline elevated creatinine 2.3 mg/dL \u002B Hemoglobin \u0026 Serum ferritin",
+      "latencyMs": 72.28,
+      "medications": {
+        "tp": 2,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1,
+        "recall": 1,
+        "f1": 1
+      },
+      "investigations": {
+        "tp": 3,
+        "fp": 0,
+        "fn": 1,
+        "precision": 1,
+        "recall": 0.75,
+        "f1": 0.8571428571428571
+      },
+      "expectedAlerts": 1,
+      "matchedAlerts": 1,
+      "emittedAlerts": [
+        {
+          "category": "LAB_ANOMALY",
+          "temporality": "BASELINE_MEASUREMENT",
+          "severity": "HIGH",
+          "title": "Elevated Serum Creatinine (2.3 mg/dL)"
+        }
+      ],
+      "failures": [
+        {
+          "kind": "attribute",
+          "category": "attribute_mismatch",
+          "entity": "Creatinine",
+          "field": "specimen",
+          "expected": "Serum",
+          "actual": null
+        },
+        {
+          "kind": "FN",
+          "category": "unrecognized",
+          "entity": "Hemoglobin",
+          "field": "name",
+          "expected": "Hemoglobin",
+          "actual": null
+        },
+        {
+          "kind": "attribute",
+          "category": "attribute_mismatch",
+          "entity": "Hemoglobin",
+          "field": "timing",
+          "expected": "in 2 weeks",
+          "actual": null
+        },
+        {
+          "kind": "attribute",
+          "category": "attribute_mismatch",
+          "entity": "Hemoglobin",
+          "field": "clinical_category",
+          "expected": "laboratory",
+          "actual": null
+        },
+        {
+          "kind": "attribute",
+          "category": "attribute_mismatch",
+          "entity": "Hemoglobin",
+          "field": "assertion_status",
+          "expected": "new_order",
+          "actual": null
+        }
+      ]
+    },
+    {
+      "id": "stage5-024-nephro-hypokalemia",
+      "specialty": "Nephrology",
+      "challenge": "Critical hypokalemia K\u002B 2.8 mEq/L \u002B Hydrochlorothiazide discontinuation",
+      "latencyMs": 140.31,
+      "medications": {
+        "tp": 1,
+        "fp": 0,
+        "fn": 1,
+        "precision": 1,
+        "recall": 0.5,
+        "f1": 0.6666666666666666
+      },
+      "investigations": {
+        "tp": 3,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1,
+        "recall": 1,
+        "f1": 1
+      },
+      "expectedAlerts": 1,
+      "matchedAlerts": 1,
+      "emittedAlerts": [
+        {
+          "category": "LAB_ANOMALY",
+          "temporality": "BASELINE_MEASUREMENT",
+          "severity": "CRITICAL",
+          "title": "Critical Potassium Value (2.8 mEq/L)"
+        }
+      ],
+      "failures": [
+        {
+          "kind": "FN",
+          "category": "unrecognized",
+          "entity": "Hydrochlorothiazide",
+          "field": "name",
+          "expected": "Hydrochlorothiazide",
+          "actual": null
+        },
+        {
+          "kind": "attribute",
+          "category": "attribute_mismatch",
+          "entity": "Hydrochlorothiazide",
+          "field": "strength",
+          "expected": "25 mg",
+          "actual": null
+        },
+        {
+          "kind": "attribute",
+          "category": "attribute_mismatch",
+          "entity": "Hydrochlorothiazide",
+          "field": "assertion_status",
+          "expected": "discontinued",
+          "actual": null
+        },
+        {
+          "kind": "attribute",
+          "category": "attribute_mismatch",
+          "entity": "K\u002B",
+          "field": "specimen",
+          "expected": "Serum",
+          "actual": null
+        }
+      ]
+    },
+    {
+      "id": "stage5-025-nephro-nsaid-avoidance",
+      "specialty": "Nephrology",
+      "challenge": "Documented Ibuprofen allergy \u002B Paracetamol alternative \u002B Renal Function Test",
+      "latencyMs": 89.56,
+      "medications": {
+        "tp": 3,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1,
+        "recall": 1,
+        "f1": 1
+      },
+      "investigations": {
+        "tp": 2,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1,
+        "recall": 1,
+        "f1": 1
+      },
+      "expectedAlerts": 1,
+      "matchedAlerts": 1,
+      "emittedAlerts": [
+        {
+          "category": "ALLERGY_CONFLICT",
+          "temporality": "CURRENT_ACTIVE",
+          "severity": "MODERATE",
+          "title": "Documented Drug Allergy Vigilance: Ibuprofen"
+        }
+      ],
+      "failures": []
+    },
+    {
+      "id": "stage5-026-neuro-stroke-secondary",
+      "specialty": "Neurology",
+      "challenge": "Ischemic stroke secondary prevention \u002B MRI Brain \u0026 Fasting Lipid Profile",
+      "latencyMs": 97.11,
+      "medications": {
+        "tp": 3,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1,
+        "recall": 1,
+        "f1": 1
+      },
+      "investigations": {
+        "tp": 3,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1,
+        "recall": 1,
+        "f1": 1
+      },
+      "expectedAlerts": 0,
+      "matchedAlerts": 0,
+      "emittedAlerts": [],
+      "failures": []
+    },
+    {
+      "id": "stage5-027-neuro-migraine-prn",
+      "specialty": "Neurology",
+      "challenge": "Prophylactic Amitriptyline \u002B PRN Sumatriptan \u002B conditional CT Head",
+      "latencyMs": 117.44,
+      "medications": {
+        "tp": 2,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1,
+        "recall": 1,
+        "f1": 1
+      },
+      "investigations": {
+        "tp": 1,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1,
+        "recall": 1,
+        "f1": 1
+      },
+      "expectedAlerts": 0,
+      "matchedAlerts": 0,
+      "emittedAlerts": [],
+      "failures": []
+    },
+    {
+      "id": "stage5-028-neuro-neuropathy-preg",
+      "specialty": "Neurology",
+      "challenge": "Gabapentin discontinuation \u002B Pregabalin initiation \u002B Serum Vitamin B12 / HbA1c",
+      "latencyMs": 64.87,
+      "medications": {
+        "tp": 1,
+        "fp": 0,
+        "fn": 1,
+        "precision": 1,
+        "recall": 0.5,
+        "f1": 0.6666666666666666
+      },
+      "investigations": {
+        "tp": 2,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1,
+        "recall": 1,
+        "f1": 1
+      },
+      "expectedAlerts": 0,
+      "matchedAlerts": 0,
+      "emittedAlerts": [],
+      "failures": [
+        {
+          "kind": "FN",
+          "category": "unrecognized",
+          "entity": "Pregabalin",
+          "field": "name",
+          "expected": "Pregabalin",
+          "actual": null
+        },
+        {
+          "kind": "attribute",
+          "category": "attribute_mismatch",
+          "entity": "Pregabalin",
+          "field": "strength",
+          "expected": "75 mg",
+          "actual": null
+        },
+        {
+          "kind": "attribute",
+          "category": "attribute_mismatch",
+          "entity": "Pregabalin",
+          "field": "dose",
+          "expected": "1 capsule",
+          "actual": null
+        },
+        {
+          "kind": "attribute",
+          "category": "attribute_mismatch",
+          "entity": "Pregabalin",
+          "field": "route",
+          "expected": "PO",
+          "actual": null
+        },
+        {
+          "kind": "attribute",
+          "category": "attribute_mismatch",
+          "entity": "Pregabalin",
+          "field": "frequency",
+          "expected": "at bedtime",
+          "actual": null
+        },
+        {
+          "kind": "attribute",
+          "category": "attribute_mismatch",
+          "entity": "Pregabalin",
+          "field": "assertion_status",
+          "expected": "new_order",
+          "actual": null
+        }
+      ]
+    },
+    {
+      "id": "stage5-029-neuro-seizure-titration",
+      "specialty": "Neurology",
+      "challenge": "Levetiracetam dose escalation \u002B EEG \u0026 Liver Function Tests",
+      "latencyMs": 115.31,
+      "medications": {
+        "tp": 3,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1,
+        "recall": 1,
+        "f1": 1
+      },
+      "investigations": {
+        "tp": 2,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1,
+        "recall": 1,
+        "f1": 1
+      },
+      "expectedAlerts": 0,
+      "matchedAlerts": 0,
+      "emittedAlerts": [],
+      "failures": []
+    },
+    {
+      "id": "stage5-030-genmed-gerd-anemia",
+      "specialty": "General Medicine",
+      "challenge": "PPI before breakfast \u002B oral iron \u002B Hemoglobin \u0026 Platelet count",
+      "latencyMs": 152.05,
+      "medications": {
+        "tp": 2,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1,
+        "recall": 1,
+        "f1": 1
+      },
+      "investigations": {
+        "tp": 1,
+        "fp": 0,
+        "fn": 1,
+        "precision": 1,
+        "recall": 0.5,
+        "f1": 0.6666666666666666
+      },
+      "expectedAlerts": 0,
+      "matchedAlerts": 0,
+      "emittedAlerts": [],
+      "failures": [
+        {
+          "kind": "FN",
+          "category": "unrecognized",
+          "entity": "Hemoglobin",
+          "field": "name",
+          "expected": "Hemoglobin",
+          "actual": null
+        },
+        {
+          "kind": "attribute",
+          "category": "attribute_mismatch",
+          "entity": "Hemoglobin",
+          "field": "timing",
+          "expected": "in 2 weeks",
+          "actual": null
+        },
+        {
+          "kind": "attribute",
+          "category": "attribute_mismatch",
+          "entity": "Hemoglobin",
+          "field": "clinical_category",
+          "expected": "laboratory",
+          "actual": null
+        },
+        {
+          "kind": "attribute",
+          "category": "attribute_mismatch",
+          "entity": "Hemoglobin",
+          "field": "assertion_status",
+          "expected": "new_order",
+          "actual": null
+        }
+      ]
+    },
+    {
+      "id": "stage5-031-genmed-uti-nitrofurantoin",
+      "specialty": "General Medicine",
+      "challenge": "Nitrofurantoin 5-day course \u002B Urine Culture \u0026 Complete Urine Examination",
+      "latencyMs": 139.64,
+      "medications": {
+        "tp": 2,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1,
+        "recall": 1,
+        "f1": 1
+      },
+      "investigations": {
+        "tp": 2,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1,
+        "recall": 1,
+        "f1": 1
+      },
+      "expectedAlerts": 0,
+      "matchedAlerts": 0,
+      "emittedAlerts": [],
+      "failures": []
+    },
+    {
+      "id": "stage5-032-genmed-ophthalmic-postop",
+      "specialty": "General Medicine",
+      "challenge": "Ophthalmic eye drops route \u002B oral analgesic \u002B Fasting Blood Sugar",
+      "latencyMs": 175.47,
+      "medications": {
+        "tp": 2,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1,
+        "recall": 1,
+        "f1": 1
+      },
+      "investigations": {
+        "tp": 1,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1,
+        "recall": 1,
+        "f1": 1
+      },
+      "expectedAlerts": 0,
+      "matchedAlerts": 0,
+      "emittedAlerts": [],
+      "failures": []
+    },
+    {
+      "id": "stage5-033-genmed-cellulitis-allergy",
+      "specialty": "General Medicine",
+      "challenge": "Penicillin allergy \u002B Clindamycin alternative \u002B ESR \u0026 CRP",
+      "latencyMs": 185.99,
+      "medications": {
+        "tp": 3,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1,
+        "recall": 1,
+        "f1": 1
+      },
+      "investigations": {
+        "tp": 2,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1,
+        "recall": 1,
+        "f1": 1
+      },
+      "expectedAlerts": 2,
+      "matchedAlerts": 2,
+      "emittedAlerts": [
+        {
+          "category": "DRUG_INTERACTION",
+          "temporality": "CURRENT_ACTIVE",
+          "severity": "MODERATE",
+          "title": "QTc Prolongation Risk: Macrolide/Fluoroquinolone \u002B Ondansetron"
+        },
+        {
+          "category": "ALLERGY_CONFLICT",
+          "temporality": "CURRENT_ACTIVE",
+          "severity": "MODERATE",
+          "title": "Documented Drug Allergy Vigilance: Penicillin"
+        }
+      ],
+      "failures": []
+    },
+    {
+      "id": "stage5-034-genmed-multimorbid-polypharmacy",
+      "specialty": "General Medicine",
+      "challenge": "5-drug polypharmacy \u002B Warfarin/Ibuprofen bleeding interaction \u002B multi-panel labs",
+      "latencyMs": 236.36,
+      "medications": {
+        "tp": 5,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1,
+        "recall": 1,
+        "f1": 1
+      },
+      "investigations": {
+        "tp": 3,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1,
+        "recall": 1,
+        "f1": 1
+      },
+      "expectedAlerts": 1,
+      "matchedAlerts": 1,
+      "emittedAlerts": [
+        {
+          "category": "DRUG_INTERACTION",
+          "temporality": "CURRENT_ACTIVE",
+          "severity": "HIGH",
+          "title": "Major Bleeding Risk: Warfarin \u002B Antiplatelet/NSAID"
+        }
+      ],
+      "failures": []
+    },
+    {
+      "id": "stage5-035-genmed-unresolved-oov",
+      "specialty": "General Medicine",
+      "challenge": "Unresolved OOV medication (Pirfenidone) \u0026 investigation (High-resolution CT Thorax) abstention check",
+      "latencyMs": 98.19,
+      "medications": {
+        "tp": 1,
+        "fp": 0,
+        "fn": 1,
+        "precision": 1,
+        "recall": 0.5,
+        "f1": 0.6666666666666666
+      },
+      "investigations": {
+        "tp": 2,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1,
+        "recall": 1,
+        "f1": 1
+      },
+      "expectedAlerts": 0,
+      "matchedAlerts": 0,
+      "emittedAlerts": [],
+      "failures": [
+        {
+          "kind": "FN",
+          "category": "unrecognized",
+          "entity": "Pirfenidone",
+          "field": "name",
+          "expected": "Pirfenidone",
+          "actual": null
+        },
+        {
+          "kind": "attribute",
+          "category": "attribute_mismatch",
+          "entity": "Pirfenidone",
+          "field": "strength",
+          "expected": "267 mg",
+          "actual": null
+        },
+        {
+          "kind": "attribute",
+          "category": "attribute_mismatch",
+          "entity": "Pirfenidone",
+          "field": "dose",
+          "expected": "1 capsule",
+          "actual": null
+        },
+        {
+          "kind": "attribute",
+          "category": "attribute_mismatch",
+          "entity": "Pirfenidone",
+          "field": "route",
+          "expected": "PO",
+          "actual": null
+        },
+        {
+          "kind": "attribute",
+          "category": "attribute_mismatch",
+          "entity": "Pirfenidone",
+          "field": "frequency",
+          "expected": "three times daily",
+          "actual": null
+        },
+        {
+          "kind": "attribute",
+          "category": "attribute_mismatch",
+          "entity": "Pirfenidone",
+          "field": "assertion_status",
+          "expected": "new_order",
+          "actual": null
+        }
+      ]
+    }
+  ]
+}

@@ -102,11 +102,26 @@ export class ExtractionService {
         code: 'MALFORMED_RESPONSE',
       };
     } else if (rawErr && typeof rawErr === 'object') {
+      const code = rawErr.code || rawErr.error_code || rawErr.extensions?.code;
+      let title = rawErr.title || rawErr.error;
+      let detail = rawErr.detail || rawErr.message;
+
+      if (code === 'CLINICAL_ACCESS_DENIED' || error.status === 403) {
+        title = title || 'Direct Extraction Restricted';
+        detail = detail || 'Direct extraction is reserved for clinical review staff. Outpatient clinical notes must be documented and signed within assigned encounters in OP EMR.';
+      } else if (code === 'CSRF_INVALID' || (error.status === 400 && code === 'CSRF_INVALID')) {
+        title = title || 'Security Token Expired';
+        detail = detail || 'Your verification token has expired or is invalid. Please reload the page.';
+      } else {
+        title = title || problem.title;
+        detail = detail || error.message;
+      }
+
       problem = {
-        title: rawErr.title || rawErr.error || problem.title,
-        detail: rawErr.detail || rawErr.message || error.message,
+        title,
+        detail,
         status: error.status,
-        code: rawErr.code || rawErr.error_code || rawErr.extensions?.code,
+        code,
         correlationId: rawErr.correlationId || rawErr.extensions?.correlationId,
       };
     }

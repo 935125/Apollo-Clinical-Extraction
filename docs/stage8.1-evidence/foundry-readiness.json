@@ -1,0 +1,91 @@
+﻿{
+    "checkedAtUtc":  "2026-11-24T05:16:59.3268434Z",
+    "billableInferenceRequestsSent":  0,
+    "runningListenersOn5000Or8000":  [
+                                         {
+                                             "localAddress":  "127.0.0.1",
+                                             "localPort":  8000,
+                                             "pid":  41148,
+                                             "processName":  "Apollo.Backend"
+                                         },
+                                         {
+                                             "localAddress":  "127.0.0.1",
+                                             "localPort":  5000,
+                                             "pid":  41148,
+                                             "processName":  "Apollo.Backend"
+                                         }
+                                     ],
+    "runningApolloBackendProcesses":  [
+                                          {
+                                              "pid":  18968,
+                                              "name":  "dotnet.exe"
+                                          },
+                                          {
+                                              "pid":  41148,
+                                              "name":  "Apollo.Backend.exe"
+                                          },
+                                          {
+                                              "pid":  28024,
+                                              "name":  "powershell.exe"
+                                          }
+                                      ],
+    "launchers":  {
+                      "startApolloBat":  {
+                                             "environment":  "Development",
+                                             "primaryProvider":  "MicrosoftFoundry",
+                                             "fallbackProvider":  "LocalOnnx",
+                                             "secretsPrinted":  false
+                                         },
+                      "startApolloPs1":  {
+                                             "environment":  "Development",
+                                             "primaryProvider":  "MicrosoftFoundry",
+                                             "fallbackProvider":  "LocalOnnx",
+                                             "secretsPrinted":  false
+                                         }
+                  },
+    "routingDiagnosticsDevelopment":  {
+                                          "environment":  "Development",
+                                          "requestedPrimaryProvider":  "MicrosoftFoundry",
+                                          "fallbackProvider":  "LocalOnnx",
+                                          "directLocalAuthorized":  false,
+                                          "directLocalReason":  null,
+                                          "foundryDeployment":  "gpt-6.1-sol",
+                                          "targetModel":  "gpt-6.1-sol",
+                                          "authenticationMode":  "ApiKey",
+                                          "configurationError":  null,
+                                          "configurationReady":  true,
+                                          "providerConfigurationSource":  "JsonConfigurationProvider",
+                                          "readinessScope":  "Configuration only; no provider request or token acquisition",
+                                          "extractionInferenceExecuted":  false
+                                      },
+    "routingDiagnosticsProduction":  {
+                                         "environment":  "Production",
+                                         "requestedPrimaryProvider":  "MicrosoftFoundry",
+                                         "fallbackProvider":  "LocalOnnx",
+                                         "directLocalAuthorized":  false,
+                                         "directLocalReason":  null,
+                                         "foundryDeployment":  null,
+                                         "targetModel":  "gpt-6.1-sol",
+                                         "authenticationMode":  "EntraId",
+                                         "configurationError":  "AZURE_NOT_CONFIGURED",
+                                         "configurationReady":  false,
+                                         "providerConfigurationSource":  "JsonConfigurationProvider",
+                                         "readinessScope":  "Configuration only; no provider request or token acquisition",
+                                         "extractionInferenceExecuted":  false
+                                     },
+    "nonBillableMetadataProbe":  {
+                                     "endpointHost":  "935125-0774-resource.services.ai.azure.com",
+                                     "requestedDeployment":  "gpt-6.1-sol",
+                                     "modelsListHttpStatus":  200,
+                                     "deploymentDetailHttpStatus":  200,
+                                     "returnedModelId":  "gpt-6.1-sol-2026-09-29",
+                                     "matchingCatalogModels":  [
+                                                                   "gpt-6.1-sol-2026-09-29",
+                                                                   "gpt-6.1-sol"
+                                                               ],
+                                     "latencyMs":  4101,
+                                     "credentialsPresent":  true,
+                                     "secretsPrinted":  false,
+                                     "inferenceRequestsSent":  0
+                                 }
+}

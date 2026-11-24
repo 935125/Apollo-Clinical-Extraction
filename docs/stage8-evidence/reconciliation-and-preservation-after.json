@@ -1,0 +1,96 @@
+﻿{
+    "verifiedAtUtc":  "2026-11-24T05:11:07.2546398Z",
+    "billableFoundryCallsExecuted":  0,
+    "isolatedBrowserSchemaDropped":  true,
+    "protectedFilesPreservation":  {
+                                       "baselineManifest":  "docs/stage8-evidence/preservation-before.json",
+                                       "totalProtectedFiles":  118,
+                                       "matchedByteIdentical":  118,
+                                       "mismatchedCount":  0,
+                                       "missingCount":  0,
+                                       "mismatched":  [
+
+                                                      ],
+                                       "missing":  [
+
+                                                   ],
+                                       "allPreserved":  true,
+                                       "stage5DevelopmentBenchmark35CasesSha256":  "3d2ee6afd0ac72157c92bddeedc43f94511ba170d7985a1f44177cb78eb9ad84",
+                                       "stage6SealedIndependentDatasetSha256":  {
+                                                                                    "ANNOTATION_PROTOCOL.md":  "70e0339d9716882285d854d44552bbe9dd1cddd6efb8ae6d8cfee87f944f2322",
+                                                                                    "annotation-packet-A.json":  "333a0625e97d8b113ff4cc3ab75f57e29bb6d864847702f649ed6bae00e3be9c",
+                                                                                    "annotation-packet-B.json":  "333a0625e97d8b113ff4cc3ab75f57e29bb6d864847702f649ed6bae00e3be9c",
+                                                                                    "manifest.json":  "fb7920b06b7dd9001ad04ad169d48b493ee83d2d34a08aac22385ba35d8a29ac",
+                                                                                    "sealed-inputs.json":  "1b7731b534c5e28a942a410089067e9e9cab42000d50f4fa642de64faeb131ec"
+                                                                                }
+                                   },
+    "applicationDatabasePreservation":  {
+                                            "database":  "cx_platform",
+                                            "preservedUnchangedDuringStage8Verification":  true,
+                                            "tables":  {
+                                                           "extraction_runs":  {
+                                                                                   "count":  44,
+                                                                                   "digest":  "17f0e1b4996eb2e300d46ed23ebf7509"
+                                                                               },
+                                                           "medications":  {
+                                                                               "count":  101,
+                                                                               "digest":  "d65822c8d89ffec2e9ce8dc59a24fe83"
+                                                                           },
+                                                           "investigations":  {
+                                                                                  "count":  136,
+                                                                                  "digest":  "39b55cfb228137af6a45a0aba46ef890"
+                                                                              },
+                                                           "reviews":  {
+                                                                           "count":  12,
+                                                                           "digest":  "35fda9dee81280a7097bb8a87008e15f"
+                                                                       }
+                                                       },
+                                            "referenceExtraction1713c76e":  {
+                                                                                "extraction_id":  "1713c76e-b355-4be3-b02f-e9d581b82415",
+                                                                                "correlation_id":  "live-final-86985b4aaa88",
+                                                                                "adapter_type":  "microsoft_foundry",
+                                                                                "model_deployment":  "gpt-6.1-sol",
+                                                                                "saved_at":  "2026-11-23T15:36:14.129548+05:30",
+                                                                                "medications_count":  7,
+                                                                                "investigations_count":  10,
+                                                                                "reviews_count":  12
+                                                                            },
+                                            "runsAddedBetweenStage7SnapshotAndStage8Audit":  [
+                                                                                                 {
+                                                                                                     "extraction_id":  "d2dd7ad8-cd4d-457e-8de8-4b206b3e7bd0",
+                                                                                                     "correlation_id":  "471c3de2-b2ef-42e0-9e90-a91e93309d5f",
+                                                                                                     "adapter_type":  "onnx_neurosymbolic_int8",
+                                                                                                     "model_deployment":  "bc5cdr_int8",
+                                                                                                     "saved_at":  "2026-11-23T16:06:38.403331+05:30"
+                                                                                                 },
+                                                                                                 {
+                                                                                                     "extraction_id":  "6182e4e5-e371-428d-a5da-11aaff8e292e",
+                                                                                                     "correlation_id":  "df9c710c-add8-465c-a770-96902355e3bd",
+                                                                                                     "adapter_type":  "onnx_neurosymbolic_int8",
+                                                                                                     "model_deployment":  "bc5cdr_int8",
+                                                                                                     "saved_at":  "2026-11-23T16:22:04.663411+05:30"
+                                                                                                 },
+                                                                                                 {
+                                                                                                     "extraction_id":  "0fcbffd6-13c5-449d-a6af-8b29b4ffd262",
+                                                                                                     "correlation_id":  "4d8b79c7-97b5-4c2a-a76a-2fb6b64db7f5",
+                                                                                                     "adapter_type":  "onnx_neurosymbolic_int8",
+                                                                                                     "model_deployment":  "bc5cdr_int8",
+                                                                                                     "saved_at":  "2026-11-23T16:30:46.947856+05:30"
+                                                                                                 }
+                                                                                             ]
+                                        },
+    "stage7ReconciliationSummary":  {
+                                        "referenceRecord1713c76e":  {
+                                                                        "status":  "DOCUMENTED_CLINICAL_CONTENT_INTACT_METADATA_TIMESTAMP_AND_CHILD_UUIDS_DIFFER",
+                                                                        "preIncidentRowMd5ReconstructableWithoutExternalBackup":  false,
+                                                                        "clinicalPayloadAnd12ReviewRowsIntact":  true,
+                                                                        "duplicateIdOverwriteBlockedInCode":  true
+                                                                    },
+                                        "stage5NonBenchmarkPlaywrightArtifacts":  {
+                                                                                      "status":  "DOCUMENTED_GITIGNORED_ARTIFACTS_NOT_RESTORABLE_FROM_SHA256_ALONE",
+                                                                                      "trackedInGitHistory":  false,
+                                                                                      "stage6Stage7Stage8PlaywrightOutputsIsolated":  true,
+                                                                                      "all33BenchmarkAndSealedStage7FilesByteIdentical":  true
+                                                                                  }
+                                    }
+}

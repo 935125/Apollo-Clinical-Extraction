@@ -1,0 +1,57 @@
+{
+  "test": "STAGE 9.2 LIVE ACCEPTANCE TEST",
+  "completedAt": "2026-11-24T08:09:43.207Z",
+  "stages": {
+    "Doctor Login": {
+      "status": "PASS",
+      "timestamp": "2026-11-24T08:09:36.732Z",
+      "url": "http://localhost:4200/emr"
+    },
+    "Doctor Dashboard & Recovered Notes": {
+      "status": "PASS",
+      "timestamp": "2026-11-24T08:09:36.866Z",
+      "url": "http://localhost:4200/emr"
+    },
+    "Create Note Editor": {
+      "status": "PASS",
+      "timestamp": "2026-11-24T08:09:37.023Z",
+      "url": "http://localhost:4200/emr/encounters/90c3a7c1-e16d-43fa-aa2e-9f0b4519f0d7/new"
+    },
+    "Save Draft": {
+      "status": "PASS",
+      "timestamp": "2026-11-24T08:09:37.219Z"
+    },
+    "Sign & Submit": {
+      "status": "PASS",
+      "timestamp": "2026-11-24T08:09:37.447Z",
+      "statusUrl": "http://localhost:4200/emr/notes/a5abf136-8544-4dae-ae79-f4f55d5ad688/status"
+    },
+    "Azure Service Bus & Worker AI Extraction": {
+      "status": "PASS",
+      "timestamp": "2026-11-24T08:09:41.906Z"
+    },
+    "Extraction Results Page Display": {
+      "status": "PASS",
+      "timestamp": "2026-11-24T08:09:43.207Z",
+      "hasMetoprolol": true,
+      "hasInvestigation": true,
+      "url": "http://localhost:4200/extraction/result?extractionId=39d97797-492c-4327-9f29-d9d046dd1436"
+    }
+  },
+  "consoleErrors": [
+    "Failed to load resource: the server responded with a status of 403 (Forbidden)"
+  ],
+  "screenshots": [
+    "D:\\AI Extraction\\docs\\stage9-evidence\\playwright\\stage9-2\\screenshots\\01-doctor-login-page.png",
+    "D:\\AI Extraction\\docs\\stage9-evidence\\playwright\\stage9-2\\screenshots\\02-login-credentials-entered.png",
+    "D:\\AI Extraction\\docs\\stage9-evidence\\playwright\\stage9-2\\screenshots\\03-doctor-dashboard-recovered-notes.png",
+    "D:\\AI Extraction\\docs\\stage9-evidence\\playwright\\stage9-2\\screenshots\\04-new-clinical-note-editor.png",
+    "D:\\AI Extraction\\docs\\stage9-evidence\\playwright\\stage9-2\\screenshots\\05-clinical-note-draft-entered.png",
+    "D:\\AI Extraction\\docs\\stage9-evidence\\playwright\\stage9-2\\screenshots\\06-draft-saved-confirmation.png",
+    "D:\\AI Extraction\\docs\\stage9-evidence\\playwright\\stage9-2\\screenshots\\07-sign-confirmation-modal.png",
+    "D:\\AI Extraction\\docs\\stage9-evidence\\playwright\\stage9-2\\screenshots\\08-extraction-status-initial.png",
+    "D:\\AI Extraction\\docs\\stage9-evidence\\playwright\\stage9-2\\screenshots\\09-extraction-status-terminal.png",
+    "D:\\AI Extraction\\docs\\stage9-evidence\\playwright\\stage9-2\\screenshots\\10-extraction-results-page.png",
+    "D:\\AI Extraction\\docs\\stage9-evidence\\playwright\\stage9-2\\screenshots\\error-failure-state.png"
+  ]
+}

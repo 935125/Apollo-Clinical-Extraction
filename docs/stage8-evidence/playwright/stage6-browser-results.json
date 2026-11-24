@@ -1,0 +1,15 @@
+{
+  "results": [
+    {
+      "scenario": "Weekly and PRN attributes, fallback disclosure, stale review handling",
+      "status": "PASS"
+    },
+    {
+      "scenario": "Missing timing/specimen remain visible on conditional investigation",
+      "status": "PASS"
+    }
+  ],
+  "extractionPosts": 0,
+  "liveFoundryCalls": 0,
+  "pageErrors": []
+}

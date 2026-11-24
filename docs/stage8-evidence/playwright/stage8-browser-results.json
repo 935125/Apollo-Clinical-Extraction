@@ -1,0 +1,20 @@
+{
+  "executedAt": "2026-11-24T05:04:21.049Z",
+  "results": [
+    {
+      "scenario": "Primary Microsoft Foundry GPT-6.1 Sol routing provenance & clean typography",
+      "status": "PASS"
+    },
+    {
+      "scenario": "Eligible transient fallback routing provenance (MicrosoftFoundry -> LocalOnnx)",
+      "status": "PASS"
+    },
+    {
+      "scenario": "Explicit authorized offline routing provenance distinct from fallback",
+      "status": "PASS"
+    }
+  ],
+  "extractionPosts": 0,
+  "liveFoundryCalls": 0,
+  "pageErrors": []
+}

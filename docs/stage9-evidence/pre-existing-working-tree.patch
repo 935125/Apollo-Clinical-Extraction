@@ -1,0 +1,109 @@
+﻿diff --git a/Start-Apollo.bat b/Start-Apollo.bat
+index 193fd1a..98e8ce5 100644
+--- a/Start-Apollo.bat
++++ b/Start-Apollo.bat
+@@ -4,6 +4,9 @@ cd /d "%~dp0"
+ powershell.exe -NoProfile -ExecutionPolicy Bypass -File "%~dp0Start-Apollo.ps1" %*
+ set "APOLLO_LAUNCH_EXIT=%errorlevel%"
+ if /I "%~1"=="-ConfigurationOnly" exit /b %APOLLO_LAUNCH_EXIT%
++if /I "%~1"=="-NoBrowser" exit /b %APOLLO_LAUNCH_EXIT%
++if /I "%~2"=="-ConfigurationOnly" exit /b %APOLLO_LAUNCH_EXIT%
++if /I "%~2"=="-NoBrowser" exit /b %APOLLO_LAUNCH_EXIT%
+ if not "%APOLLO_LAUNCH_EXIT%"=="0" (
+   echo.
+   echo Apollo launcher could not complete. Review the error above.
+diff --git a/Start-Apollo.ps1 b/Start-Apollo.ps1
+index 1e164d6..2712c33 100644
+--- a/Start-Apollo.ps1
++++ b/Start-Apollo.ps1
+@@ -80,6 +80,9 @@ if (Test-LocalPort 5000) {
+     if ($activeRouting.requestedPrimaryProvider -ine $routing.primaryProvider -or $activeRouting.environment -ine $routing.environment) {
+         throw 'Existing backend routing differs from the selected configuration. Restart it explicitly; no existing process was changed.'
+     }
++    if (-not $activeRouting.configurationReady) {
++        throw ("Existing backend routing configuration is not ready ({0}). Restart after fixing configuration; no existing process was changed." -f $activeRouting.configurationError)
++    }
+     Write-Host 'Existing backend routing matches the selected environment and provider.' -ForegroundColor Green
+ } else {
+     if (-not (Get-Command dotnet -ErrorAction SilentlyContinue)) { throw 'dotnet not found on PATH. Install the .NET SDK.' }
+diff --git a/frontend/src/app/app.html b/frontend/src/app/app.html
+index 670bf6c..ca226fa 100644
+--- a/frontend/src/app/app.html
++++ b/frontend/src/app/app.html
+@@ -251,14 +251,14 @@
+                 <strong>Source candidates requiring review</strong>
+                 <p>These neural mentions were withheld from extracted prescriptions. Review the source; no dose or clinical approval is implied.</p>
+                 @for (candidate of res.modelMetadata.reviewCandidates; track $index) {
+-                  <p>{{ candidate.name }} ? confidence {{ candidate.confidence | number:'1.3-3' }} ? {{ candidate.reason }}<br><q>{{ candidate.evidence.quote }}</q></p>
++                  <p>{{ candidate.name }} · confidence {{ candidate.confidence | number:'1.3-3' }} · {{ candidate.reason }}<br><q>{{ candidate.evidence.quote }}</q></p>
+                 }
+               </aside>
+             }
+             @if (res.modelMetadata.requestedPrimaryProvider) {
+               <p class="provider-summary" data-testid="routing-provenance">
+-                Requested: {{ res.modelMetadata.requestedPrimaryProvider }} ? Executed: {{ res.modelMetadata.finalExecutedProvider }} ?
+-                {{ res.modelMetadata.validationResult }} ? Clinical review required
++                Requested: {{ res.modelMetadata.requestedPrimaryProvider }} · Executed: {{ res.modelMetadata.finalExecutedProvider }} ·
++                {{ res.modelMetadata.validationResult }} · Clinical review required
+               </p>
+             }
+             <div class="result-meta">
+diff --git a/frontend/src/app/app.spec.ts b/frontend/src/app/app.spec.ts
+index e47ae67..df772f8 100644
+--- a/frontend/src/app/app.spec.ts
++++ b/frontend/src/app/app.spec.ts
+@@ -519,7 +519,7 @@ describe('Clinical extraction workspace', () => {
+     service.extract.mockReturnValue(of(recovered));
+     const { app, html, fixture } = extract();
+     expect(html.querySelector('.provider-summary')?.textContent).toContain('Local ONNX — Fallback');
+-    expect(html.querySelector('.provider-summary')?.textContent).toContain('Azure timed out');
++    expect(html.querySelector('.provider-summary')?.textContent).toContain('Microsoft Foundry timed out');
+     app.setResultTab('details');
+     fixture.detectChanges();
+     expect(app.tokenValue(recovered, null)).toBe('N/A');
+@@ -780,8 +780,9 @@ describe('Clinical extraction workspace', () => {
+   it('distinguishes accepted GPT, authorized offline execution, and real fallback', () => {
+     const { app } = workspace();
+     const run = (metadata: any) => ({ ...response, modelMetadata: { ...response.modelMetadata, ...metadata } });
+-    expect(app.providerLabel(run({ provider: 'foundry', model: 'gpt-6.1-sol-2026-09-29' }))).toBe('Microsoft Foundry ? GPT-6.1 Sol');
+-    expect(app.providerLabel(run({ provider: 'onnx', routingMode: 'explicit_offline', fallbackReason: null }))).toBe('Local ONNX ? Offline Mode');
++    expect(app.providerLabel(run({ provider: 'foundry', model: 'gpt-6.1-sol' }))).toBe('Microsoft Foundry — GPT-6.1 Sol');
++    expect(app.providerLabel(run({ provider: 'foundry', model: 'gpt-6.1-sol-2026-09-29' }))).toBe('Microsoft Foundry — gpt-6.1-sol-2026-09-29 (GPT-6.1 Sol)');
++    expect(app.providerLabel(run({ provider: 'onnx', routingMode: 'explicit_offline', fallbackReason: null }))).toBe('Local ONNX — Offline Mode');
+     expect(app.providerLabel(run({ provider: 'onnx', routingMode: 'fallback', fallbackReason: 'AZURE_RATE_LIMITED' }))).toContain('Fallback after Microsoft Foundry failure');
+     expect(app.providerLabel(run({ provider: 'onnx', fallbackReason: 'AZURE_INVALID_EVIDENCE' }))).toContain('historical fallback policy');
+     expect(app.providerLabel(run({ provider: 'onnx', fallbackReason: '<untrusted reason>' }))).not.toContain('<untrusted reason>');
+diff --git a/frontend/src/app/app.ts b/frontend/src/app/app.ts
+index be7d778..8047bb5 100644
+--- a/frontend/src/app/app.ts
++++ b/frontend/src/app/app.ts
+@@ -451,11 +451,17 @@ Investigations:
+     const metadata = run.modelMetadata;
+     if (metadata.provider === 'foundry') {
+       const modelId = (metadata.model || metadata.azureDeployment || metadata.modelDeployment || '').trim();
+-      return `Microsoft Foundry ? ${/^gpt-6\.1-sol(?:-|$)/i.test(modelId) ? 'GPT-6.1 Sol' : modelId || 'Model not recorded'}`;
++      if (/^gpt-6\.1-sol$/i.test(modelId)) {
++        return 'Microsoft Foundry — GPT-6.1 Sol';
++      }
++      if (/^gpt-6\.1-sol-/i.test(modelId)) {
++        return `Microsoft Foundry — ${modelId} (GPT-6.1 Sol)`;
++      }
++      return `Microsoft Foundry — ${modelId || 'Model not recorded'}`;
+     }
+     if (metadata.provider === 'onnx') {
+-      if (metadata.routingMode === 'explicit_offline') return 'Local ONNX ? Offline Mode';
+-      if (!metadata.fallbackReason) return 'Local ONNX ? Direct execution (mode not recorded)';
++      if (metadata.routingMode === 'explicit_offline') return 'Local ONNX — Offline Mode';
++      if (!metadata.fallbackReason) return 'Local ONNX — Direct execution (mode not recorded)';
+       const reasons: Record<string, string> = {
+         AZURE_TIMEOUT: 'Microsoft Foundry timed out', AZURE_UNREACHABLE: 'Microsoft Foundry unreachable',
+         AZURE_UNAVAILABLE: 'Microsoft Foundry temporarily unavailable', AZURE_RATE_LIMITED: 'Microsoft Foundry rate limit',
+@@ -466,7 +472,7 @@ Investigations:
+         AZURE_CREDENTIALS_MISSING: 'Historical authentication failure; review required',
+         AZURE_CREDENTIALS_INVALID: 'Historical authentication failure; review required'
+       };
+-      return `Local ONNX ? Fallback after Microsoft Foundry failure ? ${reasons[metadata.fallbackReason] || 'Provider failure (reason not classified)'}`;
++      return `Local ONNX — Fallback after Microsoft Foundry failure · ${reasons[metadata.fallbackReason] || 'Provider failure (reason not classified)'}`;
+     }
+     return 'Provider not recorded (historical run)';
+   }

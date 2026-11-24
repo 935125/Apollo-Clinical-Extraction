@@ -12,7 +12,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="Clinical\terminology-verification.json" />
+    <PackageReference Include="Azure.Messaging.ServiceBus" Version="7.20.1" />
     <PackageReference Include="Azure.AI.OpenAI" Version="2.1.0" />
     <PackageReference Include="Azure.Identity" Version="1.21.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.14" />
@@ -26,6 +26,11 @@
     <Content Remove="tests\**\*;artifacts\**;contracts\**;db\**;docs\**;infra\**;logs\**;tools\**;.integration-postgres\**" />
     <EmbeddedResource Remove="tests\**\*;artifacts\**;contracts\**;db\**;docs\**;infra\**;logs\**;tools\**;.integration-postgres\**" />
     <None Remove="tests\**\*;artifacts\**;contracts\**;db\**;docs\**;infra\**;logs\**;tools\**;.integration-postgres\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Clinical\terminology-verification.json" />
+    <EmbeddedResource Include="db\platform\migrations\V0009__doctor_emr.sql" />
   </ItemGroup>
 
 </Project>

@@ -37,7 +37,7 @@ function Wait-LocalPort([int]$port, [int]$attempts = 40) {
 function Start-Terminal([string]$directory, [string]$command, [string]$label) {
     # EncodedCommand avoids quoting problems in directories containing spaces.
     $escapedDir = $directory.Replace("'", "''")
-    $content = "`$Host.UI.RawUI.WindowTitle = '$label'; Set-Location -LiteralPath '$escapedDir'; $command"
+    $content = "`$Host.UI.RawUI.WindowTitle = '$label'; Set-Location -LiteralPath '$escapedDir'; `$env:DOTNET_ENVIRONMENT = '$($routing.environment)'; `$env:ASPNETCORE_ENVIRONMENT = '$($routing.environment)'; $command"
     $encoded = [Convert]::ToBase64String([Text.Encoding]::Unicode.GetBytes($content))
     $logDirectory = Join-Path $root 'backend/logs'
     New-Item -ItemType Directory -Path $logDirectory -Force | Out-Null
@@ -79,6 +79,9 @@ if (Test-LocalPort 5000) {
     catch { throw 'Existing backend cannot verify its routing. Restart it explicitly; the launcher did not stop or replace it.' }
     if ($activeRouting.requestedPrimaryProvider -ine $routing.primaryProvider -or $activeRouting.environment -ine $routing.environment) {
         throw 'Existing backend routing differs from the selected configuration. Restart it explicitly; no existing process was changed.'
+    }
+    if (-not $activeRouting.configurationReady) {
+        throw ("Existing backend routing configuration is not ready ({0}). Restart after fixing configuration; no existing process was changed." -f $activeRouting.configurationError)
     }
     Write-Host 'Existing backend routing matches the selected environment and provider.' -ForegroundColor Green
 } else {

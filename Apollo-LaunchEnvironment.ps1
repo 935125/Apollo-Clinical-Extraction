@@ -19,13 +19,13 @@ function Initialize-ApolloLaunchEnvironment([string]$projectRoot) {
         $dotenvPath = Join-Path $projectRoot '.env'
         if (Test-Path -LiteralPath $dotenvPath) {
             foreach ($line in [System.IO.File]::ReadLines($dotenvPath)) {
-                if ($line -match '^\s*(Extraction__(?:Provider|FallbackProvider))\s*=\s*(.*?)\s*$') {
+                if ($line -match '^\s*(Extraction__(?:Provider|FallbackProvider|AllowDirectLocal|DirectLocalReason))\s*=\s*(.*?)\s*$') {
                     $localRouting[$Matches[1]] = $Matches[2].Trim('"', "'")
                 }
             }
         }
     }
-    foreach ($field in @('Provider','FallbackProvider')) {
+    foreach ($field in @('Provider','FallbackProvider','AllowDirectLocal','DirectLocalReason')) {
         $key = 'Extraction__' + $field
         if (![string]::IsNullOrWhiteSpace([Environment]::GetEnvironmentVariable($key))) { continue }
         $flatSecret = if ($secretSettings) { $secretSettings.PSObject.Properties['Extraction:' + $field] } else { $null }
@@ -33,8 +33,11 @@ function Initialize-ApolloLaunchEnvironment([string]$projectRoot) {
             elseif ($secretSettings -and $secretSettings.Extraction -and $secretSettings.Extraction.$field) { $secretSettings.Extraction.$field }
             elseif ($localRouting.ContainsKey($key)) { $localRouting[$key] }
             elseif ($environmentSettings -and $environmentSettings.Extraction -and $environmentSettings.Extraction.$field) { $environmentSettings.Extraction.$field }
-            else { $baseSettings.Extraction.$field }
-        [Environment]::SetEnvironmentVariable($key, $selected, 'Process')
+            elseif ($baseSettings.Extraction -and $baseSettings.Extraction.$field) { $baseSettings.Extraction.$field }
+            else { $null }
+        if ($null -ne $selected) {
+            [Environment]::SetEnvironmentVariable($key, $selected.ToString(), 'Process')
+        }
     }
     [pscustomobject]@{
         environment = $selectedEnvironment

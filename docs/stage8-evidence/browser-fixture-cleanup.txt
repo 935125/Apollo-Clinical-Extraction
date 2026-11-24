@@ -1,0 +1,5 @@
+﻿timestampUtc=2026-11-24T05:10:28.8150782Z
+database=cx_audit_test
+droppedSchema=foundry_test_f1baef149cdf4a8ca829f41c75c3c3b1
+psqlOutput=DROP SCHEMA
+remainingMatchingSchemas=0

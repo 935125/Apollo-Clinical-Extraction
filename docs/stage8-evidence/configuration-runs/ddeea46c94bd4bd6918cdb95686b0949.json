@@ -1,0 +1,1 @@
+{"command":"cmd.exe","arguments":["/d","/c","Start-Apollo.bat","-ConfigurationOnly"],"explicitRoutingEnvironment":{"Extraction__Provider":"LocalOnnx","Extraction__AllowDirectLocal":"true","Extraction__DirectLocalReason":"authorized_offline"},"diagnostic":{"environment":"Development","primaryProvider":"LocalOnnx","fallbackProvider":"LocalOnnx","secretsPrinted":false}}

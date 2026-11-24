@@ -1,0 +1,1 @@
+{"command":"powershell.exe","arguments":["-NoProfile","-File","d:\\AI Extraction\\Start-Apollo.ps1","-ConfigurationOnly"],"explicitRoutingEnvironment":null,"diagnostic":{"environment":"Development","primaryProvider":"MicrosoftFoundry","fallbackProvider":"LocalOnnx","secretsPrinted":false}}

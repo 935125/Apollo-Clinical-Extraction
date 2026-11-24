@@ -38,6 +38,8 @@ public static class ClinicalApiSecurity
         builder.Services.AddAuthorization(options => options.FallbackPolicy = new AuthorizationPolicyBuilder()
             .RequireAssertion(context =>
             {
+                if (Apollo.Backend.Emr.EmrAuth.IsDoctorSession(context.User))
+                    return context.User.IsInRole("Doctor") || context.User.IsInRole("ClinicalReviewer") || context.User.IsInRole("Administrator");
                 if (demo) return true;
                 if (context.User.Identity?.IsAuthenticated != true || string.IsNullOrWhiteSpace(context.User.FindFirstValue("sub"))) return false;
                 var http = context.Resource as HttpContext;

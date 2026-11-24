@@ -25,7 +25,8 @@ public sealed class ExtractionWorkflow(
         string correlationId,
         string inputType,
         string? sourceFileName,
-        CancellationToken ct)
+        CancellationToken ct,
+        Guid? durableExtractionId = null)
     {
         ct.ThrowIfCancellationRequested();
         if (string.IsNullOrWhiteSpace(noteText))
@@ -37,7 +38,7 @@ public sealed class ExtractionWorkflow(
         ZeroLeakageValidator.Validate(noteText);
 
         var watch = Stopwatch.StartNew();
-        string extractionId = Guid.NewGuid().ToString("D");
+        string extractionId = (durableExtractionId ?? Guid.NewGuid()).ToString("D");
         string primaryProvider = (extractionOptions.Value.Provider ?? "MicrosoftFoundry").Trim();
         ClinicalExtractionResponse accepted;
         FoundryExtraction? capturedAzure = null;

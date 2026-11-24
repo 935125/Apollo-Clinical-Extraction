@@ -1,7 +1,9 @@
 import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 import { ExtractionService } from './services/extraction.service';
+import { EmrApi } from './emr/emr-api';
 import {
   ClinicalExtractionResponse,
   EntityReviewRecord,
@@ -28,12 +30,16 @@ export interface NarrativeSegment {
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './app.html',
   styleUrl: './app.scss',
 })
 export class App implements OnInit {
   private readonly extractionService = inject(ExtractionService);
+  readonly emrApi = inject(EmrApi, { optional: true });
+  readonly isDoctor = computed(() => !!this.emrApi?.doctor());
+  readonly noteIdParam = signal<string | null>(null);
+  readonly patientRefParam = signal<string | null>(null);
 
   readonly noteText = signal<string>('');
   readonly submittedText = signal<string>('');
@@ -262,10 +268,14 @@ Investigations:
         this.backendOnline.set(res.status === 'healthy' || res.status === 'active');
       });
     }
-    this.loadHistory();
+    if (!this.isDoctor()) {
+      this.loadHistory();
+    }
     if (typeof window !== 'undefined' && window.location?.search) {
       const params = new URLSearchParams(window.location.search);
       const deepLinkId = params.get('extractionId');
+      if (params.get('noteId')) this.noteIdParam.set(params.get('noteId'));
+      if (params.get('patient')) this.patientRefParam.set(params.get('patient'));
       if (deepLinkId) {
         this.openExtractionById(deepLinkId);
       }
@@ -451,11 +461,17 @@ Investigations:
     const metadata = run.modelMetadata;
     if (metadata.provider === 'foundry') {
       const modelId = (metadata.model || metadata.azureDeployment || metadata.modelDeployment || '').trim();
-      return `Microsoft Foundry ? ${/^gpt-6\.1-sol(?:-|$)/i.test(modelId) ? 'GPT-6.1 Sol' : modelId || 'Model not recorded'}`;
+      if (/^gpt-6\.1-sol$/i.test(modelId)) {
+        return 'Microsoft Foundry — GPT-6.1 Sol';
+      }
+      if (/^gpt-6\.1-sol-/i.test(modelId)) {
+        return `Microsoft Foundry — ${modelId} (GPT-6.1 Sol)`;
+      }
+      return `Microsoft Foundry — ${modelId || 'Model not recorded'}`;
     }
     if (metadata.provider === 'onnx') {
-      if (metadata.routingMode === 'explicit_offline') return 'Local ONNX ? Offline Mode';
-      if (!metadata.fallbackReason) return 'Local ONNX ? Direct execution (mode not recorded)';
+      if (metadata.routingMode === 'explicit_offline') return 'Local ONNX — Offline Mode';
+      if (!metadata.fallbackReason) return 'Local ONNX — Direct execution (mode not recorded)';
       const reasons: Record<string, string> = {
         AZURE_TIMEOUT: 'Microsoft Foundry timed out', AZURE_UNREACHABLE: 'Microsoft Foundry unreachable',
         AZURE_UNAVAILABLE: 'Microsoft Foundry temporarily unavailable', AZURE_RATE_LIMITED: 'Microsoft Foundry rate limit',
@@ -466,7 +482,7 @@ Investigations:
         AZURE_CREDENTIALS_MISSING: 'Historical authentication failure; review required',
         AZURE_CREDENTIALS_INVALID: 'Historical authentication failure; review required'
       };
-      return `Local ONNX ? Fallback after Microsoft Foundry failure ? ${reasons[metadata.fallbackReason] || 'Provider failure (reason not classified)'}`;
+      return `Local ONNX — Fallback after Microsoft Foundry failure · ${reasons[metadata.fallbackReason] || 'Provider failure (reason not classified)'}`;
     }
     return 'Provider not recorded (historical run)';
   }
@@ -677,6 +693,15 @@ Investigations:
   });
 
   onExtract(): void {
+    if (this.isDoctor()) {
+      this.error.set({
+        title: 'Direct Extraction Restricted',
+        detail: 'Direct extraction is reserved for clinical review staff. Outpatient clinical notes must be documented and signed within assigned encounters in OP EMR.',
+        code: 'CLINICAL_ACCESS_DENIED',
+        status: 403,
+      });
+      return;
+    }
     const text = this.noteText();
     if (!text.trim()) {
       this.error.set({
@@ -748,6 +773,15 @@ Investigations:
   }
 
   private processPdfFile(file: File): void {
+    if (this.isDoctor()) {
+      this.error.set({
+        title: 'Direct Extraction Restricted',
+        detail: 'Direct extraction is reserved for clinical review staff. Outpatient clinical notes must be documented and signed within assigned encounters in OP EMR.',
+        code: 'CLINICAL_ACCESS_DENIED',
+        status: 403,
+      });
+      return;
+    }
     if (typeof this.extractionService.extractPdf !== 'function') return;
 
     const revision = this.detach();

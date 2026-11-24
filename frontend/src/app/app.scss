@@ -1138,3 +1138,48 @@ pre {
   font-style: italic;
   color: #2c3531;
 }
+
+.doctor-heading-actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+.doctor-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background: #023830;
+  border-radius: 0 0 4px 4px;
+}
+.emr-source-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: #a8d5cb;
+  svg {
+    stroke: #a8d5cb;
+  }
+}
+.doctor-link-btn {
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.alert-actions {
+  margin-top: 10px;
+}
+.emr-empty-prompt {
+  margin-top: 16px;
+  padding: 16px;
+  background: #f5f4ef;
+  border-radius: 6px;
+  font-size: 14px;
+  color: var(--muted);
+  a {
+    color: var(--green);
+    font-weight: 600;
+  }
+}

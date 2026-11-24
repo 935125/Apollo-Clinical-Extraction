@@ -1,0 +1,38 @@
+{
+  "executedAt": "2026-11-24T07:14:56.802Z",
+  "results": [
+    {
+      "screen": "1 - Doctor Login",
+      "status": "PASS",
+      "path": "01-doctor-login.png"
+    },
+    {
+      "screen": "2 - Doctor Dashboard",
+      "status": "PASS",
+      "path": "02-doctor-dashboard.png"
+    },
+    {
+      "screen": "3 - Clinical Note Editor",
+      "status": "PASS",
+      "path": "03-clinical-note-editor.png"
+    },
+    {
+      "screen": "4 - Extraction Status",
+      "status": "PASS",
+      "path": "04-extraction-status.png"
+    },
+    {
+      "screen": "5 - Extraction Results & Review",
+      "status": "PASS",
+      "path": "05-extraction-results.png"
+    }
+  ],
+  "pageErrors": [],
+  "screenshots": [
+    "01-doctor-login.png",
+    "02-doctor-dashboard.png",
+    "03-clinical-note-editor.png",
+    "04-extraction-status.png",
+    "05-extraction-results.png"
+  ]
+}
