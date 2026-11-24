@@ -1,314 +1,260 @@
+<div align="center">
+
 # Apollo Clinical Extraction Platform
 
-**Source-grounded clinical information extraction, terminology normalization, and human review.**
+### Evidence-grounded clinical information extraction, from outpatient documentation to structured review.
 
-Apollo transforms unstructured clinical notes and text-based PDFs into structured medication and investigation records. It combines a **Microsoft Foundry primary extractor** with a **local ONNX fallback**, deterministic clinical validation, **RxNorm/LOINC terminology mapping**, and an auditable review experience.
+**A full-stack clinical AI engineering prototype** combining a doctor-facing outpatient EMR, asynchronous event processing, hybrid model inference, terminology normalization, and auditable human review.
 
-**Angular 21 · ASP.NET Core / .NET 10 · Microsoft Foundry · ONNX · PostgreSQL / pgvector**
+[![.NET](https://img.shields.io/badge/ASP.NET_Core-.NET_10-512BD4?style=flat-square&logo=dotnet&logoColor=white)](https://dotnet.microsoft.com/)
+[![Angular](https://img.shields.io/badge/Frontend-Angular_21-DD0031?style=flat-square&logo=angular&logoColor=white)](https://angular.dev/)
+[![PostgreSQL](https://img.shields.io/badge/Database-PostgreSQL-4169E1?style=flat-square&logo=postgresql&logoColor=white)](https://www.postgresql.org/)
+[![Azure Service Bus](https://img.shields.io/badge/Messaging-Azure_Service_Bus-0078D4?style=flat-square&logo=microsoftazure&logoColor=white)](https://learn.microsoft.com/azure/service-bus-messaging/)
+[![Status](https://img.shields.io/badge/Status-Engineering_Prototype-F59E0B?style=flat-square)](#project-status)
 
+[**Experience the interface**](#interface-gallery) · [**Explore the architecture**](#system-architecture) · [**Get started**](#getting-started) · [**Review the API**](#api--integration) · [**Engineering evidence**](#verification--evidence)
 
+</div>
 
-## Contents
+> [!IMPORTANT]
+> **Engineering demonstration — not approved for hospital production or autonomous clinical decision-making.** The system has been exercised with synthetic data. Institutional authentication, security/privacy assessments, prospective clinical validation, operational monitoring, and deployment authorization are required before processing real patient records. References to Apollo describe the project context and interface; they do not establish institutional production approval.
 
-- [What the platform does](#what-the-platform-does)
-- [Architecture](#architecture)
-- [Extraction lifecycle](#extraction-lifecycle)
-- [Clinical validation and terminology](#clinical-validation-and-terminology)
-- [Human review and audit trail](#human-review-and-audit-trail)
-- [Technology stack](#technology-stack)
-- [Repository layout](#repository-layout)
-- [Run locally](#run-locally)
-- [API overview](#api-overview)
-- [Verify the application](#verify-the-application)
-- [Security and limitations](#security-and-limitations)
-- [Documentation](#documentation)
+---
 
-## What the platform does
+## Overview
 
-| Capability | Description |
-| --- | --- |
-| **Clinical input** | Accepts pasted notes or text-based PDF documents through the same backend `ExtractionWorkflow`. |
-| **Hybrid extraction** | Uses the configured Microsoft Foundry model as primary provider and a local BC5CDR INT8 ONNX pipeline as fallback. |
-| **Source evidence** | Preserves source quotations and offsets for extracted items wherever supported. |
-| **Clinical interpretation** | Separates planned orders, historical measurements, allergies, and relevant medication instructions. |
-| **Terminology** | Attempts RxNorm medication and LOINC investigation mapping while preserving ambiguity and unresolved matches. |
-| **Validation and review** | Applies source-grounded clinical checks and supports entity-level human review without overwriting original AI output. |
-| **Persistence** | Saves validated extraction records to PostgreSQL; `saved: true` is returned only after a successful database write. |
-| **Interoperability** | Provides versioned extraction APIs, compatibility endpoints, and FHIR-related export capabilities. |
+Clinical notes frequently contain overlapping medication instructions, historical diagnoses, test orders, negations, and conditional plans. Converting these narratives into trustworthy structured records requires more than identifying medical terms: each output needs **source evidence, clinical context, terminology scrutiny, and a human-review path**.
 
-> **PDF boundary:** Scanned or image-only PDFs are **not** OCR-processed. Such files return `422 OCR_REQUIRED`; OCR is not bundled.
+Apollo Clinical Extraction Platform addresses that workflow through two complementary entry points:
 
-## Frontend screenshots
+| Experience | What it enables | Processing model |
+| --- | --- | --- |
+| **Doctor OP EMR** | Sign in, view assigned outpatient encounters, write or revise drafts, and sign immutable clinical note versions. | **Asynchronous:** PostgreSQL transactional outbox → Azure Service Bus → .NET worker → extraction → review. |
+| **Clinical Extraction & Review** | Submit authorized text/PDF requests, inspect extracted entities and source evidence, resolve uncertainties, and access saved results. | **Direct API:** authenticated extraction request → shared extraction workflow → persistence → review. |
 
-Actual screenshots from the Apollo Angular development interface, captured with **synthetic demonstration notes**. Select any image to open it at full resolution. The screenshots show functionality and layout from a development build; they do not represent hospital production approval.
+The **Doctor** and **ClinicalReviewer/Admin** access paths are intentionally distinct. A successful doctor login does not automatically authorize direct extraction API calls; the server's actual role, encounter-scoping, and anti-forgery policies govern access.
 
-### Clinical extraction in action
+### At a glance
 
-<a href="docs/screenshots/02-extraction-results.png">
-  <img src="docs/screenshots/02-extraction-results.png" alt="Apollo clinical extraction workspace showing a synthetic respiratory note alongside extracted medications and investigations" width="100%" />
-</a>
+- **Evidence-first extraction:** medications, allergies, investigations, order intent, and documented attributes with source-grounding checks.
+- **Hybrid providers:** Microsoft Foundry `gpt-6.1-sol` integration and an offline BC5CDR INT8 ONNX/C# pipeline, with explicit provider provenance.
+- **Clinical terminology:** RxNorm and LOINC resolution with unresolved or ambiguous mappings retained for review.
+- **Durable asynchronous ingestion:** signed notes become immutable versions and are published through a transactional outbox.
+- **Real queue integration:** Microsoft Entra ID-based Azure Service Bus publisher/consumer, retries, duplicate detection, and idempotent handling.
+- **Human-in-the-loop:** review decisions, source quotations, warnings, persisted results, and audit history.
 
-*Source text remains visible beside the structured results. This example displays the Local ONNX fallback with explicit reduced-coverage disclosure, medication status and investigation summaries.*
+## Project status
 
-### Explore the interface
+**Development snapshot: 24 November 2026.** The table distinguishes exercised engineering paths from remaining work; test success is **not** clinical validation.
+
+| Area | Engineering status | Qualification |
+| --- | --- | --- |
+| Doctor sign-in, assigned encounters, note drafts, signing | **Implemented; browser acceptance reported** | Uses synthetic local demonstration identities and encounter data. |
+| Signed-note transactional outbox | **Implemented; recovery tested** | Previously pending outbox events were recovered following a backend configuration/restart correction. |
+| Live Azure Service Bus send → receive → complete | **Live integration test reported passing** | Tested with synthetic events, Microsoft Entra ID, and no shared access keys. |
+| Doctor note → queue → worker → local extraction → results | **Stage 9.2 browser acceptance reported passing** | Local ONNX path; human review remains necessary. |
+| Microsoft Foundry primary model | **Integrated; controlled live verification documented** | Not the provider used for Stage 9.2's zero-cost browser acceptance. |
+| Direct `POST /api/v1/extractions` from Doctor session | **Known access issue under investigation** | The Doctor session has returned **HTTP 403**. Authorization/CSRF policy must be diagnosed, not bypassed. |
+| Independent clinical validation and production readiness | **Not complete** | No claims of clinical-grade accuracy, regulatory clearance, or deployment approval. |
+
+See [Verification & evidence](#verification--evidence) for the supporting development reports.
+
+## Interface gallery
+
+Screenshots below are from **synthetic development scenarios**, not real patient records. The first gallery uses the existing screenshot assets maintained in `docs/screenshots/`.
+
+### Clinical extraction workspace
+
+[![Clinical extraction results showing a source note alongside extracted data](docs/screenshots/02-extraction-results.png)](docs/screenshots/02-extraction-results.png)
+
+*Source content and structured results shown together, with model provenance and reduced-coverage disclosure when the offline fallback is selected.*
 
 <table>
   <tr>
-    <td width="50%" valign="top">
-      <a href="docs/screenshots/01-workspace-input.png"><img src="docs/screenshots/01-workspace-input.png" alt="Empty Apollo workspace with pasted clinical note editor, PDF upload, and Extract action" width="100%" /></a>
-      <br/><strong>01 · Clinical input workspace</strong><br/>
-      Enter a note, select an example, or upload a text-based PDF.
-    </td>
-    <td width="50%" valign="top">
-      <a href="docs/screenshots/03-pdf-extraction.png"><img src="docs/screenshots/03-pdf-extraction.png" alt="Apollo extraction view displaying a synthetic inpatient discharge PDF alongside structured medication results" width="100%" /></a>
-      <br/><strong>02 · PDF extraction</strong><br/>
-      Inspect a synthetic discharge summary side by side with extracted data.
-    </td>
+    <td width="50%" valign="top"><a href="docs/screenshots/01-workspace-input.png"><img src="docs/screenshots/01-workspace-input.png" width="100%" alt="Clinical input workspace" /></a><br/><strong>01 · Clinical input</strong><br/>Pasted clinical notes and supported text PDFs.</td>
+    <td width="50%" valign="top"><a href="docs/screenshots/03-pdf-extraction.png"><img src="docs/screenshots/03-pdf-extraction.png" width="100%" alt="PDF extraction workspace" /></a><br/><strong>02 · PDF extraction</strong><br/>Text-based PDF processing with structured output.</td>
   </tr>
   <tr>
-    <td width="50%" valign="top">
-      <a href="docs/screenshots/04-validation-export.png"><img src="docs/screenshots/04-validation-export.png" alt="Apollo extraction details and validation warnings with JSON, CSV and FHIR export options" width="100%" /></a>
-      <br/><strong>03 · Validation and export</strong><br/>
-      Examine warnings, extraction metadata and JSON / CSV / FHIR export options.
-    </td>
-    <td width="50%" valign="top">
-      <a href="docs/screenshots/05-extraction-history.png"><img src="docs/screenshots/05-extraction-history.png" alt="Apollo extraction history showing saved synthetic runs, dates, providers and entity counts" width="100%" /></a>
-      <br/><strong>04 · Extraction history</strong><br/>
-      Search prior runs and identify the provider and extraction timestamp.
-    </td>
+    <td width="50%" valign="top"><a href="docs/screenshots/04-validation-export.png"><img src="docs/screenshots/04-validation-export.png" width="100%" alt="Validation findings and export actions" /></a><br/><strong>03 · Validation and export</strong><br/>Evidence, warnings, metadata, and supported exports.</td>
+    <td width="50%" valign="top"><a href="docs/screenshots/05-extraction-history.png"><img src="docs/screenshots/05-extraction-history.png" width="100%" alt="Extraction history" /></a><br/><strong>04 · Extraction history</strong><br/>Persisted runs with provider and review context.</td>
   </tr>
 </table>
 
-### Where to click
+### Doctor OP EMR
 
-| Interface control | What it opens |
-| --- | --- |
-| **Workspace** | Input, extraction and result review in a single two-column layout. |
-| **Upload PDF / Extract** | Submit a text-based document or the pasted clinical note. |
-| **Structured** | Medication, allergy and investigation results. |
-| **Source** | Source-oriented inspection in the results area. |
-| **Details / View details** | Extraction metadata, validation findings and warnings. |
-| **Export** | Download JSON, CSV or FHIR output where enabled. |
-| **History** | Search and reopen previously saved extraction runs. |
-| **Select an extracted entity** | Open entity-level review controls, where available in the current build. |
+The Stage 9.2 acceptance run also captured the doctor login, dashboard, note editor, draft save, sign confirmation, extraction status, and results review. Those locally generated captures are documented in [`docs/APOLLO_STAGE9_2_OUTBOX_RECOVERY_AND_ACCEPTANCE_REPORT.md`](docs/APOLLO_STAGE9_2_OUTBOX_RECOVERY_AND_ACCEPTANCE_REPORT.md). Review the files under `docs/stage9-evidence/playwright/stage9-2/screenshots/` before publishing additional images to a public repository; verify that they contain synthetic information only.
 
-> **Additional screenshot welcome:** The entity-level clinical review and audit-history panel is implemented but is not shown in the five supplied screenshots. Add a real capture before presenting that panel as part of this gallery.
-
-## Architecture
-
-The platform separates browser presentation, the ASP.NET Core workflow, extraction providers, clinical processing, and persistent storage.
+## System architecture
 
 ```mermaid
 flowchart TB
-    subgraph UI["Presentation"]
-        USER["Reviewer / developer"]
-        ANGULAR["Angular clinical dashboard"]
-        USER --> ANGULAR
-    end
+    DOC["Doctor OP EMR · Angular 21"]
+    REV["Clinical Extraction & Review · Angular 21"]
+    API["ASP.NET Core API · .NET 10"]
+    AUTH["Authentication · role and encounter authorization · CSRF"]
+    NOTES["Signed note versions · PostgreSQL"]
+    OUTBOX["Transactional outbox"]
+    PUB[".NET outbox publisher"]
+    BUS["Azure Service Bus · op-clinical-notes"]
+    WORKER[".NET message consumer"]
+    FLOW["Shared ExtractionWorkflow"]
+    LLM["Microsoft Foundry · configured primary"]
+    LOCAL["BC5CDR INT8 ONNX + C# rules"]
+    CHECKS["Evidence validation · context · RxNorm / LOINC"]
+    STORE[("PostgreSQL · results, reviews, audit")]
+    RESULTS["Results, provenance and clinical review"]
 
-    subgraph API["ASP.NET Core / .NET 10"]
-        ENDPOINT["Extraction API"]
-        WORKFLOW["ExtractionWorkflow"]
-        VALIDATE["Evidence + clinical validation"]
-        NORMALIZE["RxNorm / LOINC resolution"]
-        SAFETY["Safety flags + uncertainty"]
-        REVIEW["Entity review API + audit trail"]
-    end
-
-    subgraph PROVIDERS["Extraction providers"]
-        FOUNDRY["Microsoft Foundry - primary"]
-        ONNX["BC5CDR INT8 ONNX - fallback"]
-        RULES["Source-grounded C# attribute rules"]
-    end
-
-    DB[("PostgreSQL + pgvector")]
-
-    ANGULAR --> ENDPOINT --> WORKFLOW
-    WORKFLOW -->|"Primary attempt"| FOUNDRY
-    WORKFLOW -.->|"Fallback when configured / necessary"| ONNX
-    ONNX --> RULES
-    FOUNDRY --> VALIDATE
-    RULES --> VALIDATE
-    VALIDATE --> NORMALIZE --> SAFETY --> DB
-    ANGULAR <-->|"Read and submit decisions"| REVIEW
-    REVIEW <--> DB
-    DB -->|"Saved extraction"| ENDPOINT
-
-    classDef ui fill:#e0f2fe,stroke:#0284c7,color:#0c4a6e
-    classDef core fill:#eef2ff,stroke:#6366f1,color:#312e81
-    classDef provider fill:#f0fdf4,stroke:#16a34a,color:#14532d
-    classDef storage fill:#fef3c7,stroke:#d97706,color:#78350f
-    class ANGULAR,USER ui
-    class ENDPOINT,WORKFLOW,VALIDATE,NORMALIZE,SAFETY,REVIEW core
-    class FOUNDRY,ONNX,RULES provider
-    class DB storage
+    DOC --> API
+    REV --> API
+    API --> AUTH
+    AUTH --> NOTES
+    NOTES --> OUTBOX --> PUB --> BUS --> WORKER --> FLOW
+    AUTH -->|"Authorized direct extraction"| FLOW
+    FLOW -->|"Configured primary"| LLM
+    FLOW -.->|"Configured fallback / local mode"| LOCAL
+    LLM --> CHECKS
+    LOCAL --> CHECKS
+    CHECKS --> STORE --> RESULTS
+    RESULTS --> DOC
+    RESULTS --> REV
 ```
 
-**Important distinction:** The BC5CDR model detects medication/condition mentions; medication attributes and investigation extraction in the fallback path rely heavily on **deterministic C# processing**. It is not a fully equivalent replacement for a general-purpose clinical LLM. The provider and rule provenance should remain visible in results.
+The signed-note path is **asynchronous**: saving a signed note is not dependent on instantaneous availability of the cloud queue. Outbox entries are retried by the publisher, and message processing uses idempotency safeguards to avoid duplicate downstream work.
 
-## Extraction lifecycle
+**Provider boundary:** BC5CDR is a biomedical entity-recognition model, not a general-purpose clinical language model. The local fallback combines ONNX detections with deterministic C# attribute and investigation logic, and may produce narrower coverage than the cloud provider. UI and API responses should identify the provider actually used.
 
-The API does not report an extraction as saved until PostgreSQL confirms persistence.
+## Clinical extraction lifecycle
 
 ```mermaid
 sequenceDiagram
     autonumber
-    actor User as User
-    participant UI as Angular
-    participant API as ASP.NET Core API
-    participant WF as ExtractionWorkflow
-    participant Model as Foundry / local fallback
-    participant Checks as Validation + terminology
+    actor Doctor
+    participant UI as Angular Doctor Portal
+    participant API as ASP.NET Core
     participant DB as PostgreSQL
+    participant Bus as Azure Service Bus
+    participant Worker as .NET Extraction Worker
 
-    User->>UI: Paste note or upload PDF
-    UI->>API: POST extraction request
-    API->>WF: Validate input and prepare text
-    alt Image-only PDF
-        WF-->>API: OCR_REQUIRED
-        API-->>UI: HTTP 422
-        UI-->>User: Explain OCR requirement
-    else Supported clinical text
-        WF->>Model: Execute configured extraction provider
-        Model-->>WF: Entities + available provenance
-        WF->>Checks: Evidence, scope, attributes, codes
-        Checks-->>WF: Structured validated result + warnings
-        WF->>DB: Persist extraction and related entities
-        alt Database write succeeds
-            DB-->>WF: Commit confirmed
-            WF-->>API: Result with saved = true
-            API-->>UI: Extraction ID and structured results
-            UI-->>User: Show results for review
-        else Write fails
-            DB-->>WF: Persistence error
-            WF-->>API: Failure (not saved)
-            API-->>UI: Safe error response
-            UI-->>User: Explain unsuccessful save
-        end
+    Doctor->>UI: Save draft
+    UI->>API: Save encounter-scoped draft
+    API->>DB: Persist editable draft
+    Doctor->>UI: Sign & Submit
+    UI->>API: Sign current note version
+    API->>DB: Atomically store signed version + outbox event
+    API-->>UI: Signed / pending publication
+    loop Until published or safely retried
+        API->>DB: Claim eligible outbox event
+        API->>Bus: Send opaque event identifiers
+        Bus-->>API: Broker acknowledgment
+        API->>DB: Record publication
     end
+    Bus->>Worker: Receive in PeekLock mode
+    Worker->>DB: Fetch and verify signed source
+    Worker->>Worker: Extract, validate, normalize
+    Worker->>DB: Persist linked result and idempotency record
+    Worker->>Bus: Complete message after durable processing
+    UI->>API: Poll extraction status
+    API-->>UI: Needs Review / terminal result
 ```
 
-## Clinical validation and terminology
+Only **opaque event/note references** should traverse the queue; clinical note content stays within protected application storage. An acknowledgment from Azure proves message delivery, not extraction correctness. The result must remain inspectable and reviewable by an appropriately authorized user.
 
-The workflow prioritizes **documented evidence** over guessed attributes or forced terminology codes. A valid code format or catalog hit does not itself guarantee that a clinical concept is an exact semantic match. The diagram flows **left to right**.
+### Clinical interpretation and terminology
 
-```mermaid
-flowchart LR
-    INPUT["Extracted entity + source span"] --> EVIDENCE{"Evidence supported by source?"}
-    EVIDENCE -->|"No"| HOLD["Flag or withhold unsupported claim"]
-    EVIDENCE -->|"Yes"| SCOPE["Classify current / historical / conditional / negated"]
-    SCOPE --> ATTR["Bind documented attributes"]
-    ATTR --> CODE["RxNorm or LOINC candidate lookup"]
-    CODE --> MATCH{"Semantic correspondence"}
-    MATCH -->|"Exact"| EXACT["Use verified exact code"]
-    MATCH -->|"Narrower / broader / ambiguous"| REVIEW["Retain candidate with uncertainty"]
-    MATCH -->|"Unresolved"| NULL["Leave unverified code unset"]
-    EXACT --> OUTPUT["Validated entity + safety flags"]
-    REVIEW --> OUTPUT
-    NULL --> OUTPUT
-    HOLD --> OUTPUT
-    OUTPUT --> STORE["Persist and display for human review"]
+The validation layer is designed to distinguish:
 
-    classDef good fill:#dcfce7,stroke:#16a34a,color:#14532d
-    classDef caution fill:#fef3c7,stroke:#d97706,color:#78350f
-    classDef error fill:#fee2e2,stroke:#dc2626,color:#7f1d1d
-    class EXACT good
-    class REVIEW,NULL caution
-    class HOLD error
-```
+| Source statement | Intended treatment |
+| --- | --- |
+| “Start paracetamol 500 mg orally twice daily for 3 days.” | New medication order with supported attributes. |
+| “Penicillin causes anaphylaxis.” | Allergy; **not** an active prescription. |
+| “CBC was normal last week.” | Historical investigation/result; **not** a new order. |
+| “Order a chest X-ray if symptoms persist.” | Conditional investigation, not an unconditional order. |
+| “Amoxicillin was discussed but not prescribed.” | Explicitly **not** a prescription. |
 
-Examples of distinctions that matter: **active discharge medication vs. allergy**, **historical lab result vs. newly ordered investigation**, and **explicit serum specimen vs. undocumented specimen**. Reviewers should see uncertainty rather than a fabricated degree of precision.
-
-## Human review and audit trail
-
-Review decisions are modeled as separate records. The original extraction and its source evidence remain available after corrections.
-
-```mermaid
-flowchart LR
-    STORED["Saved AI extraction"] --> QUEUE["Entity pending review"]
-    QUEUE --> ACCEPT["ACCEPTED"]
-    QUEUE --> CORRECT["CORRECTED"]
-    QUEUE --> REJECT["REJECTED"]
-    QUEUE --> CLARIFY["NEEDS_CLARIFICATION"]
-    ACCEPT --> AUDIT["Versioned review audit"]
-    CORRECT --> AUDIT
-    REJECT --> AUDIT
-    CLARIFY --> AUDIT
-    AUDIT --> HISTORY["Review history + original evidence"]
-    STORED -.->|"Preserved original"| HISTORY
-
-    classDef review fill:#eef2ff,stroke:#6366f1,color:#312e81
-    classDef history fill:#f0fdf4,stroke:#16a34a,color:#14532d
-    class ACCEPT,CORRECT,REJECT,CLARIFY review
-    class AUDIT,HISTORY history
-```
-
-The current local workflow may operate in **unauthenticated demonstration mode**. That is **not** equivalent to an authenticated clinician approval. Institutional sign-in, role-based/patient-scoped access, and deployment controls are prerequisites for real clinical operations.
+RxNorm/LOINC matches should preserve clinical meaning, formulation, strength, route, specimen, and uncertainty; unavailable or ambiguous codes must remain unresolved rather than fabricated. Source quotations and offsets support review but do not replace clinician judgment.
 
 ## Technology stack
 
-| Layer | Technology |
+| Concern | Implementation |
 | --- | --- |
-| User interface | Angular 21, TypeScript |
-| API and workflow | ASP.NET Core / .NET 10, C# |
-| Primary provider | Microsoft Foundry (`gpt-6.1-sol` development deployment) |
-| Fallback provider | BC5CDR-trained INT8 ONNX + C# rules |
-| Terminology | RxNorm, LOINC |
-| Storage | PostgreSQL + `vector` extension |
-| Testing | .NET xUnit, Angular unit tests, Playwright Chromium browser tests |
-| Local infrastructure | Docker Compose database setup |
+| Web application | Angular 21, TypeScript, component-level UI and browser tests |
+| Backend | ASP.NET Core / .NET 10, C# REST API and background hosted services |
+| Identity and access | Cookie-based local development authentication, role checks, encounter-scoped authorization, CSRF defenses |
+| Cloud messaging | Azure Service Bus Standard, `Azure.Messaging.ServiceBus`, `Azure.Identity`, Microsoft Entra ID RBAC |
+| Primary inference | Microsoft Foundry (`gpt-6.1-sol` deployment, when explicitly configured and authorized) |
+| Local inference | BC5CDR INT8 ONNX with deterministic C# extraction/validation logic |
+| Persistence | PostgreSQL, `pgvector`, transactional outbox, versioned notes, review/audit records |
+| Terminology | RxNorm and LOINC mapping with unresolved-candidate handling |
+| Testing | xUnit, Angular unit tests, Playwright Chromium E2E, isolated database tests |
 
-**Python is not required for the main runtime or build.** Some development/evaluation scripts may be maintained separately.
-
-## Repository layout
+## Repository structure
 
 ```text
-.
-├── frontend/                         # Angular dashboard and browser tests
+Apollo-Clinical-Extraction/
+├── frontend/                            Angular UI and Playwright flows
+│   └── e2e/                             Browser acceptance tests
 ├── backend/
-│   ├── Apollo.Backend.csproj          # ASP.NET Core application
-│   ├── Clinical/                      # Extraction and validation logic
-│   ├── Storage/                       # PostgreSQL persistence
-│   ├── db/platform/migrations/        # Versioned database migrations
-│   ├── infra/docker/                  # Local container configuration
-│   ├── contracts/                     # Integration contracts
-│   ├── docs/                          # Backend technical documentation
-│   └── tests/                         # Backend and evaluation tests
-└── AIExtraction.slnx                  # .NET solution
+│   ├── Apollo.Backend.csproj             .NET API and hosted services
+│   ├── Emr/                             Doctor, notes, messaging and worker
+│   ├── Clinical/                        Extraction and clinical validation
+│   ├── Storage/                         PostgreSQL repositories
+│   ├── Configuration/                   Local development configuration
+│   ├── db/platform/migrations/          Versioned database schema
+│   ├── infra/docker/                   Optional local infrastructure
+│   └── tests/                           Backend and integration suites
+├── docs/
+│   ├── screenshots/                     Clinical extraction UI gallery
+│   └── stage9-evidence/                EMR and messaging test evidence
+├── Start-Apollo.bat                     Windows launcher
+├── Start-Apollo.ps1                     Service orchestration
+└── AIExtraction.slnx                    Solution file
 ```
 
-See [Repository structure](backend/docs/repository-structure.md) for more detail.
+Directory availability may vary between development branches and release packages. Generated evidence and local database files are **not** prerequisites for cloning and building the source.
 
-## Run locally
+## Getting started
 
 ### Prerequisites
 
-- .NET **10 SDK**
-- Node.js **24+** and npm
-- PostgreSQL with the `vector` extension, or Docker with the supplied Compose configuration
-- Azure CLI sign-in and appropriate Foundry permissions **if using the cloud provider**
+- **.NET 10 SDK**
+- **Node.js 24+** and npm
+- **PostgreSQL** with the required schema and `vector` extension, or the project-provided Docker Compose setup
+- **Microsoft Entra ID / Azure access** only when testing real Azure Service Bus or Microsoft Foundry
+- A **synthetic local doctor account** initialized through the backend's approved development seeding flow
 
-### 1. Start PostgreSQL
+> [!CAUTION]
+> Do not store passwords, API keys, bearer tokens, real patient data, or reusable demo credentials in this README or a public Git commit. Keep local `.env` and user secrets untracked. Demo passwords must be established or rotated locally.
 
-From the repository root:
+### Option A — Windows development launcher
+
+For a **previously provisioned development machine**, start the application from the repository root:
+
+```powershell
+.\Start-Apollo.bat
+```
+
+The launcher orchestrates the local PostgreSQL service (where bundled), ASP.NET Core backend and Angular frontend. Open **http://localhost:4200/login** for the Doctor OP EMR, or **http://localhost:4200** for the application entry point.
+
+The launcher does **not** provision PostgreSQL on a fresh clone. In this repository's pre-provisioned Windows configuration, it expects bundled binaries under `backend/tools/pgsql/` and an existing cluster under `backend/tools/data_cx/`; those machine-local artifacts should not be committed. Check ports **5432**, **5000**, and **4200**, and ensure any already-running process is the correct application version. **Restart the backend after changing messaging configuration**: background workers evaluate their startup configuration when the host starts.
+
+### Option B — Run components separately
+
+From the repository root, start the optional Compose-backed database if it is present:
 
 ```powershell
 docker compose -f backend/infra/docker/docker-compose.yml up -d
 ```
 
-Override the development database connection using `ConnectionStrings__Postgres` if required. When upgrading an existing database, inspect and apply `backend/db/platform/migrations/` **in order**, with the appropriate migration privileges and backup process. Do not reset existing clinical data as part of routine setup.
+Apply database migrations in order using the repository's documented migration process; back up existing data and **do not** reinitialize a database containing clinical extraction history.
 
-### 2. Start the ASP.NET Core API
+Start the API:
 
 ```powershell
+dotnet restore AIExtraction.slnx
 dotnet run --project backend/Apollo.Backend.csproj
 ```
 
-For cloud inference, see [Foundry configuration and handoff](backend/docs/foundry-integration.md). The documented development deployment name is `gpt-6.1-sol`. Store keys only in User Secrets or environment variables; local Azure CLI and deployed managed identities are supported as documented.
-
-### 3. Start Angular
-
-In a second terminal:
+Start the frontend in another terminal:
 
 ```powershell
 cd frontend
@@ -316,72 +262,128 @@ npm ci
 npm start
 ```
 
-Open **http://localhost:4200**. Angular proxies `/api`, `/v1`, `/predict`, and `/health` to `http://127.0.0.1:5000`. When available, the ASP.NET Core backend can serve the production Angular build from `frontend/dist/cx-review-ui/browser`.
+The Angular development server is at **http://localhost:4200** and proxies API requests to the local backend on port **5000**.
 
-## API overview
+### Azure Service Bus (opt-in, local development)
 
-| Endpoint | Purpose |
+The verified development target is:
+
+| Setting | Value |
 | --- | --- |
-| `POST /api/v1/extractions` | Extract structured data from pasted clinical text |
-| `POST /api/v1/extractions/pdf` | Extract from a text-based PDF |
-| `GET /api/v1/extractions/{id}` | Retrieve a persisted extraction |
-| `GET /api/v1/extractions/{id}/reviews` | Retrieve entity-level review history |
-| `POST /api/v1/extractions/{id}/reviews` | Submit a review decision under applicable access rules |
-| `/v1/ner/predict` | Legacy NER compatibility endpoint |
+| Namespace | `apollo-clinical-sb-dev.servicebus.windows.net` |
+| Queue | `op-clinical-notes` |
+| Region | South India |
+| Authentication | Microsoft Entra ID (`DefaultAzureCredential`, with Azure CLI during local development) |
+| Assigned development roles | Azure Service Bus Data Sender / Data Receiver |
 
-The backend also retains documented compatibility aliases and FHIR-related capabilities. See the linked integration documentation and current API contracts for exact payloads and permissions.
-
-## Verify the application
-
-From the repository root:
+These resource names are **development-environment examples**, not portable defaults for every deployment. Supply the namespace and queue via the application's configuration mechanism (see [`docs/APOLLO_STAGE9_SERVICE_BUS_SETUP.md`](docs/APOLLO_STAGE9_SERVICE_BUS_SETUP.md)); use an account with the least privileges needed. The local runtime has used `Emr:Messaging:Mode = AzureServiceBus`, while `Extraction:Provider = LocalOnnx` supported a zero-cost Stage 9.2 acceptance test. Do not turn on billable Foundry inference implicitly.
 
 ```powershell
-# Backend
-dotnet restore AIExtraction.slnx
+# Verify the signed-in account and selected subscription (requires Azure CLI)
+az account show --output table
+
+# Inspect the development queue configuration; management access may be required
+az servicebus queue show `
+  --resource-group rg-935125-9860 `
+  --namespace-name apollo-clinical-sb-dev `
+  --name op-clinical-notes `
+  --query "{name:name,status:status,count:countDetails}" `
+  --output json
+```
+
+**Queue visibility is not proof of runtime delivery.** Confirm a synthetic message can be sent, received, processed, and settled in the actual running application, and inspect the outbox and worker logs.
+
+## API & integration
+
+Selected API surfaces (refer to backend contracts for exact schemas and access rules):
+
+| Endpoint / area | Purpose | Access note |
+| --- | --- | --- |
+| `POST /api/v1/extractions` | Direct clinical-text extraction | Subject to endpoint authorization and anti-forgery requirements; currently reported **403 from the Doctor UI**. |
+| `POST /api/v1/extractions/pdf` | Text-based PDF extraction | Does not perform OCR of scanned/image-only PDFs. |
+| `GET /api/v1/extractions/{id}` | Retrieve stored extraction | Scoped to applicable access controls. |
+| `GET /api/v1/extractions/{id}/reviews` | Retrieve review history | Requires appropriate permissions. |
+| `POST /api/v1/extractions/{id}/reviews` | Record entity review decision | Requires appropriate permissions and request validation. |
+| `/api/v1/emr/...` | Doctor authentication, encounters, notes and extraction status | Use documented route contracts and a valid encounter-scoped session. |
+| `/v1/ner/predict` | Legacy NER compatibility | Not the preferred signed-note workflow. |
+
+**PDF support:** text-based PDFs are supported. Scanned or image-only PDFs return `422 OCR_REQUIRED`; no OCR engine is bundled.
+
+### Security model
+
+- Authentication alone does **not** authorize every endpoint. Respect Doctor, ClinicalReviewer and Admin role boundaries, as well as encounter ownership.
+- The API must validate anti-forgery tokens on applicable cookie-authenticated state-changing requests.
+- Signed note versions must be immutable; draft updates must honor concurrency/version checks.
+- Queue messages should carry identifiers, not full clinical documents.
+- Preserve original extraction output separately from review corrections and maintain a queryable audit trail.
+- Do not log credential material, bearer tokens, authorization headers, or sensitive clinical payloads.
+
+## Testing
+
+```powershell
+# Backend build and automated tests
 dotnet build AIExtraction.slnx --configuration Release
 dotnet test backend/tests/Apollo.Backend.Tests.csproj --configuration Release
 
-# Frontend
+# Frontend tests and production build
 npm --prefix frontend ci
 npm --prefix frontend test -- --watch=false
 npm --prefix frontend run build
 ```
 
-Integration, authenticated review, browser, and live-provider tests may require additional configuration. **A passing software test suite is not independent clinical validation.**
+Some tests require a configured PostgreSQL instance, isolated test database, authenticated fixture, or explicit live-cloud opt-in. Never run mutation-capable integration tests against historical production-like data. Keep real Azure and billable model tests separate from routine offline regression suites.
 
-### Mermaid diagrams in this README
+### Selected engineering evidence
 
-The diagrams above use native GitHub Markdown `mermaid` code fences and **render on GitHub without installing an npm package**. The repository's Angular runtime does not need Mermaid just to display this README.
+The November 2026 development reports document:
 
-If you want to experiment locally with the newest **Mermaid v13 alpha** CLI, install it in a **separate documentation-only folder**, not the Angular production application:
+- **Stage 9:** 10 EMR integration tests, 42 frontend tests, and five captured browser screens in the initial portal implementation.
+- **Stage 9.1:** one synthetic real Azure Service Bus send/receive/complete smoke test; queue reported empty afterward.
+- **Stage 9.2:** browser acceptance for doctor login, draft, signing, outbox publishing, Azure worker processing, and results rendering; recovery of two previously pending notes.
+- **Model verification:** a separately authorized, controlled Foundry call on a synthetic PDF fixture, with subsequent validator corrections and offline replay validation.
 
-```powershell
-mkdir mermaid-preview
-cd mermaid-preview
-npm init -y
-npm install mermaid@v13-alpha --save-exact
-# Example after saving a diagram from this README into architecture.mmd:
-npx mermaid render architecture.mmd --format svg > architecture.svg
-```
+These are **developer-generated engineering artifacts**, not independent clinical sensitivity/specificity estimates, security certifications, or performance SLAs.
 
-Mermaid v13 is **alpha software**, and GitHub uses its **own renderer/version**. Keep README diagrams on well-supported syntax for compatibility. The Markdown definitions above are the source of truth; optional SVG previews are not needed in the repository.
+## Troubleshooting
 
-## Security and limitations
+| Symptom | Where to investigate | Avoid |
+| --- | --- | --- |
+| Doctor login fails | Seeded demo identity, session cookie, backend auth logs and correct `/login` route. | Using real institutional credentials in local demo mode. |
+| `POST /api/v1/extractions` returns **403 Forbidden** | Response body, Doctor vs reviewer role, CSRF token, server authorization policies, Angular request interceptor. | Disabling authorization or granting Admin privileges as a workaround. |
+| Signed note stuck at **Pending Publication** | `emr_outbox_events`, background service registration, broker mode, Azure CLI credential discovery and backend restart. | Re-signing the same note or manually deleting outbox rows. |
+| Status remains at **Processing** | Worker logs, processing attempts, provider configuration, database link and queue dead-letter count. | Treating broker delivery as proof of model success. |
+| Image-only PDF rejected | `422 OCR_REQUIRED`; submit a text-searchable PDF. | Claiming OCR exists when it is not installed. |
+| Model output appears incomplete | Provider provenance, evidence spans, unresolved terminology, ONNX limitations and review decisions. | Presenting unchecked extraction as clinical advice. |
 
-- **No real patient data by default.** Obtain institutional approval and implement appropriate privacy and clinical controls first.
-- **Never commit secrets.** Protect Foundry credentials, PostgreSQL passwords, `.env` files, test fixtures containing sensitive records, and generated test reports.
-- **Model output needs review.** Medication instructions, investigation labels, terminology mappings, and safety alerts can be incomplete or wrong.
-- **Independent clinical evaluation remains pending.** Synthetic development benchmarks are not a substitute for clinician-annotated, blinded assessment.
-- **Authentication is environment-dependent.** Local demo mode is not a production clinical identity or approval mechanism.
-- **No OCR bundled.** Image-only PDFs return `422 OCR_REQUIRED`.
+Use **Chrome DevTools → Network → Fetch/XHR** to inspect request method, status, and sanitized response. For asynchronous faults, inspect **ASP.NET Core logs and PostgreSQL outbox state**; a `200` response from `/me` or `/encounters` only confirms those API calls worked.
 
-## Documentation
+## Verification & evidence
 
-- [Foundry integration, configuration, migration, verification and handoff](backend/docs/foundry-integration.md)
-- [Repository structure](backend/docs/repository-structure.md)
-- [Build status](backend/docs/BUILD_STATUS.md)
-- [Architecture and ADR index](backend/docs/00-index.md)
+Documentation included in the development workspace:
+
+| Document | Coverage |
+| --- | --- |
+| [`APOLLO_STAGE9_DOCTOR_EMR_IMPLEMENTATION_REPORT.md`](docs/APOLLO_STAGE9_DOCTOR_EMR_IMPLEMENTATION_REPORT.md) | Doctor portal architecture, workflows, testing and security. |
+| [`APOLLO_STAGE9_1_REAL_SERVICE_BUS_SMOKE_TEST_REPORT.md`](docs/APOLLO_STAGE9_1_REAL_SERVICE_BUS_SMOKE_TEST_REPORT.md) | Live queue connection, Entra ID RBAC, settlement and idempotency. |
+| [`APOLLO_STAGE9_2_OUTBOX_RECOVERY_AND_ACCEPTANCE_REPORT.md`](docs/APOLLO_STAGE9_2_OUTBOX_RECOVERY_AND_ACCEPTANCE_REPORT.md) | Stuck outbox recovery, frontend acceptance and linked extraction results. |
+| [`APOLLO_STAGE9_SERVICE_BUS_SETUP.md`](docs/APOLLO_STAGE9_SERVICE_BUS_SETUP.md) | Queue configuration, publisher/consumer setup and operations. |
+| [`APOLLO_STAGE9_UI_DESIGN_SYSTEM.md`](docs/APOLLO_STAGE9_UI_DESIGN_SYSTEM.md) | Doctor portal visual design and accessibility conventions. |
+| [`backend/docs/foundry-integration.md`](backend/docs/foundry-integration.md) | Foundry configuration and model integration. |
+| [`backend/docs/repository-structure.md`](backend/docs/repository-structure.md) | Additional repository inventory. |
+
+Some evidence contains development machine paths and synthetic test identifiers. Review every report and screenshot before committing it to a public repository. Do not publish tokens, secrets, real patient content, or local credentials.
+
+## Responsible use & limitations
+
+This project is intended for **engineering evaluation, research and demonstration**. Automated extraction may omit or misinterpret a medication, its attributes, the intended timing of an investigation, negation, or conditional instructions. RxNorm/LOINC candidates may be semantically incomplete, and a passing automated test does not establish clinical safety.
+
+Before any institutional deployment, complete formal security and privacy review, appropriate tenant/RBAC configuration, audit-retention policy, independent clinician-annotated benchmarking, human oversight, operational monitoring, incident response, and institutional approval.
 
 ---
 
-**Apollo Clinical Extraction Platform** — clinical information extraction with source evidence, explicit uncertainty, persistent results, and auditable human review.
+<div align="center">
+
+**Apollo Clinical Extraction Platform**  
+*Evidence over inference · Explicit uncertainty · Durable workflows · Human oversight*
+
+</div>
