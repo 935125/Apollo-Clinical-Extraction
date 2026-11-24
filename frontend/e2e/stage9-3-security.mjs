@@ -103,7 +103,8 @@ try {
   // Sign out
   await page.goto('http://localhost:4200/emr', { waitUntil: 'networkidle' });
   await page.click('button.profile-button');
-  await page.click('button:has-text("Sign out")');
+  await page.waitForSelector('#doctor-profile', { timeout: 5000 });
+  await page.click('#doctor-profile button:has-text("Sign out")');
   await page.waitForURL('**/login', { timeout: 15000 });
 
   // Clear cookies to be fully unauthenticated
