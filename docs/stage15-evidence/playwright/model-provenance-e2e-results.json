@@ -1,0 +1,56 @@
+{
+  "status": "PASS",
+  "results": [
+    {
+      "name": "Persisted Local ONNX (P100234 v33) displays \"Local ONNX\"",
+      "status": "PASS",
+      "details": "Badge=\"Local ONNX\"",
+      "timestamp": "2026-11-25T07:37:08.394Z"
+    },
+    {
+      "name": "Within-patient version switch (v33 ONNX -> v27 GPT) updates badge immediately",
+      "status": "PASS",
+      "details": "Badge=\"✦ GPT-6.1 Sol · Microsoft Foundry\"",
+      "timestamp": "2026-11-25T07:37:08.505Z"
+    },
+    {
+      "name": "Persisted GPT (P100234 v21) displays \"✦ GPT-6.1 Sol · Microsoft Foundry\"",
+      "status": "PASS",
+      "details": "Exact match",
+      "timestamp": "2026-11-25T07:37:08.531Z"
+    },
+    {
+      "name": "Persisted Local ONNX (P100234 v31) displays \"Local ONNX\"",
+      "status": "PASS",
+      "details": "Exact match",
+      "timestamp": "2026-11-25T07:37:08.562Z"
+    },
+    {
+      "name": "Failed extraction (P100234 v23) hides completed-model badge",
+      "status": "PASS",
+      "details": "BadgeCount=0, Error=AZURE_INVALID_EVIDENCE",
+      "timestamp": "2026-11-25T07:37:08.602Z"
+    },
+    {
+      "name": "Rapid UHID switch & delayed API response never displays stale provenance",
+      "status": "PASS",
+      "details": "Retained P100237 v21 badge=\"✦ GPT-6.1 Sol · Microsoft Foundry\"",
+      "timestamp": "2026-11-25T07:37:10.187Z"
+    },
+    {
+      "name": "Page refresh restores persisted model provenance from PostgreSQL",
+      "status": "PASS",
+      "details": "Badge=\"✦ GPT-6.1 Sol · Microsoft Foundry\"",
+      "timestamp": "2026-11-25T07:37:10.871Z"
+    },
+    {
+      "name": "Zero inference calls, zero console errors, zero unexpected 4xx/5xx",
+      "status": "PASS",
+      "details": "Clean",
+      "timestamp": "2026-11-25T07:37:10.871Z"
+    }
+  ],
+  "consoleErrors": [],
+  "failedApiRequests": [],
+  "inferenceCalls": []
+}

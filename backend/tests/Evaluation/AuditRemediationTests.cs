@@ -253,7 +253,9 @@ public sealed class AuditRemediationTests
                 }
             }
         }
-        File.WriteAllLines(Path.Combine(HeldOutBenchmarkRunner.Backend, "artifacts", "audit-remediation", "validator-rejection-diagnosis.txt"), lines);
+        string outputDirectory = Environment.GetEnvironmentVariable("APOLLO_EVALUATION_OUTPUT_ROOT") ?? Path.Combine(HeldOutBenchmarkRunner.Backend, "artifacts", "audit-remediation");
+        Directory.CreateDirectory(outputDirectory);
+        File.WriteAllLines(Path.Combine(outputDirectory, "validator-rejection-diagnosis.txt"), lines);
     }
 
     [Fact]

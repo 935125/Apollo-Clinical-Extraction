@@ -4,7 +4,7 @@ namespace Apollo.Backend.Clinical;
 
 public static class LocalClinicalScope
 {
-    internal const string Actions = @"\b(?:start(?:ed)?|initiat\w*|prescrib\w*|add(?:ed)?|giv(?:e|en)|administer\w*|continu\w*|stop(?:ped)?|discontinu\w*|withh(?:old|eld)|hold|held|avoid|increas\w*|decreas\w*|order\w*|obtain|repeat|check|send)\b";
+    internal const string Actions = @"\b(?:start(?:ed)?|initiat\w*|prescrib\w*|add(?:ed)?|giv(?:e|en)|administer\w*|continu(?:e|es|ed|ing)|stop(?:ped)?|discontinu\w*|withh(?:old|eld)|hold|held|avoid|increas\w*|decreas\w*|order\w*|obtain|repeat|check|send)\b";
     public static bool Has(string text,string pattern) => Regex.IsMatch(text,pattern,RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
     public static (int Start,int End) Sentence(string source,int start,int end)
     {
@@ -45,7 +45,7 @@ public static class LocalClinicalScope
         {
             // Coordinated lists may inherit the leading action/negation, never another drug's dose.
             string prefix=source[sentence.Start..range.Start];
-            var cues=Regex.Matches(prefix,Actions+@"|\b(?:not taking|no|denies|previously|historical|allergic to|if|consider)\b",RegexOptions.IgnoreCase);
+            var cues=Regex.Matches(prefix,Actions+@"|\b(?:not taking|no|denies|previously|historical|allergic to|if|consider|report|attend|scheduled|booked)\b",RegexOptions.IgnoreCase);
             if(cues.Count>0 && !Has(source[range.Start..entity.Start],Actions)) local=cues[^1].Value+" "+local;
         }
         return local;

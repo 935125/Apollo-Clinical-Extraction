@@ -3,6 +3,20 @@
   "license": "Apollo-authored recognition phrases and inherited project aliases; standard codes use separately attributed NLM/LOINC snapshots",
   "entries": [
     {
+      "category": "NON_MEDICATION",
+      "canonical": "Pathology or molecular finding",
+      "aliases": ["blasts", "myeloblasts", "FLT3", "NPM1"],
+      "mapping": "not_medication",
+      "provenance": "Apollo clinical semantic exclusion; these findings do not identify medicinal ingredients"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "NT-proBNP",
+      "aliases": ["NT-proBNP", "NT proBNP", "BNP"],
+      "mapping": "unresolved",
+      "provenance": "Apollo recognition lexicon; no specimen or measurement-specific LOINC identifier asserted"
+    },
+    {
       "category": "MEDICATION",
       "canonical": "Atorvastatin",
       "aliases": [

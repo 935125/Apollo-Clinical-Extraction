@@ -19,14 +19,16 @@
 [CmdletBinding()]
 param(
     [switch]$StartBackend,
-    [string]$Folder = ''
+    [string]$Folder = '',
+    [string]$BaseUrl = '',
+    [string]$EvidenceDirectory = ''
 )
 
 $ErrorActionPreference = 'Stop'
 $root = Split-Path -Parent $MyInvocation.MyCommand.Path
 $collectionPath = Join-Path $root 'postman\Apollo-Clinical-Extraction.postman_collection.json'
 $environmentPath = Join-Path $root 'postman\Apollo-Local.postman_environment.json'
-$evidenceDir = Join-Path $root 'docs\postman-evidence'
+$evidenceDir = if ($EvidenceDirectory) { $EvidenceDirectory } else { Join-Path $root 'docs\postman-evidence' }
 New-Item -ItemType Directory -Path $evidenceDir -Force | Out-Null
 
 function Resolve-PostmanCli {
@@ -111,7 +113,7 @@ foreach ($file in @($collectionPath, $environmentPath)) {
 }
 
 $envJson = Get-Content -LiteralPath $environmentPath -Raw | ConvertFrom-Json
-$baseUrl = ($envJson.values | Where-Object { $_.key -eq 'baseUrl' } | Select-Object -First 1).value
+$baseUrl = if ($BaseUrl) { $BaseUrl.TrimEnd('/') } else { ($envJson.values | Where-Object { $_.key -eq 'baseUrl' } | Select-Object -First 1).value }
 if (-not $baseUrl) { $baseUrl = 'http://127.0.0.1:5000' }
 Write-Host "Target API  : $baseUrl"
 
@@ -122,9 +124,17 @@ if ($StartBackend) {
 
 # 4. Preflight reachability & readiness checks (fail clearly with BLOCKED if unreachable)
 try {
-    $health = Invoke-RestMethod "$baseUrl/health" -TimeoutSec 5
-    $ready = Invoke-RestMethod "$baseUrl/health/ready" -TimeoutSec 5
-    $routing = Invoke-RestMethod "$baseUrl/v1/routing" -TimeoutSec 5
+    $uri = [Uri]$baseUrl
+    if (-not $uri.IsLoopback -or $uri.Scheme -ne 'http' -or $uri.UserInfo) { throw 'The local verification runner requires a loopback HTTP base URL.' }
+    Add-Type -AssemblyName System.Net.Http
+    $handler = [System.Net.Http.HttpClientHandler]::new()
+    $handler.UseProxy = $false
+    $preflight = [System.Net.Http.HttpClient]::new($handler)
+    $preflight.Timeout = [TimeSpan]::FromSeconds(5)
+    $health = $preflight.GetStringAsync("$baseUrl/health").GetAwaiter().GetResult() | ConvertFrom-Json
+    $ready = $preflight.GetStringAsync("$baseUrl/health/ready").GetAwaiter().GetResult() | ConvertFrom-Json
+    $routing = $preflight.GetStringAsync("$baseUrl/v1/routing").GetAwaiter().GetResult() | ConvertFrom-Json
+    $preflight.Dispose()
 } catch {
     Write-Host ''
     Write-Host "BLOCKED: Backend API unreachable at $baseUrl ($($_.Exception.Message))" -ForegroundColor Red
@@ -136,11 +146,17 @@ Write-Host "Health      : $($health.status) ($($health.service) $($health.versio
 Write-Host "Readiness   : $($ready.status) [$(($ready.checks | ForEach-Object { "$($_.name)=$($_.status)" }) -join ', ')]" -ForegroundColor Green
 Write-Host "Routing     : env=$($routing.environment), primary=$($routing.requestedPrimaryProvider), fallback=$($routing.fallbackProvider), foundry=$($routing.foundryDeployment)" -ForegroundColor Green
 
+if ($routing.requestedPrimaryProvider -ne 'LocalOnnx' -or -not $routing.directLocalAuthorized) {
+    Write-Host 'BLOCKED: ZERO_COST_PROVIDER_REQUIRED. Select an authorized LocalOnnx test instance before submitting synthetic notes. No Postman collection requests were sent.' -ForegroundColor Red
+    exit 2
+}
+
 # 5. Execute Postman CLI collection
 $timestamp = Get-Date -Format 'yyyyMMdd-HHmmss'
 $runArgs = @(
     'collection', 'run', $collectionPath,
     '-e', $environmentPath,
+    '--env-var', "baseUrl=$baseUrl",
     '--no-report-events',
     '--output', $evidenceDir
 )

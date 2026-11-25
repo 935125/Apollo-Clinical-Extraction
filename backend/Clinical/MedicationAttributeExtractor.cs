@@ -5,11 +5,11 @@ namespace Apollo.Backend.Clinical;
 
 public sealed record LocalMedicationAttributes(string? Strength,string? Dose,string? DoseUnit,string? Route,string? Frequency,
     string? Duration,string? Formulation,string? Administration,string? StartTiming,string? StopTiming,string? PrnIndication,
-    List<AttributeEvidenceDto> Evidence);
+    List<AttributeEvidenceDto> Evidence,string? Schedule=null);
 
 public static class MedicationAttributeExtractor
 {
-    private static readonly Regex Mass = new(@"\b\d+(?:\.\d+)?(?:\s*/\s*\d+(?:\.\d+)?)?\s*(?<unit>mg|mcg|µg|ug|gm|g|mEq)(?<denominator>\s*/\s*(?:\d+(?:\.\d+)?\s*)?(?:m2|m²|kg|mL|L))?(?![\p{L}\p{N}])|\b\d+(?:\.\d+)?\s*%",RegexOptions.IgnoreCase | RegexOptions.Compiled,TimeSpan.FromSeconds(1));
+    private static readonly Regex Mass = new(@"\b\d+(?:\.\d+)?(?:\s*/\s*\d+(?:\.\d+)?)?\s*(?<unit>mg|mcg|µg|ug|gm|g|mEq|IU|units?)(?<denominator>\s*/\s*(?:\d+(?:\.\d+)?\s*)?(?:m2|m²|kg|mL|L))?(?![\p{L}\p{N}])(?!\s*/)|\b\d+(?:\.\d+)?\s*%",RegexOptions.IgnoreCase | RegexOptions.Compiled,TimeSpan.FromSeconds(1));
     private static readonly Regex Quantity = new(@"\b(?:\d+(?:\.\d+)?|1/2|half|one|two|three|four)\s*(?:mL|units?|IU|tablets?|tabs?|capsules?|caps?|puffs?|drops?|vials?|ampoules?|patch(?:es)?|sprays?|sachets?)\b",RegexOptions.IgnoreCase | RegexOptions.Compiled,TimeSpan.FromSeconds(1));
     private static readonly (string Pattern,string Value)[] Routes =
     [
@@ -42,13 +42,13 @@ public static class MedicationAttributeExtractor
         int relativeEnd=entity.End-range.Start;
         var masses=Mass.Matches(scope).Where(m=>m.Index>=relativeEnd || m.Index+m.Length<=entity.Start-range.Start).ToList();
         var quantities=Quantity.Matches(scope).Where(m=>!LocalClinicalScope.Has(scope[(m.Index+m.Length)..],@"^\s*/\s*(?:mL|L)\b")).ToList();
-        var quantity=quantities.FirstOrDefault();
+        var quantity=quantities.FirstOrDefault(m=>LocalClinicalScope.Has(m.Value,@"\b(?:tablets?|tabs?|capsules?|caps?|puffs?|drops?|vials?|ampoules?|patch(?:es)?|sprays?|sachets?)\b")) ?? quantities.FirstOrDefault();
         var mass=masses.OrderBy(m=>m.Index>=relativeEnd ? m.Index-relativeEnd : entity.Start-range.Start-m.Index-m.Length).FirstOrDefault();
         bool concentration=mass!=null && LocalClinicalScope.Has(mass.Value,@"/\s*(?:\d+(?:\.\d+)?\s*)?(?:mL|L)\b|%");
         bool based=mass!=null && LocalClinicalScope.Has(mass.Value,@"/\s*(?:kg|m2|m²)\b");
         // A mass alone is an administered dose. Product strength is claimed only with a
         // documented form quantity, concentration, percentage or explicit strength label.
-        bool product=mass!=null && !based && (quantity!=null || concentration || LocalClinicalScope.Has(scope,@"\bstrength\b"));
+        bool product=mass!=null && !based && (quantity!=null && quantity.Index!=mass.Index || concentration || LocalClinicalScope.Has(scope,@"\bstrength\b"));
         string? strength=product ? Add("strength",mass!.Value.Trim(),mass) : null;
         string? dose=quantity!=null ? Add("dose",quantity.Value.Trim(),quantity) :
             mass!=null && !concentration ? Add("dose",mass.Value.Trim(),mass) : null;
@@ -77,9 +77,11 @@ public static class MedicationAttributeExtractor
         var start=Regex.Match(scope,@"\b(?:from|starting|start on)\s+(?<value>\d{1,2}/\d{1,2}/\d{4})\b",RegexOptions.IgnoreCase);
         var stop=Regex.Match(scope,@"\b(?:until|stop on|through)\s+(?<value>\d{1,2}/\d{1,2}/\d{4})\b",RegexOptions.IgnoreCase);
         var prn=Regex.Match(scope,@"\b(?:PRN|SOS|as needed|when required)\s+for\s+(?<value>[A-Za-z]+(?:\s+(?!from\b|until\b|for\b)[A-Za-z]+){0,3})",RegexOptions.IgnoreCase);
+        var schedule=Regex.Match(scope,@"\bDays?\s+\d+(?:\s*[-–]\s*\d+)?\b|\b(?:on\s+)?(?:Mondays?|Tuesdays?|Wednesdays?|Thursdays?|Fridays?|Saturdays?|Sundays?)\b|\bmorning\s+and\s+evening\b",RegexOptions.IgnoreCase);
         return new(strength,dose,unit,route,frequency,durationValue,formulation,administrationValue,
             Add("start_timing",start.Success ? start.Groups["value"].Value : null,start),
             Add("stop_timing",stop.Success ? stop.Groups["value"].Value : null,stop),
-            Add("prn_indication",prn.Success ? prn.Groups["value"].Value.Trim() : null,prn),evidence);
+            Add("prn_indication",prn.Success ? prn.Groups["value"].Value.Trim() : null,prn),evidence,
+            Add("administration_schedule",schedule.Success ? schedule.Value : null,schedule));
     }
 }

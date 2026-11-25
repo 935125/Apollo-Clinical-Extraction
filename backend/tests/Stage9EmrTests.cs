@@ -89,7 +89,8 @@ public sealed class Stage9EmrFactory : WebApplicationFactory<Program>
     public string DatabaseConnection { get; init; } = "";
     public INoteBroker? CustomBroker { get; init; }
     public bool DisableMessagingService { get; init; } = false;
-    public string PrimaryProvider { get; init; } = "MicrosoftFoundry";
+    // Test factories must never inherit a billable live provider from a developer's .env.
+    public string PrimaryProvider { get; init; } = "LocalOnnx";
     public string FallbackProvider { get; init; } = "LocalOnnx";
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)

@@ -48,7 +48,7 @@ public record ClinicalEntityContextDto(
     string DetectionMethod, double? RawNerScore, string MentionStatus,
     List<AttributeEvidenceDto> Attributes,
     string? Administration = null, string? StartTiming = null, string? StopTiming = null,
-    string? PrnIndication = null);
+    string? PrnIndication = null, string? AdministrationSchedule = null);
 
 public record EntityProvenanceDto(
     [property: JsonPropertyName("origin")] string Origin,

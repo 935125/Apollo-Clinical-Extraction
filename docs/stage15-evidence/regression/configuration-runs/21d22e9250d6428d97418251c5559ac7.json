@@ -1,0 +1,1 @@
+{"command":"cmd.exe","arguments":["/d","/c","Start-Apollo.bat","-ConfigurationOnly"],"explicitRoutingEnvironment":null,"diagnostic":{"environment":"Development","primaryProvider":"MicrosoftFoundry","fallbackProvider":"LocalOnnx","secretsPrinted":false}}

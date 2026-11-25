@@ -72,6 +72,22 @@ public static class ClinicalScope
 
 public sealed class ClinicalResultValidator
 {
+    /// <summary>Local provider entry point. Foundry strict candidate mapping remains unchanged.</summary>
+    public void ValidateLocal(ClinicalExtractionResponse result, string source)
+    {
+        LocalEvidenceValidator.Validate(result, source);
+        if (result.ModelMetadata.LocalPipelineVersion != "CandidateV2") return;
+        foreach (var medication in result.Medications)
+        {
+            var attributes = medication.Provenance?.ClinicalContext?.Attributes
+                ?? throw new InvalidClinicalEvidenceException();
+            foreach (var field in new[] { ("strength", medication.Strength), ("dose", medication.Dose), ("route", medication.Route),
+                ("frequency", medication.Frequency), ("duration", medication.Duration), ("formulation", medication.Formulation) })
+                if (field.Item2 != null && !attributes.Any(a => a.Field == field.Item1 && a.Value == field.Item2))
+                    throw new InvalidClinicalEvidenceException();
+        }
+    }
+
     private static readonly HashSet<string> NonFormularyClassTerms = new(StringComparer.OrdinalIgnoreCase)
     {
         "nsaid", "nsaids", "antibiotic", "antibiotics", "antimicrobial", "antimicrobials", "antimicrobial therapy", "statin", "statins", "analgesic", "analgesics"

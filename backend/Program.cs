@@ -77,6 +77,10 @@ builder.AddClinicalApiSecurity();
 builder.AddDoctorEmr();
 
 builder.Services.AddSingleton<ClinicalPipelineService>();
+builder.Services.AddOptions<LocalClinicalPipelineOptions>()
+    .Bind(builder.Configuration.GetSection(LocalClinicalPipelineOptions.SectionName))
+    .Validate(o => o.IsValid, "LocalOnnx:PipelineVersion must be Legacy or CandidateV2")
+    .Validate(o => o.TimeoutSeconds is > 0 and <= 300, "LocalOnnx:TimeoutSeconds must be within (0,300]");
 builder.Services.AddSingleton(TimeProvider.System);
 builder.Services.AddSingleton<FoundryCircuitBreaker>();
 builder.Services.AddHostedService<ProviderStartupDiagnostics>();

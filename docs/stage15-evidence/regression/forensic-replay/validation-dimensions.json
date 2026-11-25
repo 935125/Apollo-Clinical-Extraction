@@ -1,0 +1,79 @@
+{
+  "hasErrors": false,
+  "errorCount": 0,
+  "warningCount": 6,
+  "dimensions": [
+    {
+      "dimension": "StructuralJsonValidity",
+      "status": "PASS",
+      "evaluatedCount": 1,
+      "passedCount": 1,
+      "warningCount": 0,
+      "errorCount": 0,
+      "summary": "Strict JSON schema validation and candidate deserialization succeeded."
+    },
+    {
+      "dimension": "EvidenceQuoteValidity",
+      "status": "PASS",
+      "evaluatedCount": 17,
+      "passedCount": 17,
+      "warningCount": 0,
+      "errorCount": 0,
+      "summary": "17/17 entity evidence quotes verified verbatim against reconstructed source text."
+    },
+    {
+      "dimension": "EvidenceOffsetValidity",
+      "status": "PASS",
+      "evaluatedCount": 17,
+      "passedCount": 17,
+      "warningCount": 0,
+      "errorCount": 0,
+      "summary": "17/17 entity character offset spans verified within source bounds."
+    },
+    {
+      "dimension": "EntityCompleteness",
+      "status": "PASS",
+      "evaluatedCount": 17,
+      "passedCount": 17,
+      "warningCount": 0,
+      "errorCount": 0,
+      "summary": "Second-pass source completeness check detected no omitted medication or investigation mentions."
+    },
+    {
+      "dimension": "AttributeGrounding",
+      "status": "PARTIAL",
+      "evaluatedCount": 7,
+      "passedCount": 7,
+      "warningCount": 5,
+      "errorCount": 0,
+      "summary": "All populated posology attributes are lexically grounded in entity scope; 5 incomplete/complex prescription review flag(s)."
+    },
+    {
+      "dimension": "ClinicalAssertionConsistency",
+      "status": "PASS",
+      "evaluatedCount": 17,
+      "passedCount": 17,
+      "warningCount": 0,
+      "errorCount": 0,
+      "summary": "All medication and investigation assertions are consistent with section context, negation, and temporality."
+    },
+    {
+      "dimension": "TerminologyNormalization",
+      "status": "PARTIAL",
+      "evaluatedCount": 17,
+      "passedCount": 9,
+      "warningCount": 8,
+      "errorCount": 0,
+      "summary": "9/17 exact RxNorm/LOINC concepts resolved; 8 narrower/broader/unresolved concept(s) withheld from exact code assignment."
+    },
+    {
+      "dimension": "SafetyAlertGrounding",
+      "status": "PASS",
+      "evaluatedCount": 7,
+      "passedCount": 7,
+      "warningCount": 0,
+      "errorCount": 0,
+      "summary": "7/7 safety/review alert(s) grounded with source evidence quotes and character offsets."
+    }
+  ]
+}

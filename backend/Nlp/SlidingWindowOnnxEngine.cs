@@ -18,6 +18,11 @@ public sealed class OnnxExecutionReceipt
 {
     public string ExecutionMode { get; internal set; } = "NOT_EXECUTED";
     public List<Apollo.Backend.Models.SourceReviewCandidateDto> ReviewCandidates { get; } = [];
+    // Request-scoped diagnostics. Never included in ordinary application logs or public extraction metadata.
+    public List<Apollo.Backend.Clinical.CandidateTrace> CandidateTraces { get; } = [];
+    public int TokensEvaluated { get; internal set; }
+    public int UnknownTokens { get; internal set; }
+    public List<RawSpan> ModelSpans { get; } = [];
     public int WindowsExecuted { get; internal set; }
     public double InferenceDurationMs { get; internal set; }
     public int ModelMedicationMentions { get; internal set; }
@@ -143,21 +148,29 @@ public class SlidingWindowOnnxEngine : IDisposable
 
     public bool HasOnnxModel => _hasModel;
 
-    public List<RawSpan> InferSpans(string text, OnnxExecutionReceipt? receipt = null)
+    public List<RawSpan> InferSpans(string text, OnnxExecutionReceipt? receipt = null,
+        bool contextualWindows = false, CancellationToken cancellationToken = default)
     {
         var tokenized = _tokenizer != null
             ? _tokenizer.Tokenize(text)
             : new TokenizedOutput([], [], [], []);
-        return Predict(text, tokenized, receipt);
+        return Predict(text, tokenized, receipt, contextualWindows, cancellationToken);
     }
 
-    public List<RawSpan> Predict(string text, TokenizedOutput tokenized, OnnxExecutionReceipt? receipt = null)
+    public List<RawSpan> Predict(string text, TokenizedOutput tokenized, OnnxExecutionReceipt? receipt = null,
+        bool contextualWindows = false, CancellationToken cancellationToken = default)
     {
         if (receipt != null) receipt.ExecutionMode = _hasModel ? "NEURAL_ONNX" : "DETERMINISTIC_TEST_SCORING";
         if (tokenized.InputIds.Count != tokenized.AttentionMask.Count || tokenized.InputIds.Count != tokenized.Offsets.Count ||
             tokenized.InputIds.Count != tokenized.Tokens.Count || tokenized.InputIds.Any(id => id < 0 || id >= (_tokenizer?.VocabSize ?? 0)))
             throw new OnnxIntegrityException("ONNX_INPUT_INCOMPATIBLE", "Tokenizer output does not match the model input contract.");
         int numTokens = tokenized.InputIds.Count;
+        cancellationToken.ThrowIfCancellationRequested();
+        if (receipt != null)
+        {
+            receipt.TokensEvaluated = Math.Max(0, numTokens - 2);
+            receipt.UnknownTokens = tokenized.Tokens.Count(t => t == "[UNK]");
+        }
         if (numTokens <= 2)
         {
             return [];
@@ -167,7 +180,8 @@ public class SlidingWindowOnnxEngine : IDisposable
 
         if (_hasModel && _session != null)
         {
-            aggregatedLogits = PredictWithOnnxSlidingWindow(tokenized, receipt);
+            aggregatedLogits = contextualWindows ? PredictWithContextualWindows(tokenized, receipt, cancellationToken)
+                : PredictWithOnnxSlidingWindow(tokenized, receipt, cancellationToken);
         }
         else
         {
@@ -197,10 +211,11 @@ public class SlidingWindowOnnxEngine : IDisposable
         float[][] probabilities = ApplySoftmaxWithTemperature(aggregatedLogits, _temperature);
 
         // Decode BIO sequence into exact word-consistent entity spans
-        return DecodeSpans(text, tokenized, probabilities);
+        cancellationToken.ThrowIfCancellationRequested();
+        return DecodeSpans(text, tokenized, probabilities, receipt);
     }
 
-    private float[][] PredictWithOnnxSlidingWindow(TokenizedOutput tokenized, OnnxExecutionReceipt? receipt)
+    private float[][] PredictWithOnnxSlidingWindow(TokenizedOutput tokenized, OnnxExecutionReceipt? receipt, CancellationToken cancellationToken)
     {
         int totalTokens = tokenized.InputIds.Count;
         int numLabels = CanonicalLabels.Length;
@@ -216,6 +231,7 @@ public class SlidingWindowOnnxEngine : IDisposable
         int windowStart = 0;
         while (windowStart < totalTokens)
         {
+            cancellationToken.ThrowIfCancellationRequested();
             int windowEnd = Math.Min(windowStart + MaxWindowLength, totalTokens);
             int windowLen = windowEnd - windowStart;
 
@@ -283,6 +299,56 @@ public class SlidingWindowOnnxEngine : IDisposable
         }
 
         return blendedLogits;
+    }
+
+    private float[][] PredictWithContextualWindows(TokenizedOutput tokenized, OnnxExecutionReceipt? receipt, CancellationToken ct)
+    {
+        const int contentLength = MaxWindowLength - 2;
+        const int overlap = contentLength - WindowStride;
+        int last = tokenized.InputIds.Count - 1;
+        var blended = Enumerable.Range(0, tokenized.InputIds.Count).Select(_ => new float[CanonicalLabels.Length]).ToArray();
+        var weights = new float[blended.Length];
+        for (int start = 1; start < last; start += WindowStride)
+        {
+            ct.ThrowIfCancellationRequested();
+            int end = Math.Min(start + contentLength, last), length = end - start;
+            var ids = new long[length + 2];
+            ids[0] = tokenized.InputIds[0]; ids[^1] = tokenized.InputIds[^1];
+            tokenized.InputIds.CopyTo(start, ids, 1, length);
+            var mask = Enumerable.Repeat(1L, ids.Length).ToArray();
+            var inputs = new List<NamedOnnxValue>
+            {
+                NamedOnnxValue.CreateFromTensor("input_ids", new DenseTensor<long>(ids,[1,ids.Length])),
+                NamedOnnxValue.CreateFromTensor("attention_mask",new DenseTensor<long>(mask,[1,ids.Length]))
+            };
+            using var runOptions = new RunOptions();
+            using var cancellation = ct.Register(() => runOptions.Terminate = true);
+            long begin = System.Diagnostics.Stopwatch.GetTimestamp();
+            IDisposableReadOnlyCollection<DisposableNamedOnnxValue> output;
+            try { output = _session!.Run(inputs, _session.OutputNames, runOptions); }
+            catch (OnnxRuntimeException) when (ct.IsCancellationRequested) { throw new OperationCanceledException(ct); }
+            using var results = output;
+            if (receipt != null) { receipt.WindowsExecuted++; receipt.InferenceDurationMs += System.Diagnostics.Stopwatch.GetElapsedTime(begin).TotalMilliseconds; }
+            var logits = results.First().AsTensor<float>();
+            if (logits.Dimensions.Length != 3 || logits.Dimensions[0] != 1 || logits.Dimensions[1] != ids.Length || logits.Dimensions[2] != CanonicalLabels.Length)
+                throw new OnnxIntegrityException("ONNX_OUTPUT_INCOMPATIBLE","Neural inference returned an incompatible token-label tensor.");
+            for (int j=0; j<length; j++)
+            {
+                float weight=1;
+                if (start>1 && j<overlap) weight=(j+1f)/(overlap+1);
+                if (end<last && j>=length-overlap) weight=Math.Min(weight,(length-j)/(overlap+1f));
+                weights[start+j]+=weight;
+                for(int label=0;label<CanonicalLabels.Length;label++) blended[start+j][label]+=logits[0,j+1,label]*weight;
+            }
+            if(end==last) break;
+        }
+        for(int i=1;i<last;i++)
+        {
+            if(weights[i]<=0) throw new OnnxIntegrityException("ONNX_WINDOW_COVERAGE_INVALID","A source token was not evaluated.");
+            for(int label=0;label<CanonicalLabels.Length;label++) blended[i][label]/=weights[i];
+        }
+        ct.ThrowIfCancellationRequested();
+        return blended;
     }
 
     private static float[][] DeterministicFallbackScoring(string text, TokenizedOutput tokenized)
@@ -467,7 +533,7 @@ public class SlidingWindowOnnxEngine : IDisposable
         return repaired;
     }
 
-    private static List<RawSpan> DecodeSpans(string text, TokenizedOutput tokenized, float[][] probabilities)
+    private static List<RawSpan> DecodeSpans(string text, TokenizedOutput tokenized, float[][] probabilities, OnnxExecutionReceipt? receipt = null)
     {
         int totalTokens = Math.Min(tokenized.Tokens.Count, Math.Min(tokenized.Offsets.Count, probabilities.Length));
         var rawTags = new string[totalTokens];
@@ -556,6 +622,11 @@ public class SlidingWindowOnnxEngine : IDisposable
                     if (valid)
                     {
                         spans.Add(new RawSpan(category, startChar, endChar, rawText, Math.Round(Math.Clamp(conf, 0.0, 1.0), 4)));
+                    }
+                    else if (receipt != null)
+                    {
+                        receipt.CandidateTraces.Add(new(rawText,category,"OTHER",startChar,endChar,conf,"ONNX_TOKEN_DECODER","unresolved",[],
+                            "not_classified","rejected_false_positive",null,"LEXICAL_DECODER_FILTER",["detected","rejected_false_positive"]));
                     }
                 }
             }

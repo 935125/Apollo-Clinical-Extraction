@@ -1,0 +1,104 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="54cd6f40-ce82-42e0-b3d4-a8faadfb900d" name="INTERN_ALI@ATN99998C0352 2026-11-25 12:59:14" runUser="CHENNAI\INTERN_ALI" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-11-25T12:59:14.3863661+05:30" queuing="2026-11-25T12:59:14.3863664+05:30" start="2026-11-25T12:59:10.9721982+05:30" finish="2026-11-25T12:59:15.2242006+05:30" />
+  <TestSettings name="default" id="c22938d0-db99-49ed-a5aa-5303a3e66e36">
+    <Deployment runDeploymentRoot="INTERN_ALI_ATN99998C0352_2026-11-25_12_59_14" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="6a5f923a-d1b6-4fd6-b67f-9c5bb7428b35" testId="10ef06fb-935a-3784-3839-164bddddbe5d" testName="Apollo.Backend.Tests.Stage15PostgresTests.SignedSyntheticVersions_RealOnnx_MockedMessaging_PreservePatientEncounterAndExtractionIdentity" computerName="ATN99998C0352" duration="00:00:02.0197821" startTime="2026-11-25T12:59:13.1222885+05:30" endTime="2026-11-25T12:59:15.1348018+05:30" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="6a5f923a-d1b6-4fd6-b67f-9c5bb7428b35">
+      <Output>
+        <ErrorInfo>
+          <Message>Assert.Equal() Failure: Values differ&#xD;
+Expected: Completed&#xD;
+Actual:   Retry</Message>
+          <StackTrace>   at Apollo.Backend.Tests.Stage15PostgresTests.&lt;&gt;c__DisplayClass2_0.&lt;&lt;SignedSyntheticVersions_RealOnnx_MockedMessaging_PreservePatientEncounterAndExtractionIdentity&gt;g__Sign|3&gt;d.MoveNext() in D:\AI Extraction\backend\tests\Stage15PostgresTests.cs:line 92&#xD;
+--- End of stack trace from previous location ---&#xD;
+   at Apollo.Backend.Tests.Stage15PostgresTests.SignedSyntheticVersions_RealOnnx_MockedMessaging_PreservePatientEncounterAndExtractionIdentity() in D:\AI Extraction\backend\tests\Stage15PostgresTests.cs:line 96&#xD;
+   at Apollo.Backend.Tests.Stage15PostgresTests.SignedSyntheticVersions_RealOnnx_MockedMessaging_PreservePatientEncounterAndExtractionIdentity() in D:\AI Extraction\backend\tests\Stage15PostgresTests.cs:line 108&#xD;
+--- End of stack trace from previous location ---</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="6d591e46-8d0e-474b-b4aa-bf74ae1cd6e4" testId="27d5352b-d95b-0099-ba2f-c33857195003" testName="Apollo.Backend.Tests.Stage15PostgresTests.RealLocalProvider_PreservesAllStructuredProvenanceAndNormalizationOnDatabaseReload" computerName="ATN99998C0352" duration="00:00:01.4936087" startTime="2026-11-25T12:59:11.5977114+05:30" endTime="2026-11-25T12:59:13.1094233+05:30" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="6d591e46-8d0e-474b-b4aa-bf74ae1cd6e4">
+      <Output>
+        <ErrorInfo>
+          <Message>{"type":"https://tools.ietf.org/html/rfc9110#section-15.6.4","title":"Extraction could not be saved","status":503,"detail":"The extraction could not be saved. Your source note is retained.","code":"PERSISTENCE_FAILED","correlationId":"d6676809-9aac-4ffb-8d30-620e5aac942f","routing":null}</Message>
+          <StackTrace>   at Apollo.Backend.Tests.Stage15PostgresTests.RealLocalProvider_PreservesAllStructuredProvenanceAndNormalizationOnDatabaseReload() in D:\AI Extraction\backend\tests\Stage15PostgresTests.cs:line 30&#xD;
+   at Apollo.Backend.Tests.Stage15PostgresTests.RealLocalProvider_PreservesAllStructuredProvenanceAndNormalizationOnDatabaseReload() in D:\AI Extraction\backend\tests\Stage15PostgresTests.cs:line 54&#xD;
+--- End of stack trace from previous location ---</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="Apollo.Backend.Tests.Stage15PostgresTests.SignedSyntheticVersions_RealOnnx_MockedMessaging_PreservePatientEncounterAndExtractionIdentity" storage="d:\ai extraction\backend\tests\bin\stage15\net10.0\apollo.backend.tests.dll" id="10ef06fb-935a-3784-3839-164bddddbe5d">
+      <Execution id="6a5f923a-d1b6-4fd6-b67f-9c5bb7428b35" />
+      <TestMethod codeBase="D:\AI Extraction\backend\tests\bin\Stage15\net10.0\Apollo.Backend.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Apollo.Backend.Tests.Stage15PostgresTests" name="SignedSyntheticVersions_RealOnnx_MockedMessaging_PreservePatientEncounterAndExtractionIdentity" />
+    </UnitTest>
+    <UnitTest name="Apollo.Backend.Tests.Stage15PostgresTests.RealLocalProvider_PreservesAllStructuredProvenanceAndNormalizationOnDatabaseReload" storage="d:\ai extraction\backend\tests\bin\stage15\net10.0\apollo.backend.tests.dll" id="27d5352b-d95b-0099-ba2f-c33857195003">
+      <Execution id="6d591e46-8d0e-474b-b4aa-bf74ae1cd6e4" />
+      <TestMethod codeBase="D:\AI Extraction\backend\tests\bin\Stage15\net10.0\Apollo.Backend.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Apollo.Backend.Tests.Stage15PostgresTests" name="RealLocalProvider_PreservesAllStructuredProvenanceAndNormalizationOnDatabaseReload" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="10ef06fb-935a-3784-3839-164bddddbe5d" executionId="6a5f923a-d1b6-4fd6-b67f-9c5bb7428b35" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="27d5352b-d95b-0099-ba2f-c33857195003" executionId="6d591e46-8d0e-474b-b4aa-bf74ae1cd6e4" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Failed">
+    <Counters total="2" executed="2" passed="0" failed="2" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET 10.0.14)&#xD;
+[xUnit.net 00:00:00.09]   Discovering: Apollo.Backend.Tests&#xD;
+[xUnit.net 00:00:00.16]   Discovered:  Apollo.Backend.Tests&#xD;
+[xUnit.net 00:00:00.19]   Starting:    Apollo.Backend.Tests&#xD;
+{"EventId":0,"LogLevel":"Information","Category":"Apollo.Backend.Clinical.ProviderStartupDiagnostics","Message":"Provider routing: environment Development; primary LocalOnnx; fallback LocalOnnx; local authorization True; configuration valid_not_live_verified","State":{"Environment":"Development","Primary":"LocalOnnx","Fallback":"LocalOnnx","LocalAllowed":true,"ConfigurationStatus":"valid_not_live_verified","{OriginalFormat}":"Provider routing: environment {Environment}; primary {Primary}; fallback {Fallback}; local authorization {LocalAllowed}; configuration {ConfigurationStatus}"}}&#xD;
+{"EventId":0,"LogLevel":"Information","Category":"Microsoft.Hosting.Lifetime","Message":"Application started. Press Ctrl\u002BC to shut down.","State":{"{OriginalFormat}":"Application started. Press Ctrl\u002BC to shut down."}}&#xD;
+{"EventId":0,"LogLevel":"Information","Category":"Microsoft.Hosting.Lifetime","Message":"Hosting environment: Development","State":{"EnvName":"Development","{OriginalFormat}":"Hosting environment: {EnvName}"}}&#xD;
+{"EventId":0,"LogLevel":"Information","Category":"Microsoft.Hosting.Lifetime","Message":"Content root path: D:\\AI Extraction\\backend","State":{"ContentRoot":"D:\\AI Extraction\\backend","{OriginalFormat}":"Content root path: {ContentRoot}"}}&#xD;
+{"EventId":0,"LogLevel":"Error","Category":"Apollo.Backend.Storage.SqlExtractionRepository","Message":"PostgreSQL persistence failed for 0a74e018-164f-436c-ab70-89b05f453dde; error type PostgresException.","State":{"ExtractionId":"0a74e018-164f-436c-ab70-89b05f453dde","ErrorType":"PostgresException","{OriginalFormat}":"PostgreSQL persistence failed for {ExtractionId}; error type {ErrorType}."}}&#xD;
+{"EventId":0,"LogLevel":"Error","Category":"Apollo.Backend.Clinical.ExtractionWorkflow","Message":"Persistence failed for 0a74e018-164f-436c-ab70-89b05f453dde; error type PostgresException","State":{"ExtractionId":"0a74e018-164f-436c-ab70-89b05f453dde","ErrorType":"PostgresException","{OriginalFormat}":"Persistence failed for {ExtractionId}; error type {ErrorType}"}}&#xD;
+{"EventId":0,"LogLevel":"Information","Category":"Microsoft.Hosting.Lifetime","Message":"Application is shutting down...","State":{"{OriginalFormat}":"Application is shutting down..."}}&#xD;
+[xUnit.net 00:00:01.72]       {"type":"https://tools.ietf.org/html/rfc9110#section-15.6.4","title":"Extraction could not be saved","status":503,"detail":"The extraction could not be saved. Your source note is retained.","code":"PERSISTENCE_FAILED","correlationId":"d6676809-9aac-4ffb-8d30-620e5aac942f","routing":null}&#xD;
+[xUnit.net 00:00:01.72]       Stack Trace:&#xD;
+[xUnit.net 00:00:01.72]         D:\AI Extraction\backend\tests\Stage15PostgresTests.cs(30,0): at Apollo.Backend.Tests.Stage15PostgresTests.RealLocalProvider_PreservesAllStructuredProvenanceAndNormalizationOnDatabaseReload()&#xD;
+[xUnit.net 00:00:01.72]         D:\AI Extraction\backend\tests\Stage15PostgresTests.cs(54,0): at Apollo.Backend.Tests.Stage15PostgresTests.RealLocalProvider_PreservesAllStructuredProvenanceAndNormalizationOnDatabaseReload()&#xD;
+[xUnit.net 00:00:01.72]         --- End of stack trace from previous location ---&#xD;
+{"EventId":0,"LogLevel":"Information","Category":"Apollo.Backend.Clinical.ProviderStartupDiagnostics","Message":"Provider routing: environment Development; primary LocalOnnx; fallback LocalOnnx; local authorization True; configuration valid_not_live_verified","State":{"Environment":"Development","Primary":"LocalOnnx","Fallback":"LocalOnnx","LocalAllowed":true,"ConfigurationStatus":"valid_not_live_verified","{OriginalFormat}":"Provider routing: environment {Environment}; primary {Primary}; fallback {Fallback}; local authorization {LocalAllowed}; configuration {ConfigurationStatus}"}}&#xD;
+{"EventId":0,"LogLevel":"Information","Category":"Microsoft.Hosting.Lifetime","Message":"Application started. Press Ctrl\u002BC to shut down.","State":{"{OriginalFormat}":"Application started. Press Ctrl\u002BC to shut down."}}&#xD;
+{"EventId":0,"LogLevel":"Information","Category":"Microsoft.Hosting.Lifetime","Message":"Hosting environment: Development","State":{"EnvName":"Development","{OriginalFormat}":"Hosting environment: {EnvName}"}}&#xD;
+{"EventId":0,"LogLevel":"Information","Category":"Microsoft.Hosting.Lifetime","Message":"Content root path: D:\\AI Extraction\\backend","State":{"ContentRoot":"D:\\AI Extraction\\backend","{OriginalFormat}":"Content root path: {ContentRoot}"}}&#xD;
+{"EventId":8,"LogLevel":"Warning","Category":"Microsoft.AspNetCore.Antiforgery.DefaultAntiforgery","Message":"The \u0027Cache-Control\u0027 and \u0027Pragma\u0027 headers have been overridden and set to \u0027no-cache, no-store\u0027 and \u0027no-cache\u0027 respectively to prevent caching of this response. Any response that uses antiforgery should not be cached.","State":{"{OriginalFormat}":"The \u0027Cache-Control\u0027 and \u0027Pragma\u0027 headers have been overridden and set to \u0027no-cache, no-store\u0027 and \u0027no-cache\u0027 respectively to prevent caching of this response. Any response that uses antiforgery should not be cached."}}&#xD;
+{"EventId":8,"LogLevel":"Warning","Category":"Microsoft.AspNetCore.Antiforgery.DefaultAntiforgery","Message":"The \u0027Cache-Control\u0027 and \u0027Pragma\u0027 headers have been overridden and set to \u0027no-cache, no-store\u0027 and \u0027no-cache\u0027 respectively to prevent caching of this response. Any response that uses antiforgery should not be cached.","State":{"{OriginalFormat}":"The \u0027Cache-Control\u0027 and \u0027Pragma\u0027 headers have been overridden and set to \u0027no-cache, no-store\u0027 and \u0027no-cache\u0027 respectively to prevent caching of this response. Any response that uses antiforgery should not be cached."}}&#xD;
+{"EventId":8,"LogLevel":"Warning","Category":"Microsoft.AspNetCore.Antiforgery.DefaultAntiforgery","Message":"The \u0027Cache-Control\u0027 and \u0027Pragma\u0027 headers have been overridden and set to \u0027no-cache, no-store\u0027 and \u0027no-cache\u0027 respectively to prevent caching of this response. Any response that uses antiforgery should not be cached.","State":{"{OriginalFormat}":"The \u0027Cache-Control\u0027 and \u0027Pragma\u0027 headers have been overridden and set to \u0027no-cache, no-store\u0027 and \u0027no-cache\u0027 respectively to prevent caching of this response. Any response that uses antiforgery should not be cached."}}&#xD;
+{"EventId":8,"LogLevel":"Warning","Category":"Microsoft.AspNetCore.Antiforgery.DefaultAntiforgery","Message":"The \u0027Cache-Control\u0027 and \u0027Pragma\u0027 headers have been overridden and set to \u0027no-cache, no-store\u0027 and \u0027no-cache\u0027 respectively to prevent caching of this response. Any response that uses antiforgery should not be cached.","State":{"{OriginalFormat}":"The \u0027Cache-Control\u0027 and \u0027Pragma\u0027 headers have been overridden and set to \u0027no-cache, no-store\u0027 and \u0027no-cache\u0027 respectively to prevent caching of this response. Any response that uses antiforgery should not be cached."}}&#xD;
+{"EventId":0,"LogLevel":"Information","Category":"Apollo.Backend.Emr.EmrMessagingService","Message":"Publishing EMR outbox event a8a82c5f-37ca-4405-be7d-05fea8ef9756 for note 25647c57-251b-4a19-97e9-e0bc60f2c871 v2 (attempt 1)","State":{"EventId":"a8a82c5f-37ca-4405-be7d-05fea8ef9756","NoteId":"25647c57-251b-4a19-97e9-e0bc60f2c871","Version":2,"Attempt":1,"{OriginalFormat}":"Publishing EMR outbox event {EventId} for note {NoteId} v{Version} (attempt {Attempt})"}}&#xD;
+{"EventId":0,"LogLevel":"Information","Category":"Apollo.Backend.Emr.EmrMessagingService","Message":"Successfully published EMR event a8a82c5f-37ca-4405-be7d-05fea8ef9756 to broker","State":{"EventId":"a8a82c5f-37ca-4405-be7d-05fea8ef9756","{OriginalFormat}":"Successfully published EMR event {EventId} to broker"}}&#xD;
+{"EventId":0,"LogLevel":"Error","Category":"Apollo.Backend.Storage.SqlExtractionRepository","Message":"PostgreSQL persistence failed for a8a82c5f-37ca-4405-be7d-05fea8ef9756; error type PostgresException.","State":{"ExtractionId":"a8a82c5f-37ca-4405-be7d-05fea8ef9756","ErrorType":"PostgresException","{OriginalFormat}":"PostgreSQL persistence failed for {ExtractionId}; error type {ErrorType}."}}&#xD;
+{"EventId":0,"LogLevel":"Error","Category":"Apollo.Backend.Clinical.ExtractionWorkflow","Message":"Persistence failed for a8a82c5f-37ca-4405-be7d-05fea8ef9756; error type PostgresException","State":{"ExtractionId":"a8a82c5f-37ca-4405-be7d-05fea8ef9756","ErrorType":"PostgresException","{OriginalFormat}":"Persistence failed for {ExtractionId}; error type {ErrorType}"}}&#xD;
+{"EventId":0,"LogLevel":"Information","Category":"Microsoft.Hosting.Lifetime","Message":"Application is shutting down...","State":{"{OriginalFormat}":"Application is shutting down..."}}&#xD;
+[xUnit.net 00:00:03.74]       Assert.Equal() Failure: Values differ&#xD;
+[xUnit.net 00:00:03.74]       Expected: Completed&#xD;
+[xUnit.net 00:00:03.74]       Actual:   Retry&#xD;
+[xUnit.net 00:00:03.74]       Stack Trace:&#xD;
+[xUnit.net 00:00:03.74]         D:\AI Extraction\backend\tests\Stage15PostgresTests.cs(92,0): at Apollo.Backend.Tests.Stage15PostgresTests.&lt;&gt;c__DisplayClass2_0.&lt;&lt;SignedSyntheticVersions_RealOnnx_MockedMessaging_PreservePatientEncounterAndExtractionIdentity&gt;g__Sign|3&gt;d.MoveNext()&#xD;
+[xUnit.net 00:00:03.74]         --- End of stack trace from previous location ---&#xD;
+[xUnit.net 00:00:03.74]         D:\AI Extraction\backend\tests\Stage15PostgresTests.cs(96,0): at Apollo.Backend.Tests.Stage15PostgresTests.SignedSyntheticVersions_RealOnnx_MockedMessaging_PreservePatientEncounterAndExtractionIdentity()&#xD;
+[xUnit.net 00:00:03.74]         D:\AI Extraction\backend\tests\Stage15PostgresTests.cs(108,0): at Apollo.Backend.Tests.Stage15PostgresTests.SignedSyntheticVersions_RealOnnx_MockedMessaging_PreservePatientEncounterAndExtractionIdentity()&#xD;
+[xUnit.net 00:00:03.74]         --- End of stack trace from previous location ---&#xD;
+[xUnit.net 00:00:03.75]   Finished:    Apollo.Backend.Tests&#xD;
+</StdOut>
+    </Output>
+    <RunInfos>
+      <RunInfo computerName="ATN99998C0352" outcome="Error" timestamp="2026-11-25T12:59:13.1117837+05:30">
+        <Text>[xUnit.net 00:00:01.72]     Apollo.Backend.Tests.Stage15PostgresTests.RealLocalProvider_PreservesAllStructuredProvenanceAndNormalizationOnDatabaseReload [FAIL]</Text>
+      </RunInfo>
+      <RunInfo computerName="ATN99998C0352" outcome="Error" timestamp="2026-11-25T12:59:15.1361314+05:30">
+        <Text>[xUnit.net 00:00:03.74]     Apollo.Backend.Tests.Stage15PostgresTests.SignedSyntheticVersions_RealOnnx_MockedMessaging_PreservePatientEncounterAndExtractionIdentity [FAIL]</Text>
+      </RunInfo>
+    </RunInfos>
+  </ResultSummary>
+</TestRun>

@@ -12,7 +12,7 @@ public sealed class LocalClinicalPipelineOptions
 
 /// <summary>Offline ablations only. These switches are not a second production routing configuration.</summary>
 public sealed record LocalPipelineFeatures(bool MedicationCandidates = true, bool Investigations = true,
-    bool Assertions = true, bool Terminology = true, bool Attributes = true, bool Sections = true);
+    bool Assertions = true, bool Terminology = true, bool Attributes = true, bool Sections = true, bool ContextualWindows = true);
 
 public sealed record CandidateTrace(string Text, string Category, string Section, int Start, int End,
     double? NerScore, string DetectionSource, string CatalogMatch, IReadOnlyList<string> MedicationContext,

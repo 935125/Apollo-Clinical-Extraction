@@ -479,7 +479,7 @@
                                 <td [class.val-missing]="!med.duration">{{ docValue(med.duration) }}</td>
                                 <td>
                                   <span class="assertion-chip" [ngClass]="assertionClass(med.assertionStatus)">
-                                    {{ assertionLabel(med.assertionStatus) }}
+                                    {{ assertionLabel(med.provenance?.clinicalContext?.assertion ?? med.assertionStatus) }}
                                   </span>
                                 </td>
                               </tr>

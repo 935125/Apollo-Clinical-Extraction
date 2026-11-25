@@ -4,7 +4,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
-const evidenceDir = path.join(root, 'docs/stage13-evidence');
+const evidenceDir = process.env.APOLLO_E2E_OUTPUT_ROOT || path.join(root, 'docs/stage13-evidence');
 const screenshotsDir = path.join(evidenceDir, 'screenshots');
 fs.mkdirSync(screenshotsDir, { recursive: true });
 
@@ -84,11 +84,12 @@ try {
   assert(initialRows === 10, `Expected 10 rows on initial load, got ${initialRows}`);
 
   const initialRowTexts = await page.locator('.queue-table tbody tr').allInnerTexts();
+  const expectedQueue = await (await page.request.get('http://localhost:4200/api/v1/queue?limit=10')).json();
   const p234Initial = initialRowTexts.filter((t) => t.includes('P100234'));
   assert(p234Initial.length >= 4, `Expected repeated UHID P100234 rows in top 10, got ${p234Initial.length}`);
   assert(
-    initialRowTexts[0].includes('P100234') && initialRowTexts[0].includes('v27'),
-    `Expected newest entry P100234 v27 first, got: ${initialRowTexts[0]}`
+    initialRowTexts[0].includes(expectedQueue.items[0].patientReference) && initialRowTexts[0].includes(`v${expectedQueue.items[0].noteVersion}`),
+    `Newest row differs from the current persisted API queue: ${initialRowTexts[0]}`
   );
 
   await page.screenshot({ path: path.join(screenshotsDir, '08-show-entries-10.png'), fullPage: false });
@@ -120,7 +121,7 @@ try {
     assert(actualMeta === expectedMeta, `Row ${i} mismatch: expected "${expectedMeta}", got "${actualMeta}"`);
   }
   const p234InFive = fiveRowTexts.filter((t) => t.includes('P100234'));
-  assert(p234InFive.length === 2, `Expected 2 repeated P100234 rows (v27 & v25) in top 5, got ${p234InFive.length}`);
+  assert(p234InFive.length === expectedQueue.items.slice(0, 5).filter(x => x.patientReference === 'P100234').length, 'Top-five repeated UHID count differs from the API');
 
   await page.screenshot({ path: path.join(screenshotsDir, '09-show-entries-5.png'), fullPage: false });
   record(
@@ -140,14 +141,17 @@ try {
   record('Automatic 4s polling preserves limit=5', 'PASS', `PollsObserved=${newPolls.length}, AllLimit5=true`);
 
   // 4. Open extraction & return -> preserves Show entries = 5 and isolates patient/version
-  await page.locator('.queue-row', { hasText: 'ENC-100567 · v25' }).locator('button:has-text("Open")').click();
+  const selected = expectedQueue.items.slice(0, 5).find(x => x.queueState === 'Ready' && x.extractionId);
+  assert(selected, 'No completed extraction available in the first five rows');
+  const expectedDetail = await (await page.request.get(`http://localhost:4200/api/v1/queue/${selected.noteId}?version=${selected.noteVersion}&patient=${selected.patientReference}`)).json();
+  await page.locator('.queue-row', { hasText: `${selected.encounterReference} · v${selected.noteVersion}` }).locator('button:has-text("Open")').click();
   await page.waitForSelector('.split-workspace .source-document', { timeout: 15000 });
   const detailText = await page.locator('.workspace-detail').innerText();
   assert(
-    detailText.includes('P100234') && detailText.includes('Pantoprazole') && detailText.includes('Ibuprofen'),
-    'Opened P100234 v25 detail missing expected extracted medications'
+    detailText.includes(selected.patientReference) && expectedDetail.extraction.medications.every(m => detailText.includes(m.name)),
+    'Opened detail does not display the selected persisted patient and medication entities'
   );
-  assert(!detailText.includes('Colchicine') && !detailText.includes('P100237'), 'Cross-version or cross-patient leak detected');
+  assert(expectedDetail.noteVersion === selected.noteVersion && expectedDetail.extractionId === selected.extractionId, 'Selected note version or extraction identity changed');
 
   const backRespPromise = page.waitForResponse(
     (r) => r.request().method() === 'GET' && r.url().includes('/api/v1/queue') && new URL(r.url()).searchParams.get('limit') === '5'

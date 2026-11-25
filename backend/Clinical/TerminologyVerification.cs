@@ -116,6 +116,13 @@ public static class TerminologyVerification
         string cleanMention = Regex.Replace(mention.Trim().ToLowerInvariant(), @"\s+acetate$", "");
         return Ingredient(cleanMention) == Ingredient(standardName) && Ingredient(standardName) == Ingredient(term.GetProperty("name").GetString()!);
     }
+    /// <summary>V2 identity gate: a documented salt/ester cannot disappear to approve a base ingredient code.</summary>
+    public static bool DocumentedIngredientMatches(string mention, string? code)
+    {
+        return code != null && Snapshot.RootElement.GetProperty("medications").TryGetProperty(code, out var term) &&
+            term.GetProperty("active").GetBoolean() && term.GetProperty("termType").GetString() is "IN" or "MIN" &&
+            Ingredient(mention) == Ingredient(term.GetProperty("name").GetString()!);
+    }
     public static bool InvestigationSupported(string mention, string code)
     {
         if (!Snapshot.RootElement.GetProperty("investigations").TryGetProperty(code, out var term) || !term.GetProperty("exists").GetBoolean()) return false;

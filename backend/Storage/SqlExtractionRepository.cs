@@ -274,13 +274,13 @@ public class SqlExtractionRepository : IExtractionRepository
                     frequency, duration, formulation, instructions, assertion_status,
                     evidence_quote, evidence_verified, evidence_start, evidence_end,
                     normalization_status, matched_code, display_name, confidence,
-                    quality_flags_json, findings_json, dose_unit, action
+                    quality_flags_json, findings_json, dose_unit, action, origin, provenance_json, normalization_json
                 ) VALUES (
                     @medication_id, @extraction_id, @name, @strength, @dose, @route,
                     @frequency, @duration, @formulation, @instructions, @assertion_status,
                     @evidence_quote, @evidence_verified, @evidence_start, @evidence_end,
                     @normalization_status, @matched_code, @display_name, @confidence,
-                    @quality_flags_json, @findings_json, @dose_unit, @action
+                    @quality_flags_json, @findings_json, @dose_unit, @action, @origin, @provenance_json, @normalization_json
                 );
                 """;
 
@@ -317,6 +317,9 @@ public class SqlExtractionRepository : IExtractionRepository
 
                 medCmd.Parameters.AddWithValue("dose_unit", (object?)med.DoseUnit ?? DBNull.Value);
                 medCmd.Parameters.AddWithValue("action", (object?)med.Action ?? DBNull.Value);
+                medCmd.Parameters.AddWithValue("origin", med.Origin);
+                medCmd.Parameters.Add(new NpgsqlParameter("provenance_json", NpgsqlDbType.Jsonb) { Value = med.Provenance == null ? DBNull.Value : JsonSerializer.Serialize(med.Provenance) });
+                medCmd.Parameters.Add(new NpgsqlParameter("normalization_json", NpgsqlDbType.Jsonb) { Value = JsonSerializer.Serialize(med.Normalization) });
                 await medCmd.ExecuteNonQueryAsync(ct);
             }
 
@@ -325,12 +328,12 @@ public class SqlExtractionRepository : IExtractionRepository
                     investigation_id, extraction_id, name, timing, specimen,
                     assertion_status, status, evidence_quote, evidence_verified,
                     evidence_start, evidence_end, normalization_status, matched_code,
-                    display_name, confidence, quality_flags_json, findings_json
+                    display_name, confidence, quality_flags_json, findings_json, origin, provenance_json, normalization_json, clinical_category, result_value
                 ) VALUES (
                     @investigation_id, @extraction_id, @name, @timing, @specimen,
                     @assertion_status, @status, @evidence_quote, @evidence_verified,
                     @evidence_start, @evidence_end, @normalization_status, @matched_code,
-                    @display_name, @confidence, @quality_flags_json, @findings_json
+                    @display_name, @confidence, @quality_flags_json, @findings_json, @origin, @provenance_json, @normalization_json, @clinical_category, @result_value
                 );
                 """;
 
@@ -361,6 +364,11 @@ public class SqlExtractionRepository : IExtractionRepository
                     Value = JsonSerializer.Serialize(inv.Findings)
                 });
 
+                invCmd.Parameters.AddWithValue("origin", inv.Origin);
+                invCmd.Parameters.Add(new NpgsqlParameter("provenance_json", NpgsqlDbType.Jsonb) { Value = inv.Provenance == null ? DBNull.Value : JsonSerializer.Serialize(inv.Provenance) });
+                invCmd.Parameters.Add(new NpgsqlParameter("normalization_json", NpgsqlDbType.Jsonb) { Value = JsonSerializer.Serialize(inv.Normalization) });
+                invCmd.Parameters.AddWithValue("clinical_category", (object?)inv.ClinicalCategory ?? DBNull.Value);
+                invCmd.Parameters.AddWithValue("result_value", (object?)inv.ResultValue ?? DBNull.Value);
                 await invCmd.ExecuteNonQueryAsync(ct);
             }
 
@@ -986,7 +994,7 @@ public class SqlExtractionRepository : IExtractionRepository
             SELECT name, strength, dose, route, frequency, duration, formulation,
                    instructions, assertion_status, evidence_quote, evidence_verified,
                    evidence_start, evidence_end, normalization_status, matched_code,
-                   display_name, confidence, quality_flags_json, findings_json, dose_unit, action
+                   display_name, confidence, quality_flags_json, findings_json, dose_unit, action, origin, provenance_json, normalization_json
             FROM extracted_medications
             WHERE extraction_id = @id;
             """;
@@ -1032,7 +1040,7 @@ public class SqlExtractionRepository : IExtractionRepository
                     ),
                     QualityFlags: qFlags,
                     Findings: findings,
-                    Normalization: new NormalizationDto(
+                    Normalization: !reader.IsDBNull(23) ? JsonSerializer.Deserialize<NormalizationDto>(reader.GetString(23))! : new NormalizationDto(
                         Status: normStatus,
                         MatchedCode: matchedCode,
                         DisplayName: displayName,
@@ -1045,8 +1053,8 @@ public class SqlExtractionRepository : IExtractionRepository
                     ),
                     DoseUnit: reader.IsDBNull(19) ? null : reader.GetString(19),
                     Action: reader.IsDBNull(20) ? null : reader.GetString(20),
-                    Origin: defaultOrigin,
-                    Provenance: new EntityProvenanceDto(
+                    Origin: reader.IsDBNull(21) ? defaultOrigin : reader.GetString(21),
+                    Provenance: !reader.IsDBNull(22) ? JsonSerializer.Deserialize<EntityProvenanceDto>(reader.GetString(22)) : new EntityProvenanceDto(
                         Origin: defaultOrigin,
                         Provider: defaultProvider,
                         UncertaintyReason: normStatus != "matched" ? resolvedMed.MappingNote : null,
@@ -1059,7 +1067,7 @@ public class SqlExtractionRepository : IExtractionRepository
         const string selectInvsSql = """
             SELECT name, timing, specimen, assertion_status, status, evidence_quote,
                    evidence_verified, evidence_start, evidence_end, normalization_status,
-                   matched_code, display_name, confidence, quality_flags_json, findings_json
+                   matched_code, display_name, confidence, quality_flags_json, findings_json, origin, provenance_json, normalization_json, clinical_category, result_value
             FROM extracted_investigations
             WHERE extraction_id = @id;
             """;
@@ -1115,7 +1123,7 @@ public class SqlExtractionRepository : IExtractionRepository
                     ),
                     QualityFlags: qFlags,
                     Findings: findings,
-                    Normalization: new NormalizationDto(
+                    Normalization: !reader.IsDBNull(17) ? JsonSerializer.Deserialize<NormalizationDto>(reader.GetString(17))! : new NormalizationDto(
                         Status: invNormStatus,
                         MatchedCode: matchedCode,
                         DisplayName: displayName,
@@ -1129,10 +1137,10 @@ public class SqlExtractionRepository : IExtractionRepository
                     MatchedCode: matchedCode,
                     DisplayName: displayName,
                     Status: reader.GetString(4),
-                    ClinicalCategory: invCategory,
-                    ResultValue: resultVal,
-                    Origin: defaultInvOrigin,
-                    Provenance: new EntityProvenanceDto(
+                    ClinicalCategory: reader.IsDBNull(18) ? invCategory : reader.GetString(18),
+                    ResultValue: !reader.IsDBNull(19) ? reader.GetString(19) : reader.IsDBNull(17) ? resultVal : null,
+                    Origin: reader.IsDBNull(15) ? defaultInvOrigin : reader.GetString(15),
+                    Provenance: !reader.IsDBNull(16) ? JsonSerializer.Deserialize<EntityProvenanceDto>(reader.GetString(16)) : new EntityProvenanceDto(
                         Origin: defaultInvOrigin,
                         Provider: defaultInvProvider,
                         UncertaintyReason: invNormStatus != "matched" ? resolvedInv.MappingNote : null,

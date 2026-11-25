@@ -1,0 +1,13 @@
+{
+  "classification": "Draft engineering annotations; the 35-case historical labels are incomplete for mention-level evaluation; no independent clinician adjudication",
+  "datasets": [
+    {
+      "name": "stage5_independent_benchmark_35cases.json",
+      "sha256": "3D2EE6AFD0AC72157C92BDDEEDC43F94511BA170D7985A1F44177CB78EB9AD84"
+    },
+    {
+      "name": "stage15_frozen_cases.json",
+      "sha256": "4067751A9E249D09E3DF0674F023B6C1E90D39DC3BA01C70179DE7C32E2D4EAD"
+    }
+  ]
+}

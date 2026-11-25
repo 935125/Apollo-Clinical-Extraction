@@ -1,0 +1,9 @@
+{
+  "database": "cx_audit_test",
+  "schema": "foundry_test_298ae79641ac46938f170fbf00adf26f",
+  "connectionString": "Host=127.0.0.1;Port=5432;Database=cx_audit_test;Username=postgres;Pooling=False;Search Path=foundry_test_298ae79641ac46938f170fbf00adf26f,public;Include Error Detail=False",
+  "baseUrl": "http://127.0.0.1:5015",
+  "liveFoundryCalls": 0,
+  "synthetic": true,
+  "applicationDatabaseTargeted": false
+}

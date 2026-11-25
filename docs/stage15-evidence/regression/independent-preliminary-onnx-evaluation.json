@@ -1,0 +1,157 @@
+{
+  "generatedAt": "2026-11-25T08:27:05.2708973+00:00",
+  "classification": "Preliminary independent synthetic benchmark (not used during prompt/rule tuning; not independently clinician-annotated)",
+  "provider": "LocalOnnx (bc5cdr_int8 \u002B deterministic posology/catalog)",
+  "fallbackEnabled": false,
+  "totalCases": 6,
+  "medicationsMicro": {
+    "tp": 18,
+    "fp": 0,
+    "fn": 1,
+    "precision": 1,
+    "recall": 0.9473684210526315,
+    "f1": 0.972972972972973
+  },
+  "investigationsMicro": {
+    "tp": 15,
+    "fp": 3,
+    "fn": 2,
+    "precision": 0.8333333333333334,
+    "recall": 0.8823529411764706,
+    "f1": 0.8571428571428571
+  },
+  "cases": [
+    {
+      "id": "indep-001-cardio-anticoag",
+      "specialty": "Cardiology / Anticoagulation",
+      "medNormalized": {
+        "tp": 5,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1,
+        "recall": 1,
+        "f1": 1
+      },
+      "invNormalized": {
+        "tp": 5,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1,
+        "recall": 1,
+        "f1": 1
+      },
+      "safetyAlertsCount": 4,
+      "validationDimensions": null
+    },
+    {
+      "id": "indep-002-pulm-cap",
+      "specialty": "Pulmonology",
+      "medNormalized": {
+        "tp": 3,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1,
+        "recall": 1,
+        "f1": 1
+      },
+      "invNormalized": {
+        "tp": 1,
+        "fp": 2,
+        "fn": 2,
+        "precision": 0.3333333333333333,
+        "recall": 0.3333333333333333,
+        "f1": 0.3333333333333333
+      },
+      "safetyAlertsCount": 0,
+      "validationDimensions": null
+    },
+    {
+      "id": "indep-003-rheum-mtx",
+      "specialty": "Rheumatology",
+      "medNormalized": {
+        "tp": 3,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1,
+        "recall": 1,
+        "f1": 1
+      },
+      "invNormalized": {
+        "tp": 2,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1,
+        "recall": 1,
+        "f1": 1
+      },
+      "safetyAlertsCount": 0,
+      "validationDimensions": null
+    },
+    {
+      "id": "indep-004-nephro-ckd",
+      "specialty": "Nephrology",
+      "medNormalized": {
+        "tp": 2,
+        "fp": 0,
+        "fn": 1,
+        "precision": 1,
+        "recall": 0.6666666666666666,
+        "f1": 0.8
+      },
+      "invNormalized": {
+        "tp": 2,
+        "fp": 1,
+        "fn": 0,
+        "precision": 0.6666666666666666,
+        "recall": 1,
+        "f1": 0.8
+      },
+      "safetyAlertsCount": 0,
+      "validationDimensions": null
+    },
+    {
+      "id": "indep-005-endo-diabetes",
+      "specialty": "Endocrinology",
+      "medNormalized": {
+        "tp": 3,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1,
+        "recall": 1,
+        "f1": 1
+      },
+      "invNormalized": {
+        "tp": 3,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1,
+        "recall": 1,
+        "f1": 1
+      },
+      "safetyAlertsCount": 0,
+      "validationDimensions": null
+    },
+    {
+      "id": "indep-006-onc-emesis",
+      "specialty": "Oncology Supportive Care",
+      "medNormalized": {
+        "tp": 2,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1,
+        "recall": 1,
+        "f1": 1
+      },
+      "invNormalized": {
+        "tp": 2,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1,
+        "recall": 1,
+        "f1": 1
+      },
+      "safetyAlertsCount": 0,
+      "validationDimensions": null
+    }
+  ]
+}

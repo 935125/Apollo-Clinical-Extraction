@@ -8,6 +8,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 source = (ROOT/'Clinical/IndianOntologyResolver.cs').read_text(encoding='utf-8-sig')
 entries = []
+entries.append(dict(category='NON_MEDICATION',canonical='Pathology or molecular finding',aliases=['blasts','myeloblasts','FLT3','NPM1'],mapping='not_medication',provenance='Apollo clinical semantic exclusion; these findings do not identify medicinal ingredients'))
+entries.append(dict(category='INVESTIGATION',canonical='NT-proBNP',aliases=['NT-proBNP','NT proBNP','BNP'],mapping='unresolved',provenance='Apollo recognition lexicon; no specimen or measurement-specific LOINC identifier asserted'))
 for category, start, end in [('MEDICATION','DrugMaster =','LabMaster ='),('INVESTIGATION','LabMaster =','private static readonly System.Collections.Concurrent')]:
     segment = source.split(start,1)[1].split(end,1)[0]
     for alias, name in re.findall(r'\["([^"]+)"\]\s*=\s*new\("([^"]+)"', segment):

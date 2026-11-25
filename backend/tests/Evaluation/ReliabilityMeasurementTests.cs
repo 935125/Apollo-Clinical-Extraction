@@ -52,7 +52,7 @@ public sealed class ReliabilityMeasurementTests
             var sorted = values.Order().ToArray();
             return new { sampleSize = sorted.Length, p50Ms = sorted[(int)Math.Ceiling(sorted.Length * .5) - 1], p95Ms = sorted[(int)Math.Ceiling(sorted.Length * .95) - 1] };
         }
-        string dir = Path.Combine(HeldOutBenchmarkRunner.Backend, "artifacts", "audit-remediation"); Directory.CreateDirectory(dir);
+        string dir = Environment.GetEnvironmentVariable("APOLLO_EVALUATION_OUTPUT_ROOT") ?? Path.Combine(HeldOutBenchmarkRunner.Backend, "artifacts", "audit-remediation"); Directory.CreateDirectory(dir);
         await File.WriteAllTextAsync(Path.Combine(dir, "reliability.json"), JsonSerializer.Serialize(new
         {
             generatedAt = DateTimeOffset.UtcNow, environment = "in-process test HTTP server, real singleton ONNX session, isolated real PostgreSQL; no cloud",

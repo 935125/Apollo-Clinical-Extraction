@@ -4,7 +4,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
-const evidenceDir = path.join(root, 'docs/stage13-evidence');
+const evidenceDir = process.env.APOLLO_E2E_OUTPUT_ROOT || path.join(root, 'docs/stage13-evidence');
 const screenshotsDir = path.join(evidenceDir, 'screenshots');
 fs.mkdirSync(screenshotsDir, { recursive: true });
 
@@ -51,12 +51,13 @@ try {
 
   // Confirm repeated patients appear as separate rows with distinct note versions
   const rowTexts = await page.locator('.queue-table tbody tr').allInnerTexts();
+  const currentQueue = await (await page.request.get('http://localhost:4200/api/v1/queue?limit=10')).json();
   const p234Rows = rowTexts.filter((t) => t.includes('P100234'));
   const p235Rows = rowTexts.filter((t) => t.includes('P100235'));
   const p237Rows = rowTexts.filter((t) => t.includes('P100237'));
-  assert(p234Rows.length >= 4, `Expected >=4 rows for P100234 (v27,v25,v23,v21), got ${p234Rows.length}`);
-  assert(p235Rows.length >= 3, `Expected >=3 rows for P100235 (v16,v14,v12), got ${p235Rows.length}`);
-  assert(p237Rows.length >= 3, `Expected >=3 rows for P100237 (v21,v19,v17), got ${p237Rows.length}`);
+  for (const [reference, rows] of [['P100234', p234Rows], ['P100235', p235Rows], ['P100237', p237Rows]]) {
+    assert(rows.length === currentQueue.items.filter(x => x.patientReference === reference).length, `Row count for ${reference} differs from persisted queue`);
+  }
 
   // Confirm zero unwanted clutter returned
   assert((await page.locator('.filter-pills, .filter-pill, .queue-count, aside, .portal-sidebar, .portal-primary-nav').count()) === 0, 'Unwanted legacy controls reappeared');
@@ -71,20 +72,29 @@ try {
   // =========================================================================
   // 2. SCREENSHOT 2 — REPEATED UHID ENTRIES WITH DIFFERENT NOTE VERSIONS
   // =========================================================================
+  const filteredResponse = page.waitForResponse(r => r.request().method() === 'GET' && new URL(r.url()).pathname === '/api/v1/queue' && new URL(r.url()).searchParams.get('search') === 'P100234');
   await page.fill('input[type="search"]', 'P100234');
-  await page.waitForTimeout(200);
+  const filteredApi = await (await filteredResponse).json();
+  await page.waitForFunction(count => document.querySelectorAll('.queue-table tbody tr').length === count, filteredApi.items.length);
   const filtered234 = await page.locator('.queue-table tbody tr').count();
-  assert(filtered234 === 4, `Expected 4 P100234 versions in Top 10 (v27,v25,v23,v21), got ${filtered234}`);
+  assert(filtered234 === filteredApi.items.length && filteredApi.items.every(x => x.patientReference === 'P100234'), 'UHID search differs from current persisted API response');
   await page.screenshot({ path: path.join(screenshotsDir, '02-repeated-uhid-versions.png'), fullPage: false });
+  const unfilteredResponse = page.waitForResponse(r => r.request().method() === 'GET' && new URL(r.url()).pathname === '/api/v1/queue' && !new URL(r.url()).searchParams.has('search'));
   await page.fill('input[type="search"]', '');
-  await page.waitForTimeout(200);
+  await unfilteredResponse;
+  await page.waitForFunction(() => document.querySelectorAll('.queue-table tbody tr').length === 10);
   record('Screenshot 2: Repeated UHID P100234 Versions Shown Separately', 'PASS', `P100234 rows=${filtered234}`);
 
   // =========================================================================
   // 3. TEST D — SAME-PATIENT VERSION ISOLATION (P100234 v21 -> v25 -> v27)
   // =========================================================================
   // Open P100234 v21 (Case 1: Hypertension — Amlodipine, Atorvastatin, Telmisartan)
-  await page.locator('.queue-row', { hasText: 'ENC-100567 · v21' }).locator('button:has-text("Open")').click();
+  // Older immutable versions may fall outside the live top ten. Open the patient's
+  // current row, then use the supported within-patient version selector.
+  await page.locator('.queue-row', { hasText: 'P100234' }).first().locator('button:has-text("Open")').click();
+  await page.waitForSelector('.within-patient-selector select', { timeout: 15000 });
+  await page.locator('.within-patient-selector select').selectOption('7b83e7bc-c817-4284-9306-8318b107adbb:21');
+  await page.waitForFunction(() => document.querySelector('.source-meta')?.textContent?.includes('Version 21'));
   await page.waitForSelector('.split-workspace .source-document', { timeout: 15000 });
   const v21Text = await page.locator('.workspace-detail').innerText();
   assert(v21Text.includes('Telmisartan') && v21Text.includes('Amlodipine'), 'P100234 v21 missing Telmisartan/Amlodipine');

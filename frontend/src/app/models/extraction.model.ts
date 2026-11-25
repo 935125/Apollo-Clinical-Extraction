@@ -28,6 +28,7 @@ export interface NormalizationInfo {
   terminologySource?: string | null;
   terminologyVersion?: string | null;
   mappingNote?: string | null;
+  matchType?: string | null;
 }
 
 export interface EntityProvenance {
@@ -38,6 +39,22 @@ export interface EntityProvenance {
   uncertaintyReason?: string | null;
   quarantined?: boolean;
   triggeredAlertIds?: string[] | null;
+  clinicalContext?: {
+    assertion: string;
+    temporality: string;
+    section: string;
+    sourceStart: number;
+    sourceEnd: number;
+    detectionMethod: string;
+    rawNerScore: number | null;
+    mentionStatus: string;
+    attributes: { field: string; value: string; evidence: Evidence }[];
+    administration?: string | null;
+    startTiming?: string | null;
+    stopTiming?: string | null;
+    prnIndication?: string | null;
+    administrationSchedule?: string | null;
+  } | null;
 }
 
 export interface ExtractedMedication {
@@ -125,6 +142,8 @@ export interface ProviderAttempt {
 }
 
 export interface ModelMetadata {
+  localPipelineVersion?: string | null;
+  recognitionCatalogVersion?: string | null;
   requestedPrimaryProvider?: string | null;
   finalExecutedProvider?: string | null;
   routingMode?: string | null;

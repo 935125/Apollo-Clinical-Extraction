@@ -4,6 +4,7 @@ using Apollo.Backend.Fhir;
 using Apollo.Backend.Models;
 using Apollo.Backend.Nlp;
 using Apollo.Backend.Security;
+using Microsoft.Extensions.Options;
 
 namespace Apollo.Backend.Clinical;
 
@@ -14,10 +15,13 @@ public partial class ClinicalPipelineService
     private readonly PosologyBinder _posologyBinder = new();
     private readonly IndianOntologyResolver _ontologyResolver = new();
     private readonly ClinicalSafetyRuleEngine _safetyEngine = new();
+    private readonly LocalClinicalPipelineOptions _localOptions;
 
-    public ClinicalPipelineService(SlidingWindowOnnxEngine onnxEngine)
+    public ClinicalPipelineService(SlidingWindowOnnxEngine onnxEngine, IOptions<LocalClinicalPipelineOptions>? options = null)
     {
         _onnxEngine = onnxEngine;
+        _localOptions = options?.Value ?? new();
+        if (!_localOptions.IsValid) throw new InvalidOperationException("LocalOnnx:PipelineVersion must be Legacy or CandidateV2");
     }
 
     private List<RawSpan> CollectAndFilterSpans(string text, IReadOnlyList<ClinicalSection> sections, OnnxExecutionReceipt? receipt = null)
@@ -197,6 +201,7 @@ public partial class ClinicalPipelineService
 
     public ClinicalNERResponse ProcessApolloNer(ClinicalNERRequest request)
     {
+        if (_localOptions.IsUpgraded) return ProcessUpgradedNer(request);
         var sw = Stopwatch.StartNew();
 
         // 1. Zero-Leakage PII Validation (Fail closed with PIILeakageException)
@@ -313,7 +318,8 @@ public partial class ClinicalPipelineService
         ClinicalExtractionRequest request,
         string correlationId,
         OnnxExecutionReceipt? receipt = null,
-        bool skipPrivacyValidation = false)
+        bool skipPrivacyValidation = false,
+        CancellationToken cancellationToken = default)
     {
         var sw = Stopwatch.StartNew();
         receipt ??= new OnnxExecutionReceipt();
@@ -323,6 +329,10 @@ public partial class ClinicalPipelineService
         {
             ZeroLeakageValidator.Validate(request.NoteText);
         }
+
+        cancellationToken.ThrowIfCancellationRequested();
+        if (_localOptions.IsUpgraded)
+            return new UpgradedClinicalPipeline(_onnxEngine).Process(request, correlationId, receipt, cancellationToken);
 
         // 2. Sections
         var sections = _contextEngine.SegmentSections(request.NoteText);
@@ -501,7 +511,8 @@ public partial class ClinicalPipelineService
                 Provider: _onnxEngine.HasOnnxModel ? "onnx" : "deterministic_test",
                 InferenceExecuted: receipt.WindowsExecuted > 0,
                 ExecutionMode: receipt.ExecutionMode,
-                ReviewCandidates: receipt.ReviewCandidates
+                ReviewCandidates: receipt.ReviewCandidates,
+                LocalPipelineVersion: "Legacy"
             ),
             Preprocessed: new PreprocessedDto(
                 CharLength: request.NoteText.Length,
@@ -539,7 +550,7 @@ public partial class ClinicalPipelineService
         return new EvidenceDto(text[left..right], true, left, right);
     }
 
-    private static string DetermineMedicationAssertionStatus(ClinicalAssertion assertion, string line)
+    internal static string DetermineMedicationAssertionStatus(ClinicalAssertion assertion, string line)
     {
         if (ClinicalScope.Negated(line))
             return "negated";

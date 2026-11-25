@@ -126,7 +126,7 @@ public sealed class HeldOutBenchmarkRunner(ITestOutputHelper output)
                 conditionalOrder = Sum(i => i.ConditionalOrder), ambiguousGoldMentions = items.Sum(i => i.AmbiguousGoldMentions) };
         }
         double Percentile(double p) => latencies.Order().ElementAt(Math.Clamp((int)Math.Ceiling(p * latencies.Count) - 1, 0, latencies.Count - 1));
-        string dir = Path.Combine(Backend, "artifacts", "audit-remediation", final ? "final" : "development"); Directory.CreateDirectory(dir);
+        string dir = Path.Combine(Environment.GetEnvironmentVariable("APOLLO_EVALUATION_OUTPUT_ROOT") ?? Path.Combine(Backend, "artifacts", "audit-remediation"), final ? "final" : "development"); Directory.CreateDirectory(dir);
         string path = Path.Combine(dir, provider.ToLowerInvariant() + "-" + DateTimeOffset.UtcNow.ToString("yyyyMMddTHHmmssfff") + ".json");
         var report = new { generatedAt = DateTimeOffset.UtcNow, classification = final ? "synthetic preliminary, single-use post-freeze assessment; not independently clinically annotated" : "synthetic development/regression; original gold preserved with known omissions",
             datasetSha256 = Convert.ToHexString(SHA256.HashData(File.ReadAllBytes(dataset))), evaluatorVersion = "audit-v1", provider,
@@ -322,10 +322,11 @@ public sealed class HeldOutBenchmarkRunner(ITestOutputHelper output)
         }
 
         double Percentile(double p) => latencies.Order().ElementAt(Math.Clamp((int)Math.Ceiling(p * latencies.Count) - 1, 0, latencies.Count - 1));
-        string dir = Path.Combine(Backend, "artifacts", "audit-remediation", "development");
+        string outputRoot = Environment.GetEnvironmentVariable("APOLLO_EVALUATION_OUTPUT_ROOT") ?? Path.Combine(Backend, "artifacts", "audit-remediation");
+        string dir = Path.Combine(outputRoot, "development");
         Directory.CreateDirectory(dir);
         string jsonPath = Path.Combine(dir, "microsoftfoundry-remediated-replay.json");
-        string csvPath = Path.Combine(Backend, "artifacts", "audit-remediation", "foundry-remediated-case-metrics.csv");
+        string csvPath = Path.Combine(outputRoot, "foundry-remediated-case-metrics.csv");
         var report = new
         {
             generatedAt = DateTimeOffset.UtcNow,

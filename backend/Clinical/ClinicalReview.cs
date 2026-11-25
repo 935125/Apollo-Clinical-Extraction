@@ -24,7 +24,10 @@ public static class ClinicalReview
                 bool mustNullifyPosology = Regex.IsMatch(m.Evidence.Quote,
                     @"\bmg\s*/\s*kg\b|\brestart\w*\b|\b(?:conflicting|unclear)\b|\b(?:increase|decrease|reduce)\b.*\bfrom\b.*\bto\b",
                     RegexOptions.IgnoreCase);
-                revised = mustNullifyPosology
+                bool exactLocalDose = result.ModelMetadata.LocalPipelineVersion == "CandidateV2" &&
+                    m.Provenance?.ClinicalContext?.Attributes.Any(a => a.Field == "dose" && a.Value == m.Dose) == true &&
+                    !Regex.IsMatch(m.Evidence.Quote, @"\brestart\w*\b|\b(?:conflicting|unclear)\b|\b(?:increase|decrease|reduce)\b.*\bfrom\b.*\bto\b", RegexOptions.IgnoreCase);
+                revised = mustNullifyPosology && !exactLocalDose
                     ? revised with { Strength = null, Dose = null, DoseUnit = null, Frequency = null, Duration = null, Instructions = m.Evidence.Quote }
                     : revised with { Instructions = m.Instructions ?? m.Evidence.Quote };
             }

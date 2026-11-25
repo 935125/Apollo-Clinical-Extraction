@@ -722,6 +722,17 @@ export class ClinicalQueueComponent implements OnInit {
       ordered: 'New order',
       planned: 'Planned',
       performed: 'Performed',
+      current: 'Current medication',
+      new: 'New order',
+      newly_ordered: 'New order',
+      scheduled: 'Scheduled',
+      completed: 'Completed',
+      completed_course: 'Completed course',
+      result_documented: 'Result documented',
+      educational: 'Educational mention',
+      other_experiencer: 'Other person',
+      uncertain: 'Uncertain',
+      held: 'Withheld',
     };
     return map[status.toLowerCase()] || status.replace(/_/g, ' ');
   }
@@ -729,12 +740,14 @@ export class ClinicalQueueComponent implements OnInit {
   assertionClass(status: string | null | undefined): string {
     const s = (status || '').toLowerCase();
     if (s === 'allergy' || s === 'discontinued') return 'chip-danger';
-    if (s === 'conditional' || s === 'negated' || s === 'ruled_out') return 'chip-amber';
+    if (s === 'conditional' || s === 'negated' || s === 'ruled_out' || s === 'uncertain' || s === 'held') return 'chip-amber';
     if (s === 'historical') return 'chip-neutral';
     return 'chip-green';
   }
 
   investigationOrderIntent(inv: ExtractedInvestigation): string {
+    const assertion = inv.provenance?.clinicalContext?.assertion;
+    if (assertion) return this.assertionLabel(assertion);
     const s = (inv.assertionStatus || '').toLowerCase();
     if (s === 'historical' || s === 'performed') return 'Historical';
     if (s === 'negated' || s === 'ruled_out') return 'Not ordered';

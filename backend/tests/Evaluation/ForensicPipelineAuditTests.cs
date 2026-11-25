@@ -9,6 +9,15 @@ namespace Apollo.Backend.Tests.Evaluation;
 
 public sealed class ForensicPipelineAuditTests
 {
+    private static string OutputRoot
+    {
+        get
+        {
+            string directory = Environment.GetEnvironmentVariable("APOLLO_EVALUATION_OUTPUT_ROOT") ?? Path.Combine(HeldOutBenchmarkRunner.Backend, "artifacts", "audit-remediation");
+            Directory.CreateDirectory(directory);
+            return directory;
+        }
+    }
     private static readonly JsonSerializerOptions Json = new(JsonSerializerDefaults.Web) { WriteIndented = true };
 
     public const string FlattenedSavedPdfText =
@@ -109,7 +118,7 @@ public sealed class ForensicPipelineAuditTests
         string reconstructedText = File.Exists(pdfPath)
             ? PdfTextReconstructor.ExtractText(File.ReadAllBytes(pdfPath))
             : PdfTextReconstructor.NormalizeConcatenatedBoundaries(FlattenedSavedPdfText);
-        File.WriteAllText(Path.Combine(HeldOutBenchmarkRunner.Backend, "artifacts", "audit-remediation", "reconstructed-discharge-summary.txt"), reconstructedText);
+        File.WriteAllText(Path.Combine(OutputRoot, "reconstructed-discharge-summary.txt"), reconstructedText);
 
         var validator = new ClinicalResultValidator();
 
@@ -228,7 +237,7 @@ public sealed class ForensicPipelineAuditTests
         Assert.Contains(remediated.SafetyAlerts!, a => a.Title.Contains("Major Bleeding Risk"));
 
         // Write machine-readable stage-by-stage trace artifact
-        string tracePath = Path.Combine(HeldOutBenchmarkRunner.Backend, "artifacts", "audit-remediation", "discharge-summary-forensic-trace.json");
+        string tracePath = Path.Combine(OutputRoot, "discharge-summary-forensic-trace.json");
         Directory.CreateDirectory(Path.GetDirectoryName(tracePath)!);
         var traceArtifact = BuildForensicTraceArtifact(reconstructedText, fourDrugResult, remediated);
         File.WriteAllText(tracePath, JsonSerializer.Serialize(traceArtifact, Json));
@@ -363,7 +372,7 @@ public sealed class ForensicPipelineAuditTests
             });
         }
 
-        string outPath = Path.Combine(HeldOutBenchmarkRunner.Backend, "artifacts", "audit-remediation", "independent-preliminary-onnx-evaluation.json");
+        string outPath = Path.Combine(OutputRoot, "independent-preliminary-onnx-evaluation.json");
         var summaryReport = new
         {
             generatedAt = DateTimeOffset.UtcNow,

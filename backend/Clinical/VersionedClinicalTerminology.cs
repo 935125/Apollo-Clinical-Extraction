@@ -28,6 +28,7 @@ public static class VersionedClinicalTerminology
                 .Distinct(StringComparer.OrdinalIgnoreCase).OrderByDescending(a => a.Length).Select(Regex.Escape))+
             @")(?![\p{L}\p{N}-])", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Compiled, TimeSpan.FromSeconds(2)));
     public static string Version => Snapshot.Version;
+    public static bool IsNonMedication(string name) => Index.ContainsKey("NON_MEDICATION:"+Clean(name));
     private static string Clean(string s) => Regex.Replace(s.Trim().ToLowerInvariant(), @"\s+", " ");
     public static IEnumerable<LocalEntitySpan> Recognize(string source, string category)
     {
@@ -46,6 +47,15 @@ public static class VersionedClinicalTerminology
         var legacy = new IndianOntologyResolver();
         var original = category=="MEDICATION" ? legacy.ResolveMedication(name,strength) : legacy.ResolveInvestigation(name);
         string type=MatchType(category,name);
+        if(category=="MEDICATION" && original.Status=="matched" && !TerminologyVerification.DocumentedIngredientMatches(name,original.StandardId))
+            return new("uncertain",null,name,0,"broader",original.StandardId,"RxNorm",original.TerminologyVersion,
+                "The documented ingredient/salt/ester differs from the verified candidate ingredient; exact identity and code are withheld.",type);
+        if(type=="ambiguous")
+            return new("uncertain",null,null,0,"ambiguous",original.CandidateCode,original.TerminologySource,Version,
+                "Ambiguous brand or alias; ingredient identity and standard code are not asserted.",type);
+        if(category=="INVESTIGATION" && LocalClinicalScope.Has(name,@"\bculture\b.*(?:sensitivity|susceptibility)"))
+            return new("uncertain",null,original.DisplayName,0,"broader",original.CandidateCode,"LOINC",original.TerminologyVersion,
+                "A culture identification code does not represent the additional susceptibility test; exact mapping withheld.",type);
         if (original.Status != "unmatched")
             return new(original.Status, original.StandardId, original.DisplayName, original.Confidence,
                 original.SemanticStatus, original.CandidateCode, original.TerminologySource, original.TerminologyVersion,

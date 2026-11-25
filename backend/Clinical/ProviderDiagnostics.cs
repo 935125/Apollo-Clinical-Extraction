@@ -11,12 +11,14 @@ public static class ProviderDiagnostics
         foundry ??= config.GetSection("Foundry").Get<FoundryOptions>() ?? new();
         string? error = Error(extraction, foundry);
         string? source = (config as IConfigurationRoot)?.Providers.Reverse().FirstOrDefault(p => p.TryGet("Extraction:Provider", out _))?.GetType().Name;
+        var localPipeline = config.GetSection(LocalClinicalPipelineOptions.SectionName).Get<LocalClinicalPipelineOptions>() ?? new();
         return new { environment = environment.EnvironmentName, requestedPrimaryProvider = extraction.Provider,
             fallbackProvider = extraction.FallbackProvider, directLocalAuthorized = ProviderRoutingPolicy.DirectLocalFault(extraction) == null,
             directLocalReason = extraction.DirectLocalReason is "isolated_test" or "authorized_offline" ? extraction.DirectLocalReason : null,
             foundryDeployment = foundry.EffectiveDeployment, targetModel = foundry.TargetModel,
             authenticationMode = foundry.EffectiveAuthenticationMode, configurationError = error,
             configurationReady = error == null, providerConfigurationSource = source,
+            localPipelineVersion = localPipeline.PipelineVersion, localPipelineConfigurationValid = localPipeline.IsValid,
             readinessScope = "Configuration only; no provider request or token acquisition", extractionInferenceExecuted = false };
     }
     public static string? Error(ExtractionOptions extraction, FoundryOptions foundry) =>

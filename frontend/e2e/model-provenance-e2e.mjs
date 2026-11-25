@@ -4,7 +4,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
-const evidenceDir = path.join(root, 'docs/stage13-evidence');
+const evidenceDir = process.env.APOLLO_E2E_OUTPUT_ROOT || path.join(root, 'docs/stage13-evidence');
 const screenshotsDir = path.join(evidenceDir, 'screenshots');
 fs.mkdirSync(screenshotsDir, { recursive: true });
 

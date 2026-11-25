@@ -1,0 +1,84 @@
+{
+  "scope": "Fresh xUnit testhost; process peak includes framework, managed pipeline, and native ONNX memory. No GPU used.",
+  "os": "Microsoft Windows 10.0.26100",
+  "processorCount": 12,
+  "initializationMs": 105.4055,
+  "firstColdExtractionMs": 293.2125,
+  "coldVariant": "candidates-only",
+  "artifactBytes": 3246078,
+  "tokenizerBytes": 474524,
+  "concurrency": {
+    "requests": 8,
+    "elapsedMs": 11.4006,
+    "isolated": true
+  },
+  "measurements": [
+    {
+      "mode": "Legacy",
+      "notes": 30,
+      "meanMs": 21.317903333333337,
+      "p50Ms": 20.7879,
+      "p95Ms": 34.1311,
+      "maxMs": 34.977,
+      "meanInferenceMs": 9.7238,
+      "cpuMs": 7171.875,
+      "wallMs": 640.9058,
+      "cpuUtilizationAllLogicalProcessors": 0.9325180861212364,
+      "workingSetBytes": 157159424,
+      "peakWorkingSetBytes": 169525248
+    },
+    {
+      "mode": "CandidateV2",
+      "notes": 30,
+      "meanMs": 23.169519999999995,
+      "p50Ms": 22.2585,
+      "p95Ms": 27.241,
+      "maxMs": 33.5217,
+      "meanInferenceMs": 9.064863333333335,
+      "cpuMs": 7875,
+      "wallMs": 698.1681,
+      "cpuUtilizationAllLogicalProcessors": 0.9399598749928564,
+      "workingSetBytes": 157970432,
+      "peakWorkingSetBytes": 169525248
+    }
+  ],
+  "coldSessionMeasurements": [
+    {
+      "mode": "Legacy",
+      "initializationMs": 25.7773,
+      "firstExtractionMs": 53.6549,
+      "inferenceMs": 27.5566,
+      "windowsExecuted": 2,
+      "scope": "New ONNX session, OS file cache not cleared; pipeline only, no persistence"
+    },
+    {
+      "mode": "CandidateV2",
+      "initializationMs": 24.9388,
+      "firstExtractionMs": 58.4855,
+      "inferenceMs": 32.4617,
+      "windowsExecuted": 2,
+      "scope": "New ONNX session, OS file cache not cleared; pipeline only, no persistence"
+    }
+  ],
+  "longNoteMeasurements": [
+    {
+      "mode": "Legacy",
+      "notes": 5,
+      "charLength": 12704,
+      "tokens": 1775,
+      "elapsedMs": 200.7653,
+      "meanMs": 40.153059999999996,
+      "observedSequentialNotesPerSecond": 24.90470215719549
+    },
+    {
+      "mode": "CandidateV2",
+      "notes": 5,
+      "charLength": 12704,
+      "tokens": 1775,
+      "elapsedMs": 192.5359,
+      "meanMs": 38.50718,
+      "observedSequentialNotesPerSecond": 25.96918289004804
+    }
+  ],
+  "overallPeakWorkingSetBytes": 170614784
+}

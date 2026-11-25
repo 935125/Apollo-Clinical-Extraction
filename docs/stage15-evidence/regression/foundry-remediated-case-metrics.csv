@@ -1,0 +1,21 @@
+case_id,specialty,status,med_exact_tp,med_exact_fp,med_exact_fn,med_norm_tp,med_norm_fp,med_norm_fn,inv_exact_tp,inv_exact_fp,inv_exact_fn,inv_norm_tp,inv_norm_fp,inv_norm_fn,strength_correct,strength_eval,route_correct,route_eval,freq_correct,freq_eval,dur_correct,dur_eval,assert_correct,assert_eval
+heldout-001-geriatric,"Geriatrics / Nephrology",ACCEPTED,2,2,0,2,2,0,3,1,0,3,1,0,2,2,2,2,1,2,0,0,2,2
+heldout-002-cardiology,"Cardiology",ACCEPTED,3,2,0,3,2,0,2,1,1,3,0,0,3,3,3,3,3,3,1,1,3,3
+heldout-003-hematology,"Hematology",ACCEPTED,3,0,0,3,0,0,2,0,0,2,0,0,3,3,1,1,1,1,0,0,3,3
+heldout-004-endocrinology,"Endocrinology",ACCEPTED,3,0,0,3,0,0,3,1,0,3,1,0,3,3,3,3,3,3,0,0,3,3
+heldout-005-pulmonology,"Pulmonology",ACCEPTED,2,0,0,2,0,0,0,2,1,1,1,0,2,2,2,2,2,2,1,1,2,2
+heldout-006-rheumatology,"Rheumatology",ACCEPTED,2,0,0,2,0,0,3,0,0,3,0,0,2,2,2,2,2,2,0,0,2,2
+heldout-007-gastroenterology,"Gastroenterology",ACCEPTED,3,0,0,3,0,0,1,2,0,1,2,0,3,3,3,3,3,3,3,3,3,3
+heldout-008-infectious-disease,"Infectious Disease",ACCEPTED,2,1,0,2,1,0,1,1,1,2,0,0,2,2,2,2,2,2,0,0,2,2
+heldout-009-neurology,"Neurology",ACCEPTED,2,0,0,2,0,0,3,0,0,3,0,0,2,2,2,2,2,2,0,0,2,2
+heldout-010-nephrology,"Nephrology",ACCEPTED,3,0,0,3,0,0,2,3,1,3,2,0,3,3,2,2,2,2,0,0,3,3
+heldout-011-oncology,"Medical Oncology",ACCEPTED,3,0,0,3,0,0,1,0,0,1,0,0,3,3,3,3,3,3,2,2,3,3
+heldout-012-hfref,"Heart Failure Clinic",ACCEPTED,4,0,0,4,0,0,2,0,0,2,0,0,4,4,4,4,4,4,0,0,4,4
+heldout-013-dermatology,"Dermatology",ACCEPTED,2,0,0,2,0,0,5,0,0,5,0,0,2,2,0,0,0,0,0,0,2,2
+heldout-014-psychiatry,"Psychiatry",ACCEPTED,2,0,0,2,0,0,0,1,1,1,0,0,2,2,2,2,2,2,1,1,2,2
+heldout-015-pain,"Pain Medicine",ACCEPTED,2,0,0,2,0,0,1,0,0,1,0,0,2,2,2,2,2,2,0,0,2,2
+heldout-016-urology,"Urology",ACCEPTED,2,0,0,2,0,0,1,1,1,1,1,1,2,2,2,2,2,2,0,0,2,2
+heldout-017-pediatrics,"Pediatrics",ACCEPTED,2,0,0,2,0,0,0,0,0,0,0,0,1,2,2,2,1,2,0,1,2,2
+heldout-018-ophthalmology,"Ophthalmology",ACCEPTED,2,1,1,3,0,0,0,0,0,0,0,0,3,3,2,2,2,2,2,2,3,3
+heldout-019-thyroid,"Endocrinology",ACCEPTED,2,0,0,2,0,0,1,1,1,2,0,0,2,2,2,2,2,2,0,0,2,2
+heldout-020-allergy,"Allergy & Clinical Immunology",ACCEPTED,1,0,0,1,0,0,2,1,1,3,0,0,1,1,0,0,0,0,0,0,0,1

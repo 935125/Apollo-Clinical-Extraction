@@ -1,0 +1,407 @@
+{
+  "generatedAt": "2026-11-25T08:27:15.0058278+00:00",
+  "environment": "in-process test HTTP server, real singleton ONNX session, isolated real PostgreSQL; no cloud",
+  "limitation": "Short 45-request observation in a test-host process. Memory includes tests and GC. Does not establish leak freedom, capacity, production throughput or model speedup.",
+  "samples": [
+    {
+      "Index": 1,
+      "Phase": "sequential",
+      "RequestMs": 1299.0186,
+      "InferenceMs": 1.4005,
+      "Error": null
+    },
+    {
+      "Index": 2,
+      "Phase": "sequential",
+      "RequestMs": 271.2524,
+      "InferenceMs": 19.7318,
+      "Error": null
+    },
+    {
+      "Index": 3,
+      "Phase": "sequential",
+      "RequestMs": 246.2408,
+      "InferenceMs": 1.0056,
+      "Error": null
+    },
+    {
+      "Index": 4,
+      "Phase": "sequential",
+      "RequestMs": 319.8511,
+      "InferenceMs": 0.8661,
+      "Error": null
+    },
+    {
+      "Index": 5,
+      "Phase": "sequential",
+      "RequestMs": 363.6875,
+      "InferenceMs": 1.4027,
+      "Error": null
+    },
+    {
+      "Index": 6,
+      "Phase": "sequential",
+      "RequestMs": 197.3399,
+      "InferenceMs": 1.0832,
+      "Error": null
+    },
+    {
+      "Index": 7,
+      "Phase": "sequential",
+      "RequestMs": 175.4528,
+      "InferenceMs": 16.9712,
+      "Error": null
+    },
+    {
+      "Index": 8,
+      "Phase": "sequential",
+      "RequestMs": 212.0692,
+      "InferenceMs": 41.7125,
+      "Error": null
+    },
+    {
+      "Index": 9,
+      "Phase": "sequential",
+      "RequestMs": 230.1917,
+      "InferenceMs": 1.165,
+      "Error": null
+    },
+    {
+      "Index": 10,
+      "Phase": "sequential",
+      "RequestMs": 249.9685,
+      "InferenceMs": 41.064,
+      "Error": null
+    },
+    {
+      "Index": 11,
+      "Phase": "sequential",
+      "RequestMs": 309.2905,
+      "InferenceMs": 31.7749,
+      "Error": null
+    },
+    {
+      "Index": 12,
+      "Phase": "sequential",
+      "RequestMs": 145.0869,
+      "InferenceMs": 0.9779,
+      "Error": null
+    },
+    {
+      "Index": 13,
+      "Phase": "sequential",
+      "RequestMs": 299.464,
+      "InferenceMs": 23.0349,
+      "Error": null
+    },
+    {
+      "Index": 14,
+      "Phase": "sequential",
+      "RequestMs": 314.0471,
+      "InferenceMs": 1.1276,
+      "Error": null
+    },
+    {
+      "Index": 15,
+      "Phase": "sequential",
+      "RequestMs": 343.0013,
+      "InferenceMs": 34.8845,
+      "Error": null
+    },
+    {
+      "Index": 16,
+      "Phase": "sequential",
+      "RequestMs": 233.7013,
+      "InferenceMs": 36.4339,
+      "Error": null
+    },
+    {
+      "Index": 17,
+      "Phase": "sequential",
+      "RequestMs": 298.5319,
+      "InferenceMs": 0.9657,
+      "Error": null
+    },
+    {
+      "Index": 18,
+      "Phase": "sequential",
+      "RequestMs": 252.2717,
+      "InferenceMs": 32.6928,
+      "Error": null
+    },
+    {
+      "Index": 19,
+      "Phase": "sequential",
+      "RequestMs": 290.3272,
+      "InferenceMs": 58.6128,
+      "Error": null
+    },
+    {
+      "Index": 20,
+      "Phase": "sequential",
+      "RequestMs": 268.3581,
+      "InferenceMs": 1.0517,
+      "Error": null
+    },
+    {
+      "Index": 21,
+      "Phase": "sequential",
+      "RequestMs": 242.9763,
+      "InferenceMs": 32.3132,
+      "Error": null
+    },
+    {
+      "Index": 22,
+      "Phase": "sequential",
+      "RequestMs": 184.3328,
+      "InferenceMs": 36.8909,
+      "Error": null
+    },
+    {
+      "Index": 23,
+      "Phase": "sequential",
+      "RequestMs": 211.1753,
+      "InferenceMs": 14.1512,
+      "Error": null
+    },
+    {
+      "Index": 24,
+      "Phase": "sequential",
+      "RequestMs": 311.9884,
+      "InferenceMs": 32.8702,
+      "Error": null
+    },
+    {
+      "Index": 25,
+      "Phase": "sequential",
+      "RequestMs": 253.8388,
+      "InferenceMs": 1.2608,
+      "Error": null
+    },
+    {
+      "Index": 26,
+      "Phase": "sequential",
+      "RequestMs": 201.4401,
+      "InferenceMs": 1.7816,
+      "Error": null
+    },
+    {
+      "Index": 27,
+      "Phase": "sequential",
+      "RequestMs": 242.5419,
+      "InferenceMs": 1.337,
+      "Error": null
+    },
+    {
+      "Index": 28,
+      "Phase": "sequential",
+      "RequestMs": 325.1922,
+      "InferenceMs": 33.7654,
+      "Error": null
+    },
+    {
+      "Index": 29,
+      "Phase": "sequential",
+      "RequestMs": 425.4872,
+      "InferenceMs": 33.2493,
+      "Error": null
+    },
+    {
+      "Index": 30,
+      "Phase": "sequential",
+      "RequestMs": 345.7206,
+      "InferenceMs": 36.1309,
+      "Error": null
+    },
+    {
+      "Index": 31,
+      "Phase": "concurrent-five",
+      "RequestMs": 500.7107,
+      "InferenceMs": 1.0913,
+      "Error": null
+    },
+    {
+      "Index": 32,
+      "Phase": "concurrent-five",
+      "RequestMs": 531.4772,
+      "InferenceMs": 1.0919,
+      "Error": null
+    },
+    {
+      "Index": 33,
+      "Phase": "concurrent-five",
+      "RequestMs": 460.713,
+      "InferenceMs": 1.0132,
+      "Error": null
+    },
+    {
+      "Index": 34,
+      "Phase": "concurrent-five",
+      "RequestMs": 531.5439,
+      "InferenceMs": 1.394,
+      "Error": null
+    },
+    {
+      "Index": 35,
+      "Phase": "concurrent-five",
+      "RequestMs": 535.6332,
+      "InferenceMs": 1.3245,
+      "Error": null
+    },
+    {
+      "Index": 36,
+      "Phase": "concurrent-five",
+      "RequestMs": 601.6761,
+      "InferenceMs": 21.7999,
+      "Error": null
+    },
+    {
+      "Index": 37,
+      "Phase": "concurrent-five",
+      "RequestMs": 634.929,
+      "InferenceMs": 1.5304,
+      "Error": null
+    },
+    {
+      "Index": 38,
+      "Phase": "concurrent-five",
+      "RequestMs": 683.7632,
+      "InferenceMs": 1.8221,
+      "Error": null
+    },
+    {
+      "Index": 39,
+      "Phase": "concurrent-five",
+      "RequestMs": 652.8026,
+      "InferenceMs": 1.3021,
+      "Error": null
+    },
+    {
+      "Index": 40,
+      "Phase": "concurrent-five",
+      "RequestMs": 605.015,
+      "InferenceMs": 1.3347,
+      "Error": null
+    },
+    {
+      "Index": 41,
+      "Phase": "concurrent-five",
+      "RequestMs": 413.4936,
+      "InferenceMs": 33.1476,
+      "Error": null
+    },
+    {
+      "Index": 42,
+      "Phase": "concurrent-five",
+      "RequestMs": 310.7246,
+      "InferenceMs": 1.0966,
+      "Error": null
+    },
+    {
+      "Index": 43,
+      "Phase": "concurrent-five",
+      "RequestMs": 325.7697,
+      "InferenceMs": 40.3801,
+      "Error": null
+    },
+    {
+      "Index": 44,
+      "Phase": "concurrent-five",
+      "RequestMs": 273.4173,
+      "InferenceMs": 0.8967,
+      "Error": null
+    },
+    {
+      "Index": 45,
+      "Phase": "concurrent-five",
+      "RequestMs": 333.2156,
+      "InferenceMs": 1.9051,
+      "Error": null
+    }
+  ],
+  "memory": [
+    {
+      "completed": 0,
+      "elapsedMs": 0.3019,
+      "workingSetBytes": 194932736,
+      "privateBytes": 113496064,
+      "managedBytes": 31015128
+    },
+    {
+      "completed": 5,
+      "elapsedMs": 2514.3593,
+      "workingSetBytes": 289443840,
+      "privateBytes": 207409152,
+      "managedBytes": 77485592
+    },
+    {
+      "completed": 10,
+      "elapsedMs": 3583.2889,
+      "workingSetBytes": 285044736,
+      "privateBytes": 191737856,
+      "managedBytes": 69163472
+    },
+    {
+      "completed": 15,
+      "elapsedMs": 5002.7316,
+      "workingSetBytes": 325091328,
+      "privateBytes": 243146752,
+      "managedBytes": 90653352
+    },
+    {
+      "completed": 20,
+      "elapsedMs": 6352.7791,
+      "workingSetBytes": 330473472,
+      "privateBytes": 229515264,
+      "managedBytes": 95371272
+    },
+    {
+      "completed": 25,
+      "elapsedMs": 7617.1882,
+      "workingSetBytes": 417218560,
+      "privateBytes": 330321920,
+      "managedBytes": 224305736
+    },
+    {
+      "completed": 30,
+      "elapsedMs": 9164.2121,
+      "workingSetBytes": 413147136,
+      "privateBytes": 325591040,
+      "managedBytes": 187309984
+    },
+    {
+      "completed": 35,
+      "elapsedMs": 9707.311,
+      "workingSetBytes": 421748736,
+      "privateBytes": 337563648,
+      "managedBytes": 191798496
+    },
+    {
+      "completed": 40,
+      "elapsedMs": 10395.5064,
+      "workingSetBytes": 416555008,
+      "privateBytes": 322703360,
+      "managedBytes": 208803728
+    },
+    {
+      "completed": 45,
+      "elapsedMs": 10815.408,
+      "workingSetBytes": 434147328,
+      "privateBytes": 343945216,
+      "managedBytes": 224057768
+    }
+  ],
+  "fullRequest": {
+    "sampleSize": 45,
+    "p50Ms": 310.7246,
+    "p95Ms": 652.8026
+  },
+  "sessionRunOnly": {
+    "sampleSize": 45,
+    "p50Ms": 1.7816,
+    "p95Ms": 41.064
+  },
+  "errors": 0,
+  "errorRate": 0,
+  "singletonReused": true
+}

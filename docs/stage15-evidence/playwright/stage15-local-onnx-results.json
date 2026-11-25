@@ -1,0 +1,918 @@
+{
+  "status": "PASS",
+  "checks": [
+    "Asynchronous real ONNX extraction persisted in isolated PostgreSQL",
+    "Actual provider and pipeline version persisted",
+    "Persisted entity counts match the synthetic source",
+    "Allergy remains a non-active mention",
+    "BSA-relative dose preserved without calculating an absolute dose",
+    "Follow-up tests preserve scheduled assertions",
+    "Exact persisted evidence for Aspirin",
+    "Exact persisted evidence for Cytarabine",
+    "Exact persisted evidence for Daunorubicin",
+    "Exact persisted evidence for Acyclovir",
+    "Exact persisted evidence for CBC",
+    "Exact persisted evidence for renal function panel",
+    "Angular medication rows come from the selected persisted extraction",
+    "Angular investigation rows come from the selected persisted extraction",
+    "Compact badge identifies the actual local provider",
+    "Angular displays the documented chemotherapy dose",
+    "Angular displays persisted scheduling details",
+    "Queue retains the existing compact clinical interface",
+    "No browser runtime errors"
+  ],
+  "errors": [],
+  "database": "cx_audit_test",
+  "messaging": "Simulated",
+  "liveFoundryCalls": 0,
+  "noteId": "a5b4a8ff-a485-44d2-91ff-ca758c50e944",
+  "version": 2,
+  "extractionId": "32cb7c80-6b28-4a27-974e-fb3f8c45598c",
+  "persisted": {
+    "schemaVersion": "1.0.0",
+    "extractionId": "32cb7c80-6b28-4a27-974e-fb3f8c45598c",
+    "correlationId": "bd5b2168-990b-4d8b-9f92-cddaddcc3d24",
+    "extractedAt": "2026-11-25T08:10:02+00:00",
+    "executionDurationMs": 466.87,
+    "modelMetadata": {
+      "adapterType": "onnx_neurosymbolic_int8",
+      "modelDeployment": "bc5cdr_int8",
+      "promptVersion": "clinical-local-v15",
+      "promptTokens": null,
+      "completionTokens": null,
+      "totalTokens": null,
+      "estimatedCostUsd": null,
+      "provider": "onnx",
+      "model": "bc5cdr_int8",
+      "azureDeployment": null,
+      "fallbackReason": null,
+      "inferenceExecuted": true,
+      "attempts": [
+        {
+          "provider": "onnx",
+          "model": "bc5cdr_int8",
+          "deployment": null,
+          "outcome": "accepted",
+          "reason": null,
+          "durationMs": 345.34,
+          "inferenceExecuted": true,
+          "promptTokens": null,
+          "completionTokens": null,
+          "totalTokens": null,
+          "onnxWindows": 1,
+          "inferenceDurationMs": 14.9809,
+          "modelMedicationMentions": 3,
+          "ruleMedicationMentions": 4,
+          "ruleInvestigationMentions": 2,
+          "httpAttempts": null,
+          "correlationId": "bd5b2168-990b-4d8b-9f92-cddaddcc3d24"
+        }
+      ],
+      "schemaValidationStatus": "not_applicable",
+      "modelSha256": "59830ca601c97246f068cc265c215d00c1024e2d3ae3549a5d053723f4a65cd0",
+      "tokenizerSha256": "00a99d2e62f065e43eb57d570e38ee7e814b3044f27e2da70755e9587ff33c81",
+      "executionMode": "NEURAL_ONNX",
+      "reviewCandidates": null,
+      "requestedPrimaryProvider": "LocalOnnx",
+      "finalExecutedProvider": "LocalOnnx",
+      "routingMode": "explicit_offline",
+      "primaryInvocationStatus": "not_attempted_offline",
+      "fallbackTriggered": false,
+      "extractionStatus": "completed_requires_review",
+      "validationResult": "source_validated_requires_review",
+      "localPipelineVersion": "CandidateV2",
+      "recognitionCatalogVersion": "apollo-clinical-2026-11-25.1"
+    },
+    "preprocessed": {
+      "charLength": 334,
+      "sections": [
+        {
+          "code": "OTHER",
+          "heading": "Prologue",
+          "start": 0,
+          "end": 35
+        },
+        {
+          "code": "ALLERGIES",
+          "heading": "Allergy History",
+          "start": 35,
+          "end": 75
+        },
+        {
+          "code": "CHEMOTHERAPY",
+          "heading": "Chemotherapy Regimen",
+          "start": 75,
+          "end": 196
+        },
+        {
+          "code": "MEDICATIONS",
+          "heading": "Discharge Medications",
+          "start": 196,
+          "end": 252
+        },
+        {
+          "code": "FOLLOW_UP_PLAN",
+          "heading": "Follow-Up Plan",
+          "start": 252,
+          "end": 334
+        }
+      ]
+    },
+    "medications": [
+      {
+        "name": "Aspirin",
+        "strength": null,
+        "dose": null,
+        "route": null,
+        "frequency": null,
+        "duration": null,
+        "formulation": null,
+        "instructions": null,
+        "assertionStatus": "allergy",
+        "evidence": {
+          "quote": "Aspirin (anaphylaxis)",
+          "verified": true,
+          "start": 52,
+          "end": 73
+        },
+        "qualityFlags": [
+          "LOCAL_COVERAGE_REDUCED"
+        ],
+        "findings": [
+          {
+            "code": "LOCAL_COVERAGE_REDUCED",
+            "severity": "warning",
+            "field": "name",
+            "message": "LocalOnnx combines BC5CDR with catalog rules and has reduced extraction coverage. Review the source for missing entities and attributes."
+          }
+        ],
+        "normalization": {
+          "status": "matched",
+          "matchedCode": "1191",
+          "displayName": "Aspirin",
+          "confidence": 0.98,
+          "semanticStatus": "exact",
+          "candidateCode": "1191",
+          "terminologySource": "RxNorm",
+          "terminologyVersion": "02-Nov-2026",
+          "mappingNote": "Exact RxNorm ingredient (IN) match for 'Aspirin' (RxCUI 1191).",
+          "matchType": "exact"
+        },
+        "doseUnit": null,
+        "action": "allergy",
+        "origin": "ONNX_AND_RULE_CONFIRMED",
+        "provenance": {
+          "origin": "ONNX_AND_RULE_CONFIRMED",
+          "provider": "onnx",
+          "ruleModified": true,
+          "modifications": [
+            "Source-local span linking",
+            "Clinical assertion and terminology evaluated independently"
+          ],
+          "uncertaintyReason": null,
+          "quarantined": false,
+          "triggeredAlertIds": null,
+          "clinicalContext": {
+            "assertion": "allergy",
+            "temporality": "unspecified",
+            "section": "ALLERGIES",
+            "sourceStart": 52,
+            "sourceEnd": 59,
+            "detectionMethod": "ONNX_AND_VERSIONED_CATALOG",
+            "rawNerScore": 0.9992,
+            "mentionStatus": "accepted_as_mention",
+            "attributes": [],
+            "administration": null,
+            "startTiming": null,
+            "stopTiming": null,
+            "prnIndication": null,
+            "administrationSchedule": null
+          }
+        }
+      },
+      {
+        "name": "Cytarabine",
+        "strength": null,
+        "dose": "100 mg/m2",
+        "route": "IV",
+        "frequency": null,
+        "duration": null,
+        "formulation": null,
+        "instructions": "Cytarabine 100 mg/m2 continuous IV infusion (Days 1-7) + Daunorubicin 60 mg/m2 IV push (Days 1-3)",
+        "assertionStatus": "current_medication",
+        "evidence": {
+          "quote": "Cytarabine 100 mg/m2 continuous IV infusion (Days 1-7) + Daunorubicin 60 mg/m2 IV push (Days 1-3)",
+          "verified": true,
+          "start": 97,
+          "end": 194
+        },
+        "qualityFlags": [
+          "TERMINOLOGY_UNRESOLVED",
+          "INCOMPLETE_PRESCRIPTION",
+          "LOCAL_COVERAGE_REDUCED"
+        ],
+        "findings": [
+          {
+            "code": "TERMINOLOGY_UNRESOLVED",
+            "severity": "warning",
+            "field": "name",
+            "message": "Apollo recognition lexicon 2026-11-25; no standard identifier asserted; standard terminology unresolved."
+          },
+          {
+            "code": "INCOMPLETE_PRESCRIPTION",
+            "severity": "warning",
+            "field": "dose",
+            "message": "Unresolved prescription attributes: frequency. Human review is required."
+          },
+          {
+            "code": "LOCAL_COVERAGE_REDUCED",
+            "severity": "warning",
+            "field": "name",
+            "message": "LocalOnnx combines BC5CDR with catalog rules and has reduced extraction coverage. Review the source for missing entities and attributes."
+          }
+        ],
+        "normalization": {
+          "status": "unmatched",
+          "matchedCode": null,
+          "displayName": "Cytarabine",
+          "confidence": 0,
+          "semanticStatus": "unresolved",
+          "candidateCode": null,
+          "terminologySource": "Apollo recognition catalog",
+          "terminologyVersion": "apollo-clinical-2026-11-25.1",
+          "mappingNote": "Apollo recognition lexicon 2026-11-25; no standard identifier asserted; standard terminology unresolved.",
+          "matchType": "exact"
+        },
+        "doseUnit": "mg/m2",
+        "action": "none",
+        "origin": "ONNX_AND_RULE_CONFIRMED",
+        "provenance": {
+          "origin": "ONNX_AND_RULE_CONFIRMED",
+          "provider": "onnx",
+          "ruleModified": true,
+          "modifications": [
+            "Source-local span linking",
+            "Clinical assertion and terminology evaluated independently"
+          ],
+          "uncertaintyReason": "Apollo recognition lexicon 2026-11-25; no standard identifier asserted; standard terminology unresolved.",
+          "quarantined": true,
+          "triggeredAlertIds": null,
+          "clinicalContext": {
+            "assertion": "current",
+            "temporality": "current",
+            "section": "CHEMOTHERAPY",
+            "sourceStart": 97,
+            "sourceEnd": 107,
+            "detectionMethod": "ONNX_AND_VERSIONED_CATALOG",
+            "rawNerScore": 0.9968,
+            "mentionStatus": "linked_to_clinical_action",
+            "attributes": [
+              {
+                "field": "dose",
+                "value": "100 mg/m2",
+                "evidence": {
+                  "quote": "100 mg/m2",
+                  "verified": true,
+                  "start": 108,
+                  "end": 117
+                }
+              },
+              {
+                "field": "route",
+                "value": "IV",
+                "evidence": {
+                  "quote": "IV",
+                  "verified": true,
+                  "start": 129,
+                  "end": 131
+                }
+              },
+              {
+                "field": "administration",
+                "value": "continuous infusion",
+                "evidence": {
+                  "quote": "continuous IV infusion",
+                  "verified": true,
+                  "start": 118,
+                  "end": 140
+                }
+              },
+              {
+                "field": "administration_schedule",
+                "value": "Days 1-7",
+                "evidence": {
+                  "quote": "Days 1-7",
+                  "verified": true,
+                  "start": 142,
+                  "end": 150
+                }
+              }
+            ],
+            "administration": "continuous infusion",
+            "startTiming": null,
+            "stopTiming": null,
+            "prnIndication": null,
+            "administrationSchedule": "Days 1-7"
+          }
+        }
+      },
+      {
+        "name": "Daunorubicin",
+        "strength": null,
+        "dose": "60 mg/m2",
+        "route": "IV",
+        "frequency": null,
+        "duration": null,
+        "formulation": null,
+        "instructions": "Cytarabine 100 mg/m2 continuous IV infusion (Days 1-7) + Daunorubicin 60 mg/m2 IV push (Days 1-3)",
+        "assertionStatus": "current_medication",
+        "evidence": {
+          "quote": "Cytarabine 100 mg/m2 continuous IV infusion (Days 1-7) + Daunorubicin 60 mg/m2 IV push (Days 1-3)",
+          "verified": true,
+          "start": 97,
+          "end": 194
+        },
+        "qualityFlags": [
+          "TERMINOLOGY_UNRESOLVED",
+          "INCOMPLETE_PRESCRIPTION",
+          "LOCAL_COVERAGE_REDUCED"
+        ],
+        "findings": [
+          {
+            "code": "TERMINOLOGY_UNRESOLVED",
+            "severity": "warning",
+            "field": "name",
+            "message": "Apollo recognition lexicon 2026-11-25; no standard identifier asserted; standard terminology unresolved."
+          },
+          {
+            "code": "INCOMPLETE_PRESCRIPTION",
+            "severity": "warning",
+            "field": "dose",
+            "message": "Unresolved prescription attributes: frequency. Human review is required."
+          },
+          {
+            "code": "LOCAL_COVERAGE_REDUCED",
+            "severity": "warning",
+            "field": "name",
+            "message": "LocalOnnx combines BC5CDR with catalog rules and has reduced extraction coverage. Review the source for missing entities and attributes."
+          }
+        ],
+        "normalization": {
+          "status": "unmatched",
+          "matchedCode": null,
+          "displayName": "Daunorubicin",
+          "confidence": 0,
+          "semanticStatus": "unresolved",
+          "candidateCode": null,
+          "terminologySource": "Apollo recognition catalog",
+          "terminologyVersion": "apollo-clinical-2026-11-25.1",
+          "mappingNote": "Apollo recognition lexicon 2026-11-25; no standard identifier asserted; standard terminology unresolved.",
+          "matchType": "exact"
+        },
+        "doseUnit": "mg/m2",
+        "action": "none",
+        "origin": "ONNX_AND_RULE_CONFIRMED",
+        "provenance": {
+          "origin": "ONNX_AND_RULE_CONFIRMED",
+          "provider": "onnx",
+          "ruleModified": true,
+          "modifications": [
+            "Source-local span linking",
+            "Clinical assertion and terminology evaluated independently"
+          ],
+          "uncertaintyReason": "Apollo recognition lexicon 2026-11-25; no standard identifier asserted; standard terminology unresolved.",
+          "quarantined": true,
+          "triggeredAlertIds": null,
+          "clinicalContext": {
+            "assertion": "current",
+            "temporality": "current",
+            "section": "CHEMOTHERAPY",
+            "sourceStart": 154,
+            "sourceEnd": 166,
+            "detectionMethod": "ONNX_AND_VERSIONED_CATALOG",
+            "rawNerScore": 0.9936,
+            "mentionStatus": "linked_to_clinical_action",
+            "attributes": [
+              {
+                "field": "dose",
+                "value": "60 mg/m2",
+                "evidence": {
+                  "quote": "60 mg/m2",
+                  "verified": true,
+                  "start": 167,
+                  "end": 175
+                }
+              },
+              {
+                "field": "route",
+                "value": "IV",
+                "evidence": {
+                  "quote": "IV",
+                  "verified": true,
+                  "start": 176,
+                  "end": 178
+                }
+              },
+              {
+                "field": "administration",
+                "value": "IV push",
+                "evidence": {
+                  "quote": "IV push",
+                  "verified": true,
+                  "start": 176,
+                  "end": 183
+                }
+              },
+              {
+                "field": "administration_schedule",
+                "value": "Days 1-3",
+                "evidence": {
+                  "quote": "Days 1-3",
+                  "verified": true,
+                  "start": 185,
+                  "end": 193
+                }
+              }
+            ],
+            "administration": "IV push",
+            "startTiming": null,
+            "stopTiming": null,
+            "prnIndication": null,
+            "administrationSchedule": "Days 1-3"
+          }
+        }
+      },
+      {
+        "name": "Acyclovir",
+        "strength": null,
+        "dose": "400 mg",
+        "route": "PO",
+        "frequency": "BID",
+        "duration": null,
+        "formulation": null,
+        "instructions": null,
+        "assertionStatus": "current_medication",
+        "evidence": {
+          "quote": "Acyclovir 400 mg PO twice daily",
+          "verified": true,
+          "start": 219,
+          "end": 250
+        },
+        "qualityFlags": [
+          "TERMINOLOGY_UNRESOLVED",
+          "LOCAL_COVERAGE_REDUCED"
+        ],
+        "findings": [
+          {
+            "code": "TERMINOLOGY_UNRESOLVED",
+            "severity": "warning",
+            "field": "name",
+            "message": "Apollo recognition lexicon 2026-11-25; no standard identifier asserted; standard terminology unresolved."
+          },
+          {
+            "code": "LOCAL_COVERAGE_REDUCED",
+            "severity": "warning",
+            "field": "name",
+            "message": "LocalOnnx combines BC5CDR with catalog rules and has reduced extraction coverage. Review the source for missing entities and attributes."
+          }
+        ],
+        "normalization": {
+          "status": "unmatched",
+          "matchedCode": null,
+          "displayName": "Acyclovir",
+          "confidence": 0,
+          "semanticStatus": "unresolved",
+          "candidateCode": null,
+          "terminologySource": "Apollo recognition catalog",
+          "terminologyVersion": "apollo-clinical-2026-11-25.1",
+          "mappingNote": "Apollo recognition lexicon 2026-11-25; no standard identifier asserted; standard terminology unresolved.",
+          "matchType": "exact"
+        },
+        "doseUnit": "mg",
+        "action": "none",
+        "origin": "RULE_EXTRACTED",
+        "provenance": {
+          "origin": "RULE_EXTRACTED",
+          "provider": "onnx",
+          "ruleModified": true,
+          "modifications": [
+            "Source-local span linking",
+            "Clinical assertion and terminology evaluated independently"
+          ],
+          "uncertaintyReason": "Apollo recognition lexicon 2026-11-25; no standard identifier asserted; standard terminology unresolved.",
+          "quarantined": true,
+          "triggeredAlertIds": null,
+          "clinicalContext": {
+            "assertion": "current",
+            "temporality": "current",
+            "section": "MEDICATIONS",
+            "sourceStart": 219,
+            "sourceEnd": 228,
+            "detectionMethod": "VERSIONED_CATALOG",
+            "rawNerScore": null,
+            "mentionStatus": "linked_to_clinical_action",
+            "attributes": [
+              {
+                "field": "dose",
+                "value": "400 mg",
+                "evidence": {
+                  "quote": "400 mg",
+                  "verified": true,
+                  "start": 229,
+                  "end": 235
+                }
+              },
+              {
+                "field": "route",
+                "value": "PO",
+                "evidence": {
+                  "quote": "PO",
+                  "verified": true,
+                  "start": 236,
+                  "end": 238
+                }
+              },
+              {
+                "field": "frequency",
+                "value": "BID",
+                "evidence": {
+                  "quote": "twice daily",
+                  "verified": true,
+                  "start": 239,
+                  "end": 250
+                }
+              }
+            ],
+            "administration": null,
+            "startTiming": null,
+            "stopTiming": null,
+            "prnIndication": null,
+            "administrationSchedule": null
+          }
+        }
+      }
+    ],
+    "investigations": [
+      {
+        "name": "CBC",
+        "timing": "01/12/2026 at 09:00 AM",
+        "specimen": null,
+        "assertionStatus": "new_order",
+        "evidence": {
+          "quote": "Report on 01/12/2026 at 09:00 AM for CBC and renal function panel",
+          "verified": true,
+          "start": 268,
+          "end": 333
+        },
+        "qualityFlags": [
+          "TERMINOLOGY_UNRESOLVED",
+          "SPECIMEN_NOT_DOCUMENTED",
+          "LOCAL_COVERAGE_REDUCED"
+        ],
+        "findings": [
+          {
+            "code": "TERMINOLOGY_UNRESOLVED",
+            "severity": "warning",
+            "field": "name",
+            "message": "LOINC 58410-2 ('CBC panel - Blood by Automated count') assumes an automated count method not stated in generic 'CBC'."
+          },
+          {
+            "code": "SPECIMEN_NOT_DOCUMENTED",
+            "severity": "info",
+            "field": "specimen",
+            "message": "Specimen is not explicit in this test's source evidence; no default specimen has been assigned."
+          },
+          {
+            "code": "LOCAL_COVERAGE_REDUCED",
+            "severity": "warning",
+            "field": "name",
+            "message": "Local investigation extraction uses catalog rules and requires review for missing or incomplete findings."
+          }
+        ],
+        "normalization": {
+          "status": "uncertain",
+          "matchedCode": null,
+          "displayName": "Complete Blood Count",
+          "confidence": 0.5,
+          "semanticStatus": "narrower",
+          "candidateCode": "58410-2",
+          "terminologySource": "LOINC",
+          "terminologyVersion": "2.83",
+          "mappingNote": "LOINC 58410-2 ('CBC panel - Blood by Automated count') assumes an automated count method not stated in generic 'CBC'.",
+          "matchType": "synonym"
+        },
+        "matchedCode": null,
+        "displayName": "Complete Blood Count",
+        "status": "preliminary",
+        "clinicalCategory": "laboratory",
+        "method": null,
+        "resultValue": null,
+        "origin": "RULE_EXTRACTED",
+        "provenance": {
+          "origin": "RULE_EXTRACTED",
+          "provider": "onnx",
+          "ruleModified": true,
+          "modifications": [
+            "Source-local span linking",
+            "Clinical assertion and terminology evaluated independently"
+          ],
+          "uncertaintyReason": "LOINC 58410-2 ('CBC panel - Blood by Automated count') assumes an automated count method not stated in generic 'CBC'.",
+          "quarantined": true,
+          "triggeredAlertIds": null,
+          "clinicalContext": {
+            "assertion": "scheduled",
+            "temporality": "future",
+            "section": "FOLLOW_UP_PLAN",
+            "sourceStart": 305,
+            "sourceEnd": 308,
+            "detectionMethod": "VERSIONED_CATALOG",
+            "rawNerScore": null,
+            "mentionStatus": "linked_to_clinical_action",
+            "attributes": [
+              {
+                "field": "timing",
+                "value": "01/12/2026 at 09:00 AM",
+                "evidence": {
+                  "quote": "01/12/2026 at 09:00 AM",
+                  "verified": true,
+                  "start": 278,
+                  "end": 300
+                }
+              }
+            ],
+            "administration": null,
+            "startTiming": null,
+            "stopTiming": null,
+            "prnIndication": null,
+            "administrationSchedule": null
+          }
+        }
+      },
+      {
+        "name": "renal function panel",
+        "timing": "01/12/2026 at 09:00 AM",
+        "specimen": null,
+        "assertionStatus": "new_order",
+        "evidence": {
+          "quote": "Report on 01/12/2026 at 09:00 AM for CBC and renal function panel",
+          "verified": true,
+          "start": 268,
+          "end": 333
+        },
+        "qualityFlags": [
+          "TERMINOLOGY_UNRESOLVED",
+          "SPECIMEN_NOT_DOCUMENTED",
+          "LOCAL_COVERAGE_REDUCED"
+        ],
+        "findings": [
+          {
+            "code": "TERMINOLOGY_UNRESOLVED",
+            "severity": "warning",
+            "field": "name",
+            "message": "Apollo authored clinical phrase catalog 2026-11-25; no LOINC identifier asserted; standard terminology unresolved."
+          },
+          {
+            "code": "SPECIMEN_NOT_DOCUMENTED",
+            "severity": "info",
+            "field": "specimen",
+            "message": "Specimen is not explicit in this test's source evidence; no default specimen has been assigned."
+          },
+          {
+            "code": "LOCAL_COVERAGE_REDUCED",
+            "severity": "warning",
+            "field": "name",
+            "message": "Local investigation extraction uses catalog rules and requires review for missing or incomplete findings."
+          }
+        ],
+        "normalization": {
+          "status": "unmatched",
+          "matchedCode": null,
+          "displayName": "Renal function panel",
+          "confidence": 0,
+          "semanticStatus": "unresolved",
+          "candidateCode": null,
+          "terminologySource": "Apollo recognition catalog",
+          "terminologyVersion": "apollo-clinical-2026-11-25.1",
+          "mappingNote": "Apollo authored clinical phrase catalog 2026-11-25; no LOINC identifier asserted; standard terminology unresolved.",
+          "matchType": "exact"
+        },
+        "matchedCode": null,
+        "displayName": "Renal function panel",
+        "status": "preliminary",
+        "clinicalCategory": "laboratory",
+        "method": null,
+        "resultValue": null,
+        "origin": "RULE_EXTRACTED",
+        "provenance": {
+          "origin": "RULE_EXTRACTED",
+          "provider": "onnx",
+          "ruleModified": true,
+          "modifications": [
+            "Source-local span linking",
+            "Clinical assertion and terminology evaluated independently"
+          ],
+          "uncertaintyReason": "Apollo authored clinical phrase catalog 2026-11-25; no LOINC identifier asserted; standard terminology unresolved.",
+          "quarantined": true,
+          "triggeredAlertIds": null,
+          "clinicalContext": {
+            "assertion": "scheduled",
+            "temporality": "future",
+            "section": "FOLLOW_UP_PLAN",
+            "sourceStart": 313,
+            "sourceEnd": 333,
+            "detectionMethod": "VERSIONED_CATALOG",
+            "rawNerScore": null,
+            "mentionStatus": "linked_to_clinical_action",
+            "attributes": [
+              {
+                "field": "timing",
+                "value": "01/12/2026 at 09:00 AM",
+                "evidence": {
+                  "quote": "01/12/2026 at 09:00 AM",
+                  "verified": true,
+                  "start": 278,
+                  "end": 300
+                }
+              }
+            ],
+            "administration": null,
+            "startTiming": null,
+            "stopTiming": null,
+            "prnIndication": null,
+            "administrationSchedule": null
+          }
+        }
+      }
+    ],
+    "validationSummary": {
+      "hasErrors": false,
+      "errorCount": 0,
+      "warningCount": 13,
+      "dimensions": [
+        {
+          "dimension": "StructuralJsonValidity",
+          "status": "PASS",
+          "evaluatedCount": 1,
+          "passedCount": 1,
+          "warningCount": 0,
+          "errorCount": 0,
+          "summary": "Strict JSON schema validation and candidate deserialization succeeded."
+        },
+        {
+          "dimension": "EvidenceQuoteValidity",
+          "status": "PASS",
+          "evaluatedCount": 6,
+          "passedCount": 6,
+          "warningCount": 0,
+          "errorCount": 0,
+          "summary": "6/6 entity evidence quotes verified verbatim against reconstructed source text."
+        },
+        {
+          "dimension": "EvidenceOffsetValidity",
+          "status": "PASS",
+          "evaluatedCount": 6,
+          "passedCount": 6,
+          "warningCount": 0,
+          "errorCount": 0,
+          "summary": "6/6 entity character offset spans verified within source bounds."
+        },
+        {
+          "dimension": "EntityCompleteness",
+          "status": "PASS",
+          "evaluatedCount": 6,
+          "passedCount": 6,
+          "warningCount": 0,
+          "errorCount": 0,
+          "summary": "Second-pass source completeness check detected no omitted medication or investigation mentions."
+        },
+        {
+          "dimension": "AttributeGrounding",
+          "status": "PARTIAL",
+          "evaluatedCount": 4,
+          "passedCount": 4,
+          "warningCount": 2,
+          "errorCount": 0,
+          "summary": "All populated posology attributes are lexically grounded in entity scope; 2 incomplete/complex prescription review flag(s)."
+        },
+        {
+          "dimension": "ClinicalAssertionConsistency",
+          "status": "PASS",
+          "evaluatedCount": 6,
+          "passedCount": 6,
+          "warningCount": 0,
+          "errorCount": 0,
+          "summary": "All medication and investigation assertions are consistent with section context, negation, and temporality."
+        },
+        {
+          "dimension": "TerminologyNormalization",
+          "status": "PARTIAL",
+          "evaluatedCount": 6,
+          "passedCount": 1,
+          "warningCount": 5,
+          "errorCount": 0,
+          "summary": "1/6 exact RxNorm/LOINC concepts resolved; 5 narrower/broader/unresolved concept(s) withheld from exact code assignment."
+        },
+        {
+          "dimension": "SafetyAlertGrounding",
+          "status": "PASS",
+          "evaluatedCount": 1,
+          "passedCount": 1,
+          "warningCount": 0,
+          "errorCount": 0,
+          "summary": "1/1 safety/review alert(s) grounded with source evidence quotes and character offsets."
+        }
+      ]
+    },
+    "safetyAlerts": [
+      {
+        "alertId": "ALG-5f74c13a",
+        "severity": "MODERATE",
+        "category": "ALLERGY_CONFLICT",
+        "title": "Documented Drug Allergy Vigilance: Aspirin",
+        "description": "Observed data: Patient note documents allergy/reaction to Aspirin (evidence: \"Aspirin (anaphylaxis)\"). Ensure all newly prescribed agents avoid cross-reactivity.",
+        "involvedEntities": [
+          "Aspirin"
+        ],
+        "recommendation": "Review the source note and reconcile this finding with a qualified clinician. This extraction does not recommend treatment changes.",
+        "alertType": "OBSERVED_FACT_WARNING",
+        "temporality": "CURRENT_ACTIVE",
+        "thresholdCriterion": null,
+        "observedFact": "Aspirin (anaphylaxis)",
+        "evidenceQuote": "Aspirin (anaphylaxis)",
+        "startChar": 52,
+        "endChar": 73
+      }
+    ],
+    "embedding": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0.134829,
+      0.134829,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0.134829,
+      0.134829,
+      0.134829,
+      0,
+      0.085392,
+      0.080897,
+      0.139323,
+      -0.238198,
+      0.238198,
+      -0.080897,
+      0.098875,
+      -0.035954,
+      0.170784,
+      -0.058426,
+      -0.116852,
+      0.017977,
+      0.148312,
+      0.026966,
+      -0.080897,
+      0.184266,
+      -0.139323,
+      0.06292,
+      -0.112358,
+      -0.080897,
+      0.06292,
+      -0.170784,
+      -0.017977,
+      -0.040449,
+      -0.080897,
+      0.233704,
+      -0.03146,
+      0.184266,
+      -0.06292,
+      -0.215726,
+      0.035954,
+      0.296624,
+      -0.013483,
+      -0.049437,
+      -0.29213,
+      0.224715,
+      0.09438,
+      0,
+      0.040449,
+      -0.026966,
+      0.03146,
+      0.089886,
+      -0.053932,
+      0.314601,
+      0.206738,
+      -0.116852,
+      -0.03146,
+      0.058426
+    ],
+    "noteText": "Stage 15 isolated browser fixture.\nAllergy History:\nAspirin (anaphylaxis).\nChemotherapy Regimen:\nCytarabine 100 mg/m2 continuous IV infusion (Days 1-7) + Daunorubicin 60 mg/m2 IV push (Days 1-3).\nDischarge Medications:\nAcyclovir 400 mg PO twice daily.\nFollow-Up Plan:\nReport on 01/12/2026 at 09:00 AM for CBC and renal function panel.",
+    "inputType": "emr",
+    "sourceFileName": null,
+    "saved": true,
+    "entityReviews": []
+  }
+}

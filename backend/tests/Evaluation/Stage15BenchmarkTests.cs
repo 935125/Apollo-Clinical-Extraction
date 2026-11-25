@@ -4,6 +4,7 @@ using System.Text.Json;
 using Apollo.Backend.Clinical;
 using Apollo.Backend.Models;
 using Apollo.Backend.Nlp;
+using Microsoft.Extensions.Options;
 
 namespace Apollo.Backend.Tests.Evaluation;
 
@@ -26,7 +27,7 @@ public class Stage15BenchmarkTests
         var tokenizer = new WordPieceTokenizer(Path.Combine(HeldOutBenchmarkRunner.Backend, "artifacts/bc5cdr_latest/clinical_tokenizer.json"));
         using var engine = new SlidingWindowOnnxEngine(Path.Combine(HeldOutBenchmarkRunner.Backend, "artifacts/bc5cdr_latest/onnx/model_int8.onnx"), tokenizer);
         double initializationMs = watch.Elapsed.TotalMilliseconds;
-        var pipeline = new ClinicalPipelineService(engine);
+        var pipeline = new ClinicalPipelineService(engine, Options.Create(new LocalClinicalPipelineOptions { PipelineVersion = phase == "baseline" ? "Legacy" : "CandidateV2" }));
         var rows = new List<object>();
         foreach (string dataset in new[] { "stage5_independent_benchmark_35cases.json", "stage15_frozen_cases.json" })
         {
@@ -52,7 +53,8 @@ public class Stage15BenchmarkTests
             var result = pipeline.ProcessPlatformExtraction(new(note), "stage15-"+id, receipt,
                 skipPrivacyValidation: dataset == "original-synthetic-aml");
             return new { id, dataset, sourceSha256=Convert.ToHexString(SHA256.HashData(System.Text.Encoding.UTF8.GetBytes(note))),
-                raw, receipt.WindowsExecuted, receipt.InferenceDurationMs, receipt.ReviewCandidates,
+                raw, receipt.WindowsExecuted, receipt.InferenceDurationMs, receipt.ReviewCandidates, receipt.CandidateTraces,
+                receipt.TokensEvaluated, receipt.UnknownTokens,
                 latencyMs=watch.Elapsed.TotalMilliseconds, result };
         }
         using var stream = new FileStream(path, phase == "baseline" ? FileMode.CreateNew : FileMode.Create);

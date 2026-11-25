@@ -14,6 +14,7 @@ public static class ClinicalSectionDetector
         (@"chemotherapy regimen|chemotherapy administered|chemotherapy", "CHEMOTHERAPY"),
         (@"inpatient treatment|current treatment|treatment given", "CURRENT_TREATMENT"),
         (@"hospital course(?:\s*&\s*(?:clinical presentation|plan))?|clinical presentation", "HOSPITAL_COURSE"),
+        (@"complications|count recovery(?:\s*\(Day\s*\d+\))?", "HOSPITAL_COURSE"),
         (@"past medical history|pmh|past history|medical history|surgical history", "PAST_MEDICAL_HISTORY"),
         (@"family history|family medical history|fhx", "FAMILY_HISTORY"),
         (@"prior investigations?|historical investigations?", "INVESTIGATION_HISTORY"),

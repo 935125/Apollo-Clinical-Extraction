@@ -1,0 +1,19 @@
+entity_type,raw_name,final_name,strength,dose,route,frequency,duration,timing,specimen,raw_action,final_action,raw_assertion,final_assertion,origin,rule_modified,norm_status,semantic_status,matched_code,candidate_code,evidence_verified,start_char,end_char
+MEDICATION,"Penicillin","Penicillin","","","","","",,,"allergy","allergy","allergy","allergy",LLM_EXTRACTED,False,unmatched,unresolved,,,True,87,163
+MEDICATION,"Ibuprofen","Ibuprofen","","","","","",,,"allergy","allergy","allergy","allergy",LLM_AND_RULE_CONFIRMED,False,matched,exact,5640,5640,True,87,163
+MEDICATION,"antimicrobial therapy","<FILTERED_NON_FORMULARY_CLASS>","","","intravenous","","",,,"none","<SKIPPED>","historical","<SKIPPED>",LLM_EXTRACTED,true,skipped,not_applicable,,,true,,
+MEDICATION,"Warfarin","Warfarin","5 mg","","orally","once daily","",,,"continue","none","current_medication","current_medication",LLM_AND_RULE_CONFIRMED,True,matched,exact,11289,11289,True,979,1049
+MEDICATION,"Aspirin","Aspirin","81 mg","","orally","once daily","",,,"continue","none","current_medication","current_medication",LLM_AND_RULE_CONFIRMED,True,matched,exact,1191,1191,True,1051,1145
+MEDICATION,"Azithromycin","Azithromycin","500 mg","","orally","once daily","for 3 days",,,"continue","none","current_medication","current_medication",LLM_AND_RULE_CONFIRMED,True,matched,exact,18631,18631,True,1147,1227
+MEDICATION,"Ondansetron","Ondansetron","4 mg","","orally","every 8 hours as needed","",,,"continue","none","current_medication","current_medication",LLM_AND_RULE_CONFIRMED,True,matched,exact,26225,26225,True,1229,1288
+MEDICATION,"Pantoprazole","Pantoprazole","40 mg","","orally","once daily","for 30 days",,,"continue","none","current_medication","current_medication",LLM_AND_RULE_CONFIRMED,True,matched,exact,40790,40790,True,1290,1356
+INVESTIGATION,"K+","K+",,,,,,"","Serum",,,"historical","historical",LLM_AND_RULE_CONFIRMED,False,uncertain,narrower,,2823-3,True,558,748
+INVESTIGATION,"Creatinine","Creatinine",,,,,,"","Serum",,,"historical","historical",LLM_AND_RULE_CONFIRMED,False,uncertain,narrower,,2160-0,True,558,748
+INVESTIGATION,"Prothrombin time and INR (PT/INR)","Prothrombin time and INR",,,,,,"in 3 days","",,,"new_order","new_order",LLM_AND_RULE_CONFIRMED,True,uncertain,narrower,,6301-6,True,1395,1439
+INVESTIGATION,"serum potassium","serum potassium",,,,,,"in 48 hours","serum",,,"new_order","new_order",LLM_AND_RULE_CONFIRMED,False,matched,exact,2823-3,2823-3,True,1441,1512
+INVESTIGATION,"serum sodium","serum sodium",,,,,,"in 48 hours","serum",,,"new_order","new_order",LLM_AND_RULE_CONFIRMED,False,matched,exact,2951-2,2951-2,True,1441,1512
+INVESTIGATION,"serum creatinine","serum creatinine",,,,,,"in 48 hours","serum",,,"new_order","new_order",LLM_AND_RULE_CONFIRMED,False,matched,exact,2160-0,2160-0,True,1441,1512
+INVESTIGATION,"Complete blood count (CBC)","Complete blood count",,,,,,"at 1-week follow-up","",,,"new_order","new_order",LLM_AND_RULE_CONFIRMED,True,uncertain,narrower,,58410-2,True,1514,1590
+INVESTIGATION,"C-reactive protein (CRP)","C-reactive protein",,,,,,"at 1-week follow-up","",,,"new_order","new_order",LLM_AND_RULE_CONFIRMED,True,uncertain,narrower,,1988-5,True,1514,1590
+INVESTIGATION,"chest X-ray (PA view)","chest X-ray",,,,,,"in 2 weeks","",,,"new_order","new_order",LLM_AND_RULE_CONFIRMED,True,uncertain,narrower,,24648-8,True,1592,1651
+INVESTIGATION,"12-lead ECG","12-lead ECG",,,,,,"in 2 weeks","",,,"new_order","new_order",LLM_AND_RULE_CONFIRMED,False,uncertain,broader,,11524-6,True,1592,1651
