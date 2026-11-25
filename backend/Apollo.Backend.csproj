@@ -30,6 +30,7 @@
 
   <ItemGroup>
     <EmbeddedResource Include="Clinical\terminology-verification.json" />
+    <EmbeddedResource Include="Clinical\Terminology\clinical-recognition-v1.json" />
     <EmbeddedResource Include="db\platform\migrations\V0009__doctor_emr.sql" />
   </ItemGroup>
 

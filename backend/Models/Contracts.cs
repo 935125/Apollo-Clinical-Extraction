@@ -36,8 +36,19 @@ public record NormalizationDto(
     [property: JsonPropertyName("candidateCode")] string? CandidateCode = null,
     [property: JsonPropertyName("terminologySource")] string? TerminologySource = null,
     [property: JsonPropertyName("terminologyVersion")] string? TerminologyVersion = null,
-    [property: JsonPropertyName("mappingNote")] string? MappingNote = null
+    [property: JsonPropertyName("mappingNote")] string? MappingNote = null,
+    [property: JsonPropertyName("matchType")] string? MatchType = null
 );
+
+public record AttributeEvidenceDto(string Field, string Value, EvidenceDto Evidence);
+
+/// <summary>Additive, source-grounded local details; legacy assertionStatus retains its existing meaning.</summary>
+public record ClinicalEntityContextDto(
+    string Assertion, string Temporality, string Section, int SourceStart, int SourceEnd,
+    string DetectionMethod, double? RawNerScore, string MentionStatus,
+    List<AttributeEvidenceDto> Attributes,
+    string? Administration = null, string? StartTiming = null, string? StopTiming = null,
+    string? PrnIndication = null);
 
 public record EntityProvenanceDto(
     [property: JsonPropertyName("origin")] string Origin,
@@ -46,7 +57,8 @@ public record EntityProvenanceDto(
     [property: JsonPropertyName("modifications")] List<string>? Modifications = null,
     [property: JsonPropertyName("uncertaintyReason")] string? UncertaintyReason = null,
     [property: JsonPropertyName("quarantined")] bool Quarantined = false,
-    [property: JsonPropertyName("triggeredAlertIds")] List<string>? TriggeredAlertIds = null
+    [property: JsonPropertyName("triggeredAlertIds")] List<string>? TriggeredAlertIds = null,
+    [property: JsonPropertyName("clinicalContext")] ClinicalEntityContextDto? ClinicalContext = null
 );
 
 public record ExtractedMedicationDto(
@@ -125,7 +137,9 @@ public record ModelMetadataDto(
     [property: JsonPropertyName("primaryInvocationStatus")] string? PrimaryInvocationStatus = null,
     [property: JsonPropertyName("fallbackTriggered")] bool? FallbackTriggered = null,
     [property: JsonPropertyName("extractionStatus")] string? ExtractionStatus = null,
-    [property: JsonPropertyName("validationResult")] string? ValidationResult = null
+    [property: JsonPropertyName("validationResult")] string? ValidationResult = null,
+    [property: JsonPropertyName("localPipelineVersion")] string? LocalPipelineVersion = null,
+    [property: JsonPropertyName("recognitionCatalogVersion")] string? RecognitionCatalogVersion = null
 );
 
 public record ProviderAttemptDto(
