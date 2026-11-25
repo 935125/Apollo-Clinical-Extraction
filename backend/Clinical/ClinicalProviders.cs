@@ -97,6 +97,8 @@ public interface IFoundryClinicalExtractor
 }
 public interface ILocalClinicalExtractor : IClinicalExtractionProvider
 {
+    Task<ClinicalExtractionResponse> ExtractAsync(string source, string correlationId, bool allowVerifiedSyntheticIdentifiers, CancellationToken ct)
+        => ExtractAsync(source, correlationId, ct);
 }
 
 public sealed class FoundryAttemptException(string reason, ProviderAttemptDto attempt, bool operatorFault = false)

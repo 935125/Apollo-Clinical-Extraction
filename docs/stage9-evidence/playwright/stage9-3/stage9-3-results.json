@@ -1,0 +1,32 @@
+[
+  {
+    "step": "Doctor Login",
+    "status": "PASS",
+    "details": "Logged in as Dr. K. Krishnan on Doctor Dashboard",
+    "timestamp": "2026-11-24T09:21:03.295Z"
+  },
+  {
+    "step": "Clinical Extraction Tab",
+    "status": "PASS",
+    "details": "Navigated to Clinical Extraction",
+    "timestamp": "2026-11-24T09:21:03.466Z"
+  },
+  {
+    "step": "Linked Extraction View",
+    "status": "PASS",
+    "details": "Title: \"Extraction results\", Badge: \"Signed encounter note · Audit locked\", Direct extraction buttons hidden (Extract: 0, Upload: 0, Presets: 0)",
+    "timestamp": "2026-11-24T09:21:03.662Z"
+  },
+  {
+    "step": "Doctor Standalone Direct Extraction Restricted",
+    "status": "PASS",
+    "details": "Direct Extract button omitted for Doctor session (count: 1)",
+    "timestamp": "2026-11-24T09:21:04.331Z"
+  },
+  {
+    "step": "Standalone Authorized Extraction",
+    "status": "PASS",
+    "details": "Controls visible (Extract: 1, Upload: 1, Presets: 1), Extracted medications table rendered (4 rows)",
+    "timestamp": "2026-11-24T09:21:12.827Z"
+  }
+]

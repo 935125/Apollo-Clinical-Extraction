@@ -1,0 +1,116 @@
+﻿ M README.md
+ M backend/Clinical/ClinicalPipelineService.cs
+ M backend/Clinical/ClinicalProviders.cs
+ M backend/Clinical/ClinicalReview.cs
+ M backend/Clinical/ExtractionWorkflow.cs
+ M backend/Clinical/OnnxClinicalExtractor.cs
+ M backend/Clinical/PosologyBinder.cs
+ M backend/Clinical/TerminologyVerification.cs
+ M backend/Emr/EmrAuth.cs
+ M backend/Emr/EmrContracts.cs
+ M backend/Emr/EmrEndpoints.cs
+ M backend/Emr/EmrMessaging.cs
+ M backend/Emr/EmrStore.cs
+ M backend/Program.cs
+ M backend/Security/ClinicalDataAccess.cs
+ M backend/Security/ZeroLeakageValidator.cs
+ M backend/appsettings.Development.json
+ M backend/appsettings.json
+ M backend/docs/stage9-evidence/servicebus/servicebus-smoke-test-results.json
+ M docs/stage8-evidence/after.json
+ M docs/stage8-evidence/forensic-replay/clinical-safety-audit.json
+ M docs/stage8-evidence/forensic-replay/foundry-final-extraction.json
+ M docs/stage8-evidence/forensic-replay/postgres-persistence-verification.json
+ M docs/stage8-evidence/forensic-replay/terminology-semantic-audit.json
+ M docs/stage8-evidence/legacy-unseen-replay/post-live-unseen-independent-evaluation.json
+ M docs/stage8-evidence/postgres-provenance.json
+ M docs/stage8-evidence/stage5-runner-corrected.json
+ M docs/stage8-evidence/stage7-development-results.json
+ M docs/stage9-evidence/playwright/stage9-3/01-doctor-dashboard.png
+ M docs/stage9-evidence/playwright/stage9-3/02-clinical-extraction-tab.png
+ D docs/stage9-evidence/playwright/stage9-3/error-state.png
+ M frontend/e2e/stage9-3-security.mjs
+ M frontend/src/app/app.html
+ M frontend/src/app/app.routes.ts
+ M frontend/src/app/app.scss
+ M frontend/src/app/app.ts
+ M frontend/src/app/emr/dashboard.ts
+ M frontend/src/app/emr/emr-api.ts
+ M frontend/src/app/emr/emr.scss
+ M frontend/src/app/emr/emr.spec.ts
+ M frontend/src/app/emr/extraction-status.ts
+ M frontend/src/app/emr/login.ts
+ M frontend/src/app/emr/note-editor.ts
+ M frontend/src/app/emr/portal-shell.ts
+ M frontend/src/index.html
+?? Run-Apollo-Postman-Tests.bat
+?? Run-Apollo-Postman-Tests.ps1
+?? backend/Configuration/OpenApiEndpoints.cs
+?? backend/Security/SyntheticDataPrivacyPolicy.cs
+?? backend/tests/Stage12QueueTests.cs
+?? backend/tests/Stage12_1UhidIsolationTests.cs
+?? backend/tests/Stage13Top10QueueAndForensicsTests.cs
+?? backend/tests/SyntheticDataPrivacyGateTests.cs
+?? docs/APOLLO_BACKEND_ONLY_VERIFICATION.md
+?? docs/APOLLO_LIVE_FOUNDRY_10_EXTRACTIONS_REPORT.md
+?? docs/APOLLO_POSTMAN_API_CONTRACTS.md
+?? docs/APOLLO_POSTMAN_CLI_SETUP.md
+?? docs/APOLLO_POSTMAN_DEBUGGING_REPORT.md
+?? docs/APOLLO_POSTMAN_TEST_RESULTS.md
+?? docs/APOLLO_STAGE10_UI_TRANSFORMATION_REPORT.md
+?? docs/APOLLO_STAGE12_1_POLLING_AND_DATA_ISOLATION.md
+?? docs/APOLLO_STAGE12_1_TEST_VERIFICATION.md
+?? docs/APOLLO_STAGE12_1_UHID_SCOPED_QUEUE_FIX.md
+?? docs/APOLLO_STAGE12_1_UI_SIMPLIFICATION.md
+?? docs/APOLLO_STAGE12_FOUNDRY_ONNX_PROCESSING.md
+?? docs/APOLLO_STAGE12_FUNCTIONAL_VERIFICATION.md
+?? docs/APOLLO_STAGE12_QUEUE_POLLING_API.md
+?? docs/APOLLO_STAGE12_SINGLE_SCREEN_QUEUE_REDESIGN.md
+?? docs/APOLLO_STAGE13_CASE4_EVIDENCE_FORENSICS.md
+?? docs/APOLLO_STAGE13_FOUNDRY_10_CASE_CLINICAL_AUDIT.md
+?? docs/APOLLO_STAGE13_QUEUE_API_AND_POLLING.md
+?? docs/APOLLO_STAGE13_REGRESSION_TEST_RESULTS.md
+?? docs/APOLLO_STAGE13_TOP10_QUEUE_ROOT_CAUSE.md
+?? docs/APOLLO_STAGE9_3_CLINICAL_EXTRACTION_SECURITY_REPORT.md
+?? docs/APOLLO_SYNTHETIC_DATA_PRIVACY_GATE.md
+?? docs/foundry-live-10-evidence/
+?? docs/postman-evidence/
+?? docs/stage10-evidence/
+?? docs/stage12-evidence/
+?? docs/stage13-evidence/
+?? docs/stage15-evidence/
+?? docs/stage8-evidence/configuration-runs/0dbd313a02ec4da098821a53cc560a7e.json
+?? docs/stage8-evidence/configuration-runs/103b594538294aa5a9a8de7279cc959b.json
+?? docs/stage8-evidence/configuration-runs/17d30714cfde4193b82243b8fe523039.json
+?? docs/stage8-evidence/configuration-runs/1f69572a05fe46688f26e5cd620b1695.json
+?? docs/stage8-evidence/configuration-runs/248331f99e754299a9fb942eaed1776b.json
+?? docs/stage8-evidence/configuration-runs/2813a20190af441a8ce6da05909a993e.json
+?? docs/stage8-evidence/configuration-runs/3f280bb028da4327b5fe06db1cf64636.json
+?? docs/stage8-evidence/configuration-runs/5ba0ee1cd16e4e788b5c52efe30adb4f.json
+?? docs/stage8-evidence/configuration-runs/60fe417472f4482999134067c2fdc6e9.json
+?? docs/stage8-evidence/configuration-runs/849db21baa114b3cb406d853be0909a4.json
+?? docs/stage8-evidence/configuration-runs/8dde2a2fbfcd4a96b904eb21b56cd895.json
+?? docs/stage8-evidence/configuration-runs/9ceada1824fb4060b65de521821e52df.json
+?? docs/stage8-evidence/configuration-runs/a2b89045db9e44aca9518d89f78cf472.json
+?? docs/stage8-evidence/configuration-runs/a93cad3ea1604d59a67da6c56c49dcaa.json
+?? docs/stage8-evidence/configuration-runs/ad3c27fe43344fd5a01721ef27b3fa99.json
+?? docs/stage8-evidence/configuration-runs/bcbfc6bcabc84d1d82708bc6af06d46f.json
+?? docs/stage8-evidence/configuration-runs/beb8f77ec839452cbc0bd32a25916b87.json
+?? docs/stage8-evidence/configuration-runs/e3e3d81b2e5c48ccaa2e594416ff596d.json
+?? docs/stage8-evidence/configuration-runs/f54d5bef8ab245d88a412d8c27827cee.json
+?? docs/stage8-evidence/configuration-runs/fcbc4adba3da43fcb937e9b200c4277b.json
+?? docs/stage8-evidence/forensic-replay/diagnostic-trace-live-final-86985b4aaa88-26f245f3-3477-4ba9-a1a0-5ee8aa04560f.json
+?? docs/stage8-evidence/forensic-replay/diagnostic-trace-live-final-86985b4aaa88-818793d2-ddd7-491d-9f51-11a59fe9fade.json
+?? docs/stage9-evidence/playwright/stage9-3/05-standalone-authorized-extraction.png
+?? docs/stage9-evidence/playwright/stage9-3/stage9-3-results.json
+?? frontend/e2e/model-provenance-e2e.mjs
+?? frontend/e2e/queue-page-size-e2e.mjs
+?? frontend/e2e/stage10-ui-transformation.mjs
+?? frontend/e2e/stage12-1-uhid-queue-e2e.mjs
+?? frontend/e2e/stage12-queue-e2e.mjs
+?? frontend/e2e/stage13-top10-queue-e2e.mjs
+?? frontend/e2e/synthetic-privacy-submit-e2e.mjs
+?? frontend/src/app/emr/clinical-note-sections.ts
+?? frontend/src/app/emr/restricted-view.ts
+?? frontend/src/app/queue/
+?? postman/

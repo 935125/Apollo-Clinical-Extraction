@@ -33,6 +33,60 @@ public static class EmrEndpoints
             return Results.Ok(account.Profile);
         }).AllowAnonymous().RequireRateLimiting("doctor-login");
 
+        auth.MapPost("/dev-session", async (HttpContext http, IAntiforgery antiforgery, DoctorSessions sessions, CancellationToken ct) =>
+        {
+            bool loopback = http.Connection.RemoteIpAddress is null || System.Net.IPAddress.IsLoopback(http.Connection.RemoteIpAddress);
+            if (!app.Environment.IsDevelopment() || !Apollo.Backend.Security.ClinicalApiSecurity.IsDemo(app.Configuration, app.Environment) || !loopback)
+                return Results.Json(new { code = "DEV_SESSION_DISABLED", detail = "Local demonstration auto-session is disabled outside Development loopback. Sign in via institutional identity." }, statusCode: 403);
+
+            string? preferred = app.Configuration["Emr:Seed:Login"] ?? "doctor.krishnan@apollo.local";
+            var created = await sessions.CreateDevelopmentLoopbackSession(preferred, ct);
+            if (created is not { } account)
+                return Results.Json(new { code = "DEMO_ACCOUNT_NOT_CONFIGURED", detail = "No enabled synthetic clinician account exists in PostgreSQL. Run --emr-seed first." }, statusCode: 503);
+
+            var principal = new ClaimsPrincipal(new ClaimsIdentity([
+                new Claim("sub", account.Profile.Id.ToString()), new Claim("sid", account.Session.ToString()),
+                new Claim("iss", "apollo-local-emr"), new Claim("name", account.Profile.DisplayName),
+                new Claim("login", account.Profile.Login), new Claim("roles", account.Profile.Role)], EmrAuth.Scheme, "name", "roles"));
+            await http.SignInAsync(EmrAuth.Scheme, principal, new AuthenticationProperties { IsPersistent = false, ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(30), AllowRefresh = false });
+            http.User = principal;
+            var tokens = antiforgery.GetAndStoreTokens(http);
+            http.Response.Cookies.Append("XSRF-TOKEN", tokens.RequestToken!, new CookieOptions { HttpOnly = false, Secure = http.Request.IsHttps, SameSite = SameSiteMode.Strict, Path = "/" });
+            return Results.Ok(account.Profile);
+        }).AllowAnonymous();
+
+        var queue = app.MapGroup("/api/v1/queue").RequireAuthorization("DoctorEmr");
+        queue.MapGet("", async (string? search, string? state, int? limit, int? offset, HttpContext http, EmrStore store, IConfiguration cfg, CancellationToken ct) =>
+        {
+            var (items, total) = await store.QueueItems(EmrAuth.Doctor(http.User), search, state, limit ?? 10, offset ?? 0, ct);
+            var extractionOpts = cfg.GetSection("Extraction").Get<ExtractionOptions>() ?? new();
+            return Results.Ok(new QueueListResponse(items, total, DateTimeOffset.UtcNow, extractionOpts.Provider, extractionOpts.FallbackProvider));
+        });
+        queue.MapGet("/{noteId:guid}", async (Guid noteId, int? version, string? patient, HttpContext http, EmrStore store, IExtractionRepository repository, CancellationToken ct) =>
+        {
+            Guid doctor = EmrAuth.Doctor(http.User);
+            var header = await store.QueueEntryHeader(doctor, noteId, version, patient, ct);
+            if (header is null) return Results.NotFound(new { code = "QUEUE_ENTRY_NOT_FOUND", detail = "Queue entry was not found or is not assigned to this account." });
+            var extraction = header.ExtractionId is { } extId
+                ? await repository.GetExtractionAsync(extId.ToString(), ct)
+                : null;
+            var patientNotes = await store.PatientNotesForPatient(doctor, header.PatientId, ct);
+            return Results.Ok(new QueueEntryDetailDto(
+                header.NoteId, header.EncounterId, header.NoteVersion, header.PatientReference, header.EncounterReference,
+                header.EncounterDate, header.Context, header.NoteStatus, header.SourceText, header.SourceHash,
+                header.SignedAt, header.UpdatedAt, header.QueueState, header.VerificationRecommended,
+                header.RawProcessingStatus, header.Error, extraction, header.PatientId, header.EventId, header.ExtractionId, patientNotes));
+        });
+        queue.MapGet("/patients/{patientReference}", async (string patientReference, HttpContext http, EmrStore store, CancellationToken ct) =>
+        {
+            if (string.IsNullOrWhiteSpace(patientReference) || patientReference.Length > 128)
+                return Results.BadRequest(new { code = "INVALID_PATIENT_REFERENCE" });
+            var scoped = await store.PatientScope(EmrAuth.Doctor(http.User), patientReference, ct);
+            if (scoped is not { } result)
+                return Results.NotFound(new { code = "PATIENT_NOT_FOUND", detail = "Patient reference was not found or is not assigned to this account." });
+            return Results.Ok(new { patientId = result.PatientId, patientReference = result.PatientReference, notes = result.Notes });
+        });
+
         var api=app.MapGroup("/api/v1/emr").RequireAuthorization("DoctorEmr");
         api.AddEndpointFilter(async (ctx,next) =>
         {

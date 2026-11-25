@@ -62,8 +62,19 @@ public sealed class EmrConsumer(EmrStore store,IExtractionRepository repository,
             await using(var done=EmrStore.Command(c,"SELECT EXISTS(SELECT 1 FROM emr_processed_messages WHERE event_id=@id)",null,("id",message.EventId)))
                 if((bool)(await done.ExecuteScalarAsync(ct))!) return ConsumerOutcome.Completed;
             var source=(await EmrStore.Query<SignedSource>(c,"""
-                SELECT jsonb_build_object('text',v.source_text,'hash',v.source_hash,'encounterId',v.encounter_id)
-                FROM emr_outbox_events o JOIN emr_note_versions v ON v.note_id=o.note_id AND v.version=o.note_version
+                SELECT jsonb_build_object(
+                  'text',v.source_text,
+                  'hash',v.source_hash,
+                  'encounterId',v.encounter_id,
+                  'patientId',p.id,
+                  'patientReference',p.reference,
+                  'patientSynthetic',p.synthetic
+                )
+                FROM emr_outbox_events o
+                JOIN emr_note_versions v ON v.note_id=o.note_id AND v.version=o.note_version
+                JOIN emr_notes n ON n.id=v.note_id
+                JOIN emr_encounters e ON e.id=v.encounter_id AND e.id=n.encounter_id
+                JOIN emr_patients p ON p.id=e.patient_id
                 WHERE o.event_id=@event AND o.note_id=@note AND o.note_version=@version AND o.correlation_id=@correlation
                   AND o.event_type=@type AND o.schema_version=@schema AND v.signed_at IS NOT NULL
                 """,ct,null,("event",message.EventId),("note",message.NoteId),("version",message.NoteVersion),
@@ -74,11 +85,23 @@ public sealed class EmrConsumer(EmrStore store,IExtractionRepository repository,
             await using(var check=EmrStore.Command(c,"SELECT processing_attempts FROM emr_outbox_events WHERE event_id=@id",null,("id",message.EventId)))
                 if((int)(await check.ExecuteScalarAsync(ct))!>=5) return ConsumerOutcome.DeadLetter;
             await EmrStore.Execute(c,"UPDATE emr_outbox_events SET processing_status='Processing',processing_attempts=processing_attempts+1,processing_error=NULL WHERE event_id=@id",ct,null,("id",message.EventId));
+            var privacyContext=source.PatientSynthetic && source.PatientId!=Guid.Empty && !string.IsNullOrWhiteSpace(source.PatientReference)
+                ? new ExtractionPrivacyContext(
+                    PrivacyProvenanceKind.BackendVerifiedSyntheticEmrRecord,
+                    source.PatientId,
+                    source.PatientReference,
+                    source.EncounterId,
+                    message.NoteId,
+                    message.NoteVersion,
+                    message.EventId,
+                    source.Hash,
+                    DatabaseSyntheticFlag: true)
+                : ExtractionPrivacyContext.Unverified;
             try
             {
                 // Fixed UUID closes the crash gap between extraction save and linkage save.
                 var result=await repository.GetExtractionAsync(message.EventId.ToString(),ct)
-                    ?? await workflow.ExtractAndSaveAsync(source.Text,message.CorrelationId.ToString(),"emr",null,ct,message.EventId);
+                    ?? await workflow.ExtractAndSaveAsync(source.Text,message.CorrelationId.ToString(),"emr",null,ct,message.EventId,privacyContext);
                 if(result.NoteText!=source.Text || result.CorrelationId!=message.CorrelationId.ToString()) throw new InvalidEmrEventException();
                 await using var tx=await c.BeginTransactionAsync(ct);
                 await EmrStore.Execute(c,"""

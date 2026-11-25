@@ -1,0 +1,83 @@
+{
+  "status": "PASS",
+  "results": [
+    {
+      "name": "Test A: Clean Queue Overview (All Filters, Badges, ONNX Labels & Word Counts Removed)",
+      "status": "PASS",
+      "details": "Headers=UHID / PATIENT ID | CLINICAL NOTE PREVIEW | RECEIVED | ACTION",
+      "timestamp": "2026-11-25T05:30:35.619Z"
+    },
+    {
+      "name": "Test B1: Selected UHID P100234 Isolation & Backend Validation Preserved",
+      "status": "PASS",
+      "details": "Note=7b83e7bc-c817-4284-9306-8318b107adbb, v11, BackendWarnings=7",
+      "timestamp": "2026-11-25T05:30:35.880Z"
+    },
+    {
+      "name": "Test B2 & F: Selected UHID P100237 Exact Source + Extracted Results Parity",
+      "status": "PASS",
+      "details": "Note=a5abf136-8544-4dae-ae79-f4f55d5ad688, Meds=4, Invs=2",
+      "timestamp": "2026-11-25T05:30:36.173Z"
+    },
+    {
+      "name": "Test B3: Rapid Switching with Out-of-Order Delayed Response (Zero Cross-Patient Leak)",
+      "status": "PASS",
+      "details": "Delayed P100234 cancelled/ignored cleanly",
+      "timestamp": "2026-11-25T05:30:37.785Z"
+    },
+    {
+      "name": "Screenshot 5: Truthful In-Progress Processing State",
+      "status": "PASS",
+      "details": "P100236 shows \"Extraction in progress\"",
+      "timestamp": "2026-11-25T05:30:37.950Z"
+    },
+    {
+      "name": "Test E: Headless API Ingestion -> Outbox -> Azure Service Bus -> Worker -> Live Browser Auto-Update",
+      "status": "PASS",
+      "details": "Tag=STAGE12-1-HEADLESS-638018, P100235 v10, Polls=6->7",
+      "timestamp": "2026-11-25T05:30:39.565Z"
+    },
+    {
+      "name": "Screenshot 7: Responsive Stacked Layout (768x1024)",
+      "status": "PASS",
+      "details": "HorizontalOverflow=0px",
+      "timestamp": "2026-11-25T05:30:39.921Z"
+    },
+    {
+      "name": "Runtime Cleanliness: Zero Console Errors & Zero Unexpected 4xx/5xx",
+      "status": "PASS",
+      "details": "Clean",
+      "timestamp": "2026-11-25T05:30:39.921Z"
+    }
+  ],
+  "backendLinkageEvidence": {
+    "p100234": {
+      "patientId": "38cd3e87-59d7-4bc9-bb30-24469dc467c5",
+      "patientReference": "P100234",
+      "encounterId": "8bfb5eaa-81ba-4571-baa2-f09c46d97b42",
+      "encounterReference": "ENC-100567",
+      "noteId": "7b83e7bc-c817-4284-9306-8318b107adbb",
+      "noteVersion": 11,
+      "eventId": "05bae210-308b-487c-98bc-1a13c3cf5a9d",
+      "extractionId": "05bae210-308b-487c-98bc-1a13c3cf5a9d",
+      "provider": "onnx",
+      "backendWarningCount": 7,
+      "withinPatientVersionsCount": 5
+    },
+    "p100237": {
+      "patientId": "aa017062-c6d4-4d33-b0af-0f9f6a5fecc3",
+      "patientReference": "P100237",
+      "encounterId": "90c3a7c1-e16d-43fa-aa2e-9f0b4519f0d7",
+      "encounterReference": "ENC-100570",
+      "noteId": "a5abf136-8544-4dae-ae79-f4f55d5ad688",
+      "noteVersion": 15,
+      "eventId": "a13551a5-bc92-4df7-a201-9a3310d6e5e9",
+      "extractionId": "a13551a5-bc92-4df7-a201-9a3310d6e5e9",
+      "provider": "onnx",
+      "backendWarningCount": 16,
+      "withinPatientVersionsCount": 4
+    }
+  },
+  "consoleErrors": [],
+  "failedApiRequests": []
+}

@@ -1,0 +1,558 @@
+<div class="queue-shell">
+  <!-- Minimal Single-Bar Header -->
+  <header class="queue-header">
+    <div class="header-brand-group">
+      <button
+        type="button"
+        class="brand-home-btn"
+        (click)="backToQueue()"
+        aria-label="Apollo Hospitals Clinical Extraction"
+      >
+        <apollo-brand />
+      </button>
+      <span class="header-divider" aria-hidden="true"></span>
+      <div class="header-titles">
+        <h1 class="workspace-title">Clinical Extraction</h1>
+      </div>
+    </div>
+
+    <div class="header-controls">
+      @if (authorized()) {
+        <div
+          class="live-status-pill"
+          [class.is-paused]="tabHidden()"
+          [class.is-error]="!!connectionIssue()"
+          role="status"
+          aria-live="polite"
+        >
+          <span class="live-dot" aria-hidden="true"></span>
+          @if (connectionIssue()) {
+            <span>Reconnecting</span>
+          } @else if (tabHidden()) {
+            <span>Paused</span>
+          } @else {
+            <span>Live · {{ lastUpdatedLabel() }}</span>
+          }
+        </div>
+
+        <button
+          type="button"
+          class="btn-subtle"
+          (click)="refreshNow()"
+          [disabled]="isRefreshing()"
+          aria-label="Refresh queue now"
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true" [class.spin]="isRefreshing()">
+            <path d="M21 12a9 9 0 1 1-2.64-6.36" />
+            <path d="M21 3v6h-6" />
+          </svg>
+          <span>Refresh</span>
+        </button>
+
+        @if (!activeSelection()) {
+          <button
+            type="button"
+            class="btn-primary-compact"
+            (click)="toggleIntakeDrawer()"
+            [attr.aria-expanded]="intakeOpen()"
+          >
+            <span>{{ intakeOpen() ? 'Close' : 'Submit Test Note' }}</span>
+          </button>
+        }
+      }
+    </div>
+  </header>
+
+  <main class="queue-main">
+    @if (initializing()) {
+      <section class="state-card" aria-busy="true">
+        <span class="spinner-ring" aria-hidden="true"></span>
+        <h2>Connecting to clinical queue…</h2>
+        <p>Establishing an authorized clinical session.</p>
+      </section>
+    } @else if (!authorized()) {
+      <section class="state-card state-error" role="alert">
+        <h2>Authorized session required</h2>
+        <p>{{ authError() }}</p>
+        <button type="button" class="btn-primary-compact" (click)="bootstrap()">Retry session</button>
+      </section>
+    } @else {
+      @if (connectionIssue()) {
+        <div class="inline-banner banner-warn" role="alert">
+          <span>{{ connectionIssue() }}</span>
+          <button type="button" class="banner-action" (click)="refreshNow()">Retry</button>
+        </div>
+      }
+
+      @if (intakeSuccess() && !activeSelection()) {
+        <div class="inline-banner banner-ok" role="status">
+          <span>{{ intakeSuccess() }}</span>
+          <button type="button" class="banner-action" (click)="intakeSuccess.set(null)">Dismiss</button>
+        </div>
+      }
+
+      <!-- Separate Development-Only Test Note Submission Drawer -->
+      @if (intakeOpen() && !activeSelection()) {
+        <section class="intake-drawer" aria-label="Submit synthetic test clinical note">
+          <div class="intake-header">
+            <div>
+              <h2>Submit synthetic test note</h2>
+              <p>Uses the same authorized ingestion API and Azure Service Bus pipeline as Swagger and Postman.</p>
+            </div>
+            <div class="intake-presets">
+              @for (preset of intakePresets; track preset.id) {
+                <button
+                  type="button"
+                  class="preset-pill"
+                  (click)="applyIntakePreset(preset)"
+                >
+                  {{ preset.label }}
+                </button>
+              }
+            </div>
+          </div>
+
+          <div class="intake-form">
+            <label class="intake-field">
+              <span>Synthetic Patient / Encounter</span>
+              <select
+                [ngModel]="selectedEncounterId()"
+                (ngModelChange)="selectedEncounterId.set($event)"
+              >
+                @for (enc of encounters(); track enc.id) {
+                  <option [value]="enc.id">
+                    {{ enc.patientReference }} · {{ enc.reference }} ({{ enc.encounterDate }})
+                  </option>
+                }
+              </select>
+            </label>
+
+            <label class="intake-field">
+              <span>Synthetic Clinical Note</span>
+              <textarea
+                rows="5"
+                placeholder="Paste or type a synthetic clinical note…"
+                [ngModel]="intakeText()"
+                (ngModelChange)="intakeText.set($event)"
+              ></textarea>
+            </label>
+
+            @if (intakeError()) {
+              <p class="intake-error" role="alert">{{ intakeError() }}</p>
+            }
+
+            <div class="intake-actions">
+              <button type="button" class="btn-subtle" (click)="intakeOpen.set(false)">Cancel</button>
+              <button
+                type="button"
+                class="btn-primary-compact"
+                [disabled]="submittingNote()"
+                (click)="submitIntakeNote()"
+              >
+                {{ submittingNote() ? 'Submitting…' : 'Submit Note' }}
+              </button>
+            </div>
+          </div>
+        </section>
+      }
+
+      <!-- ====================================================================
+           STATE A: MINIMAL UHID / PATIENT QUEUE OVERVIEW
+           ==================================================================== -->
+      @if (!activeSelection()) {
+        <section class="queue-surface" aria-label="Incoming clinical notes queue">
+          <div class="queue-toolbar">
+            <div class="search-wrap">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="11" cy="11" r="7" />
+                <path d="m20 20-3.5-3.5" />
+              </svg>
+              <input
+                type="search"
+                placeholder="Search by Patient ID, encounter, or note preview…"
+                [ngModel]="searchQuery()"
+                (ngModelChange)="onSearchChange($event)"
+                aria-label="Search queue entries"
+              />
+            </div>
+
+            <label class="entries-control">
+              <span class="entries-label">Show entries</span>
+              <select
+                class="entries-select"
+                aria-label="Show entries"
+                [value]="pageSize()"
+                (change)="onPageSizeChange($any($event.target).value)"
+              >
+                @for (size of pageSizeOptions; track size) {
+                  <option [value]="size" [selected]="size === pageSize()">{{ size }}</option>
+                }
+              </select>
+            </label>
+          </div>
+
+          @if (visibleQueueItems().length === 0) {
+            <div class="queue-empty">
+              <p class="empty-title">
+                @if (queueItems().length === 0) {
+                  No clinical notes in the queue yet.
+                } @else {
+                  No matching clinical notes found.
+                }
+              </p>
+              <p class="empty-sub">
+                @if (queueItems().length === 0) {
+                  Clinical notes submitted via the ingestion API appear here automatically.
+                } @else {
+                  Try clearing the search query.
+                }
+              </p>
+            </div>
+          } @else {
+            <div class="table-scroll">
+              <table class="queue-table">
+                <thead>
+                  <tr>
+                    <th scope="col" class="col-entry">UHID / Patient ID</th>
+                    <th scope="col" class="col-note">Clinical Note Preview</th>
+                    <th scope="col" class="col-received">Received</th>
+                    <th scope="col" class="col-action">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (item of visibleQueueItems(); track item.eventId || (item.noteId + ':' + item.noteVersion)) {
+                    <tr
+                      class="queue-row"
+                      tabindex="0"
+                      (click)="openEntry(item)"
+                      (keydown.enter)="openEntry(item)"
+                      (keydown.space)="$event.preventDefault(); openEntry(item)"
+                    >
+                      <td class="cell-entry">
+                        <div class="entry-patient-row">
+                          <span class="entry-patient">{{ item.patientReference }}</span>
+                          @if (isJobActive(item.queueState)) {
+                            <span
+                              class="active-job-dot"
+                              title="Extraction in progress"
+                              aria-label="Extraction in progress"
+                            ></span>
+                          } @else if (item.queueState === 'Failed') {
+                            <span
+                              class="failed-job-dot"
+                              title="Extraction failed"
+                              aria-label="Extraction failed"
+                            ></span>
+                          }
+                        </div>
+                        <div class="entry-meta">{{ item.encounterReference }} · v{{ item.noteVersion }}</div>
+                      </td>
+
+                      <td class="cell-note">
+                        <p class="note-preview">{{ item.sourcePreview }}</p>
+                      </td>
+
+                      <td class="cell-received">
+                        {{ formatTimestamp(item.receivedAt) }}
+                      </td>
+
+                      <td class="cell-action" (click)="$event.stopPropagation()">
+                        <button
+                          type="button"
+                          class="btn-open"
+                          (click)="openEntry(item)"
+                        >
+                          Open
+                        </button>
+                      </td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+          }
+        </section>
+      } @else {
+        <!-- ====================================================================
+             STATE B: PATIENT-SCOPED SIDE-BY-SIDE SOURCE NOTE & EXTRACTED RESULTS
+             ==================================================================== -->
+        @let sel = activeSelection()!;
+        <section class="workspace-detail" aria-label="Selected patient clinical extraction">
+          <div class="detail-topbar">
+            <div class="detail-topbar-left">
+              <button type="button" class="btn-back" (click)="backToQueue()">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="m15 18-6-6 6-6" />
+                </svg>
+                <span>Back to Queue</span>
+              </button>
+
+              <span class="topbar-sep" aria-hidden="true"></span>
+
+              <div class="selected-patient-header">
+                <span class="patient-id-label">Patient ID (Synthetic)</span>
+                <strong class="patient-id-value">{{ sel.patientReference }}</strong>
+                @if (selectedEntry(); as entry) {
+                  <span class="patient-enc-meta">
+                    {{ entry.encounterReference }} · Version {{ entry.noteVersion }}
+                  </span>
+                }
+              </div>
+            </div>
+
+            <!-- Within-Patient Note/Version Selector ONLY (never shows unrelated patients) -->
+            @if (withinPatientNotes().length > 1) {
+              <label class="within-patient-selector">
+                <span>Note version</span>
+                <select
+                  [ngModel]="selectedNoteKey()"
+                  (ngModelChange)="onWithinPatientNoteChange($event)"
+                  aria-label="Select clinical note version for this patient"
+                >
+                  @for (opt of withinPatientNotes(); track opt.noteId + ':' + opt.noteVersion) {
+                    <option [value]="opt.noteId + ':' + opt.noteVersion">
+                      {{ opt.encounterReference }} · v{{ opt.noteVersion }} ({{ formatTimestamp(opt.receivedAt) }})
+                    </option>
+                  }
+                </select>
+              </label>
+            }
+          </div>
+
+          @if (detailLoading() && !selectedEntry()) {
+            <div class="state-card" aria-busy="true">
+              <span class="spinner-ring" aria-hidden="true"></span>
+              <h2>Loading {{ sel.patientReference }}…</h2>
+              <p>Fetching authorized clinical note and linked extraction.</p>
+            </div>
+          } @else if (detailError() && !selectedEntry()) {
+            <div class="state-card state-error" role="alert">
+              <h2>Unable to load patient record</h2>
+              <p>{{ detailError() }}</p>
+              <button type="button" class="btn-subtle" (click)="backToQueue()">Back to Queue</button>
+            </div>
+          } @else if (selectedEntry(); as entry) {
+            <div class="split-workspace">
+              <!-- LEFT COLUMN: DEEP GREEN SOURCE NOTE PANEL (MATCHING REFERENCE) -->
+              <article class="source-panel" aria-label="Source clinical note">
+                <header class="source-panel-header">
+                  <div>
+                    <h2>Source note</h2>
+                    <p class="source-meta">
+                      {{ entry.patientReference }} · {{ entry.encounterReference }} · Version {{ entry.noteVersion }}
+                    </p>
+                  </div>
+                  @if (entry.signedAt) {
+                    <span class="source-date">{{ formatTimestamp(entry.signedAt) }}</span>
+                  }
+                </header>
+
+                @if (highlightedEntity(); as hl) {
+                  <div class="highlight-bar">
+                    <span>Supporting text for <strong>{{ hl.name }}</strong></span>
+                    <button type="button" (click)="highlightedEntity.set(null)">Clear</button>
+                  </div>
+                }
+
+                <div class="source-document-frame">
+                  <div class="source-document" tabindex="0">
+                    @for (seg of sourceSegments(); track $index) {
+                      @if (seg.isHighlight) {
+                        <mark class="evidence-highlight">{{ seg.text }}</mark>
+                      } @else {
+                        <span>{{ seg.text }}</span>
+                      }
+                    }
+                  </div>
+                </div>
+              </article>
+
+              <!-- RIGHT COLUMN: CLEAN EXTRACTED RESULTS PANEL -->
+              <article class="results-panel" aria-label="Extracted clinical results">
+                <header class="results-header">
+                  <div class="results-header-main">
+                    <h2>Extracted results</h2>
+                    <p class="results-subtitle">
+                      {{ entry.patientReference }} · {{ entry.encounterReference }} · Version {{ entry.noteVersion }}
+                    </p>
+                    @if (modelProvenance(); as prov) {
+                      <div class="model-provenance-row">
+                        <span
+                          class="model-provenance-badge"
+                          [ngClass]="'provenance-' + prov.variant"
+                          [attr.data-model-provenance]="prov.variant"
+                          [attr.title]="prov.detail"
+                          role="status"
+                          [attr.aria-label]="'Extraction model: ' + prov.label"
+                        >
+                          {{ prov.label }}
+                        </span>
+                      </div>
+                    }
+                  </div>
+
+                  @if (entry.extraction) {
+                    <div class="export-wrap">
+                      <button
+                        type="button"
+                        class="btn-subtle"
+                        (click)="exportMenuOpen.set(!exportMenuOpen())"
+                        [attr.aria-expanded]="exportMenuOpen()"
+                      >
+                        Export
+                      </button>
+                      @if (exportMenuOpen()) {
+                        <div class="export-menu" role="menu">
+                          <button type="button" role="menuitem" (click)="exportJson()">Download JSON</button>
+                          <button type="button" role="menuitem" (click)="exportCsv()">Download CSV</button>
+                          <button type="button" role="menuitem" (click)="exportFhir()">Download FHIR R4 Bundle</button>
+                        </div>
+                      }
+                    </div>
+                  }
+                </header>
+
+                <!-- Honest Processing / Failed / Empty States -->
+                @if (!entry.extraction) {
+                  @if (entry.queueState === 'Failed') {
+                    <div class="progress-state progress-failed" role="alert">
+                      <h3>Extraction failed</h3>
+                      <p>{{ entry.error || 'The background extraction worker could not process this clinical note.' }}</p>
+                    </div>
+                  } @else {
+                    <div class="progress-state progress-active" aria-busy="true">
+                      <span class="spinner-ring" aria-hidden="true"></span>
+                      <h3>Extraction in progress</h3>
+                      <p>Extracted medications and investigations for {{ entry.patientReference }} will appear here automatically once processing completes.</p>
+                    </div>
+                  }
+                } @else if (!hasAnyExtractedEntities()) {
+                  <div class="progress-state progress-empty">
+                    <h3>No supported medications or investigations identified.</h3>
+                    <p>Review the original source note on the left for full clinical context.</p>
+                  </div>
+                } @else {
+                  @let ext = entry.extraction;
+
+                  <!-- Medications Table -->
+                  <section class="result-section">
+                    <div class="section-heading">
+                      <h3>Medications</h3>
+                      <span class="section-count">{{ ext.medications.length }}</span>
+                    </div>
+
+                    @if (ext.medications.length === 0) {
+                      <p class="section-empty">No medications identified in this note.</p>
+                    } @else {
+                      <div class="result-table-wrap">
+                        <table class="result-table medication-table">
+                          <thead>
+                            <tr>
+                              <th scope="col">Medication</th>
+                              <th scope="col">Strength</th>
+                              <th scope="col">Dose</th>
+                              <th scope="col">Route</th>
+                              <th scope="col">Frequency</th>
+                              <th scope="col">Duration</th>
+                              <th scope="col">Clinical Assertion</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            @for (med of ext.medications; track $index) {
+                              <tr
+                                class="entity-row"
+                                [class.selected]="highlightedEntity() === med"
+                                tabindex="0"
+                                (click)="toggleEntityHighlight(med)"
+                                (keydown.enter)="toggleEntityHighlight(med)"
+                              >
+                                <td class="cell-name">
+                                  <div class="entity-title">{{ med.name }}</div>
+                                  @if (medicationCodeSubtext(med); as rxCode) {
+                                    <div class="entity-code">{{ rxCode }}</div>
+                                  }
+                                </td>
+                                <td [class.val-missing]="!med.strength">{{ docValue(med.strength) }}</td>
+                                <td [class.val-missing]="!med.dose">{{ docValue(med.dose) }}</td>
+                                <td [class.val-missing]="!med.route">{{ docValue(med.route) }}</td>
+                                <td [class.val-missing]="!med.frequency">{{ docValue(med.frequency) }}</td>
+                                <td [class.val-missing]="!med.duration">{{ docValue(med.duration) }}</td>
+                                <td>
+                                  <span class="assertion-chip" [ngClass]="assertionClass(med.assertionStatus)">
+                                    {{ assertionLabel(med.assertionStatus) }}
+                                  </span>
+                                </td>
+                              </tr>
+                            }
+                          </tbody>
+                        </table>
+                      </div>
+                    }
+                  </section>
+
+                  <!-- Investigations Table -->
+                  <section class="result-section">
+                    <div class="section-heading">
+                      <h3>Investigations</h3>
+                      <span class="section-count">{{ ext.investigations.length }}</span>
+                    </div>
+
+                    @if (ext.investigations.length === 0) {
+                      <p class="section-empty">No investigations identified in this note.</p>
+                    } @else {
+                      <div class="result-table-wrap">
+                        <table class="result-table investigation-table">
+                          <thead>
+                            <tr>
+                              <th scope="col">Investigation</th>
+                              <th scope="col">Order Intent</th>
+                              <th scope="col">Timing</th>
+                              <th scope="col">Terminology Code</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            @for (inv of ext.investigations; track $index) {
+                              <tr
+                                class="entity-row"
+                                [class.selected]="highlightedEntity() === inv"
+                                tabindex="0"
+                                (click)="toggleEntityHighlight(inv)"
+                                (keydown.enter)="toggleEntityHighlight(inv)"
+                              >
+                                <td class="cell-name">
+                                  <div class="entity-title">{{ inv.name }}</div>
+                                </td>
+                                <td>
+                                  <span class="assertion-chip" [ngClass]="assertionClass(inv.assertionStatus)">
+                                    {{ investigationOrderIntent(inv) }}
+                                  </span>
+                                </td>
+                                <td [class.val-missing]="!inv.timing">{{ docValue(inv.timing) }}</td>
+                                <td class="cell-code">{{ investigationCodeDisplay(inv) }}</td>
+                              </tr>
+                            }
+                          </tbody>
+                        </table>
+                      </div>
+                    }
+                  </section>
+
+                  <!-- Lightweight Selected-Entity Source Quotation Preview -->
+                  @if (highlightedEntity(); as hl) {
+                    <div class="evidence-callout" role="region" aria-label="Supporting source quotation">
+                      <div class="evidence-callout-head">
+                        <span>Source quotation · <strong>{{ hl.name }}</strong></span>
+                        <button type="button" (click)="highlightedEntity.set(null)">Dismiss</button>
+                      </div>
+                      <p class="evidence-quote-text">“{{ hl.evidence.quote || 'Not documented' }}”</p>
+                    </div>
+                  }
+                }
+              </article>
+            </div>
+          }
+        </section>
+      }
+    }
+  </main>
+</div>

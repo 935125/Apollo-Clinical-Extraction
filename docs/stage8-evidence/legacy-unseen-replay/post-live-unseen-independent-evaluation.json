@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-24T09:09:44.4712611+00:00",
+  "generatedAt": "2026-11-25T05:25:34.5028371+00:00",
   "dataset": "post_live_unseen_cases.json (6 unseen synthetic clinical notes across 6 specialties; frozen post-live release audit)",
   "provider": "LocalOnnx (bc5cdr_int8 \u002B deterministic posology/catalog; 0 live Foundry calls)",
   "medicationsMicro": {
@@ -189,7 +189,7 @@
       "matchedAlertsCount": 2,
       "emittedSafetyAlerts": [
         {
-          "alertId": "ALG-387a7f32",
+          "alertId": "ALG-64946788",
           "severity": "MODERATE",
           "category": "ALLERGY_CONFLICT",
           "title": "Documented Drug Allergy Vigilance: Penicillin",
@@ -207,7 +207,7 @@
           "endChar": 164
         },
         {
-          "alertId": "VIT-273b2745",
+          "alertId": "VIT-2507c9ee",
           "severity": "MODERATE",
           "category": "LAB_ANOMALY",
           "title": "Historical Admission Finding \u2014 Significant Pyrexia (39.1\u00B0C)",
@@ -309,7 +309,7 @@
       "matchedAlertsCount": 2,
       "emittedSafetyAlerts": [
         {
-          "alertId": "DDI-cddd1b59",
+          "alertId": "DDI-e918199a",
           "severity": "HIGH",
           "category": "DRUG_INTERACTION",
           "title": "Major Bleeding Risk: Warfarin \u002B Antiplatelet/NSAID",
@@ -328,7 +328,7 @@
           "endChar": 205
         },
         {
-          "alertId": "LAB-441dfa01",
+          "alertId": "LAB-9f0fc660",
           "severity": "CRITICAL",
           "category": "LAB_ANOMALY",
           "title": "Critical Potassium Value (5.9 mEq/L)",
@@ -346,7 +346,7 @@
           "endChar": 102
         },
         {
-          "alertId": "LAB-e2daf8ac",
+          "alertId": "LAB-08ba90fb",
           "severity": "HIGH",
           "category": "LAB_ANOMALY",
           "title": "Elevated Serum Creatinine (2.2 mg/dL)",
@@ -479,7 +479,7 @@
       "matchedAlertsCount": 2,
       "emittedSafetyAlerts": [
         {
-          "alertId": "DDI-9bf12c0f",
+          "alertId": "DDI-51891813",
           "severity": "MODERATE",
           "category": "DRUG_INTERACTION",
           "title": "QTc Prolongation Risk: Macrolide/Fluoroquinolone \u002B Ondansetron",
@@ -498,7 +498,7 @@
           "endChar": 163
         },
         {
-          "alertId": "ALG-5b1084fb",
+          "alertId": "ALG-4f589890",
           "severity": "MODERATE",
           "category": "ALLERGY_CONFLICT",
           "title": "Documented Drug Allergy Vigilance: Ibuprofen",
@@ -626,7 +626,7 @@
       "matchedAlertsCount": 1,
       "emittedSafetyAlerts": [
         {
-          "alertId": "QA-297a38d0a",
+          "alertId": "QA-278905fbf",
           "severity": "WARNING",
           "category": "DATA_QUALITY_WARNING",
           "title": "Ambiguous or Conflicting Serum Creatinine Measurement",

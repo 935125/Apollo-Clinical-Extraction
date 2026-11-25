@@ -1,0 +1,55 @@
+{
+  "status": "PASS",
+  "results": [
+    {
+      "name": "Test A & B: Top 10 Individual Extraction Submissions Rendered",
+      "status": "PASS",
+      "details": "Rows=10 (P100234=4, P100235=3, P100237=3)",
+      "timestamp": "2026-11-25T06:09:02.740Z"
+    },
+    {
+      "name": "Screenshot 2: Repeated UHID P100234 Versions Shown Separately",
+      "status": "PASS",
+      "details": "P100234 rows=4",
+      "timestamp": "2026-11-25T06:09:03.237Z"
+    },
+    {
+      "name": "Test D: Same-Patient Version Isolation (P100234 v21 -> v25 -> v27)",
+      "status": "PASS",
+      "details": "All 3 versions rendered distinct source text and extractions",
+      "timestamp": "2026-11-25T06:09:03.821Z"
+    },
+    {
+      "name": "Test E: Cross-Patient Isolation & Out-of-Order Delayed Response Check",
+      "status": "PASS",
+      "details": "P100237 v21 & P100235 v16 fully isolated",
+      "timestamp": "2026-11-25T06:09:05.573Z"
+    },
+    {
+      "name": "Test F: Failed Case 4 (P100234 v23) Truthful Failure State & Zero Fabrication",
+      "status": "PASS",
+      "details": "Displayed v23 source note + AZURE_INVALID_EVIDENCE",
+      "timestamp": "2026-11-25T06:09:05.736Z"
+    },
+    {
+      "name": "Test C: Automatic Read-Only Polling & Browser Reload Retention",
+      "status": "PASS",
+      "details": "Polls=8->11, ReloadRows=10",
+      "timestamp": "2026-11-25T06:09:11.068Z"
+    },
+    {
+      "name": "Screenshot 7: Responsive Stacked Layout (768x1024)",
+      "status": "PASS",
+      "details": "HorizontalOverflow=0px",
+      "timestamp": "2026-11-25T06:09:11.448Z"
+    },
+    {
+      "name": "Runtime Cleanliness: Zero Console Errors & Zero Unexpected 4xx/5xx",
+      "status": "PASS",
+      "details": "Clean",
+      "timestamp": "2026-11-25T06:09:11.448Z"
+    }
+  ],
+  "consoleErrors": [],
+  "failedApiRequests": []
+}

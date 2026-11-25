@@ -1,0 +1,89 @@
+{
+  "results": [
+    {
+      "name": "Screen 1: Doctor Login Visual & Help Check",
+      "status": "PASS",
+      "details": "Hero=\"Your clinicalworkspace.\", Form=\"Welcome back\"",
+      "timestamp": "2026-11-24T09:48:46.869Z"
+    },
+    {
+      "name": "Doctor Authentication E2E",
+      "status": "PASS",
+      "details": "Redirected to http://localhost:4200/emr",
+      "timestamp": "2026-11-24T09:48:47.054Z"
+    },
+    {
+      "name": "Screen 2: Doctor Dashboard & Live KPIs",
+      "status": "PASS",
+      "details": "Assigned=4, Drafts=0, Signed=4, Awaiting=1, Completed=3",
+      "timestamp": "2026-11-24T09:48:47.121Z"
+    },
+    {
+      "name": "Dashboard Search & Sorting E2E",
+      "status": "PASS",
+      "details": "Search narrowed to P100234; sortable column toggled cleanly",
+      "timestamp": "2026-11-24T09:48:47.178Z"
+    },
+    {
+      "name": "Sidebar: Patients Route",
+      "status": "PASS",
+      "details": "Rendered 4 synthetic assigned patients",
+      "timestamp": "2026-11-24T09:48:47.259Z"
+    },
+    {
+      "name": "Role Boundary: Doctor Restricted from Administration",
+      "status": "PASS",
+      "details": "Rendered \"Administrator privileges required\"",
+      "timestamp": "2026-11-24T09:48:47.319Z"
+    },
+    {
+      "name": "Role Boundary: Doctor Direct Extraction Blocked (403)",
+      "status": "PASS",
+      "details": "HTTP 403 · CLINICAL_ACCESS_DENIED",
+      "timestamp": "2026-11-24T09:48:47.330Z"
+    },
+    {
+      "name": "Signed-Note Immutability E2E",
+      "status": "PASS",
+      "details": "Signed note P100234 is read-only with immutable version banner",
+      "timestamp": "2026-11-24T09:48:48.035Z"
+    },
+    {
+      "name": "Screen 3: 12-Section Structured Editor & Save Draft Persistence E2E",
+      "status": "PASS",
+      "details": "All 12 sections rendered; saved & restored verbatim at http://localhost:4200/emr/notes/a5abf136-8544-4dae-ae79-f4f55d5ad688/edit",
+      "timestamp": "2026-11-24T09:48:49.909Z"
+    },
+    {
+      "name": "Sign & Submit Atomic Outbox E2E",
+      "status": "PASS",
+      "details": "Signed immutable version and redirected to http://localhost:4200/emr/notes/a5abf136-8544-4dae-ae79-f4f55d5ad688/status",
+      "timestamp": "2026-11-24T09:48:50.009Z"
+    },
+    {
+      "name": "Azure Service Bus + LocalOnnx Async Extraction E2E",
+      "status": "PASS",
+      "details": "Note progressed from Signed -> Queued/Processing -> Extraction Ready",
+      "timestamp": "2026-11-24T09:48:54.379Z"
+    },
+    {
+      "name": "Screen 4: Extraction Result 5 Tabs & Truthful Provenance E2E",
+      "status": "PASS",
+      "details": "Provider=\"Local ONNX (bc5cdr_int8)\", Duration=\"33.04 ms\", Tokens=\"N/A (Local ONNX)\"",
+      "timestamp": "2026-11-24T09:48:54.992Z"
+    },
+    {
+      "name": "Responsive Desktop (1920px) & Tablet (1024px) Checks",
+      "status": "PASS",
+      "details": "Rendered cleanly without overflow",
+      "timestamp": "2026-11-24T09:48:55.912Z"
+    },
+    {
+      "name": "Standalone Authorized Reviewer Workspace Preserved",
+      "status": "PASS",
+      "details": "Direct extraction controls accessible when unauthenticated in local demo mode",
+      "timestamp": "2026-11-24T09:48:56.652Z"
+    }
+  ],
+  "consoleErrors": []
+}

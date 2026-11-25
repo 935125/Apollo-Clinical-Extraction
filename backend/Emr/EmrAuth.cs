@@ -26,7 +26,7 @@ public static class EmrAuth
         }).AddPolicyScheme("ApolloSessionOrBearer", null, o => o.ForwardDefaultSelector = http =>
             http.Request.Headers.Authorization.ToString().StartsWith("Bearer ", StringComparison.OrdinalIgnoreCase)
                 ? JwtBearerDefaults.AuthenticationScheme
-                : http.Request.Cookies.ContainsKey("Apollo.Doctor") || http.Request.Path.StartsWithSegments("/api/v1/emr") ? Scheme : JwtBearerDefaults.AuthenticationScheme)
+                : http.Request.Cookies.ContainsKey("Apollo.Doctor") || http.Request.Path.StartsWithSegments("/api/v1/emr") || http.Request.Path.StartsWithSegments("/api/v1/queue") ? Scheme : JwtBearerDefaults.AuthenticationScheme)
         .AddCookie(Scheme, o =>
         {
             o.Cookie.Name = "Apollo.Doctor"; o.Cookie.HttpOnly = true; o.Cookie.SameSite = SameSiteMode.Strict;
@@ -62,7 +62,7 @@ public static class EmrAuth
     // Applied to the existing extraction API even in Development demo mode.
     public static async Task<bool> CheckLinkedExtraction(HttpContext http)
     {
-        if (!IsDoctorSession(http.User) || http.Request.Path.StartsWithSegments("/api/v1/emr")) return true;
+        if (!IsDoctorSession(http.User) || http.Request.Path.StartsWithSegments("/api/v1/emr") || http.Request.Path.StartsWithSegments("/api/v1/queue")) return true;
         if (!(http.Request.Path.StartsWithSegments("/api") || http.Request.Path.StartsWithSegments("/predict") || http.Request.Path.StartsWithSegments("/v1/ner"))) return true;
         if (http.Request.Method is not ("GET" or "HEAD" or "OPTIONS") && !await CheckCsrf(http))
         {
@@ -128,6 +128,33 @@ public sealed class DoctorSessions(EmrStore store)
     {
         await using var c = await store.Open(ct); await using var cmd = EmrStore.Command(c,"SELECT EXISTS(SELECT 1 FROM emr_sessions s JOIN emr_doctors d ON d.id=s.doctor_id WHERE s.id=@id AND s.revoked_at IS NULL AND s.expires_at>now() AND d.enabled)",null,("id",session));
         return (bool)(await cmd.ExecuteScalarAsync(ct))!;
+    }
+    public async Task<(DoctorProfile Profile, Guid Session)?> CreateDevelopmentLoopbackSession(string? preferredLogin, CancellationToken ct)
+    {
+        await using var c = await store.Open(ct); await using var tx = await c.BeginTransactionAsync(ct);
+        Guid? id = null; string login = "", name = "", role = "";
+        await using (var command = EmrStore.Command(c, """
+            SELECT id, login, display_name, role
+            FROM emr_doctors
+            WHERE enabled = true AND (locked_until IS NULL OR locked_until <= now())
+            ORDER BY CASE WHEN @preferred IS NOT NULL AND lower(login) = lower(@preferred) THEN 0 ELSE 1 END, created_at ASC
+            LIMIT 1
+            """, tx, ("preferred", preferredLogin)))
+        await using (var r = await command.ExecuteReaderAsync(ct))
+        {
+            if (await r.ReadAsync(ct))
+            {
+                id = r.GetGuid(0); login = r.GetString(1); name = r.GetString(2); role = r.GetString(3);
+            }
+        }
+        if (id is null) { await tx.RollbackAsync(ct); return null; }
+        Guid session = Guid.NewGuid();
+        await EmrStore.Execute(c, """
+            INSERT INTO emr_sessions(id,doctor_id,expires_at) VALUES(@session,@id,now()+interval '30 minutes');
+            INSERT INTO emr_security_events(id,doctor_id,event_type) VALUES(@event,@id,'DevLoopbackSessionIssued');
+            """, ct, tx, ("id", id), ("session", session), ("event", Guid.NewGuid()));
+        await tx.CommitAsync(ct);
+        return (new DoctorProfile(id.Value, login, name, role), session);
     }
     public async Task Logout(Guid doctor, Guid session, CancellationToken ct)
     {

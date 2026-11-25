@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { ExtractionService } from './services/extraction.service';
-import { EmrApi } from './emr/emr-api';
+import { ClinicalNote, EmrApi } from './emr/emr-api';
 import {
   ClinicalExtractionResponse,
   EntityReviewRecord,
@@ -38,8 +38,17 @@ export class App implements OnInit {
   private readonly extractionService = inject(ExtractionService);
   readonly emrApi = inject(EmrApi, { optional: true });
   readonly isDoctor = computed(() => !!this.emrApi?.doctor());
+  readonly canSubmitClinicalReview = computed(() => {
+    const doc = this.emrApi?.doctor();
+    if (!doc) return true;
+    return ['ClinicalReviewer', 'ClinicalAdministrator', 'Administrator'].includes(doc.role);
+  });
   readonly noteIdParam = signal<string | null>(null);
   readonly patientRefParam = signal<string | null>(null);
+  readonly encounterRefParam = signal<string | null>(null);
+  readonly extractionStatusParam = signal<string | null>(null);
+  readonly linkedNote = signal<ClinicalNote | null>(null);
+  readonly doctorResultTab = signal<'medications' | 'investigations' | 'validation' | 'provenance' | 'audit'>('medications');
 
   readonly noteText = signal<string>('');
   readonly submittedText = signal<string>('');
@@ -274,8 +283,19 @@ Investigations:
     if (typeof window !== 'undefined' && window.location?.search) {
       const params = new URLSearchParams(window.location.search);
       const deepLinkId = params.get('extractionId');
-      if (params.get('noteId')) this.noteIdParam.set(params.get('noteId'));
+      const noteId = params.get('noteId');
+      if (noteId) {
+        this.noteIdParam.set(noteId);
+        if (this.isDoctor() && this.emrApi) {
+          void this.emrApi
+            .note(noteId)
+            .then((n) => this.linkedNote.set(n))
+            .catch(() => { });
+        }
+      }
       if (params.get('patient')) this.patientRefParam.set(params.get('patient'));
+      if (params.get('encounter')) this.encounterRefParam.set(params.get('encounter'));
+      if (params.get('status')) this.extractionStatusParam.set(params.get('status'));
       if (deepLinkId) {
         this.openExtractionById(deepLinkId);
       }
@@ -379,8 +399,8 @@ Investigations:
       this.uploadedFileName.set(full.sourceFileName ?? null);
       this.documentLabel.set(
         full.sourceFileName ||
-          cached?.label ||
-          (full.inputType === 'pdf' ? 'PDF document' : 'Pasted text'),
+        cached?.label ||
+        (full.inputType === 'pdf' ? 'PDF document' : 'Pasted text'),
       );
       this.selectedPresetId.set('');
       this.result.set(full);
@@ -408,6 +428,105 @@ Investigations:
 
   setResultTab(tab: 'structured' | 'source' | 'details'): void {
     this.activeResultTab.set(tab);
+  }
+
+  setDoctorResultTab(tab: 'medications' | 'investigations' | 'validation' | 'provenance' | 'audit'): void {
+    this.doctorResultTab.set(tab);
+  }
+
+  shortNoteRef(): string {
+    const note = this.linkedNote();
+    const noteId = note?.id || this.noteIdParam();
+    if (noteId) {
+      const short = noteId.replace(/-/g, '').slice(0, 6).toUpperCase();
+      return note?.version ? `NT-${short} (v${note.version})` : `NT-${short}`;
+    }
+    const extId = this.result()?.extractionId;
+    return extId ? `EXT-${extId.replace(/-/g, '').slice(0, 6).toUpperCase()}` : 'Linked Note';
+  }
+
+  effectivePatientRef(): string {
+    return this.linkedNote()?.patientReference || this.patientRefParam() || 'Assigned Patient';
+  }
+
+  effectiveEncounterRef(): string {
+    return this.linkedNote()?.encounterReference || this.encounterRefParam() || '—';
+  }
+
+  effectiveExtractionStatus(): string {
+    const st = this.linkedNote()?.extractionStatus || this.extractionStatusParam();
+    if (st) return st;
+    return this.result()?.saved ? 'Completed' : 'Processed';
+  }
+
+  medicationDoseDisplay(med: ExtractedMedication): string {
+    const s = med.strength?.trim();
+    const d = med.dose?.trim();
+    if (s && d && s.toLowerCase() !== d.toLowerCase()) return `${s} (${d})`;
+    return s || d || '—';
+  }
+
+  dash(value: string | null | undefined): string {
+    return value?.trim() ? value.trim() : '—';
+  }
+
+  actualProviderSummary(run: ClinicalExtractionResponse): string {
+    const m = run.modelMetadata;
+    if (m.provider === 'foundry') {
+      const model = (m.model || m.azureDeployment || m.modelDeployment || 'gpt-6.1-sol').trim();
+      return `Microsoft Foundry (${model})`;
+    }
+    if (m.provider === 'onnx' || m.adapterType?.startsWith('onnx')) {
+      const model = (m.model || m.modelDeployment || m.adapterType || 'BC5CDR INT8').trim();
+      return `Local ONNX (${model})`;
+    }
+    return m.modelDeployment || m.adapterType || 'Not recorded';
+  }
+
+  fallbackSummary(run: ClinicalExtractionResponse): string {
+    const m = run.modelMetadata;
+    if (m.fallbackTriggered || (m.provider === 'onnx' && m.fallbackReason)) {
+      return m.fallbackReason ? `Yes (${m.fallbackReason})` : 'Yes';
+    }
+    return 'No';
+  }
+
+  tokenUsageSummary(run: ClinicalExtractionResponse): string {
+    const m = run.modelMetadata;
+    if (m.provider === 'onnx' || m.adapterType?.startsWith('onnx')) {
+      return 'N/A (Local ONNX)';
+    }
+    if (m.totalTokens != null) {
+      return `${m.totalTokens.toLocaleString()} tokens`;
+    }
+    return 'Not recorded';
+  }
+
+  validationSummaryText(run: ClinicalExtractionResponse): string {
+    const errs = run.validationSummary.errorCount;
+    const warns = run.validationSummary.warningCount;
+    if (errs === 0 && warns === 0) return 'Passed (0 findings)';
+    return `${errs} error${errs === 1 ? '' : 's'}, ${warns} warning${warns === 1 ? '' : 's'}`;
+  }
+
+  validationBadgeCount(): number {
+    const r = this.result();
+    if (!r) return 0;
+    return this.allFindings().length + (r.safetyAlerts?.length || 0) + (r.modelMetadata.reviewCandidates?.length || 0);
+  }
+
+  investigationConditionality(inv: ExtractedInvestigation): string {
+    const st = (inv.assertionStatus || '').toLowerCase();
+    if (st.includes('conditional')) return 'Conditional';
+    if (st.includes('historical')) return 'Historical';
+    if (st.includes('negat') || st.includes('ruled_out')) return 'Negated';
+    return 'Unconditional';
+  }
+
+  investigationValidationState(inv: ExtractedInvestigation): string {
+    if (inv.findings?.some((f) => f.severity === 'error')) return 'Error';
+    if (inv.findings?.length || inv.qualityFlags?.length) return 'Review';
+    return inv.evidence?.verified ? 'Verified' : 'Unverified';
   }
 
   onTabsKey(event: KeyboardEvent): void {
@@ -574,9 +693,9 @@ Investigations:
         assertionStatus: String(existingCorr['assertionStatus'] ?? m.assertionStatus ?? ''),
         rxNormCode: String(
           existingCorr['rxNormCode'] ??
-            m.normalization?.matchedCode ??
-            m.normalization?.candidateCode ??
-            '',
+          m.normalization?.matchedCode ??
+          m.normalization?.candidateCode ??
+          '',
         ),
       });
     } else {
@@ -589,9 +708,9 @@ Investigations:
         assertionStatus: String(existingCorr['assertionStatus'] ?? inv.assertionStatus ?? ''),
         loincCode: String(
           existingCorr['loincCode'] ??
-            inv.normalization?.matchedCode ??
-            inv.normalization?.candidateCode ??
-            '',
+          inv.normalization?.matchedCode ??
+          inv.normalization?.candidateCode ??
+          '',
         ),
         clinicalCategory: String(existingCorr['clinicalCategory'] ?? inv.clinicalCategory ?? ''),
       });
@@ -678,18 +797,30 @@ Investigations:
   }
   readonly allFindings = computed(() => {
     const r = this.result();
-    return r
-      ? [...r.medications, ...r.investigations].flatMap((entity) => [
-          ...entity.findings.map((f) => ({ ...f, entity: entity.name })),
-          ...entity.qualityFlags.map((flag) => ({
-            code: flag,
-            severity: 'warning',
-            field: null,
-            message: flag,
-            entity: entity.name,
-          })),
-        ])
-      : [];
+    if (!r) return [];
+    const items: { code: string; severity: string; field: string | null; message: string; entity: string }[] = [];
+    const seen = new Set<string>();
+    for (const entity of [...r.medications, ...r.investigations]) {
+      const codes = new Set<string>();
+      for (const f of entity.findings) {
+        const normCode = f.code.trim().toUpperCase();
+        codes.add(normCode);
+        const key = `${entity.name.toLowerCase()}|${normCode}|${f.message.trim().toLowerCase()}`;
+        if (seen.has(key)) continue;
+        seen.add(key);
+        items.push({ ...f, entity: entity.name });
+      }
+      for (const flag of entity.qualityFlags) {
+        const normCode = flag.trim().toUpperCase();
+        if (!normCode || codes.has(normCode)) continue;
+        codes.add(normCode);
+        const key = `${entity.name.toLowerCase()}|${normCode}|${flag.trim().toLowerCase()}`;
+        if (seen.has(key)) continue;
+        seen.add(key);
+        items.push({ code: flag, severity: 'warning', field: null, message: flag, entity: entity.name });
+      }
+    }
+    return items;
   });
 
   onExtract(): void {

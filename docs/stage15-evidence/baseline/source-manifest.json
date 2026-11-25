@@ -1,0 +1,142 @@
+﻿[
+    {
+        "Path":  "backend\\Clinical\\ActiveLearningFeedbackService.cs",
+        "Sha256":  "A23EECC72DB6D6A9F668A76C569A9351C437A78B56103364F66B0FA605D5CBA4"
+    },
+    {
+        "Path":  "backend\\Clinical\\ClinicalAttributeGrounding.cs",
+        "Sha256":  "21145F50168CE86AD596A0F35BE3D0D345C453234E146DF9E525B6CC049C9454"
+    },
+    {
+        "Path":  "backend\\Clinical\\ClinicalPipelineService.cs",
+        "Sha256":  "78697F9C56E594AA72A86CA6282DBC6E3FD63AE37CA7F1C60176805946FCF59D"
+    },
+    {
+        "Path":  "backend\\Clinical\\ClinicalProviders.cs",
+        "Sha256":  "10C32ACEA6C71E0A379C4F292DA033787BF4DEFA615D46D52C75810B9B1F443D"
+    },
+    {
+        "Path":  "backend\\Clinical\\ClinicalResultValidator.cs",
+        "Sha256":  "8C672B376A2D2657EC59F7400F53ADDC7FCB1288DDD649830A4619FE6D7EBBB8"
+    },
+    {
+        "Path":  "backend\\Clinical\\ClinicalReview.cs",
+        "Sha256":  "ECF4AFE9A9A7DBEF364CDCE9BED3B7552463814B126362D608293C2A40F5E387"
+    },
+    {
+        "Path":  "backend\\Clinical\\ClinicalSafetyRuleEngine.cs",
+        "Sha256":  "CEAD753AE800E4D255CCA738BD8D9766928E2626052FBF7C03066ABD8B328BF2"
+    },
+    {
+        "Path":  "backend\\Clinical\\ContextEngine.cs",
+        "Sha256":  "B1899A3568A0A1C9007411B280115D26E1B2BA57B529874FC501B518AD8966B2"
+    },
+    {
+        "Path":  "backend\\Clinical\\ExtractionWorkflow.cs",
+        "Sha256":  "A92B5E4E428B7C65A7413863EEAD35C07944FFD5844900A6F5A2268B7529362A"
+    },
+    {
+        "Path":  "backend\\Clinical\\FoundryClinicalExtractor.cs",
+        "Sha256":  "F645CDA68590F05C67841AE010DEE3AD5219647D1AAFB368DAF9F04C15BC361B"
+    },
+    {
+        "Path":  "backend\\Clinical\\IndianOntologyResolver.cs",
+        "Sha256":  "025C361536CB8CD04C40C32D194ACD2531D737ABE31374286703D3E58621A32D"
+    },
+    {
+        "Path":  "backend\\Clinical\\InvestigationMentionRules.cs",
+        "Sha256":  "2974598D18A07AF25CC1D9CD0CDA6749819FE6E028DBB895C17D90113E57CD50"
+    },
+    {
+        "Path":  "backend\\Clinical\\LocalClinicalAttributes.cs",
+        "Sha256":  "5F9E4457EFDBA66B968B978F437AC44824AF3CB091286EB3BB98AC169E328001"
+    },
+    {
+        "Path":  "backend\\Clinical\\MicroCardBuilder.cs",
+        "Sha256":  "3A249537BF987A47415124BB459906AD6F888F1EB2FD21AFC4BEABA337E0C736"
+    },
+    {
+        "Path":  "backend\\Clinical\\OnnxClinicalExtractor.cs",
+        "Sha256":  "E646ECD0D67B38B54478ECAB98ACBAF04EA8B1BB183134E1D282AA93474E78C4"
+    },
+    {
+        "Path":  "backend\\Clinical\\PdfTextReconstructor.cs",
+        "Sha256":  "83B0AEAB2E9E1DBA7E5B27F521777B9E14BB156474946A8FD3F331EF690E7838"
+    },
+    {
+        "Path":  "backend\\Clinical\\PosologyBinder.cs",
+        "Sha256":  "119896A233EFB2629D6841CA9BE9DF3B8FF52945C73E24F50A86AA3F924A46CD"
+    },
+    {
+        "Path":  "backend\\Clinical\\ProviderDiagnostics.cs",
+        "Sha256":  "E329514B5082DF425A750A5A106521EFC5DD078167E55AB57CD535E72AF42095"
+    },
+    {
+        "Path":  "backend\\Clinical\\ProviderRoutingPolicy.cs",
+        "Sha256":  "E3BA2665F5082B1C4D9DF97E43A825928B4E53AF11470ACEDF8AFC47294D347A"
+    },
+    {
+        "Path":  "backend\\Clinical\\terminology-verification.json",
+        "Sha256":  "14D0AD56C50CCCE72EEF7642AD3FD89E7CD0F8D7CA8C1B2D6CD242B10698ADC3"
+    },
+    {
+        "Path":  "backend\\Clinical\\TerminologyVerification.cs",
+        "Sha256":  "ADD85715D3E005807FD9A50A6679EBCFF24960250661C17B6DE7DB888C14C51F"
+    },
+    {
+        "Path":  "backend\\Nlp\\ClinicalEmbeddingGenerator.cs",
+        "Sha256":  "CA5023F287F5819C6B5F776CA32723F030D8BA348DDB84B79AD7E4FDB78FC878"
+    },
+    {
+        "Path":  "backend\\Nlp\\OnnxArtifactIntegrity.cs",
+        "Sha256":  "FFBC07998E9EB8B02448BFA7D2032958EDA183A815257FEE9E9E88C528CD8FCA"
+    },
+    {
+        "Path":  "backend\\Nlp\\SlidingWindowOnnxEngine.cs",
+        "Sha256":  "C18B5A6D29A6894B50DC812083ABBFDF3E6DE5AAA323BD60F9F086CE067BD009"
+    },
+    {
+        "Path":  "backend\\Nlp\\WordPieceTokenizer.cs",
+        "Sha256":  "B569E0E79517E695C24D81D2821C73D24AD238AF248EE972A013238C96C63A28"
+    },
+    {
+        "Path":  "backend\\Models\\Contracts.cs",
+        "Sha256":  "83FB93DC63C69B54CABC409F57521FA3FE55C6C7A48F1814D455A78B4A9D9BB6"
+    },
+    {
+        "Path":  "backend\\Security\\ArtifactChecksumVerifier.cs",
+        "Sha256":  "E5E74683204EE9133CD77FCCD5340D2FBDE7330AE4B45E1074B8A87FCB2D1D3D"
+    },
+    {
+        "Path":  "backend\\Security\\ClinicalApiSecurity.cs",
+        "Sha256":  "9D15C3CE1FF3875B4A4B6C941E34CFE791567AD116E05358EFCA17F96B69C53B"
+    },
+    {
+        "Path":  "backend\\Security\\ClinicalDataAccess.cs",
+        "Sha256":  "36AFE6EA7477E560A8114B5B9D36B8D1A6408075B48693FE4B6A2BC4B0514285"
+    },
+    {
+        "Path":  "backend\\Security\\OnnxReadinessHealthCheck.cs",
+        "Sha256":  "29FA801223D5AE4F9958A866F38077AA4729DE9E8014C66FE57AD8FDBE307442"
+    },
+    {
+        "Path":  "backend\\Security\\SyntheticDataPrivacyPolicy.cs",
+        "Sha256":  "BB3AEB26CD78FD12D606254B3BC888CD4C23540A2050B213DFC5E4A5457B5B66"
+    },
+    {
+        "Path":  "backend\\Security\\ZeroLeakageValidator.cs",
+        "Sha256":  "2D00FEBF2A70C6433D9B89BC2A33CF6E198DACBEF31805A0A3354C365896CA73"
+    },
+    {
+        "Path":  "backend\\Storage\\IExtractionRepository.cs",
+        "Sha256":  "FCD2E9D6DD2AD34532FFD92EB39AF092FF8B8ECC41C8D2D6ABEBCB59AE31D89C"
+    },
+    {
+        "Path":  "backend\\Storage\\InMemoryExtractionRepository.cs",
+        "Sha256":  "4AC8D1AC3E2E38B367CC74A90592D3BCAD5759A905B2BA374E6A97CB57E50625"
+    },
+    {
+        "Path":  "backend\\Storage\\SqlExtractionRepository.cs",
+        "Sha256":  "5800A0A9DDB60989CB8B03B58F121B0878B7B40450EC526847A8DC5A520DEB51"
+    }
+]

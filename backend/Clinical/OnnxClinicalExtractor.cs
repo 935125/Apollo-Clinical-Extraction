@@ -14,6 +14,13 @@ public sealed class OnnxClinicalExtractor(IServiceProvider services) : ILocalCli
     public string ProviderName => "LocalOnnx";
 
     public Task<ClinicalExtractionResponse> ExtractAsync(string source, string correlationId, CancellationToken ct)
+        => ExtractAsync(source, correlationId, allowVerifiedSyntheticIdentifiers: false, ct);
+
+    public Task<ClinicalExtractionResponse> ExtractAsync(
+        string source,
+        string correlationId,
+        bool allowVerifiedSyntheticIdentifiers,
+        CancellationToken ct)
     {
         ct.ThrowIfCancellationRequested();
         var engine = services.GetRequiredService<SlidingWindowOnnxEngine>();
@@ -23,7 +30,7 @@ public sealed class OnnxClinicalExtractor(IServiceProvider services) : ILocalCli
             throw new ClinicalExtractionException("ONNX_ARTIFACT_UNAVAILABLE", 503, "Local model weights or tokenizer are unavailable.");
         var watch = Stopwatch.StartNew();
         var receipt = new OnnxExecutionReceipt();
-        var result = pipeline.ProcessPlatformExtraction(new(source), correlationId, receipt);
+        var result = pipeline.ProcessPlatformExtraction(new(source), correlationId, receipt, skipPrivacyValidation: allowVerifiedSyntheticIdentifiers);
         ct.ThrowIfCancellationRequested();
         if (receipt.WindowsExecuted == 0)
             throw new ClinicalExtractionException("ONNX_INFERENCE_NOT_EXECUTED", 503, "The local model did not execute inference.");

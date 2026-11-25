@@ -1,6 +1,6 @@
 [
   {
-    "alertId": "DDI-97a7995e",
+    "alertId": "DDI-08220890",
     "severity": "HIGH",
     "category": "DRUG_INTERACTION",
     "title": "Major Bleeding Risk: Warfarin \u002B Antiplatelet/NSAID",
@@ -19,7 +19,7 @@
     "endChar": 1145
   },
   {
-    "alertId": "DDI-e4d84269",
+    "alertId": "DDI-00d0a755",
     "severity": "MODERATE",
     "category": "DRUG_INTERACTION",
     "title": "QTc Prolongation Risk: Macrolide/Fluoroquinolone \u002B Ondansetron",
@@ -38,7 +38,7 @@
     "endChar": 1288
   },
   {
-    "alertId": "ALG-8f559155",
+    "alertId": "ALG-36645884",
     "severity": "MODERATE",
     "category": "ALLERGY_CONFLICT",
     "title": "Documented Drug Allergy Vigilance: Penicillin",
@@ -56,7 +56,7 @@
     "endChar": 163
   },
   {
-    "alertId": "ALG-896046ce",
+    "alertId": "ALG-f4fc81ef",
     "severity": "MODERATE",
     "category": "ALLERGY_CONFLICT",
     "title": "Documented Drug Allergy Vigilance: Ibuprofen",
@@ -74,7 +74,7 @@
     "endChar": 163
   },
   {
-    "alertId": "LAB-ec9ff073",
+    "alertId": "LAB-d9920214",
     "severity": "CRITICAL",
     "category": "LAB_ANOMALY",
     "title": "Critical Potassium Value (5.7 mEq/L)",
@@ -92,7 +92,7 @@
     "endChar": 726
   },
   {
-    "alertId": "LAB-7aae2793",
+    "alertId": "LAB-f979cc4c",
     "severity": "HIGH",
     "category": "LAB_ANOMALY",
     "title": "Elevated Serum Creatinine (1.9 mg/dL)",
@@ -110,7 +110,7 @@
     "endChar": 748
   },
   {
-    "alertId": "VIT-5f8bf9f8",
+    "alertId": "VIT-160ce5ba",
     "severity": "MODERATE",
     "category": "LAB_ANOMALY",
     "title": "Historical Admission Finding \u2014 Significant Pyrexia (38.9\u00B0C)",

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-24T09:10:14.1052281+00:00",
+  "generatedAt": "2026-11-24T11:11:20.4894964+00:00",
   "classification": "Preliminary synthetic engineering evaluation (gold labels engineering-authored from source text; not clinician-reviewed)",
   "dataset": "stage5_independent_benchmark_35cases.json",
   "datasetSha256": "3D2EE6AFD0AC72157C92BDDEEDC43F94511BA170D7985A1F44177CB78EB9AD84",
@@ -127,10 +127,10 @@
     "clinicianSeverityAgreement": "NOT AVAILABLE (no clinician review)"
   },
   "latencyMs": {
-    "mean": 217.16,
-    "p50": 180.34,
-    "p95": 417.52,
-    "max": 630.97
+    "mean": 59.04,
+    "p50": 37.2,
+    "p95": 177.96,
+    "max": 430.7
   },
   "errorCategories": {
     "FN:unrecognized": 20,
@@ -151,7 +151,7 @@
       "id": "stage5-001-cardio-afib-multi",
       "specialty": "Cardiology",
       "challenge": "Multiple medications in a single sentence \u002B Warfarin/Aspirin DDI \u002B PT/INR \u0026 12-lead ECG",
-      "latencyMs": 630.97,
+      "latencyMs": 430.7,
       "medications": {
         "tp": 3,
         "fp": 0,
@@ -184,7 +184,7 @@
       "id": "stage5-002-cardio-hf-baseline",
       "specialty": "Cardiology",
       "challenge": "Baseline lab hyperkalemia \u002B elevated creatinine \u002B discontinuation \u002B shared timing investigations",
-      "latencyMs": 342.88,
+      "latencyMs": 177.96,
       "medications": {
         "tp": 2,
         "fp": 0,
@@ -240,7 +240,7 @@
       "id": "stage5-003-cardio-acs-negated",
       "specialty": "Cardiology",
       "challenge": "Negated allergy \u002B dual antiplatelet \u002B high-sensitivity troponin \u0026 fasting lipid profile",
-      "latencyMs": 317.23,
+      "latencyMs": 59.67,
       "medications": {
         "tp": 3,
         "fp": 0,
@@ -266,7 +266,7 @@
       "id": "stage5-004-cardio-htn-titration",
       "specialty": "Cardiology",
       "challenge": "Dose titration \u002B 2D Echocardiogram \u002B Renal Function Test",
-      "latencyMs": 378.78,
+      "latencyMs": 33.28,
       "medications": {
         "tp": 3,
         "fp": 0,
@@ -292,7 +292,7 @@
       "id": "stage5-005-cardio-ntprobnp",
       "specialty": "Cardiology",
       "challenge": "NT-proBNP \u002B imaging view distinction (Chest X-ray PA view) \u002B Spironolactone",
-      "latencyMs": 252.47,
+      "latencyMs": 157.61,
       "medications": {
         "tp": 2,
         "fp": 0,
@@ -391,7 +391,7 @@
       "id": "stage5-006-pulm-cap-admission-fever",
       "specialty": "Pulmonology",
       "challenge": "Historical admission fever 39.2 C \u002B Penicillin allergy \u002B PRN paracetamol \u002B shared timing CBC/CRP",
-      "latencyMs": 319.61,
+      "latencyMs": 67.76,
       "medications": {
         "tp": 3,
         "fp": 0,
@@ -430,7 +430,7 @@
       "id": "stage5-007-pulm-asthma-inhaler",
       "specialty": "Pulmonology",
       "challenge": "Inhaled bronchodilator formulation \u002B oral steroid taper \u002B conditional Chest X-ray",
-      "latencyMs": 417.52,
+      "latencyMs": 14.92,
       "medications": {
         "tp": 2,
         "fp": 0,
@@ -505,7 +505,7 @@
       "id": "stage5-008-pulm-copd-iv",
       "specialty": "Pulmonology",
       "challenge": "IV antimicrobial \u002B historical medication \u002B Blood culture \u0026 Serum electrolytes",
-      "latencyMs": 248.87,
+      "latencyMs": 93.48,
       "medications": {
         "tp": 2,
         "fp": 0,
@@ -564,7 +564,7 @@
       "id": "stage5-009-pulm-pe-anticoag",
       "specialty": "Pulmonology",
       "challenge": "Subcutaneous low-molecular-weight heparin \u002B oral anticoagulant transition",
-      "latencyMs": 363.64,
+      "latencyMs": 24.44,
       "medications": {
         "tp": 0,
         "fp": 0,
@@ -687,7 +687,7 @@
       "id": "stage5-010-endo-dm2-titration",
       "specialty": "Endocrinology",
       "challenge": "Metformin titration \u002B SGLT2 inhibitor \u002B HbA1c, Fasting Blood Sugar \u0026 Urine Microalbumin",
-      "latencyMs": 405.97,
+      "latencyMs": 109.28,
       "medications": {
         "tp": 3,
         "fp": 0,
@@ -762,7 +762,7 @@
       "id": "stage5-011-endo-hypothyroid-indian",
       "specialty": "Endocrinology",
       "challenge": "Indian brand synonyms (Thyronorm, Atorva) \u002B Serum TSH and Serum Free T4",
-      "latencyMs": 275.36,
+      "latencyMs": 9.49,
       "medications": {
         "tp": 2,
         "fp": 0,
@@ -788,7 +788,7 @@
       "id": "stage5-012-endo-insulin-basal",
       "specialty": "Endocrinology",
       "challenge": "Subcutaneous units dosing \u002B oral agent continuation \u002B Serum potassium",
-      "latencyMs": 85.54,
+      "latencyMs": 37.2,
       "medications": {
         "tp": 0,
         "fp": 0,
@@ -903,7 +903,7 @@
       "id": "stage5-013-endo-gout-allopurinol",
       "specialty": "Endocrinology",
       "challenge": "Historical stopped Colchicine \u002B new Allopurinol \u002B Serum uric acid \u0026 Liver Function Tests",
-      "latencyMs": 293.27,
+      "latencyMs": 9.07,
       "medications": {
         "tp": 1,
         "fp": 0,
@@ -1010,7 +1010,7 @@
       "id": "stage5-014-peds-otitis-weight",
       "specialty": "Pediatrics",
       "challenge": "Pediatric oral suspension formulation \u002B mL dose \u002B PRN antipyretic",
-      "latencyMs": 320.78,
+      "latencyMs": 11.48,
       "medications": {
         "tp": 2,
         "fp": 0,
@@ -1036,7 +1036,7 @@
       "id": "stage5-015-peds-croup-wheeze",
       "specialty": "Pediatrics",
       "challenge": "Single-dose Dexamethasone \u002B nebulized Salbutamol \u002B conditional Chest X-ray",
-      "latencyMs": 170.58,
+      "latencyMs": 35.17,
       "medications": {
         "tp": 2,
         "fp": 0,
@@ -1062,7 +1062,7 @@
       "id": "stage5-016-peds-uti-culture",
       "specialty": "Pediatrics",
       "challenge": "Cefixime oral suspension \u002B Urine Culture \u0026 Ultrasound Abdomen",
-      "latencyMs": 114.45,
+      "latencyMs": 9.1,
       "medications": {
         "tp": 1,
         "fp": 0,
@@ -1160,7 +1160,7 @@
       "id": "stage5-017-peds-epilepsy-neuro",
       "specialty": "Pediatrics",
       "challenge": "Levetiracetam twice daily \u002B Vitamin D3 weekly dosing",
-      "latencyMs": 174.13,
+      "latencyMs": 9.85,
       "medications": {
         "tp": 1,
         "fp": 0,
@@ -1243,7 +1243,7 @@
       "id": "stage5-018-onc-methotrexate-weekly",
       "specialty": "Oncology",
       "challenge": "Weekly Methotrexate \u002B Weekly Folic Acid \u002B PRN Ondansetron \u002B CBC/LFT monitoring",
-      "latencyMs": 180.34,
+      "latencyMs": 87.5,
       "medications": {
         "tp": 3,
         "fp": 0,
@@ -1269,7 +1269,7 @@
       "id": "stage5-019-onc-qtc-interaction",
       "specialty": "Oncology",
       "challenge": "Ciprofloxacin \u002B Ondansetron QTc prolongation DDI \u002B 12-lead ECG \u0026 Serum potassium",
-      "latencyMs": 205.82,
+      "latencyMs": 77.96,
       "medications": {
         "tp": 3,
         "fp": 0,
@@ -1302,7 +1302,7 @@
       "id": "stage5-020-onc-febrile-neutropenia",
       "specialty": "Oncology",
       "challenge": "Admission fever 38.8 C \u002B IV Piperacillin-Tazobactam \u002B Blood culture \u0026 CRP",
-      "latencyMs": 104.16,
+      "latencyMs": 10.43,
       "medications": {
         "tp": 1,
         "fp": 0,
@@ -1384,7 +1384,7 @@
       "id": "stage5-021-onc-prostate-psa",
       "specialty": "Oncology",
       "challenge": "Serum PSA \u002B Bone pain analgesic \u002B Tramadol PRN",
-      "latencyMs": 128.82,
+      "latencyMs": 10.97,
       "medications": {
         "tp": 2,
         "fp": 0,
@@ -1410,7 +1410,7 @@
       "id": "stage5-022-nephro-conflicting-scr",
       "specialty": "Nephrology",
       "challenge": "Conflicting Serum Creatinine (1.1 vs 2.4 mg/dL) DATA_QUALITY_WARNING \u002B conditional Lisinopril hold",
-      "latencyMs": 184.95,
+      "latencyMs": 65.13,
       "medications": {
         "tp": 1,
         "fp": 0,
@@ -1468,7 +1468,7 @@
       "id": "stage5-023-nephro-ckd-anemia",
       "specialty": "Nephrology",
       "challenge": "Baseline elevated creatinine 2.3 mg/dL \u002B Hemoglobin \u0026 Serum ferritin",
-      "latencyMs": 72.28,
+      "latencyMs": 16.72,
       "medications": {
         "tp": 2,
         "fp": 0,
@@ -1542,7 +1542,7 @@
       "id": "stage5-024-nephro-hypokalemia",
       "specialty": "Nephrology",
       "challenge": "Critical hypokalemia K\u002B 2.8 mEq/L \u002B Hydrochlorothiazide discontinuation",
-      "latencyMs": 140.31,
+      "latencyMs": 9.44,
       "medications": {
         "tp": 1,
         "fp": 0,
@@ -1608,7 +1608,7 @@
       "id": "stage5-025-nephro-nsaid-avoidance",
       "specialty": "Nephrology",
       "challenge": "Documented Ibuprofen allergy \u002B Paracetamol alternative \u002B Renal Function Test",
-      "latencyMs": 89.56,
+      "latencyMs": 77.29,
       "medications": {
         "tp": 3,
         "fp": 0,
@@ -1641,7 +1641,7 @@
       "id": "stage5-026-neuro-stroke-secondary",
       "specialty": "Neurology",
       "challenge": "Ischemic stroke secondary prevention \u002B MRI Brain \u0026 Fasting Lipid Profile",
-      "latencyMs": 97.11,
+      "latencyMs": 57.13,
       "medications": {
         "tp": 3,
         "fp": 0,
@@ -1667,7 +1667,7 @@
       "id": "stage5-027-neuro-migraine-prn",
       "specialty": "Neurology",
       "challenge": "Prophylactic Amitriptyline \u002B PRN Sumatriptan \u002B conditional CT Head",
-      "latencyMs": 117.44,
+      "latencyMs": 12.94,
       "medications": {
         "tp": 2,
         "fp": 0,
@@ -1693,7 +1693,7 @@
       "id": "stage5-028-neuro-neuropathy-preg",
       "specialty": "Neurology",
       "challenge": "Gabapentin discontinuation \u002B Pregabalin initiation \u002B Serum Vitamin B12 / HbA1c",
-      "latencyMs": 64.87,
+      "latencyMs": 44.84,
       "medications": {
         "tp": 1,
         "fp": 0,
@@ -1768,7 +1768,7 @@
       "id": "stage5-029-neuro-seizure-titration",
       "specialty": "Neurology",
       "challenge": "Levetiracetam dose escalation \u002B EEG \u0026 Liver Function Tests",
-      "latencyMs": 115.31,
+      "latencyMs": 12.97,
       "medications": {
         "tp": 3,
         "fp": 0,
@@ -1794,7 +1794,7 @@
       "id": "stage5-030-genmed-gerd-anemia",
       "specialty": "General Medicine",
       "challenge": "PPI before breakfast \u002B oral iron \u002B Hemoglobin \u0026 Platelet count",
-      "latencyMs": 152.05,
+      "latencyMs": 34.82,
       "medications": {
         "tp": 2,
         "fp": 0,
@@ -1853,7 +1853,7 @@
       "id": "stage5-031-genmed-uti-nitrofurantoin",
       "specialty": "General Medicine",
       "challenge": "Nitrofurantoin 5-day course \u002B Urine Culture \u0026 Complete Urine Examination",
-      "latencyMs": 139.64,
+      "latencyMs": 50.66,
       "medications": {
         "tp": 2,
         "fp": 0,
@@ -1879,7 +1879,7 @@
       "id": "stage5-032-genmed-ophthalmic-postop",
       "specialty": "General Medicine",
       "challenge": "Ophthalmic eye drops route \u002B oral analgesic \u002B Fasting Blood Sugar",
-      "latencyMs": 175.47,
+      "latencyMs": 12.75,
       "medications": {
         "tp": 2,
         "fp": 0,
@@ -1905,7 +1905,7 @@
       "id": "stage5-033-genmed-cellulitis-allergy",
       "specialty": "General Medicine",
       "challenge": "Penicillin allergy \u002B Clindamycin alternative \u002B ESR \u0026 CRP",
-      "latencyMs": 185.99,
+      "latencyMs": 64.66,
       "medications": {
         "tp": 3,
         "fp": 0,
@@ -1944,7 +1944,7 @@
       "id": "stage5-034-genmed-multimorbid-polypharmacy",
       "specialty": "General Medicine",
       "challenge": "5-drug polypharmacy \u002B Warfarin/Ibuprofen bleeding interaction \u002B multi-panel labs",
-      "latencyMs": 236.36,
+      "latencyMs": 56.07,
       "medications": {
         "tp": 5,
         "fp": 0,
@@ -1977,7 +1977,7 @@
       "id": "stage5-035-genmed-unresolved-oov",
       "specialty": "General Medicine",
       "challenge": "Unresolved OOV medication (Pirfenidone) \u0026 investigation (High-resolution CT Thorax) abstention check",
-      "latencyMs": 98.19,
+      "latencyMs": 73.71,
       "medications": {
         "tp": 1,
         "fp": 0,

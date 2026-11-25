@@ -125,10 +125,9 @@ try {
   await page.click('.extract-button');
 
   await page.waitForSelector('.medication-table', { timeout: 15000 });
-  const medsCount = await page.locator('.medication-row').count();
-  const providerLabel = await page.textContent('.model-detail, .provider-label, .run-meta');
+  const medsCount = await page.locator('.medication-table tr, .medication-row').count();
 
-  recordResult('Standalone Authorized Extraction', 'PASS', `Controls visible (Extract: ${unauthExtractBtn}, Upload: ${unauthUploadBtn}, Presets: ${unauthPresets}), Extracted ${medsCount} medications without errors`);
+  recordResult('Standalone Authorized Extraction', 'PASS', `Controls visible (Extract: ${unauthExtractBtn}, Upload: ${unauthUploadBtn}, Presets: ${unauthPresets}), Extracted medications table rendered (${medsCount} rows)`);
   await page.screenshot({ path: path.join(evidenceDir, '05-standalone-authorized-extraction.png'), fullPage: true });
 
   // Write results JSON

@@ -64,6 +64,211 @@ public sealed class EmrStore(IConfiguration configuration)
             WHERE a.doctor_id=@doctor ORDER BY e.encounter_date DESC,e.reference
             """, ct, null, ("doctor", doctor));
     }
+    public async Task<(List<QueueItemDto> Items, int Total)> QueueItems(
+        Guid doctor, string? search, string? state, int limit, int offset, CancellationToken ct)
+    {
+        await using var c = await Open(ct);
+        int clampedLimit = Math.Clamp(limit, 1, 100);
+        int clampedOffset = Math.Max(0, offset);
+        string like = string.IsNullOrWhiteSpace(search) ? "" : $"%{search.Trim()}%";
+        string normalizedState = string.IsNullOrWhiteSpace(state) || state.Equals("all", StringComparison.OrdinalIgnoreCase)
+            ? "" : state.Trim().ToLowerInvariant();
+
+        const string cte = """
+            WITH projected AS (
+              SELECT
+                p.id AS patient_id,
+                e.id AS encounter_id,
+                n.id AS note_id,
+                o.note_version,
+                p.reference AS patient_reference,
+                e.reference AS encounter_reference,
+                e.encounter_date,
+                o.occurred_at AS received_at,
+                LEFT(BTRIM(REGEXP_REPLACE(v.source_text, E'[\\r\\n\\s]+', ' ', 'g')), 180) AS source_preview,
+                COALESCE(array_length(regexp_split_to_array(NULLIF(BTRIM(v.source_text), ''), E'\\s+'), 1), 0) AS word_count,
+                CASE WHEN v.signed_at IS NOT NULL THEN 'Signed' ELSE n.status END AS note_status,
+                CASE
+                  WHEN l.extraction_id IS NOT NULL AND r.extraction_id IS NOT NULL THEN 'Ready'
+                  WHEN o.processing_status = 'Failed' OR o.publication_status = 'Failed' THEN 'Failed'
+                  WHEN o.processing_status = 'Processing' THEN 'Extracting'
+                  WHEN o.processing_status = 'Queued' OR o.publication_status = 'Published' THEN 'Queued'
+                  ELSE 'Waiting'
+                END AS queue_state,
+                (o.processing_status = 'Needs Review' OR COALESCE(r.warning_count, 0) > 0 OR COALESCE(r.error_count, 0) > 0) AS verification_recommended,
+                o.processing_status AS raw_processing_status,
+                o.event_id,
+                l.extraction_id,
+                COALESCE(r.provider_metadata->>'provider', CASE WHEN r.adapter_type LIKE 'onnx%' THEN 'onnx' WHEN r.adapter_type LIKE '%foundry%' THEN 'foundry' END) AS provider,
+                COALESCE(r.provider_metadata->>'model', r.model_deployment) AS model,
+                COALESCE((r.provider_metadata->>'fallbackTriggered')::boolean, (r.provider_metadata->>'fallbackReason') IS NOT NULL, false) AS fallback_triggered,
+                r.warning_count,
+                r.error_count,
+                COALESCE(o.processing_error, o.last_error) AS error,
+                v.source_text AS searchable_text,
+                COUNT(*) OVER (PARTITION BY p.id)::int AS patient_note_count
+              FROM emr_outbox_events o
+              JOIN emr_note_versions v ON v.note_id = o.note_id AND v.version = o.note_version
+              JOIN emr_notes n ON n.id = o.note_id
+              JOIN emr_encounters e ON e.id = n.encounter_id
+              JOIN emr_patients p ON p.id = e.patient_id
+              JOIN emr_encounter_assignments a ON a.encounter_id = e.id
+              LEFT JOIN emr_extraction_links l ON l.event_id = o.event_id
+              LEFT JOIN extraction_runs r ON r.extraction_id = l.extraction_id
+              WHERE a.doctor_id = @doctor
+            ),
+            filtered AS (
+              SELECT * FROM projected
+              WHERE (@like = '' OR patient_reference ILIKE @like OR encounter_reference ILIKE @like OR note_id::text ILIKE @like OR event_id::text ILIKE @like OR searchable_text ILIKE @like)
+                AND (@state = '' OR lower(queue_state) = @state)
+            )
+            """;
+
+        await using var countCmd = Command(c, cte + " SELECT COUNT(*)::int FROM filtered", null,
+            ("doctor", doctor), ("like", like), ("state", normalizedState));
+        int total = (int)(await countCmd.ExecuteScalarAsync(ct))!;
+
+        var items = await Query<QueueItemDto>(c, cte + """
+            SELECT jsonb_build_object(
+              'patientId', patient_id,
+              'encounterId', encounter_id,
+              'noteId', note_id,
+              'noteVersion', note_version,
+              'patientReference', patient_reference,
+              'encounterReference', encounter_reference,
+              'encounterDate', encounter_date,
+              'receivedAt', received_at,
+              'sourcePreview', source_preview,
+              'wordCount', word_count,
+              'noteStatus', note_status,
+              'queueState', queue_state,
+              'verificationRecommended', verification_recommended,
+              'rawProcessingStatus', raw_processing_status,
+              'eventId', event_id,
+              'extractionId', extraction_id,
+              'provider', provider,
+              'model', model,
+              'fallbackTriggered', fallback_triggered,
+              'warningCount', warning_count,
+              'errorCount', error_count,
+              'error', error,
+              'patientNoteCount', patient_note_count
+            )
+            FROM filtered
+            ORDER BY received_at DESC, event_id DESC
+            LIMIT @limit OFFSET @offset
+            """, ct, null,
+            ("doctor", doctor), ("like", like), ("state", normalizedState), ("limit", clampedLimit), ("offset", clampedOffset));
+
+        return (items, total);
+    }
+
+    public async Task<QueueEntryHeaderDto?> QueueEntryHeader(
+        Guid doctor, Guid noteId, int? requestedVersion, string? expectedPatientReference, CancellationToken ct)
+    {
+        await using var c = await Open(ct);
+        int targetVersion = requestedVersion ?? 0;
+        string expectedPatient = string.IsNullOrWhiteSpace(expectedPatientReference) ? "" : expectedPatientReference.Trim();
+
+        return (await Query<QueueEntryHeaderDto>(c, """
+            SELECT jsonb_build_object(
+              'patientId', p.id,
+              'noteId', n.id,
+              'encounterId', e.id,
+              'noteVersion', COALESCE(v.version, n.current_version),
+              'patientReference', p.reference,
+              'encounterReference', e.reference,
+              'encounterDate', e.encounter_date,
+              'context', e.context,
+              'noteStatus', CASE WHEN v.signed_at IS NOT NULL THEN 'Signed' WHEN @ver > 0 THEN 'Draft' ELSE n.status END,
+              'sourceText', COALESCE(v.source_text, n.draft_text),
+              'sourceHash', v.source_hash,
+              'signedAt', v.signed_at,
+              'updatedAt', COALESCE(v.signed_at, v.created_at, n.updated_at),
+              'queueState', CASE
+                WHEN l.extraction_id IS NOT NULL AND r.extraction_id IS NOT NULL THEN 'Ready'
+                WHEN o.processing_status = 'Failed' OR o.publication_status = 'Failed' THEN 'Failed'
+                WHEN o.processing_status = 'Processing' THEN 'Extracting'
+                WHEN o.processing_status = 'Queued' OR o.publication_status = 'Published' THEN 'Queued'
+                ELSE 'Waiting'
+              END,
+              'verificationRecommended', (o.processing_status = 'Needs Review' OR COALESCE(r.warning_count, 0) > 0 OR COALESCE(r.error_count, 0) > 0),
+              'rawProcessingStatus', o.processing_status,
+              'eventId', o.event_id,
+              'extractionId', l.extraction_id,
+              'error', COALESCE(o.processing_error, o.last_error)
+            )
+            FROM emr_notes n
+            JOIN emr_encounters e ON e.id = n.encounter_id
+            JOIN emr_patients p ON p.id = e.patient_id
+            JOIN emr_encounter_assignments a ON a.encounter_id = e.id
+            LEFT JOIN emr_note_versions v ON v.note_id = n.id AND v.version = CASE WHEN @ver > 0 THEN @ver ELSE n.current_version END
+            LEFT JOIN emr_outbox_events o ON o.note_id = n.id AND o.note_version = COALESCE(v.version, n.current_version)
+            LEFT JOIN emr_extraction_links l ON l.note_id = n.id AND l.note_version = COALESCE(v.version, n.current_version)
+            LEFT JOIN extraction_runs r ON r.extraction_id = l.extraction_id
+            WHERE n.id = @note
+              AND a.doctor_id = @doctor
+              AND (@ver = 0 OR v.version IS NOT NULL)
+              AND (@patient = '' OR lower(p.reference) = lower(@patient))
+            """, ct, null, ("doctor", doctor), ("note", noteId), ("ver", targetVersion), ("patient", expectedPatient))).SingleOrDefault();
+    }
+
+    public async Task<List<PatientNoteOptionDto>> PatientNotesForPatient(Guid doctor, Guid patientId, CancellationToken ct)
+    {
+        await using var c = await Open(ct);
+        return await Query<PatientNoteOptionDto>(c, """
+            SELECT jsonb_build_object(
+              'noteId', n.id,
+              'encounterId', e.id,
+              'encounterReference', e.reference,
+              'noteVersion', v.version,
+              'receivedAt', COALESCE(v.signed_at, v.created_at),
+              'noteStatus', CASE WHEN v.signed_at IS NOT NULL THEN 'Signed' ELSE 'Draft' END,
+              'queueState', CASE
+                WHEN l.extraction_id IS NOT NULL AND r.extraction_id IS NOT NULL THEN 'Ready'
+                WHEN o.processing_status = 'Failed' OR o.publication_status = 'Failed' THEN 'Failed'
+                WHEN o.processing_status = 'Processing' THEN 'Extracting'
+                WHEN o.processing_status = 'Queued' OR o.publication_status = 'Published' THEN 'Queued'
+                ELSE 'Waiting'
+              END,
+              'extractionId', l.extraction_id
+            )
+            FROM emr_notes n
+            JOIN emr_encounters e ON e.id = n.encounter_id
+            JOIN emr_encounter_assignments a ON a.encounter_id = e.id
+            JOIN emr_note_versions v ON v.note_id = n.id
+            LEFT JOIN emr_outbox_events o ON o.note_id = n.id AND o.note_version = v.version
+            LEFT JOIN emr_extraction_links l ON l.note_id = n.id AND l.note_version = v.version
+            LEFT JOIN extraction_runs r ON r.extraction_id = l.extraction_id
+            WHERE e.patient_id = @patient
+              AND a.doctor_id = @doctor
+              AND (v.signed_at IS NOT NULL OR v.version = n.current_version)
+            ORDER BY COALESCE(v.signed_at, v.created_at) DESC, v.version DESC
+            LIMIT 25
+            """, ct, null, ("doctor", doctor), ("patient", patientId));
+    }
+
+    public async Task<(Guid PatientId, string PatientReference, List<PatientNoteOptionDto> Notes)?> PatientScope(
+        Guid doctor, string patientReference, CancellationToken ct)
+    {
+        await using var c = await Open(ct);
+        await using var cmd = Command(c, """
+            SELECT p.id, p.reference
+            FROM emr_patients p
+            JOIN emr_encounters e ON e.patient_id = p.id
+            JOIN emr_encounter_assignments a ON a.encounter_id = e.id
+            WHERE lower(p.reference) = lower(@ref) AND a.doctor_id = @doctor
+            LIMIT 1
+            """, null, ("ref", patientReference.Trim()), ("doctor", doctor));
+        await using var reader = await cmd.ExecuteReaderAsync(ct);
+        if (!await reader.ReadAsync(ct)) return null;
+        Guid pid = reader.GetGuid(0);
+        string pref = reader.GetString(1);
+        await reader.CloseAsync();
+        var notes = await PatientNotesForPatient(doctor, pid, ct);
+        return (pid, pref, notes);
+    }
+
     public async Task<NoteDto?> Note(Guid doctor, Guid note, CancellationToken ct)
     {
         await using var c = await Open(ct);

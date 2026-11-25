@@ -21,7 +21,7 @@
     </nav>
   </header>
 }
-<main>
+<main [class.doctor-main]="isDoctor()">
   @if (activeNav() === 'history' && !isDoctor()) {
     <div class="page-heading">
       <div>
@@ -66,50 +66,523 @@
         </div>
       }
     </div>
-  } @else {
-    @if (isDoctor()) {
-      <div class="page-heading doctor-heading">
-        <div>
-          <p class="eyebrow">OP EMR CLINICAL EXTRACTION</p>
-          <h1 class="app-title">Extraction results</h1>
-          <p class="page-description">
-            @if (patientRefParam()) { Patient: <strong>{{ patientRefParam() }}</strong> · }
-            Source-grounded clinical entities extracted from your signed encounter note.
-          </p>
+  } @else if (isDoctor()) {
+    <div class="emr-page extraction-result-page">
+      <div class="result-page-header doctor-heading">
+        <div class="result-header-left">
+          <div class="result-title-row">
+            <h1 class="app-title">Extraction Result</h1>
+            @if (result()) {
+              <span
+                class="status-label"
+                [class.success]="effectiveExtractionStatus() === 'Completed'"
+                [class.review]="effectiveExtractionStatus() === 'Needs Review' || effectiveExtractionStatus() === 'Pending Publication'"
+                [class.processing]="effectiveExtractionStatus() === 'Processing' || effectiveExtractionStatus() === 'Queued'"
+                [class.failed]="effectiveExtractionStatus() === 'Failed'"
+              >
+                {{ effectiveExtractionStatus() }}
+              </span>
+            }
+          </div>
+          @if (result(); as res) {
+            <div class="result-meta-strip">
+              <span>Note: <strong>{{ shortNoteRef() }}</strong></span>
+              <span class="meta-sep">|</span>
+              <span>Patient: <strong>{{ effectivePatientRef() }}</strong></span>
+              <span class="meta-sep">|</span>
+              <span>Encounter: <strong>{{ effectiveEncounterRef() }}</strong></span>
+              <span class="meta-sep">|</span>
+              <span>Processed: <strong>{{ res.extractedAt | date: 'dd MMM yyyy, HH:mm' }}</strong></span>
+            </div>
+          } @else {
+            <p class="emr-description">
+              Source-grounded clinical entities extracted from your signed encounter notes.
+            </p>
+          }
         </div>
+
         <div class="doctor-heading-actions">
           @if (noteIdParam()) {
-            <a class="button secondary" [routerLink]="['/emr/notes', noteIdParam(), 'edit']">View Note in EMR</a>
+            <a class="emr-button secondary" [routerLink]="['/emr/notes', noteIdParam(), 'edit']">
+              View Note
+            </a>
+          } @else {
+            <a class="emr-button secondary" routerLink="/emr">Back to Dashboard</a>
           }
-          <a class="button primary" routerLink="/emr">Back to Dashboard</a>
+          @if (result()) {
+            <div class="export-control" (keydown.escape)="exportDropdownOpen.set(false)">
+              <button
+                class="emr-button secondary"
+                type="button"
+                [attr.aria-expanded]="exportDropdownOpen()"
+                aria-controls="doctor-export-menu"
+                (click)="toggleExportDropdown()"
+              >
+                Export <span aria-hidden="true">⌄</span>
+              </button>
+              @if (exportDropdownOpen()) {
+                <div id="doctor-export-menu" class="export-menu">
+                  <button type="button" (click)="exportJson()">Download JSON</button>
+                  <button type="button" (click)="exportCsv()">Download CSV</button>
+                  <button type="button" (click)="exportFhirBundle()">Download FHIR</button>
+                </div>
+              }
+            </div>
+          }
         </div>
       </div>
-    } @else {
-      <div class="page-heading">
-        <div><h1 class="app-title">Clinical extraction</h1></div>
-        <p class="page-description">From clinical notes to structured care.</p>
-      </div>
-    }
+
+      @if (error(); as problem) {
+        <div class="emr-alert error" role="alert">
+          <strong>{{ problem.title || 'Direct Extraction Restricted' }}</strong>
+          <p style="margin-top: 4px;">
+            {{
+              problem.detail ||
+                'Direct extraction is reserved for clinical review staff. Outpatient clinical notes must be documented and signed within assigned encounters in OP EMR.'
+            }}
+          </p>
+          <div style="margin-top: 10px;">
+            <a class="emr-button primary" routerLink="/emr">Go to OP EMR Dashboard</a>
+          </div>
+        </div>
+      }
+
+      @if (isOpeningHistory()) {
+        <div class="emr-empty" role="status">
+          <span class="loading-ring"></span>
+          <p>Loading linked encounter extraction…</p>
+        </div>
+      } @else if (result(); as res) {
+        <div class="results-column doctor-results-container">
+          <nav class="doctor-result-tabs" role="tablist" aria-label="Extraction result sections">
+            <button
+              type="button"
+              role="tab"
+              [class.active]="doctorResultTab() === 'medications'"
+              [attr.aria-selected]="doctorResultTab() === 'medications'"
+              (click)="setDoctorResultTab('medications')"
+            >
+              Medications ({{ res.medications.length }})
+            </button>
+            <button
+              type="button"
+              role="tab"
+              [class.active]="doctorResultTab() === 'investigations'"
+              [attr.aria-selected]="doctorResultTab() === 'investigations'"
+              (click)="setDoctorResultTab('investigations')"
+            >
+              Investigations ({{ res.investigations.length }})
+            </button>
+            <button
+              type="button"
+              role="tab"
+              [class.active]="doctorResultTab() === 'validation'"
+              [attr.aria-selected]="doctorResultTab() === 'validation'"
+              (click)="setDoctorResultTab('validation')"
+            >
+              Validation &amp; Alerts
+              @if (validationBadgeCount() > 0) {
+                <span class="tab-count-pill">{{ validationBadgeCount() }}</span>
+              }
+            </button>
+            <button
+              type="button"
+              role="tab"
+              [class.active]="doctorResultTab() === 'provenance'"
+              [attr.aria-selected]="doctorResultTab() === 'provenance'"
+              (click)="setDoctorResultTab('provenance')"
+            >
+              Model Provenance
+            </button>
+            <button
+              type="button"
+              role="tab"
+              [class.active]="doctorResultTab() === 'audit'"
+              [attr.aria-selected]="doctorResultTab() === 'audit'"
+              (click)="setDoctorResultTab('audit')"
+            >
+              Audit Trail
+            </button>
+          </nav>
+
+          @if (doctorResultTab() === 'medications') {
+            <div class="clinical-table-wrap doctor-result-table-wrap">
+              <table class="clinical-table medication-table doctor-meds-table">
+                <thead>
+                  <tr>
+                    <th scope="col" class="col-index">#</th>
+                    <th scope="col">Medication (RxNorm)</th>
+                    <th scope="col">Dose</th>
+                    <th scope="col">Route</th>
+                    <th scope="col">Frequency</th>
+                    <th scope="col">Duration</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Source Evidence</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (med of res.medications; track $index) {
+                    <tr
+                      class="clickable-row result-row"
+                      [class.selected]="selectedEntity() === med"
+                      (click)="selectEntity(med)"
+                    >
+                      <td class="col-index">{{ $index + 1 }}</td>
+                      <td>
+                        <strong>{{ med.name }}</strong>
+                        @if (med.normalization.matchedCode) {
+                          <span class="code-sub">(RxNorm: {{ med.normalization.matchedCode }})</span>
+                        } @else if (med.normalization.displayName) {
+                          <span class="code-sub">(Code withheld · {{ med.normalization.semanticStatus || 'narrower' }})</span>
+                        } @else {
+                          <span class="code-sub">(Unresolved)</span>
+                        }
+                      </td>
+                      <td>{{ medicationDoseDisplay(med) }}</td>
+                      <td>{{ dash(med.route) }}</td>
+                      <td>{{ dash(med.frequency) }}</td>
+                      <td>{{ dash(med.duration) }}</td>
+                      <td>
+                        <span
+                          class="status-label"
+                          [class.success]="['active', 'continue', 'continued', 'start', 'started', 'new', 'prescribed'].includes((med.action || med.assertionStatus || '').toLowerCase())"
+                          [class.draft]="['conditional', 'historical', 'unknown', 'uncertain'].includes((med.assertionStatus || '').toLowerCase())"
+                          [class.failed]="['allergy', 'discontinued', 'stopped', 'negated'].includes((med.assertionStatus || med.action || '').toLowerCase())"
+                        >
+                          {{ status(med.action || med.assertionStatus) | titlecase }}
+                        </span>
+                      </td>
+                      <td class="evidence-quote-cell">
+                        @if (med.evidence.quote) {
+                          <span class="quote-inline">"{{ med.evidence.quote }}"</span>
+                        } @else {
+                          <span class="muted">Not documented</span>
+                        }
+                      </td>
+                    </tr>
+                    @if (selectedEntity() === med) {
+                      <tr class="doctor-expanded-row">
+                        <td colspan="8">
+                          <div class="expanded-entity-card">
+                            <dl class="expanded-meta-grid">
+                              <div><dt>Strength</dt><dd>{{ display(med.strength) }}</dd></div>
+                              <div><dt>Administered Dose</dt><dd>{{ display(med.dose) }}</dd></div>
+                              <div><dt>Formulation</dt><dd>{{ display(med.formulation) }}</dd></div>
+                              <div><dt>Instructions</dt><dd>{{ display(med.instructions) }}</dd></div>
+                              <div><dt>Terminology</dt><dd>{{ terminologyLabel(med) }}</dd></div>
+                              <div><dt>Origin</dt><dd>{{ originLabel(med) }}</dd></div>
+                              <div><dt>Evidence Verified</dt><dd>{{ med.evidence.verified ? 'Verified in source' : 'Unverified' }}</dd></div>
+                              <div><dt>Review Status</dt><dd>{{ entityReviewStatus('MEDICATION', $index) }}</dd></div>
+                            </dl>
+                            @if (!canSubmitClinicalReview()) {
+                              <p class="role-readonly-note">
+                                Read-only physician inspection. Formal entity acceptance or override requires <strong>ClinicalReviewer</strong> authorization.
+                              </p>
+                            }
+                          </div>
+                        </td>
+                      </tr>
+                    }
+                  } @empty {
+                    <tr>
+                      <td colspan="8" class="no-entities">
+                        No medications were extracted from this clinical note.
+                      </td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+          } @else if (doctorResultTab() === 'investigations') {
+            <div class="clinical-table-wrap doctor-result-table-wrap">
+              <table class="clinical-table investigation-table doctor-inv-table">
+                <thead>
+                  <tr>
+                    <th scope="col" class="col-index">#</th>
+                    <th scope="col">Investigation</th>
+                    <th scope="col">LOINC Code</th>
+                    <th scope="col">Display Name</th>
+                    <th scope="col">Order Intent</th>
+                    <th scope="col">Conditionality</th>
+                    <th scope="col">Source Quote</th>
+                    <th scope="col">Validation</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (inv of res.investigations; track $index) {
+                    <tr
+                      class="clickable-row result-row"
+                      [class.selected]="selectedEntity() === inv"
+                      (click)="selectEntity(inv)"
+                    >
+                      <td class="col-index">{{ $index + 1 }}</td>
+                      <td><strong>{{ inv.name }}</strong></td>
+                      <td>
+                        @if (inv.normalization.matchedCode) {
+                          <span class="mono-code">{{ inv.normalization.matchedCode }}</span>
+                        } @else {
+                          <span class="muted">Unresolved</span>
+                        }
+                      </td>
+                      <td>{{ dash(inv.normalization.displayName || inv.displayName) }}</td>
+                      <td>
+                        <span class="status-label success">
+                          {{ status(inv.assertionStatus) | titlecase }}
+                        </span>
+                      </td>
+                      <td>{{ investigationConditionality(inv) }}</td>
+                      <td class="evidence-quote-cell">
+                        @if (inv.evidence.quote) {
+                          <span class="quote-inline">"{{ inv.evidence.quote }}"</span>
+                        } @else {
+                          <span class="muted">Not documented</span>
+                        }
+                      </td>
+                      <td>
+                        <span
+                          class="status-label"
+                          [class.success]="investigationValidationState(inv) === 'Verified'"
+                          [class.draft]="investigationValidationState(inv) === 'Review' || investigationValidationState(inv) === 'Unverified'"
+                          [class.failed]="investigationValidationState(inv) === 'Error'"
+                        >
+                          {{ investigationValidationState(inv) }}
+                        </span>
+                      </td>
+                    </tr>
+                  } @empty {
+                    <tr>
+                      <td colspan="8" class="no-entities">
+                        No investigations were extracted from this clinical note.
+                      </td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+          } @else if (doctorResultTab() === 'validation') {
+            <div class="doctor-tab-panel">
+              <div class="validation-overview-row">
+                <div class="validation-stat-pill">
+                  <span>Errors</span>
+                  <strong>{{ res.validationSummary.errorCount }}</strong>
+                </div>
+                <div class="validation-stat-pill">
+                  <span>Warnings</span>
+                  <strong>{{ res.validationSummary.warningCount }}</strong>
+                </div>
+                <div class="validation-stat-pill">
+                  <span>Safety Alerts</span>
+                  <strong>{{ res.safetyAlerts?.length || 0 }}</strong>
+                </div>
+                <div class="validation-stat-pill">
+                  <span>Withheld Candidates</span>
+                  <strong>{{ res.modelMetadata.reviewCandidates?.length || 0 }}</strong>
+                </div>
+              </div>
+
+              @if (res.safetyAlerts?.length) {
+                <div class="panel-section">
+                  <h3>Clinical Safety Alerts</h3>
+                  @for (alert of res.safetyAlerts; track alert.alertId) {
+                    <div class="safety-alert-card">
+                      <div class="alert-top">
+                        <span class="status-label failed">{{ alert.severity }}</span>
+                        <strong>{{ alert.title }}</strong>
+                      </div>
+                      <p>{{ alert.description }}</p>
+                      <p class="alert-rec"><strong>Recommendation:</strong> {{ alert.recommendation }}</p>
+                    </div>
+                  }
+                </div>
+              }
+
+              @if (res.modelMetadata.reviewCandidates?.length) {
+                <div class="panel-section" data-testid="source-review-candidates">
+                  <h3>Withheld Neural Candidates (Not Auto-Promoted)</h3>
+                  @for (cand of res.modelMetadata.reviewCandidates; track $index) {
+                    <div class="finding-card">
+                      <strong>{{ cand.name }} ({{ cand.category }}) · {{ cand.reason }}</strong>
+                      <p>Confidence: {{ cand.confidence | number: '1.3-3' }} · Quote: "{{ cand.evidence.quote }}"</p>
+                    </div>
+                  }
+                </div>
+              }
+
+              <div class="panel-section">
+                <h3>Validation Findings &amp; Quality Flags</h3>
+                @for (finding of allFindings(); track $index) {
+                  <div class="finding-card">
+                    <div class="alert-top">
+                      <span
+                        class="status-label"
+                        [class.failed]="finding.severity === 'error'"
+                        [class.draft]="finding.severity === 'warning'"
+                      >
+                        {{ finding.severity | uppercase }}
+                      </span>
+                      <strong>{{ finding.entity }}</strong>
+                      <span class="muted">{{ finding.code }}</span>
+                    </div>
+                    <p>{{ finding.message }}</p>
+                  </div>
+                } @empty {
+                  <p class="muted">No validation errors, evidence mismatches, or attribute ambiguities reported.</p>
+                }
+              </div>
+            </div>
+          } @else if (doctorResultTab() === 'provenance') {
+            <div class="doctor-tab-panel">
+              @if (res.modelMetadata.provider === 'onnx' || res.modelMetadata.adapterType.startsWith('onnx')) {
+                <div class="emr-alert info" role="note">
+                  <strong>Local ONNX Execution Recorded:</strong> This extraction was executed locally using
+                  <code>{{ res.modelMetadata.model || res.modelMetadata.adapterType }}</code>. Cloud token usage
+                  and Microsoft Foundry billing metrics are reported as N/A.
+                </div>
+              }
+              <dl class="provenance-detail-grid">
+                <div><dt>Requested Primary Provider</dt><dd>{{ res.modelMetadata.requestedPrimaryProvider || 'Not recorded' }}</dd></div>
+                <div><dt>Executed Provider</dt><dd>{{ actualProviderSummary(res) }}</dd></div>
+                <div><dt>Adapter Type</dt><dd>{{ res.modelMetadata.adapterType }}</dd></div>
+                <div><dt>Fallback Triggered</dt><dd>{{ fallbackSummary(res) }}</dd></div>
+                <div><dt>Inference Timestamp</dt><dd>{{ res.extractedAt | date: 'dd MMM yyyy, HH:mm:ss' }}</dd></div>
+                <div><dt>Processing Duration</dt><dd>{{ formattedDuration() }}</dd></div>
+                <div><dt>Schema Validation</dt><dd>{{ res.modelMetadata.schemaValidationStatus || 'Verified' }}</dd></div>
+                <div><dt>Prompt Version</dt><dd>{{ res.modelMetadata.promptVersion || 'N/A' }}</dd></div>
+                <div><dt>Prompt / Completion / Total Tokens</dt><dd>{{ tokenValue(res, res.modelMetadata.promptTokens) }} / {{ tokenValue(res, res.modelMetadata.completionTokens) }} / {{ tokenValue(res, res.modelMetadata.totalTokens) }}</dd></div>
+                <div><dt>Measured / Estimated Cost</dt><dd>{{ res.modelMetadata.estimatedCostUsd == null || res.modelMetadata.provider === 'onnx' || res.modelMetadata.adapterType.startsWith('onnx') ? 'N/A (Local ONNX)' : '$' + res.modelMetadata.estimatedCostUsd }}</dd></div>
+              </dl>
+
+              @if (res.modelMetadata.attempts?.length) {
+                <div class="panel-section">
+                  <h3>Provider Execution Attempts</h3>
+                  @for (attempt of res.modelMetadata.attempts; track $index) {
+                    <div class="finding-card">
+                      <strong>{{ attempt.provider }} · {{ attempt.outcome }}</strong>
+                      <p>
+                        Model: {{ attempt.model || 'Unknown' }} · Duration: {{ attempt.durationMs }} ms ·
+                        Inference executed: {{ attempt.inferenceExecuted ? 'Yes' : 'No' }}
+                        @if (attempt.reason) { · Reason: {{ attempt.reason }} }
+                      </p>
+                    </div>
+                  }
+                </div>
+              }
+            </div>
+          } @else {
+            <div class="doctor-tab-panel">
+              <div class="audit-header-strip">
+                <span class="emr-source-badge">
+                  <svg viewBox="0 0 24 24" aria-hidden="true" width="15" height="15">
+                    <path fill="none" stroke="currentColor" stroke-width="2" d="M12 3 4 6v6c0 4 8 9 8 9s8-5 8-9V6z" />
+                    <path fill="none" stroke="currentColor" stroke-width="2" d="m9 12 2 2 4-4" />
+                  </svg>
+                  Signed encounter note · Audit locked
+                </span>
+                <span class="secondary-meta">Extraction ID: {{ res.extractionId }}</span>
+              </div>
+
+              <div class="panel-section">
+                <h3>Source Clinical Note (Read-Only Snapshot)</h3>
+                <div class="audit-source-box">
+                  @for (segment of narrativeSegments(); track $index) {
+                    @if (segment.isHighlight) {
+                      <mark class="evidence-highlight">{{ segment.text }}</mark>
+                    } @else {
+                      <span>{{ segment.text }}</span>
+                    }
+                  }
+                </div>
+              </div>
+
+              <div class="panel-section">
+                <h3>Clinical Review Audit History ({{ entityReviews().length }})</h3>
+                @for (rev of entityReviews(); track rev.reviewId) {
+                  <div class="finding-card">
+                    <strong>{{ rev.entityType }} #{{ rev.entityIndex + 1 }} · {{ rev.reviewStatus }} (v{{ rev.versionNumber }})</strong>
+                    <p>Reviewer: {{ rev.reviewerIdentity }} · {{ rev.reviewedAt | date: 'dd MMM yyyy, HH:mm' }}</p>
+                    @if (rev.reviewComment) {
+                      <p class="muted">"{{ rev.reviewComment }}"</p>
+                    }
+                  </div>
+                } @empty {
+                  <p class="muted">No reviewer decisions have been recorded for this extraction yet.</p>
+                }
+              </div>
+            </div>
+          }
+
+          <section class="extraction-summary-card" aria-labelledby="summary-card-heading">
+            <div class="summary-card-header">
+              <h2 id="summary-card-heading">Extraction Summary</h2>
+              <span class="emr-source-badge summary-badge">
+                <svg viewBox="0 0 24 24" aria-hidden="true" width="14" height="14">
+                  <path fill="none" stroke="currentColor" stroke-width="2" d="M12 3 4 6v6c0 4 8 9 8 9s8-5 8-9V6z" />
+                  <path fill="none" stroke="currentColor" stroke-width="2" d="m9 12 2 2 4-4" />
+                </svg>
+                Signed encounter note · Audit locked
+              </span>
+            </div>
+            <div class="summary-two-col">
+              <dl class="summary-dl">
+                <div>
+                  <dt>Provider Used</dt>
+                  <dd data-testid="summary-provider">{{ actualProviderSummary(res) }}</dd>
+                </div>
+                <div>
+                  <dt>Fallback Used</dt>
+                  <dd data-testid="summary-fallback">{{ fallbackSummary(res) }}</dd>
+                </div>
+                <div>
+                  <dt>Validation Status</dt>
+                  <dd data-testid="summary-validation">{{ validationSummaryText(res) }}</dd>
+                </div>
+              </dl>
+              <dl class="summary-dl">
+                <div>
+                  <dt>Input Type</dt>
+                  <dd>{{ res.inputType === 'pdf' ? 'PDF Document' : 'Clinical Note' }}</dd>
+                </div>
+                <div>
+                  <dt>Processing Time</dt>
+                  <dd data-testid="summary-duration">{{ formattedDuration() }}</dd>
+                </div>
+                <div>
+                  <dt>Token Usage</dt>
+                  <dd data-testid="summary-tokens">{{ tokenUsageSummary(res) }}</dd>
+                </div>
+              </dl>
+            </div>
+          </section>
+        </div>
+      } @else {
+        <div class="emr-empty-prompt">
+          <p>
+            Select an encounter with a completed extraction from your
+            <a routerLink="/emr">Doctor Dashboard</a> or
+            <a routerLink="/extraction">Clinical Extraction</a> list to review results.
+          </p>
+          <p class="muted" style="margin-top: 8px; font-size: 13px;">
+            Direct unanchored extractions are restricted for Doctor accounts to maintain patient encounter audit linkage.
+          </p>
+        </div>
+      }
+    </div>
+  } @else {
+    <div class="page-heading">
+      <div><h1 class="app-title">Clinical extraction</h1></div>
+      <p class="page-description">From clinical notes to structured care.</p>
+    </div>
     <div class="workspace">
       <section class="source-column" aria-labelledby="source-heading">
         <div class="document-frame" [attr.aria-busy]="isExtracting() || isOpeningHistory()">
           <div class="document-header">
             <h2 id="source-heading">Source note</h2>
-            @if (!isDoctor()) {
-              <button class="edit-button" (click)="beginEdit()" [disabled]="editorMode() === 'edit'">
-                Edit
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="m16 3 5 5-12 12-6 1 1-6zM13 6l5 5" />
-                </svg>
-              </button>
-            } @else if (noteIdParam()) {
-              <a class="edit-button doctor-link-btn" [routerLink]="['/emr/notes', noteIdParam(), 'edit']" title="Open encounter note in OP EMR editor">
-                Edit in EMR
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="m16 3 5 5-12 12-6 1 1-6zM13 6l5 5" />
-                </svg>
-              </a>
-            }
+            <button class="edit-button" (click)="beginEdit()" [disabled]="editorMode() === 'edit'">
+              Edit
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="m16 3 5 5-12 12-6 1 1-6zM13 6l5 5" />
+              </svg>
+            </button>
           </div>
           <div class="paper-stack">
             <div class="paper">
@@ -120,7 +593,7 @@
                   uploadedFileName() ? 'PDF' : selectedPresetId() ? 'EXAMPLE' : 'TEXT'
                 }}</span>
               </div>
-              @if (editorMode() === 'edit' && !isDoctor()) {
+              @if (editorMode() === 'edit') {
                 <label class="sr-only" for="clinical-note">Clinical source note</label
                 ><textarea
                   id="clinical-note"
@@ -149,80 +622,55 @@
               </div>
             </div>
           </div>
-          @if (!isDoctor()) {
-            <div class="document-footer">
-              <input
-                #pdfInput
-                class="sr-only"
-                type="file"
-                accept="application/pdf,.pdf"
-                (change)="onPdfSelected($event)"
-                aria-label="Upload PDF"
-              /><button class="upload-button" (click)="pdfInput.click()" [disabled]="isExtracting()">
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M12 16V3m-4 4 4-4 4 4M4 15v5h16v-5" /></svg
-                >Upload PDF</button
-              ><button
-                class="button extract-button"
-                (click)="onExtract()"
-                [disabled]="isExtracting() || isOpeningHistory() || !noteText().trim()"
-              >
-                @if (isExtracting()) {
-                  <span class="spinner" aria-hidden="true"></span>Extracting…
-                } @else {
-                  Extract
-                }
-              </button>
-            </div>
-          } @else {
-            <div class="document-footer doctor-footer">
-              <div class="emr-source-badge">
-                <svg viewBox="0 0 24 24" aria-hidden="true" width="16" height="16"><path fill="none" stroke="currentColor" stroke-width="2" d="M12 3 4 6v6c0 4 8 9 8 9s8-5 8-9V6z"/><path fill="none" stroke="currentColor" stroke-width="2" d="m9 12 2 2 4-4"/></svg>
-                <span>Signed encounter note · Audit locked</span>
-              </div>
-              <a class="button secondary small" routerLink="/emr">Back to OP EMR</a>
-            </div>
-          }
-        </div>
-        @if (!isDoctor()) {
-          <div class="source-actions">
-            <details class="example-picker" #examples>
-              <summary>Try an example <span aria-hidden="true">⌄</span></summary>
-              <div class="example-menu">
-                @for (preset of presets; track preset.id) {
-                  <button (click)="loadPreset(preset); examples.removeAttribute('open')">
-                    {{ preset.title }}
-                  </button>
-                }
-              </div>
-            </details>
-            <button class="text-button" (click)="clear()" [disabled]="!noteText() && !result()">
-              Clear
+          <div class="document-footer">
+            <input
+              #pdfInput
+              class="sr-only"
+              type="file"
+              accept="application/pdf,.pdf"
+              (change)="onPdfSelected($event)"
+              aria-label="Upload PDF"
+            /><button class="upload-button" (click)="pdfInput.click()" [disabled]="isExtracting()">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 16V3m-4 4 4-4 4 4M4 15v5h16v-5" /></svg
+              >Upload PDF</button
+            ><button
+              class="button extract-button"
+              (click)="onExtract()"
+              [disabled]="isExtracting() || isOpeningHistory() || !noteText().trim()"
+            >
+              @if (isExtracting()) {
+                <span class="spinner" aria-hidden="true"></span>Extracting…
+              } @else {
+                Extract
+              }
             </button>
           </div>
-        }
+        </div>
+        <div class="source-actions">
+          <details class="example-picker" #examples>
+            <summary>Try an example <span aria-hidden="true">⌄</span></summary>
+            <div class="example-menu">
+              @for (preset of presets; track preset.id) {
+                <button (click)="loadPreset(preset); examples.removeAttribute('open')">
+                  {{ preset.title }}
+                </button>
+              }
+            </div>
+          </details>
+          <button class="text-button" (click)="clear()" [disabled]="!noteText() && !result()">
+            Clear
+          </button>
+        </div>
         @if (error(); as problem) {
           <div class="inline-error alert-error" role="alert">
             @if (problem.code === 'PERSISTENCE_FAILED') {
               <strong>Could not save extraction.</strong>
               <p>Your note is retained. Please try again.</p>
-            } @else if (problem.code === 'CLINICAL_ACCESS_DENIED') {
-              <strong>{{ problem.title || 'Direct Extraction Restricted' }}</strong>
-              <p>{{ problem.detail || 'Direct extraction is reserved for clinical review staff. Outpatient clinical notes must be documented and signed within assigned encounters in OP EMR.' }}</p>
-              @if (isDoctor()) {
-                <div class="alert-actions">
-                  <a class="button primary small" routerLink="/emr">Go to OP EMR Dashboard</a>
-                </div>
-              }
             } @else {
               <strong>{{ problem.title || 'Extraction failed' }}</strong>
               <p>{{ problem.detail || 'Your note is retained. Please try again.' }}</p>
             }
-          </div>
-        }
-        @if (isDoctor() && !result() && !isOpeningHistory() && !noteText()) {
-          <div class="emr-empty-prompt">
-            <p>Select an encounter with an extraction from your <a routerLink="/emr">Doctor Dashboard</a> or <a routerLink="/extraction">Clinical Extraction</a> list to review results.</p>
           </div>
         }
         @if (!backendOnline()) {

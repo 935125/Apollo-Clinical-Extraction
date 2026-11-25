@@ -45,14 +45,18 @@ public static class ClinicalReview
         var investigations = result.Investigations.Select(i =>
         {
             if (!reducedCoverage) return i;
+            var flags = i.QualityFlags.ToList();
+            var findings = i.Findings.ToList();
+            void Flag(string code, string severity, string field, string message)
+            {
+                if (!flags.Contains(code)) { flags.Add(code); findings.Add(new(code, severity, field, message)); }
+            }
             if (i.Timing == null && i.AssertionStatus == "new_order")
-                i = i with { QualityFlags = [.. i.QualityFlags, "TIMING_NOT_DOCUMENTED"], Findings = [.. i.Findings,
-                    new("TIMING_NOT_DOCUMENTED", "warning", "timing", "No supported timing was extracted. Review the source; no schedule has been assumed.")] };
+                Flag("TIMING_NOT_DOCUMENTED", "warning", "timing", "No supported timing was extracted. Review the source; no schedule has been assumed.");
             if (i.Specimen == null && i.ClinicalCategory == "laboratory")
-                i = i with { QualityFlags = [.. i.QualityFlags, "SPECIMEN_NOT_DOCUMENTED"], Findings = [.. i.Findings,
-                    new("SPECIMEN_NOT_DOCUMENTED", "info", "specimen", "Specimen is not explicit in this test's source evidence; no default specimen has been assigned.")] };
-            return i with { QualityFlags = [.. i.QualityFlags, "LOCAL_COVERAGE_REDUCED"], Findings = [.. i.Findings,
-                new("LOCAL_COVERAGE_REDUCED", "warning", "name", "Local investigation extraction uses catalog rules and requires review for missing or incomplete findings.")] };
+                Flag("SPECIMEN_NOT_DOCUMENTED", "info", "specimen", "Specimen is not explicit in this test's source evidence; no default specimen has been assigned.");
+            Flag("LOCAL_COVERAGE_REDUCED", "warning", "name", "Local investigation extraction uses catalog rules and requires review for missing or incomplete findings.");
+            return i with { QualityFlags = flags, Findings = findings };
         }).ToList();
         var all = medications.SelectMany(m => m.Findings).Concat(investigations.SelectMany(i => i.Findings)).ToList();
         var updatedDimensions = ClinicalResultValidator.BuildValidationDimensions(

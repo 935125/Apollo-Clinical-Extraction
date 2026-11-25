@@ -18,7 +18,8 @@ public sealed class ExtractionWorkflow(
     IOptions<FoundryOptions> options,
     IOptions<ExtractionOptions> extractionOptions,
     ILogger<ExtractionWorkflow> logger,
-    FoundryCircuitBreaker circuit)
+    FoundryCircuitBreaker circuit,
+    SyntheticDataPrivacyPolicy privacyPolicy)
 {
     public async Task<ClinicalExtractionResponse> ExtractAndSaveAsync(
         string noteText,
@@ -26,7 +27,8 @@ public sealed class ExtractionWorkflow(
         string inputType,
         string? sourceFileName,
         CancellationToken ct,
-        Guid? durableExtractionId = null)
+        Guid? durableExtractionId = null,
+        ExtractionPrivacyContext? privacyContext = null)
     {
         ct.ThrowIfCancellationRequested();
         if (string.IsNullOrWhiteSpace(noteText))
@@ -34,12 +36,30 @@ public sealed class ExtractionWorkflow(
         if (noteText.Length > 65536)
             throw new ClinicalExtractionException("NOTE_EXCEEDS_64KIB_LIMIT", 400, "The note exceeds 65,536 characters.");
 
-        // Pattern-based identifier screening precedes inference; it is not full de-identification.
-        ZeroLeakageValidator.Validate(noteText);
+        string primaryProvider = (extractionOptions.Value.Provider ?? "MicrosoftFoundry").Trim();
+        var privacyDecision = privacyPolicy.Evaluate(privacyContext, primaryProvider);
+        if (!privacyDecision.AllowSyntheticIdentifiers)
+        {
+            // Pattern-based identifier screening precedes inference; fail closed for all real, unknown, or unverified records.
+            ZeroLeakageValidator.Validate(noteText);
+        }
+        else
+        {
+            var detected = ZeroLeakageValidator.Scan(noteText);
+            if (detected.Count > 0)
+            {
+                logger.LogInformation(
+                    "Authorized Development synthetic test record permitted under {PolicyReason}; provider={Provider}; patientRef={PatientRef}; eventId={EventId}; identifierCategories={Categories}",
+                    privacyDecision.ReasonCode,
+                    primaryProvider,
+                    privacyContext?.PatientReference,
+                    privacyContext?.EventId,
+                    string.Join(",", detected.Select(d => d.Type).Distinct()));
+            }
+        }
 
         var watch = Stopwatch.StartNew();
         string extractionId = (durableExtractionId ?? Guid.NewGuid()).ToString("D");
-        string primaryProvider = (extractionOptions.Value.Provider ?? "MicrosoftFoundry").Trim();
         ClinicalExtractionResponse accepted;
         FoundryExtraction? capturedAzure = null;
 
@@ -47,7 +67,7 @@ public sealed class ExtractionWorkflow(
         {
             if (ProviderRoutingPolicy.DirectLocalFault(extractionOptions.Value) is string localFault)
                 throw new ClinicalExtractionException(localFault, 503, "Direct LocalOnnx requires an explicit authorized offline or isolated-test selection.");
-            accepted = await local.ExtractAsync(noteText, correlationId, ct);
+            accepted = await local.ExtractAsync(noteText, correlationId, privacyDecision.AllowSyntheticIdentifiers, ct);
             accepted = accepted with { ModelMetadata = accepted.ModelMetadata with { RoutingMode = "explicit_offline", PrimaryInvocationStatus = "not_attempted_offline", FallbackTriggered = false } };
         }
         else if (!primaryProvider.Equals("MicrosoftFoundry", StringComparison.OrdinalIgnoreCase))
@@ -104,7 +124,8 @@ public sealed class ExtractionWorkflow(
             {
                 if (ProviderRoutingPolicy.IsTransient(failure.Reason) && failure.Reason != "AZURE_CIRCUIT_OPEN") circuit.TransientFailure(options.Value);
                 else if (failure.Reason != "AZURE_CIRCUIT_OPEN") circuit.Success();
-                accepted = await Fallback(noteText, correlationId, failure, ct);
+                bool allowFallbackSynthetic = privacyPolicy.Evaluate(privacyContext, "LocalOnnx").AllowSyntheticIdentifiers;
+                accepted = await Fallback(noteText, correlationId, failure, allowFallbackSynthetic, ct);
             }
             catch (ClinicalExtractionException) { circuit.Success(); throw; }
             catch (OperationCanceledException) { circuit.Success(); throw; }
@@ -195,6 +216,7 @@ public sealed class ExtractionWorkflow(
         string source,
         string correlationId,
         FoundryAttemptException failure,
+        bool allowVerifiedSyntheticIdentifiers,
         CancellationToken ct)
     {
         ct.ThrowIfCancellationRequested();
@@ -204,7 +226,7 @@ public sealed class ExtractionWorkflow(
 
         try
         {
-            var result = await local.ExtractAsync(source, correlationId, ct);
+            var result = await local.ExtractAsync(source, correlationId, allowVerifiedSyntheticIdentifiers, ct);
             if (result.ValidationSummary.HasErrors)
                 throw new ClinicalExtractionException("ONNX_VALIDATION_REJECTED", 422, "Fallback output requires clinical review and was not accepted.");
             string schemaStatus = failure.Reason == "AZURE_UNUSABLE_JSON" ? "failed" : failure.Reason == "AZURE_TRUNCATED" ? "incomplete" : "not_applicable";

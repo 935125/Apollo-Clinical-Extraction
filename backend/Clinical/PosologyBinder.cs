@@ -121,7 +121,7 @@ public partial class PosologyBinder
     [GeneratedRegex(@"(?i)\b\d+(?:\.\d+)?(?:\s*/\s*\d+(?:\.\d+)?)?\s*(?:mg|mcg|µg|ug|gm|g|mEq)(?:\s*/\s*\d+(?:\.\d+)?\s*(?:mL|L))?\b|\b\d+(?:\.\d+)?\s*%", RegexOptions.Compiled)]
     private static partial Regex StrengthRegex();
 
-    [GeneratedRegex(@"(?i)\b(?:\d+(?:\.\d+)?|one|two|three|four|five|six|seven|eight|nine|ten)\s*(?:mL|units?|iu|tablets?|tabs?|capsules?|caps?|puffs?|drops?)\b", RegexOptions.Compiled)]
+    [GeneratedRegex(@"(?i)\b(?:\d+(?:\.\d+)?|1/2|half|one|two|three|four|five|six|seven|eight|nine|ten)\s*(?:mL|units?|iu|tablets?|tabs?|capsules?|caps?|puffs?|drops?|sachets?|vials?|ampoules?|patch(?:es)?|sprays?|teaspoons?|tsp|tbsp)\b", RegexOptions.Compiled)]
     private static partial Regex AdministeredDoseRegex();
 
     [GeneratedRegex(@"(?i)\b(po|oral|orally|by mouth|per os|p\.o\.)\b", RegexOptions.Compiled)]

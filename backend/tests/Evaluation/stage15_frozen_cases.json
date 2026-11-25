@@ -1,0 +1,927 @@
+[
+  {
+    "id": "allergy",
+    "note_text": "ALLERGY HISTORY:\nAspirin (anaphylaxis).",
+    "expected_medications": [
+      {
+        "name": "Aspirin",
+        "assertion_status": "allergy",
+        "mention_start": 17,
+        "mention_end": 24
+      }
+    ],
+    "expected_investigations": [],
+    "critical": true
+  },
+  {
+    "id": "negated",
+    "note_text": "Patient is not taking Ibuprofen 400 mg PO daily.",
+    "expected_medications": [
+      {
+        "name": "Ibuprofen",
+        "assertion_status": "negated",
+        "mention_start": 22,
+        "mention_end": 31
+      }
+    ],
+    "expected_investigations": [],
+    "critical": true
+  },
+  {
+    "id": "historical",
+    "note_text": "Drug History:\nPreviously received Allopurinol 100 mg PO daily last year.",
+    "expected_medications": [
+      {
+        "name": "Allopurinol",
+        "assertion_status": "historical",
+        "mention_start": 34,
+        "mention_end": 45
+      }
+    ],
+    "expected_investigations": [],
+    "critical": true
+  },
+  {
+    "id": "discontinued",
+    "note_text": "Discontinued Medications:\nWarfarin 5 mg PO once daily was stopped.",
+    "expected_medications": [
+      {
+        "name": "Warfarin",
+        "assertion_status": "discontinued",
+        "mention_start": 26,
+        "mention_end": 34
+      }
+    ],
+    "expected_investigations": [],
+    "critical": true
+  },
+  {
+    "id": "completed",
+    "note_text": "Completed a course of Amoxicillin 500 mg PO three times daily for 5 days.",
+    "expected_medications": [
+      {
+        "name": "Amoxicillin",
+        "assertion_status": "historical",
+        "detailed_assertion": "completed_course",
+        "mention_start": 22,
+        "mention_end": 33
+      }
+    ],
+    "expected_investigations": [],
+    "critical": true
+  },
+  {
+    "id": "conditional-rx",
+    "note_text": "Start Acyclovir 400 mg PO twice daily if vesicles recur.",
+    "expected_medications": [
+      {
+        "name": "Acyclovir",
+        "assertion_status": "conditional",
+        "mention_start": 6,
+        "mention_end": 15
+      }
+    ],
+    "expected_investigations": [],
+    "critical": true
+  },
+  {
+    "id": "education",
+    "note_text": "Patient education: Aspirin can cause bleeding; this is an educational example.",
+    "expected_medications": [
+      {
+        "name": "Aspirin",
+        "assertion_status": "uncertain",
+        "detailed_assertion": "educational",
+        "mention_start": 19,
+        "mention_end": 26
+      }
+    ],
+    "expected_investigations": [],
+    "critical": true
+  },
+  {
+    "id": "hypothetical",
+    "note_text": "Differential treatment options: consider Midostaurin 50 mg PO twice daily.",
+    "expected_medications": [
+      {
+        "name": "Midostaurin",
+        "assertion_status": "conditional",
+        "mention_start": 41,
+        "mention_end": 52
+      }
+    ],
+    "expected_investigations": [],
+    "critical": true
+  },
+  {
+    "id": "held",
+    "note_text": "Withheld Apixaban 5 mg PO twice daily pending review.",
+    "expected_medications": [
+      {
+        "name": "Apixaban",
+        "assertion_status": "held",
+        "mention_start": 9,
+        "mention_end": 17
+      }
+    ],
+    "expected_investigations": [],
+    "critical": true
+  },
+  {
+    "id": "current",
+    "note_text": "Current Medications:\nLevofloxacin 500 mg PO once daily.",
+    "expected_medications": [
+      {
+        "name": "Levofloxacin",
+        "assertion_status": "current_medication",
+        "strength": null,
+        "dose": "500 mg",
+        "dose_unit": "mg",
+        "route": "PO",
+        "frequency": "QD",
+        "mention_start": 21,
+        "mention_end": 33
+      }
+    ],
+    "expected_investigations": [],
+    "critical": false
+  },
+  {
+    "id": "continued",
+    "note_text": "Continue Metformin 500 mg, 1 tablet PO twice daily.",
+    "expected_medications": [
+      {
+        "name": "Metformin",
+        "assertion_status": "current_medication",
+        "detailed_assertion": "continued",
+        "strength": "500 mg",
+        "dose": "1 tablet",
+        "route": "PO",
+        "frequency": "BID",
+        "mention_start": 9,
+        "mention_end": 18
+      }
+    ],
+    "expected_investigations": [],
+    "critical": false
+  },
+  {
+    "id": "new",
+    "note_text": "Started Meropenem 1 g IV every 8 hours for 10 days.",
+    "expected_medications": [
+      {
+        "name": "Meropenem",
+        "assertion_status": "new_order",
+        "strength": null,
+        "dose": "1 g",
+        "route": "IV",
+        "frequency": "Q8H",
+        "duration": "10 days",
+        "mention_start": 8,
+        "mention_end": 17
+      }
+    ],
+    "expected_investigations": [],
+    "critical": false
+  },
+  {
+    "id": "uncertain",
+    "note_text": "It is unclear whether the patient takes Acyclovir.",
+    "expected_medications": [
+      {
+        "name": "Acyclovir",
+        "assertion_status": "uncertain",
+        "mention_start": 40,
+        "mention_end": 49
+      }
+    ],
+    "expected_investigations": [],
+    "critical": true
+  },
+  {
+    "id": "family",
+    "note_text": "Family History:\nMother takes Warfarin 5 mg daily.",
+    "expected_medications": [
+      {
+        "name": "Warfarin",
+        "assertion_status": "uncertain",
+        "detailed_assertion": "other_experiencer",
+        "mention_start": 29,
+        "mention_end": 37
+      }
+    ],
+    "expected_investigations": [],
+    "critical": true
+  },
+  {
+    "id": "avoid",
+    "note_text": "Avoid Ibuprofen because of renal impairment.",
+    "expected_medications": [
+      {
+        "name": "Ibuprofen",
+        "assertion_status": "negated",
+        "mention_start": 6,
+        "mention_end": 15
+      }
+    ],
+    "expected_investigations": [],
+    "critical": true
+  },
+  {
+    "id": "no-allergy",
+    "note_text": "Patient denies Aspirin allergy.",
+    "expected_medications": [
+      {
+        "name": "Aspirin",
+        "assertion_status": "negated",
+        "mention_start": 15,
+        "mention_end": 22
+      }
+    ],
+    "expected_investigations": [],
+    "critical": true
+  },
+  {
+    "id": "chemo-linking",
+    "note_text": "Chemotherapy Regimen:\nCytarabine 100 mg/m2 continuous IV infusion + Daunorubicin 60 mg/m2 IV push.",
+    "expected_medications": [
+      {
+        "name": "Cytarabine",
+        "assertion_status": "current_medication",
+        "strength": null,
+        "dose": "100 mg/m2",
+        "dose_unit": "mg/m2",
+        "route": "IV",
+        "administration": "continuous infusion",
+        "mention_start": 22,
+        "mention_end": 32
+      },
+      {
+        "name": "Daunorubicin",
+        "assertion_status": "current_medication",
+        "strength": null,
+        "dose": "60 mg/m2",
+        "dose_unit": "mg/m2",
+        "route": "IV",
+        "administration": "IV push",
+        "mention_start": 68,
+        "mention_end": 80
+      }
+    ],
+    "expected_investigations": [],
+    "critical": true
+  },
+  {
+    "id": "different-doses",
+    "note_text": "Start Acyclovir 400 mg PO twice daily and start Meropenem 1 g IV every 8 hours for 10 days.",
+    "expected_medications": [
+      {
+        "name": "Acyclovir",
+        "assertion_status": "new_order",
+        "dose": "400 mg",
+        "route": "PO",
+        "frequency": "BID",
+        "duration": null,
+        "mention_start": 6,
+        "mention_end": 15
+      },
+      {
+        "name": "Meropenem",
+        "assertion_status": "new_order",
+        "dose": "1 g",
+        "route": "IV",
+        "frequency": "Q8H",
+        "duration": "10 days",
+        "mention_start": 48,
+        "mention_end": 57
+      }
+    ],
+    "expected_investigations": [],
+    "critical": true
+  },
+  {
+    "id": "no-copy",
+    "note_text": "Current Medications:\nMetformin 500 mg, 1 tablet PO twice daily.\nAcyclovir.",
+    "expected_medications": [
+      {
+        "name": "Metformin",
+        "assertion_status": "current_medication",
+        "strength": "500 mg",
+        "dose": "1 tablet",
+        "route": "PO",
+        "frequency": "BID",
+        "mention_start": 21,
+        "mention_end": 30
+      },
+      {
+        "name": "Acyclovir",
+        "assertion_status": "current_medication",
+        "strength": null,
+        "dose": null,
+        "route": null,
+        "frequency": null,
+        "mention_start": 64,
+        "mention_end": 73
+      }
+    ],
+    "expected_investigations": [],
+    "critical": true
+  },
+  {
+    "id": "concentration",
+    "note_text": "Give Acyclovir 100 mg/mL solution, administer 5 mL IV every 8 hours.",
+    "expected_medications": [
+      {
+        "name": "Acyclovir",
+        "assertion_status": "new_order",
+        "strength": "100 mg/mL",
+        "dose": "5 mL",
+        "dose_unit": "mL",
+        "route": "IV",
+        "frequency": "Q8H",
+        "mention_start": 5,
+        "mention_end": 14
+      }
+    ],
+    "expected_investigations": [],
+    "critical": true
+  },
+  {
+    "id": "weight",
+    "note_text": "Start Meropenem 20 mg/kg IV every 8 hours.",
+    "expected_medications": [
+      {
+        "name": "Meropenem",
+        "assertion_status": "new_order",
+        "strength": null,
+        "dose": "20 mg/kg",
+        "dose_unit": "mg/kg",
+        "route": "IV",
+        "mention_start": 6,
+        "mention_end": 15
+      }
+    ],
+    "expected_investigations": [],
+    "critical": true
+  },
+  {
+    "id": "similar-names",
+    "note_text": "Start Vincristine 1 mg IV.\nWithhold Vinblastine.",
+    "expected_medications": [
+      {
+        "name": "Vincristine",
+        "assertion_status": "new_order",
+        "dose": "1 mg",
+        "route": "IV",
+        "mention_start": 6,
+        "mention_end": 17
+      },
+      {
+        "name": "Vinblastine",
+        "assertion_status": "held",
+        "mention_start": 36,
+        "mention_end": 47
+      }
+    ],
+    "expected_investigations": [],
+    "critical": true
+  },
+  {
+    "id": "brand-ambiguous",
+    "note_text": "Continue Glycomet GP 1 tablet PO daily.",
+    "expected_medications": [
+      {
+        "name": "Glycomet GP",
+        "assertion_status": "current_medication",
+        "normalization_status": "uncertain",
+        "mention_start": 9,
+        "mention_end": 20
+      }
+    ],
+    "expected_investigations": [],
+    "critical": true
+  },
+  {
+    "id": "synonym",
+    "note_text": "Start Acetaminophen 500 mg, 1 tablet PO once daily.",
+    "expected_medications": [
+      {
+        "name": "Acetaminophen",
+        "assertion_status": "new_order",
+        "normalization_status": "matched",
+        "mention_start": 6,
+        "mention_end": 19
+      }
+    ],
+    "expected_investigations": [],
+    "critical": false
+  },
+  {
+    "id": "unknown-rx",
+    "note_text": "Medication Orders:\nZorvaximab 2 mg/kg IV weekly.",
+    "expected_medications": [
+      {
+        "name": "Zorvaximab",
+        "assertion_status": "current_medication",
+        "normalization_status": "unmatched",
+        "dose": "2 mg/kg",
+        "route": "IV",
+        "mention_start": 19,
+        "mention_end": 29
+      }
+    ],
+    "expected_investigations": [],
+    "critical": false
+  },
+  {
+    "id": "chemical",
+    "note_text": "Occupational exposure to benzene and ethanol was discussed. Serum sodium 140 mmol/L.",
+    "expected_medications": [],
+    "expected_investigations": [
+      {
+        "name": "Serum sodium",
+        "assertion_status": "historical",
+        "mention_start": 60,
+        "mention_end": 72
+      }
+    ],
+    "critical": true
+  },
+  {
+    "id": "acronyms",
+    "note_text": "CT is the initials of the technician. The patient lives in PO district.",
+    "expected_medications": [],
+    "expected_investigations": [],
+    "critical": true
+  },
+  {
+    "id": "future-cbc",
+    "note_text": "Report to Day Care Oncology Wing on 01/12/2026 at 09:00 AM for CBC.",
+    "expected_medications": [],
+    "expected_investigations": [
+      {
+        "name": "CBC",
+        "assertion_status": "new_order",
+        "detailed_assertion": "scheduled",
+        "timing": "01/12/2026 at 09:00 AM",
+        "mention_start": 63,
+        "mention_end": 66
+      }
+    ],
+    "critical": true
+  },
+  {
+    "id": "future-list",
+    "note_text": "Follow-Up Plan:\nReport on 01/12/2026 for CBC and renal function tests.",
+    "expected_medications": [],
+    "expected_investigations": [
+      {
+        "name": "CBC",
+        "assertion_status": "new_order",
+        "detailed_assertion": "scheduled",
+        "mention_start": 41,
+        "mention_end": 44
+      },
+      {
+        "name": "renal function tests",
+        "assertion_status": "new_order",
+        "detailed_assertion": "scheduled",
+        "mention_start": 49,
+        "mention_end": 69
+      }
+    ],
+    "critical": true
+  },
+  {
+    "id": "performed",
+    "note_text": "CBC performed yesterday showed thrombocytopenia.",
+    "expected_medications": [],
+    "expected_investigations": [
+      {
+        "name": "CBC",
+        "assertion_status": "historical",
+        "detailed_assertion": "result_documented",
+        "mention_start": 0,
+        "mention_end": 3
+      }
+    ],
+    "critical": true
+  },
+  {
+    "id": "completed-test",
+    "note_text": "Bone marrow biopsy was performed yesterday.",
+    "expected_medications": [],
+    "expected_investigations": [
+      {
+        "name": "Bone marrow biopsy",
+        "assertion_status": "historical",
+        "detailed_assertion": "completed",
+        "mention_start": 0,
+        "mention_end": 18
+      }
+    ],
+    "critical": false
+  },
+  {
+    "id": "old-test",
+    "note_text": "Prior Investigations:\nMRI performed last year.",
+    "expected_medications": [],
+    "expected_investigations": [
+      {
+        "name": "MRI",
+        "assertion_status": "historical",
+        "detailed_assertion": "historical",
+        "mention_start": 22,
+        "mention_end": 25
+      }
+    ],
+    "critical": false
+  },
+  {
+    "id": "conditional-test",
+    "note_text": "Repeat CBC if fever persists.",
+    "expected_medications": [],
+    "expected_investigations": [
+      {
+        "name": "CBC",
+        "assertion_status": "conditional",
+        "mention_start": 7,
+        "mention_end": 10
+      }
+    ],
+    "critical": true
+  },
+  {
+    "id": "negated-test",
+    "note_text": "No repeat CT scan required.",
+    "expected_medications": [],
+    "expected_investigations": [
+      {
+        "name": "CT scan",
+        "assertion_status": "negated",
+        "mention_start": 10,
+        "mention_end": 17
+      }
+    ],
+    "critical": true
+  },
+  {
+    "id": "planned-test",
+    "note_text": "Plan for bone marrow aspirate next week.",
+    "expected_medications": [],
+    "expected_investigations": [
+      {
+        "name": "bone marrow aspirate",
+        "assertion_status": "new_order",
+        "detailed_assertion": "planned",
+        "mention_start": 9,
+        "mention_end": 29
+      }
+    ],
+    "critical": false
+  },
+  {
+    "id": "ordered-test",
+    "note_text": "Order flow cytometry today.",
+    "expected_medications": [],
+    "expected_investigations": [
+      {
+        "name": "flow cytometry",
+        "assertion_status": "new_order",
+        "detailed_assertion": "newly_ordered",
+        "mention_start": 6,
+        "mention_end": 20
+      }
+    ],
+    "critical": false
+  },
+  {
+    "id": "uncertain-test",
+    "note_text": "It is unclear whether cytogenetics was performed.",
+    "expected_medications": [],
+    "expected_investigations": [
+      {
+        "name": "cytogenetics",
+        "assertion_status": "uncertain",
+        "mention_start": 22,
+        "mention_end": 34
+      }
+    ],
+    "critical": true
+  },
+  {
+    "id": "oncology-tests",
+    "note_text": "Investigations Performed:\nBone marrow aspirate and bone marrow biopsy confirmed AML. Blood cultures grew E. coli. Cytogenetics showed a normal karyotype.",
+    "expected_medications": [],
+    "expected_investigations": [
+      {
+        "name": "Bone marrow aspirate",
+        "assertion_status": "historical",
+        "mention_start": 26,
+        "mention_end": 46
+      },
+      {
+        "name": "bone marrow biopsy",
+        "assertion_status": "historical",
+        "mention_start": 51,
+        "mention_end": 69
+      },
+      {
+        "name": "Blood cultures",
+        "assertion_status": "historical",
+        "mention_start": 85,
+        "mention_end": 99
+      },
+      {
+        "name": "Cytogenetics",
+        "assertion_status": "historical",
+        "mention_start": 114,
+        "mention_end": 126
+      }
+    ],
+    "critical": false
+  },
+  {
+    "id": "panels",
+    "note_text": "Obtain renal function panel, liver function panel, serum electrolytes, and serum uric acid tomorrow.",
+    "expected_medications": [],
+    "expected_investigations": [
+      {
+        "name": "renal function panel",
+        "assertion_status": "new_order",
+        "mention_start": 7,
+        "mention_end": 27
+      },
+      {
+        "name": "liver function panel",
+        "assertion_status": "new_order",
+        "mention_start": 29,
+        "mention_end": 49
+      },
+      {
+        "name": "serum electrolytes",
+        "assertion_status": "new_order",
+        "mention_start": 51,
+        "mention_end": 69
+      },
+      {
+        "name": "serum uric acid",
+        "assertion_status": "new_order",
+        "mention_start": 75,
+        "mention_end": 90
+      }
+    ],
+    "critical": false
+  },
+  {
+    "id": "counts",
+    "note_text": "Check full blood count, hemoglobin, platelet count, differential count and peripheral smear.",
+    "expected_medications": [],
+    "expected_investigations": [
+      {
+        "name": "full blood count",
+        "assertion_status": "new_order",
+        "mention_start": 6,
+        "mention_end": 22
+      },
+      {
+        "name": "hemoglobin",
+        "assertion_status": "new_order",
+        "mention_start": 24,
+        "mention_end": 34
+      },
+      {
+        "name": "platelet count",
+        "assertion_status": "new_order",
+        "mention_start": 36,
+        "mention_end": 50
+      },
+      {
+        "name": "differential count",
+        "assertion_status": "new_order",
+        "mention_start": 52,
+        "mention_end": 70
+      },
+      {
+        "name": "peripheral smear",
+        "assertion_status": "new_order",
+        "mention_start": 75,
+        "mention_end": 91
+      }
+    ],
+    "critical": false
+  },
+  {
+    "id": "micro",
+    "note_text": "Order urine culture, culture and sensitivity, stool antigen testing and molecular mutation testing.",
+    "expected_medications": [],
+    "expected_investigations": [
+      {
+        "name": "urine culture",
+        "assertion_status": "new_order",
+        "mention_start": 6,
+        "mention_end": 19
+      },
+      {
+        "name": "culture and sensitivity",
+        "assertion_status": "new_order",
+        "mention_start": 21,
+        "mention_end": 44
+      },
+      {
+        "name": "stool antigen testing",
+        "assertion_status": "new_order",
+        "mention_start": 46,
+        "mention_end": 67
+      },
+      {
+        "name": "molecular mutation testing",
+        "assertion_status": "new_order",
+        "mention_start": 72,
+        "mention_end": 98
+      }
+    ],
+    "critical": false
+  },
+  {
+    "id": "imaging",
+    "note_text": "Order chest radiograph, ultrasound abdomen, CT chest, MRI brain, ECG, echocardiography and spirometry.",
+    "expected_medications": [],
+    "expected_investigations": [
+      {
+        "name": "chest radiograph",
+        "assertion_status": "new_order",
+        "mention_start": 6,
+        "mention_end": 22
+      },
+      {
+        "name": "ultrasound abdomen",
+        "assertion_status": "new_order",
+        "mention_start": 24,
+        "mention_end": 42
+      },
+      {
+        "name": "CT chest",
+        "assertion_status": "new_order",
+        "mention_start": 44,
+        "mention_end": 52
+      },
+      {
+        "name": "MRI brain",
+        "assertion_status": "new_order",
+        "mention_start": 54,
+        "mention_end": 63
+      },
+      {
+        "name": "ECG",
+        "assertion_status": "new_order",
+        "mention_start": 65,
+        "mention_end": 68
+      },
+      {
+        "name": "echocardiography",
+        "assertion_status": "new_order",
+        "mention_start": 70,
+        "mention_end": 86
+      },
+      {
+        "name": "spirometry",
+        "assertion_status": "new_order",
+        "mention_start": 91,
+        "mention_end": 101
+      }
+    ],
+    "critical": false
+  },
+  {
+    "id": "biochem",
+    "note_text": "Check serum creatinine, blood glucose, HbA1c, lipid profile and CRP.",
+    "expected_medications": [],
+    "expected_investigations": [
+      {
+        "name": "serum creatinine",
+        "assertion_status": "new_order",
+        "mention_start": 6,
+        "mention_end": 22
+      },
+      {
+        "name": "blood glucose",
+        "assertion_status": "new_order",
+        "mention_start": 24,
+        "mention_end": 37
+      },
+      {
+        "name": "HbA1c",
+        "assertion_status": "new_order",
+        "mention_start": 39,
+        "mention_end": 44
+      },
+      {
+        "name": "lipid profile",
+        "assertion_status": "new_order",
+        "mention_start": 46,
+        "mention_end": 59
+      },
+      {
+        "name": "CRP",
+        "assertion_status": "new_order",
+        "mention_start": 64,
+        "mention_end": 67
+      }
+    ],
+    "critical": false
+  },
+  {
+    "id": "prn-timing",
+    "note_text": "Medication Orders:\nStart Ondansetron 8 mg PO SOS for nausea from 01/12/2026 until 03/12/2026.",
+    "expected_medications": [
+      {
+        "name": "Ondansetron",
+        "assertion_status": "new_order",
+        "dose": "8 mg",
+        "route": "PO",
+        "frequency": "PRN",
+        "prn_indication": "nausea",
+        "start_timing": "01/12/2026",
+        "stop_timing": "03/12/2026",
+        "mention_start": 25,
+        "mention_end": 36
+      }
+    ],
+    "expected_investigations": [],
+    "critical": false
+  },
+  {
+    "id": "numbered-sections",
+    "note_text": "1. DRUG HISTORY:\nAllopurinol 100 mg daily.\n2. DISCHARGE MEDICATIONS:\nAcyclovir 400 mg PO BD.\n3. FOLLOW-UP INSTRUCTIONS:\nCBC next week.",
+    "expected_medications": [
+      {
+        "name": "Allopurinol",
+        "assertion_status": "historical",
+        "mention_start": 17,
+        "mention_end": 28
+      },
+      {
+        "name": "Acyclovir",
+        "assertion_status": "current_medication",
+        "mention_start": 69,
+        "mention_end": 78
+      }
+    ],
+    "expected_investigations": [
+      {
+        "name": "CBC",
+        "assertion_status": "new_order",
+        "detailed_assertion": "planned",
+        "mention_start": 120,
+        "mention_end": 123
+      }
+    ],
+    "critical": true
+  },
+  {
+    "id": "mixed-assertions",
+    "note_text": "Stop Warfarin and continue Aspirin 75 mg PO daily.",
+    "expected_medications": [
+      {
+        "name": "Warfarin",
+        "assertion_status": "discontinued",
+        "mention_start": 5,
+        "mention_end": 13
+      },
+      {
+        "name": "Aspirin",
+        "assertion_status": "current_medication",
+        "route": "PO",
+        "mention_start": 27,
+        "mention_end": 34
+      }
+    ],
+    "expected_investigations": [],
+    "critical": true
+  },
+  {
+    "id": "long-note",
+    "note_text": "Hospital Course:\nRoutine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. Routine observation was uneventful. \nDischarge Medications:\nAcyclovir 400 mg PO twice daily.\nFollow-Up Plan:\nCBC next week.",
+    "expected_medications": [
+      {
+        "name": "Acyclovir",
+        "assertion_status": "current_medication",
+        "dose": "400 mg",
+        "route": "PO",
+        "mention_start": 12641,
+        "mention_end": 12650
+      }
+    ],
+    "expected_investigations": [
+      {
+        "name": "CBC",
+        "assertion_status": "new_order",
+        "detailed_assertion": "planned",
+        "mention_start": 12690,
+        "mention_end": 12693
+      }
+    ],
+    "critical": false
+  }
+]

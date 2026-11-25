@@ -1,0 +1,1008 @@
+{
+  "info": {
+    "name": "Apollo Clinical Extraction — Backend API Verification Suite",
+    "description": "Headless end-to-end Postman Collection v2.1 verifying Infrastructure, Authentication, Clinical Note Ingestion, Asynchronous Service Bus Processing, Medication & Investigation Extraction, UHID/Patient Isolation, Provider Routing, and Idempotency on ASP.NET Core .NET 10 without Angular.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "1. Infrastructure",
+      "item": [
+        {
+          "name": "1.1 API Liveness (GET /health)",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/health"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.response || !pm.response.code) {",
+                  "  pm.test('BLOCKED: Backend API unreachable', function () { pm.expect.fail('BLOCKED: Backend API unreachable at ' + pm.environment.get('baseUrl')); });",
+                  "  return;",
+                  "}",
+                  "pm.test('GET /health returns HTTP 200 JSON (not HTML fallback)', function () {",
+                  "  pm.response.to.have.status(200);",
+                  "  const ct = (pm.response.headers.get('Content-Type') || '').toLowerCase();",
+                  "  pm.expect(ct).to.include('application/json');",
+                  "  const body = pm.response.json();",
+                  "  pm.expect(body.status).to.eql('Healthy');",
+                  "  pm.expect(body.service).to.eql('Apollo.Backend');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "1.2 Process Liveness (GET /health/live)",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/health/live"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.response || !pm.response.code) { pm.test('BLOCKED: Backend API unreachable', () => pm.expect.fail('BLOCKED: Backend API unreachable')); return; }",
+                  "pm.test('Process liveness check is Healthy', function () {",
+                  "  pm.response.to.have.status(200);",
+                  "  const body = pm.response.json();",
+                  "  pm.expect(body.status).to.eql('Healthy');",
+                  "  pm.expect(body.checks.some(c => c.name === 'self' && c.status === 'Healthy')).to.eql(true);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "1.3 PostgreSQL Database Readiness (GET /health/db)",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/health/db"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.response || !pm.response.code) { pm.test('BLOCKED: Backend API unreachable', () => pm.expect.fail('BLOCKED: Backend API unreachable')); return; }",
+                  "pm.test('PostgreSQL cx_platform database readiness is Healthy', function () {",
+                  "  pm.response.to.have.status(200);",
+                  "  const body = pm.response.json();",
+                  "  pm.expect(body.status).to.eql('Healthy');",
+                  "  pm.expect(body.checks.some(c => c.name === 'database' && c.status === 'Healthy')).to.eql(true);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "1.4 Full Application & Pipeline Readiness (GET /health/ready)",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/health/ready"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.response || !pm.response.code) { pm.test('BLOCKED: Backend API unreachable', () => pm.expect.fail('BLOCKED: Backend API unreachable')); return; }",
+                  "pm.test('Database, ONNX pipeline, and provider configuration are Healthy', function () {",
+                  "  pm.response.to.have.status(200);",
+                  "  const body = pm.response.json();",
+                  "  pm.expect(body.status).to.eql('Healthy');",
+                  "  const names = body.checks.map(c => c.name);",
+                  "  pm.expect(names).to.include('database');",
+                  "  pm.expect(names).to.include('pipeline');",
+                  "  pm.expect(names).to.include('provider_configuration');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "1.5 Development OpenAPI Specification (GET /openapi/v1.json)",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/openapi/v1.json"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.response || !pm.response.code) { pm.test('BLOCKED: Backend API unreachable', () => pm.expect.fail('BLOCKED: Backend API unreachable')); return; }",
+                  "pm.test('OpenAPI 3.0.3 spec is served in Development and documents core routes', function () {",
+                  "  pm.response.to.have.status(200);",
+                  "  const spec = pm.response.json();",
+                  "  pm.expect(spec.openapi).to.eql('3.0.3');",
+                  "  pm.expect(spec.paths).to.have.property('/api/v1/queue');",
+                  "  pm.expect(spec.paths).to.have.property('/api/v1/emr/notes/{id}/sign');",
+                  "  pm.expect(spec.paths).to.have.property('/v1/routing');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "2. Authentication",
+      "item": [
+        {
+          "name": "2.1 Missing Credentials Rejected (GET /api/v1/queue)",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/queue"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.response || !pm.response.code) { pm.test('BLOCKED: Backend API unreachable', () => pm.expect.fail('BLOCKED: Backend API unreachable')); return; }",
+                  "pm.test('Unauthenticated queue access is rejected with HTTP 401', function () {",
+                  "  pm.response.to.have.status(401);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "2.2 Issue CSRF Token (GET /api/v1/emr/auth/csrf)",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/emr/auth/csrf"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.response || !pm.response.code) { pm.test('BLOCKED: Backend API unreachable', () => pm.expect.fail('BLOCKED: Backend API unreachable')); return; }",
+                  "pm.test('CSRF endpoint returns anti-forgery request token', function () {",
+                  "  pm.response.to.have.status(200);",
+                  "  const body = pm.response.json();",
+                  "  pm.expect(body.token).to.be.a('string').and.not.empty;",
+                  "  pm.environment.set('csrfToken', body.token);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "2.3 Invalid Credentials Rejected (POST /api/v1/emr/auth/login)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "X-XSRF-TOKEN", "value": "{{csrfToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"login\":\"invalid.synthetic.user@apollo.local\",\"password\":\"WrongPasswordForTestOnly123!\"}"
+            },
+            "url": "{{baseUrl}}/api/v1/emr/auth/login"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.response || !pm.response.code) { pm.test('BLOCKED: Backend API unreachable', () => pm.expect.fail('BLOCKED: Backend API unreachable')); return; }",
+                  "pm.test('Invalid login credentials return HTTP 401 LOGIN_REJECTED', function () {",
+                  "  pm.response.to.have.status(401);",
+                  "  const body = pm.response.json();",
+                  "  pm.expect(body.code).to.eql('LOGIN_REJECTED');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "2.4 Establish Authorized Dev Loopback Session (POST /api/v1/emr/auth/dev-session)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": { "mode": "raw", "raw": "{}" },
+            "url": "{{baseUrl}}/api/v1/emr/auth/dev-session"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.response || !pm.response.code) { pm.test('BLOCKED: Backend API unreachable', () => pm.expect.fail('BLOCKED: Backend API unreachable')); return; }",
+                  "pm.test('Authorized Development loopback session established', function () {",
+                  "  pm.response.to.have.status(200);",
+                  "  const profile = pm.response.json();",
+                  "  pm.expect(profile.id).to.be.a('string').and.not.empty;",
+                  "  pm.expect(profile.role).to.eql('Doctor');",
+                  "  pm.environment.set('doctorId', profile.id);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "2.5 Verify Active Authenticated Profile (GET /api/v1/emr/auth/me)",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/emr/auth/me"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.response || !pm.response.code) { pm.test('BLOCKED: Backend API unreachable', () => pm.expect.fail('BLOCKED: Backend API unreachable')); return; }",
+                  "pm.test('Session cookie authenticates GET /api/v1/emr/auth/me', function () {",
+                  "  pm.response.to.have.status(200);",
+                  "  const profile = pm.response.json();",
+                  "  pm.expect(profile.id).to.eql(pm.environment.get('doctorId'));",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "2.6 Refresh Authenticated CSRF Token (GET /api/v1/emr/auth/csrf)",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/emr/auth/csrf"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.response || !pm.response.code) { pm.test('BLOCKED: Backend API unreachable', () => pm.expect.fail('BLOCKED: Backend API unreachable')); return; }",
+                  "pm.test('Authenticated CSRF token refreshed', function () {",
+                  "  pm.response.to.have.status(200);",
+                  "  pm.environment.set('csrfToken', pm.response.json().token);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "2.7 Unauthorized Clinical Patient Rejected (GET /api/v1/queue/patients/P999999-UNAUTH)",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/queue/patients/P999999-UNAUTH"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.response || !pm.response.code) { pm.test('BLOCKED: Backend API unreachable', () => pm.expect.fail('BLOCKED: Backend API unreachable')); return; }",
+                  "pm.test('Unassigned patient reference returns HTTP 404 PATIENT_NOT_FOUND', function () {",
+                  "  pm.response.to.have.status(404);",
+                  "  pm.expect(pm.response.json().code).to.eql('PATIENT_NOT_FOUND');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "2.8 Direct Extraction Restricted for Doctor Role (POST /api/v1/extractions)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "X-XSRF-TOKEN", "value": "{{csrfToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"noteText\":\"Synthetic role-boundary check: Continue Amlodipine 5 mg orally daily.\"}"
+            },
+            "url": "{{baseUrl}}/api/v1/extractions"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.response || !pm.response.code) { pm.test('BLOCKED: Backend API unreachable', () => pm.expect.fail('BLOCKED: Backend API unreachable')); return; }",
+                  "pm.test('Doctor session cannot bypass async OP EMR workflow via direct POST /api/v1/extractions (HTTP 403)', function () {",
+                  "  pm.response.to.have.status(403);",
+                  "  pm.expect(pm.response.json().code).to.eql('CLINICAL_ACCESS_DENIED');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "3. Clinical Note Ingestion",
+      "item": [
+        {
+          "name": "3.1 Discover Assigned Encounters (GET /api/v1/emr/encounters)",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/emr/encounters"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.response || !pm.response.code) { pm.test('BLOCKED: Backend API unreachable', () => pm.expect.fail('BLOCKED: Backend API unreachable')); return; }",
+                  "pm.test('Assigned synthetic encounters P100234 and P100237 discovered', function () {",
+                  "  pm.response.to.have.status(200);",
+                  "  const list = pm.response.json();",
+                  "  pm.expect(list).to.be.an('array').and.not.empty;",
+                  "  const encA = list.find(e => e.patientReference === pm.environment.get('patientA_ref'));",
+                  "  const encB = list.find(e => e.patientReference === pm.environment.get('patientB_ref'));",
+                  "  pm.expect(encA, 'Assigned encounter for P100234 must exist').to.be.an('object');",
+                  "  pm.expect(encB, 'Assigned encounter for P100237 must exist').to.be.an('object');",
+                  "  pm.environment.set('patientA_noteId', encA.noteId);",
+                  "  pm.environment.set('patientA_prevVersion', String(encA.version));",
+                  "  pm.environment.set('patientB_noteId', encB.noteId);",
+                  "  pm.environment.set('postmanRunTag', 'POSTMAN-E2E-' + Date.now());",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "3.2 Input Validation Rejects Empty Clinical Note (POST corrections)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "X-XSRF-TOKEN", "value": "{{csrfToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"text\":\"   \",\"expectedVersion\":{{patientA_prevVersion}}}"
+            },
+            "url": "{{baseUrl}}/api/v1/emr/notes/{{patientA_noteId}}/corrections"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.response || !pm.response.code) { pm.test('BLOCKED: Backend API unreachable', () => pm.expect.fail('BLOCKED: Backend API unreachable')); return; }",
+                  "pm.test('Empty clinical note is rejected with HTTP 400 INVALID_NOTE', function () {",
+                  "  pm.response.to.have.status(400);",
+                  "  pm.expect(pm.response.json().code).to.eql('INVALID_NOTE');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "3.3 Submit Valid Synthetic Clinical Note Version (Patient A)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "X-XSRF-TOKEN", "value": "{{csrfToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"expectedVersion\": {{patientA_prevVersion}},\n  \"text\": \"Chief Complaint:\\n{{postmanRunTag}} Outpatient follow-up for hypertension, diabetes, and dyslipidaemia.\\n\\nCurrent Medications:\\nContinue Amlodipine 5 mg 1 tablet orally once daily for 30 days.\\nDiscontinue Warfarin 5 mg immediately due to elevated INR.\\nAmoxicillin was discussed but not prescribed.\\n\\nPlan:\\nStart Metformin 500 mg half tablet orally twice daily for 14 days.\\nTake Paracetamol 650 mg 1 tablet orally as needed for fever.\\n\\nInvestigations:\\nPrevious HbA1c was normal last month.\\nOrder Complete Blood Count and Serum Creatinine tomorrow morning.\\nOrder Liver Function Tests and 12-lead ECG today.\\nOrder Chest X-ray PA view if cough persists beyond 48 hours.\"\n}"
+            },
+            "url": "{{baseUrl}}/api/v1/emr/notes/{{patientA_noteId}}/corrections"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.response || !pm.response.code) { pm.test('BLOCKED: Backend API unreachable', () => pm.expect.fail('BLOCKED: Backend API unreachable')); return; }",
+                  "pm.test('Valid synthetic note persisted as next Draft version', function () {",
+                  "  pm.response.to.have.status(200);",
+                  "  const note = pm.response.json();",
+                  "  pm.expect(note.id).to.eql(pm.environment.get('patientA_noteId'));",
+                  "  pm.expect(note.status).to.eql('Draft');",
+                  "  pm.expect(note.version).to.be.above(Number(pm.environment.get('patientA_prevVersion')));",
+                  "  pm.environment.set('ingestedVersion', String(note.version));",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "3.4 Sign Clinical Note & Enqueue Transactional Outbox Event",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "X-XSRF-TOKEN", "value": "{{csrfToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"expectedVersion\":{{ingestedVersion}}}"
+            },
+            "url": "{{baseUrl}}/api/v1/emr/notes/{{patientA_noteId}}/sign"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.response || !pm.response.code) { pm.test('BLOCKED: Backend API unreachable', () => pm.expect.fail('BLOCKED: Backend API unreachable')); return; }",
+                  "pm.test('Signed note committed atomically with transactional outbox event', function () {",
+                  "  pm.response.to.have.status(200);",
+                  "  const note = pm.response.json();",
+                  "  pm.expect(note.status).to.eql('Signed');",
+                  "  pm.expect(note.signedAt).to.be.a('string').and.not.empty;",
+                  "  pm.environment.set('signedVersion', String(note.version));",
+                  "  pm.environment.set('pollAttempt', '0');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "3.5 Retrieve Created Immutable Note & Verify Outbox Acceptance",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/emr/notes/{{patientA_noteId}}"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.response || !pm.response.code) { pm.test('BLOCKED: Backend API unreachable', () => pm.expect.fail('BLOCKED: Backend API unreachable')); return; }",
+                  "pm.test('Retrieved note matches signed version and synthetic text', function () {",
+                  "  pm.response.to.have.status(200);",
+                  "  const note = pm.response.json();",
+                  "  pm.expect(String(note.version)).to.eql(pm.environment.get('signedVersion'));",
+                  "  pm.expect(note.text).to.include(pm.environment.get('postmanRunTag'));",
+                  "  pm.expect(note.extractionStatus).to.be.oneOf(['Pending Publication', 'Queued', 'Processing', 'Needs Review', 'Completed']);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "4. Asynchronous Processing",
+      "item": [
+        {
+          "name": "4.1 Poll Extraction Status Until Terminal State (Bounded)",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/queue/{{patientA_noteId}}?version={{signedVersion}}&patient={{patientA_ref}}"
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const attempt = Number(pm.environment.get('pollAttempt') || '0');",
+                  "const delay = Number(pm.environment.get('pollIntervalMs') || '2000');",
+                  "if (attempt > 0) {",
+                  "  setTimeout(function () {}, delay);",
+                  "}"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.response || !pm.response.code) { pm.test('BLOCKED: Backend API unreachable', () => pm.expect.fail('BLOCKED: Backend API unreachable')); return; }",
+                  "const body = pm.response.json();",
+                  "const attempt = Number(pm.environment.get('pollAttempt') || '0');",
+                  "const maxAttempts = Number(pm.environment.get('maxPollAttempts') || '15');",
+                  "const inProgress = ['Waiting', 'Queued', 'Extracting'].includes(body.queueState);",
+                  "if (inProgress && attempt < maxAttempts) {",
+                  "  pm.environment.set('pollAttempt', String(attempt + 1));",
+                  "  if (pm.execution && typeof pm.execution.setNextRequest === 'function') {",
+                  "    pm.execution.setNextRequest('4.1 Poll Extraction Status Until Terminal State (Bounded)');",
+                  "  } else if (typeof postman !== 'undefined' && typeof postman.setNextRequest === 'function') {",
+                  "    postman.setNextRequest('4.1 Poll Extraction Status Until Terminal State (Bounded)');",
+                  "  }",
+                  "  return;",
+                  "}",
+                  "pm.environment.set('pollAttempt', '0');",
+                  "pm.test('Asynchronous worker completed extraction within bounded timeout', function () {",
+                  "  pm.response.to.have.status(200);",
+                  "  pm.expect(body.queueState, 'Final queue state (error=' + (body.error || 'none') + ')').to.eql('Ready');",
+                  "  pm.expect(body.eventId).to.be.a('string').and.not.empty;",
+                  "  pm.expect(body.extractionId).to.be.a('string').and.not.empty;",
+                  "  pm.expect(body.extraction).to.be.an('object');",
+                  "  pm.expect(body.extraction.correlationId).to.be.a('string').and.not.empty;",
+                  "  pm.expect(body.sourceHash).to.have.lengthOf(64);",
+                  "  pm.environment.set('patientA_eventId', body.eventId);",
+                  "  pm.environment.set('patientA_extractionId', body.extractionId);",
+                  "  pm.environment.set('patientA_correlationId', body.extraction.correlationId);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "4.2 Retrieve Persisted Extraction by Extraction ID",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/extractions/{{patientA_extractionId}}"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.response || !pm.response.code) { pm.test('BLOCKED: Backend API unreachable', () => pm.expect.fail('BLOCKED: Backend API unreachable')); return; }",
+                  "pm.test('Persisted extraction matches extractionId and correlationId', function () {",
+                  "  pm.response.to.have.status(200);",
+                  "  const ext = pm.response.json();",
+                  "  pm.expect(ext.extractionId).to.eql(pm.environment.get('patientA_extractionId'));",
+                  "  pm.expect(ext.correlationId).to.eql(pm.environment.get('patientA_correlationId'));",
+                  "  pm.expect(ext.saved).to.eql(true);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "4.3 Export FHIR R4 Bundle for Completed Extraction",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/extractions/{{patientA_extractionId}}/fhir"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.response || !pm.response.code) { pm.test('BLOCKED: Backend API unreachable', () => pm.expect.fail('BLOCKED: Backend API unreachable')); return; }",
+                  "pm.test('FHIR R4 Bundle generated from persisted extraction', function () {",
+                  "  pm.response.to.have.status(200);",
+                  "  const bundle = pm.response.json();",
+                  "  pm.expect(bundle.resourceType).to.eql('Bundle');",
+                  "  pm.expect(bundle.entry).to.be.an('array').and.not.empty;",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "5. Medication Extraction",
+      "item": [
+        {
+          "name": "5.1 Verify Medication Assertions, Strength/Dose Separation & Source Evidence",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/queue/{{patientA_noteId}}?version={{signedVersion}}&patient={{patientA_ref}}"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.response || !pm.response.code) { pm.test('BLOCKED: Backend API unreachable', () => pm.expect.fail('BLOCKED: Backend API unreachable')); return; }",
+                  "const body = pm.response.json();",
+                  "const meds = (body.extraction && body.extraction.medications) || [];",
+                  "const findMed = (name) => meds.find(m => (m.name || '').toLowerCase().includes(name.toLowerCase()));",
+                  "pm.test('Medications extracted with verified source evidence', function () {",
+                  "  pm.expect(meds.length).to.be.at.least(3);",
+                  "  meds.forEach(m => {",
+                  "    pm.expect(m.evidence && m.evidence.quote).to.be.a('string').and.not.empty;",
+                  "    pm.expect(m.evidence.verified).to.eql(true);",
+                  "  });",
+                  "});",
+                  "pm.test('Amlodipine continued/current with strength 5 mg and administered dose 1 tablet', function () {",
+                  "  const amlo = findMed('Amlodipine');",
+                  "  pm.expect(amlo, 'Amlodipine must be extracted').to.be.an('object');",
+                  "  pm.expect(amlo.strength).to.eql('5 mg');",
+                  "  pm.expect(amlo.dose).to.eql('1 tablet');",
+                  "  pm.expect(['current_medication', 'continued']).to.include(amlo.assertionStatus);",
+                  "});",
+                  "pm.test('Metformin new order with strength 500 mg and administered dose half tablet', function () {",
+                  "  const met = findMed('Metformin');",
+                  "  pm.expect(met, 'Metformin must be extracted').to.be.an('object');",
+                  "  pm.expect(met.strength).to.eql('500 mg');",
+                  "  pm.expect(met.dose).to.eql('half tablet');",
+                  "  pm.expect(met.assertionStatus).to.eql('new_order');",
+                  "});",
+                  "pm.test('Warfarin accurately marked Discontinued (not active prescription)', function () {",
+                  "  const warf = findMed('Warfarin');",
+                  "  pm.expect(warf, 'Warfarin must be extracted').to.be.an('object');",
+                  "  pm.expect(warf.assertionStatus).to.eql('discontinued');",
+                  "});",
+                  "pm.test('Negated Amoxicillin is not recorded as an active new_order prescription', function () {",
+                  "  const amox = findMed('Amoxicillin');",
+                  "  if (amox) {",
+                  "    pm.expect(amox.assertionStatus).to.not.eql('new_order');",
+                  "    pm.expect(amox.assertionStatus).to.not.eql('current_medication');",
+                  "  }",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "6. Investigation Extraction",
+      "item": [
+        {
+          "name": "6.1 Verify Investigations, Order Intent, Conditionality & Terminology",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/queue/{{patientA_noteId}}?version={{signedVersion}}&patient={{patientA_ref}}"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.response || !pm.response.code) { pm.test('BLOCKED: Backend API unreachable', () => pm.expect.fail('BLOCKED: Backend API unreachable')); return; }",
+                  "const body = pm.response.json();",
+                  "const invs = (body.extraction && body.extraction.investigations) || [];",
+                  "const findInv = (rx) => invs.find(i => rx.test(i.name || ''));",
+                  "pm.test('Investigations extracted with verified source evidence', function () {",
+                  "  pm.expect(invs.length).to.be.at.least(3);",
+                  "  invs.forEach(i => {",
+                  "    pm.expect(i.evidence && i.evidence.quote).to.be.a('string').and.not.empty;",
+                  "    pm.expect(i.evidence.verified).to.eql(true);",
+                  "  });",
+                  "});",
+                  "pm.test('Complete Blood Count carries LOINC 58410-2 exact or narrower withheld candidate', function () {",
+                  "  const cbc = findInv(/complete blood count|\\bcbc\\b/i);",
+                  "  pm.expect(cbc, 'Complete Blood Count must be extracted').to.be.an('object');",
+                  "  const code = (cbc.normalization && (cbc.normalization.matchedCode || cbc.normalization.candidateCode)) || '';",
+                  "  pm.expect(code).to.eql('58410-2');",
+                  "});",
+                  "pm.test('Serum Creatinine and ECG/LFT extracted cleanly', function () {",
+                  "  pm.expect(findInv(/creatinine/i), 'Serum Creatinine must be extracted').to.be.an('object');",
+                  "  pm.expect(findInv(/ecg|electrocardiogram/i), 'ECG must be extracted').to.be.an('object');",
+                  "  pm.expect(findInv(/liver function|lft/i), 'Liver Function Tests must be extracted').to.be.an('object');",
+                  "});",
+                  "pm.test('Conditional Chest X-ray preserves conditional assertion status', function () {",
+                  "  const cxr = findInv(/chest x-?ray/i);",
+                  "  pm.expect(cxr, 'Chest X-ray must be extracted').to.be.an('object');",
+                  "  pm.expect(cxr.assertionStatus).to.eql('conditional');",
+                  "});",
+                  "pm.test('Historical HbA1c is not misrepresented as a new order', function () {",
+                  "  const a1c = findInv(/hba1c/i);",
+                  "  if (a1c) {",
+                  "    pm.expect(a1c.assertionStatus).to.eql('historical');",
+                  "  }",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "7. Patient / UHID Isolation",
+      "item": [
+        {
+          "name": "7.1 Patient A Scope Contains ONLY Patient A Notes & Multiple Versions",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/queue/patients/{{patientA_ref}}"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.response || !pm.response.code) { pm.test('BLOCKED: Backend API unreachable', () => pm.expect.fail('BLOCKED: Backend API unreachable')); return; }",
+                  "pm.test('Patient A scope contains multiple versions of ONLY Patient A', function () {",
+                  "  pm.response.to.have.status(200);",
+                  "  const data = pm.response.json();",
+                  "  pm.expect(data.patientReference).to.eql(pm.environment.get('patientA_ref'));",
+                  "  pm.expect(data.notes.length).to.be.at.least(2);",
+                  "  data.notes.forEach(n => pm.expect(n.encounterReference).to.not.eql('ENC-100570'));",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "7.2 Patient B Detail Contains ONLY Patient B Records (Zero Cross-Patient Bleed)",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/queue/{{patientB_noteId}}?patient={{patientB_ref}}"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.response || !pm.response.code) { pm.test('BLOCKED: Backend API unreachable', () => pm.expect.fail('BLOCKED: Backend API unreachable')); return; }",
+                  "pm.test('Patient B source note and extraction are completely isolated from Patient A', function () {",
+                  "  pm.response.to.have.status(200);",
+                  "  const b = pm.response.json();",
+                  "  pm.expect(b.patientReference).to.eql(pm.environment.get('patientB_ref'));",
+                  "  pm.expect(b.sourceText).to.not.include(pm.environment.get('postmanRunTag'));",
+                  "  pm.expect(b.extractionId).to.not.eql(pm.environment.get('patientA_extractionId'));",
+                  "  (b.patientNotes || []).forEach(n => pm.expect(n.encounterReference).to.not.eql('ENC-100567'));",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "7.3 Reject Tampered Cross-Patient Parameter (Patient A Note + Patient B Ref)",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/queue/{{patientA_noteId}}?patient={{patientB_ref}}"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.response || !pm.response.code) { pm.test('BLOCKED: Backend API unreachable', () => pm.expect.fail('BLOCKED: Backend API unreachable')); return; }",
+                  "pm.test('Cross-patient parameter tampering returns HTTP 404 QUEUE_ENTRY_NOT_FOUND', function () {",
+                  "  pm.response.to.have.status(404);",
+                  "  pm.expect(pm.response.json().code).to.eql('QUEUE_ENTRY_NOT_FOUND');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "7.4 Earlier Note Version Extraction Is Strictly Isolated From Latest Version",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/queue/{{patientA_noteId}}?version={{patientA_prevVersion}}&patient={{patientA_ref}}"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.response || !pm.response.code) { pm.test('BLOCKED: Backend API unreachable', () => pm.expect.fail('BLOCKED: Backend API unreachable')); return; }",
+                  "pm.test('Prior immutable version returns its own note text and distinct extractionId', function () {",
+                  "  pm.response.to.have.status(200);",
+                  "  const prev = pm.response.json();",
+                  "  pm.expect(String(prev.noteVersion)).to.eql(pm.environment.get('patientA_prevVersion'));",
+                  "  pm.expect(prev.sourceText).to.not.include(pm.environment.get('postmanRunTag'));",
+                  "  pm.expect(prev.extractionId).to.not.eql(pm.environment.get('patientA_extractionId'));",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "8. Provider Routing",
+      "item": [
+        {
+          "name": "8.1 Inspect Active Provider Routing Diagnostics (GET /v1/routing)",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/v1/routing"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.response || !pm.response.code) { pm.test('BLOCKED: Backend API unreachable', () => pm.expect.fail('BLOCKED: Backend API unreachable')); return; }",
+                  "pm.test('Provider routing snapshot reports truthful configuration without executing inference', function () {",
+                  "  pm.response.to.have.status(200);",
+                  "  const r = pm.response.json();",
+                  "  pm.expect(r.configurationReady).to.eql(true);",
+                  "  pm.expect(r.extractionInferenceExecuted).to.eql(false);",
+                  "  pm.expect(r.foundryDeployment).to.eql('gpt-6.1-sol');",
+                  "  pm.expect(r.fallbackProvider).to.eql('LocalOnnx');",
+                  "  pm.environment.set('effectivePrimaryProvider', r.requestedPrimaryProvider);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "8.2 Verify Persisted Provider Provenance & Backend Clinical Validation",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/extractions/{{patientA_extractionId}}"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.response || !pm.response.code) { pm.test('BLOCKED: Backend API unreachable', () => pm.expect.fail('BLOCKED: Backend API unreachable')); return; }",
+                  "pm.test('Actual provider provenance and clinical validation metadata are persisted', function () {",
+                  "  pm.response.to.have.status(200);",
+                  "  const ext = pm.response.json();",
+                  "  pm.expect(ext.modelMetadata).to.be.an('object');",
+                  "  pm.expect(ext.modelMetadata.provider).to.be.oneOf(['onnx', 'foundry']);",
+                  "  if (pm.environment.get('effectivePrimaryProvider') === 'LocalOnnx') {",
+                  "    pm.expect(ext.modelMetadata.provider).to.eql('onnx');",
+                  "    pm.expect(ext.modelMetadata.routingMode).to.eql('explicit_offline');",
+                  "  }",
+                  "  pm.expect(ext.executionDurationMs).to.be.above(0);",
+                  "  pm.expect(ext.validationSummary).to.be.an('object');",
+                  "  pm.expect(ext.validationSummary.warningCount).to.be.a('number');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "9. Idempotency and Reliability",
+      "item": [
+        {
+          "name": "9.1 Duplicate Sign of Already-Signed Version Rejected (HTTP 409)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "X-XSRF-TOKEN", "value": "{{csrfToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"expectedVersion\":{{signedVersion}}}"
+            },
+            "url": "{{baseUrl}}/api/v1/emr/notes/{{patientA_noteId}}/sign"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.response || !pm.response.code) { pm.test('BLOCKED: Backend API unreachable', () => pm.expect.fail('BLOCKED: Backend API unreachable')); return; }",
+                  "pm.test('Re-signing an already-signed version returns HTTP 409 NOTE_VERSION_CONFLICT (no duplicate event)', function () {",
+                  "  pm.response.to.have.status(409);",
+                  "  pm.expect(pm.response.json().code).to.eql('NOTE_VERSION_CONFLICT');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "9.2 Missing Extraction Resource Returns HTTP 404",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/extractions/00000000-0000-0000-0000-000000000000"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.response || !pm.response.code) { pm.test('BLOCKED: Backend API unreachable', () => pm.expect.fail('BLOCKED: Backend API unreachable')); return; }",
+                  "pm.test('Nonexistent extraction ID returns HTTP 404', function () {",
+                  "  pm.response.to.have.status(404);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "9.3 Malformed Queue Note Identifier Returns HTTP 404",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/queue/not-a-valid-guid"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.response || !pm.response.code) { pm.test('BLOCKED: Backend API unreachable', () => pm.expect.fail('BLOCKED: Backend API unreachable')); return; }",
+                  "pm.test('Malformed GUID route parameter is rejected cleanly with HTTP 404', function () {",
+                  "  pm.response.to.have.status(404);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "9.4 Stale Expected Version Rejected Without Mutating Note (HTTP 409)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "X-XSRF-TOKEN", "value": "{{csrfToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"text\":\"Stale concurrency update must be rejected.\",\"expectedVersion\":1}"
+            },
+            "url": "{{baseUrl}}/api/v1/emr/notes/{{patientA_noteId}}/corrections"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.response || !pm.response.code) { pm.test('BLOCKED: Backend API unreachable', () => pm.expect.fail('BLOCKED: Backend API unreachable')); return; }",
+                  "pm.test('Stale expectedVersion returns HTTP 409 NOTE_VERSION_CONFLICT', function () {",
+                  "  pm.response.to.have.status(409);",
+                  "  pm.expect(pm.response.json().code).to.eql('NOTE_VERSION_CONFLICT');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

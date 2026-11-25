@@ -1,0 +1,44 @@
+{
+  "status": "PASS",
+  "results": [
+    {
+      "name": "Default Show entries = 10, toolbar alignment, newest-first & repeated UHIDs",
+      "status": "PASS",
+      "details": "Rows=10, P100234=4, FirstRow=P100234",
+      "timestamp": "2026-11-25T06:20:21.995Z"
+    },
+    {
+      "name": "Select 5 -> immediate ?limit=5 fetch, 5 newest rows, repeated UHIDs, zero reload",
+      "status": "PASS",
+      "details": "Rows=5, P100234=2",
+      "timestamp": "2026-11-25T06:20:22.071Z"
+    },
+    {
+      "name": "Automatic 4s polling preserves limit=5",
+      "status": "PASS",
+      "details": "PollsObserved=1, AllLimit5=true",
+      "timestamp": "2026-11-25T06:20:26.681Z"
+    },
+    {
+      "name": "Preserves Show entries = 5 after returning from opened extraction",
+      "status": "PASS",
+      "details": "Dropdown=5, Rows=5, Isolation=PASS",
+      "timestamp": "2026-11-25T06:20:26.808Z"
+    },
+    {
+      "name": "Search consistent with API ?search=...&limit=5 and ?limit=10",
+      "status": "PASS",
+      "details": "P100234 search returned 5 then 10 newest rows",
+      "timestamp": "2026-11-25T06:20:27.419Z"
+    },
+    {
+      "name": "Zero inference triggers, zero clutter, zero console/API errors",
+      "status": "PASS",
+      "details": "Clean",
+      "timestamp": "2026-11-25T06:20:27.424Z"
+    }
+  ],
+  "consoleErrors": [],
+  "failedApiRequests": [],
+  "unexpectedMutations": []
+}

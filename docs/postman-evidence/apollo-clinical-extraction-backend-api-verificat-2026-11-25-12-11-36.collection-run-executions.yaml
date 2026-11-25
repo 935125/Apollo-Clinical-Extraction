@@ -1,0 +1,410 @@
+---
+kind: postman-cli-collection-run-executions
+schemaVersion: 1
+runId: 19794cf8-716f-4771-bcdb-469093bf6148
+summaryFile: apollo-clinical-extraction-backend-api-verificat-2026-11-25-12-11-36.collection-run-summary.yaml
+collection:
+  id: ef26f99f-4923-4bbb-a8a0-f73c8c41829e
+  name: Apollo Clinical Extraction — Backend API Verification Suite
+generatedAt: '2026-11-25T06:41:37.237Z'
+---
+iteration: 0
+cursorRef: f9da052b-92a6-4eab-90c5-09bfc1483e7f
+item:
+  id: dbd5cd23-caa6-4899-badc-c42e9f73156d
+  name: 1.1 API Liveness (GET /health)
+  folders:
+    - 1. Infrastructure
+    - 1.1 API Liveness (GET /health)
+  fullName: 1. Infrastructure / 1.1 API Liveness (GET /health)
+  parent:
+    id: 191e2111-9c4c-4b6a-8c95-b9fa4ff004ad
+    name: 1. Infrastructure
+    folders:
+      - 1. Infrastructure
+request:
+  method: GET
+  url:
+    protocol: http
+    port: '5000'
+    path:
+      - health
+    host:
+      - '127'
+      - '0'
+      - '0'
+      - '1'
+    query: []
+    variable: []
+  headers:
+    - key: User-Agent
+      value: PostmanRuntime/7.56.2
+      system: true
+    - key: Accept
+      value: '*/*'
+      system: true
+    - key: Cache-Control
+      value: no-cache
+      system: true
+    - key: Postman-Token
+      value: 45cfb4f0-fbdf-43f9-8568-2fe83810b479
+      system: true
+    - key: Host
+      value: 127.0.0.1:5000
+      system: true
+    - key: Accept-Encoding
+      value: gzip, deflate, br
+      system: true
+    - key: Connection
+      value: keep-alive
+      system: true
+response:
+  id: ee7ea98c-ac80-4fab-b178-264599f0489b
+  code: 200
+  status: OK
+  responseTime: 17
+  responseSize: 123
+  headers:
+    - key: Content-Type
+      value: application/json; charset=utf-8
+    - key: Date
+      value: Wed, 25 Nov 2026 06:41:37 GMT
+    - key: Server
+      value: Kestrel
+    - key: Cache-Control
+      value: no-store
+    - key: Transfer-Encoding
+      value: chunked
+    - key: X-Content-Type-Options
+      value: nosniff
+    - key: Referrer-Policy
+      value: no-referrer
+  body: '{"status":"Healthy","service":"Apollo.Backend","version":"2.1.0-dotnet","timestampUtc":"2026-11-25T06:41:37.4988795+00:00"}'
+tests:
+  - name: GET /health returns HTTP 200 JSON (not HTML fallback)
+    status: passed
+errors: []
+---
+iteration: 0
+cursorRef: 6ca09cfe-a207-43ab-8d27-4176cc16b297
+item:
+  id: c2442f81-574f-4780-97ab-264e3fbf5404
+  name: 1.2 Process Liveness (GET /health/live)
+  folders:
+    - 1. Infrastructure
+    - 1.2 Process Liveness (GET /health/live)
+  fullName: 1. Infrastructure / 1.2 Process Liveness (GET /health/live)
+  parent:
+    id: 191e2111-9c4c-4b6a-8c95-b9fa4ff004ad
+    name: 1. Infrastructure
+    folders:
+      - 1. Infrastructure
+request:
+  method: GET
+  url:
+    protocol: http
+    port: '5000'
+    path:
+      - health
+      - live
+    host:
+      - '127'
+      - '0'
+      - '0'
+      - '1'
+    query: []
+    variable: []
+  headers:
+    - key: User-Agent
+      value: PostmanRuntime/7.56.2
+      system: true
+    - key: Accept
+      value: '*/*'
+      system: true
+    - key: Cache-Control
+      value: no-cache
+      system: true
+    - key: Postman-Token
+      value: 4d0250ab-d684-4509-8375-a00be6681a28
+      system: true
+    - key: Host
+      value: 127.0.0.1:5000
+      system: true
+    - key: Accept-Encoding
+      value: gzip, deflate, br
+      system: true
+    - key: Connection
+      value: keep-alive
+      system: true
+response:
+  id: e5b86d71-d870-4b37-b6d3-cbfe2461bc81
+  code: 200
+  status: OK
+  responseTime: 9
+  responseSize: 96
+  headers:
+    - key: Content-Type
+      value: application/json
+    - key: Date
+      value: Wed, 25 Nov 2026 06:41:37 GMT
+    - key: Server
+      value: Kestrel
+    - key: Cache-Control
+      value: no-store, no-cache
+    - key: Expires
+      value: Thu, 01 Jan 1970 00:00:00 GMT
+    - key: Pragma
+      value: no-cache
+    - key: Transfer-Encoding
+      value: chunked
+    - key: X-Content-Type-Options
+      value: nosniff
+    - key: Referrer-Policy
+      value: no-referrer
+  body: '{"status":"Healthy","checks":[{"name":"self","status":"Healthy","description":"Backend alive"}]}'
+tests:
+  - name: Process liveness check is Healthy
+    status: passed
+errors: []
+---
+iteration: 0
+cursorRef: 6d44c367-c7d8-42cf-829a-ddf97fb691f7
+item:
+  id: 9955b85e-a549-459c-bcff-e58a78ac51ba
+  name: 1.3 PostgreSQL Database Readiness (GET /health/db)
+  folders:
+    - 1. Infrastructure
+    - 1.3 PostgreSQL Database Readiness (GET /health/db)
+  fullName: 1. Infrastructure / 1.3 PostgreSQL Database Readiness (GET /health/db)
+  parent:
+    id: 191e2111-9c4c-4b6a-8c95-b9fa4ff004ad
+    name: 1. Infrastructure
+    folders:
+      - 1. Infrastructure
+request:
+  method: GET
+  url:
+    protocol: http
+    port: '5000'
+    path:
+      - health
+      - db
+    host:
+      - '127'
+      - '0'
+      - '0'
+      - '1'
+    query: []
+    variable: []
+  headers:
+    - key: User-Agent
+      value: PostmanRuntime/7.56.2
+      system: true
+    - key: Accept
+      value: '*/*'
+      system: true
+    - key: Cache-Control
+      value: no-cache
+      system: true
+    - key: Postman-Token
+      value: 3d110fd0-34d8-4bb2-acbd-4f2bcfd19e5b
+      system: true
+    - key: Host
+      value: 127.0.0.1:5000
+      system: true
+    - key: Accept-Encoding
+      value: gzip, deflate, br
+      system: true
+    - key: Connection
+      value: keep-alive
+      system: true
+response:
+  id: 8be22f0b-cdaa-4401-8504-99d9adc12a62
+  code: 200
+  status: OK
+  responseTime: 10
+  responseSize: 119
+  headers:
+    - key: Content-Type
+      value: application/json
+    - key: Date
+      value: Wed, 25 Nov 2026 06:41:37 GMT
+    - key: Server
+      value: Kestrel
+    - key: Cache-Control
+      value: no-store, no-cache
+    - key: Expires
+      value: Thu, 01 Jan 1970 00:00:00 GMT
+    - key: Pragma
+      value: no-cache
+    - key: Transfer-Encoding
+      value: chunked
+    - key: X-Content-Type-Options
+      value: nosniff
+    - key: Referrer-Policy
+      value: no-referrer
+  body: '{"status":"Healthy","checks":[{"name":"database","status":"Healthy","description":"PostgreSQL cx_platform reachable"}]}'
+tests:
+  - name: PostgreSQL cx_platform database readiness is Healthy
+    status: passed
+errors: []
+---
+iteration: 0
+cursorRef: 50734d9b-e50f-4a40-86f7-bc201673a745
+item:
+  id: 3ebf0f82-9cd3-49a1-8942-8fb866c8d92d
+  name: 1.4 Full Application & Pipeline Readiness (GET /health/ready)
+  folders:
+    - 1. Infrastructure
+    - 1.4 Full Application & Pipeline Readiness (GET /health/ready)
+  fullName: 1. Infrastructure / 1.4 Full Application & Pipeline Readiness (GET /health/ready)
+  parent:
+    id: 191e2111-9c4c-4b6a-8c95-b9fa4ff004ad
+    name: 1. Infrastructure
+    folders:
+      - 1. Infrastructure
+request:
+  method: GET
+  url:
+    protocol: http
+    port: '5000'
+    path:
+      - health
+      - ready
+    host:
+      - '127'
+      - '0'
+      - '0'
+      - '1'
+    query: []
+    variable: []
+  headers:
+    - key: User-Agent
+      value: PostmanRuntime/7.56.2
+      system: true
+    - key: Accept
+      value: '*/*'
+      system: true
+    - key: Cache-Control
+      value: no-cache
+      system: true
+    - key: Postman-Token
+      value: d0cbfc86-81ce-490f-8f55-37d0804518bd
+      system: true
+    - key: Host
+      value: 127.0.0.1:5000
+      system: true
+    - key: Accept-Encoding
+      value: gzip, deflate, br
+      system: true
+    - key: Connection
+      value: keep-alive
+      system: true
+response:
+  id: 311a9c6f-01b9-4ab6-b489-a93b9194466d
+  code: 200
+  status: OK
+  responseTime: 16
+  responseSize: 366
+  headers:
+    - key: Content-Type
+      value: application/json
+    - key: Date
+      value: Wed, 25 Nov 2026 06:41:37 GMT
+    - key: Server
+      value: Kestrel
+    - key: Cache-Control
+      value: no-store, no-cache
+    - key: Expires
+      value: Thu, 01 Jan 1970 00:00:00 GMT
+    - key: Pragma
+      value: no-cache
+    - key: Transfer-Encoding
+      value: chunked
+    - key: X-Content-Type-Options
+      value: nosniff
+    - key: Referrer-Policy
+      value: no-referrer
+  body: '{"status":"Healthy","checks":[{"name":"database","status":"Healthy","description":"PostgreSQL cx_platform reachable"},{"name":"pipeline","status":"Healthy","description":"Pinned local artifacts verified; neural inference executed"},{"name":"provider_configuration","status":"Healthy","description":"Provider configuration valid; external authorization not probed"}]}'
+tests:
+  - name: Database, ONNX pipeline, and provider configuration are Healthy
+    status: passed
+errors: []
+---
+iteration: 0
+cursorRef: a32cb5ea-2b90-4509-8701-b1605e226ada
+item:
+  id: ce0e2966-7acb-4457-9dd3-0d9baa22a2d9
+  name: 1.5 Development OpenAPI Specification (GET /openapi/v1.json)
+  folders:
+    - 1. Infrastructure
+    - 1.5 Development OpenAPI Specification (GET /openapi/v1.json)
+  fullName: 1. Infrastructure / 1.5 Development OpenAPI Specification (GET /openapi/v1.json)
+  parent:
+    id: 191e2111-9c4c-4b6a-8c95-b9fa4ff004ad
+    name: 1. Infrastructure
+    folders:
+      - 1. Infrastructure
+request:
+  method: GET
+  url:
+    protocol: http
+    port: '5000'
+    path:
+      - openapi
+      - v1.json
+    host:
+      - '127'
+      - '0'
+      - '0'
+      - '1'
+    query: []
+    variable: []
+  headers:
+    - key: User-Agent
+      value: PostmanRuntime/7.56.2
+      system: true
+    - key: Accept
+      value: '*/*'
+      system: true
+    - key: Cache-Control
+      value: no-cache
+      system: true
+    - key: Postman-Token
+      value: c8f5f867-d440-4253-8344-6300459d00c3
+      system: true
+    - key: Host
+      value: 127.0.0.1:5000
+      system: true
+    - key: Accept-Encoding
+      value: gzip, deflate, br
+      system: true
+    - key: Connection
+      value: keep-alive
+      system: true
+response:
+  id: 32d09571-bca8-4c40-b159-34a7b2fbbe12
+  code: 200
+  status: OK
+  responseTime: 3
+  responseSize: 12108
+  headers:
+    - key: Content-Type
+      value: application/json; charset=utf-8
+    - key: Date
+      value: Wed, 25 Nov 2026 06:41:37 GMT
+    - key: Server
+      value: Kestrel
+    - key: Cache-Control
+      value: no-store
+    - key: Transfer-Encoding
+      value: chunked
+    - key: X-Content-Type-Options
+      value: nosniff
+    - key: Referrer-Policy
+      value: no-referrer
+  body: '{"openapi":"3.0.3","info":{"title":"Apollo Clinical Extraction Platform API","version":"2.1.0","description":"Headless ASP.NET Core .NET 10 clinical extraction API with PostgreSQL persistence, transactional outbox, Azure Service Bus asynchronous processing, hybrid Microsoft Foundry GPT / Local ONNX extraction, and UHID/patient-scoped isolation. Development-only specification."},"servers":[{"url":"http://127.0.0.1:5000","description":"Local Development Kestrel HTTP"}],"components":{"securitySchemes":{"doctorCookie":{"type":"apiKey","in":"cookie","name":"Apollo.Doctor","description":"Server-side Doctor session cookie issued by /api/v1/emr/auth/login or /api/v1/emr/auth/dev-session."},"xsrfHeader":{"type":"apiKey","in":"header","name":"X-XSRF-TOKEN","description":"Anti-forgery token returned by GET /api/v1/emr/auth/csrf."},"bearerAuth":{"type":"http","scheme":"bearer","bearerFormat":"JWT","description":"Institutional JWT Bearer token for non-demo deployments."}}},"paths":{"/health":{"get":{"tags":["Infrastructure"],"summary":"API liveness probe","description":"Returns JSON liveness status without hitting external cloud providers.","security":[],"responses":{"200":{"description":"Success"},"400":{"description":"Validation or CSRF error"},"401":{"description":"Unauthenticated"},"403":{"description":"Forbidden"},"404":{"description":"Resource not found or not assigned to caller"},"409":{"description":"Version conflict / duplicate sign rejected"}}}},"/health/live":{"get":{"tags":["Infrastructure"],"summary":"Process liveness check","description":"ASP.NET Core liveness health check.","security":[],"responses":{"200":{"description":"Success"},"400":{"description":"Validation or CSRF error"},"401":{"description":"Unauthenticated"},"403":{"description":"Forbidden"},"404":{"description":"Resource not found or not assigned to caller"},"409":{"description":"Version conflict / duplicate sign rejected"}}}},"/health/db":{"get":{"tags":["Infrastructure"],"summary":"PostgreSQL readiness check","description":"Verifies live PostgreSQL connectivity (SELECT 1).","security":[],"responses":{"200":{"description":"Success"},"400":{"description":"Validation or CSRF error"},"401":{"description":"Unauthenticated"},"403":{"description":"Forbidden"},"404":{"description":"Resource not found or not assigned to caller"},"409":{"description":"Version conflict / duplicate sign rejected"}}}},"/health/ready":{"get":{"tags":["Infrastructure"],"summary":"Full readiness check","description":"Checks PostgreSQL, local ONNX pipeline, and provider configuration.","security":[],"responses":{"200":{"description":"Success"},"400":{"description":"Validation or CSRF error"},"401":{"description":"Unauthenticated"},"403":{"description":"Forbidden"},"404":{"description":"Resource not found or not assigned to caller"},"409":{"description":"Version conflict / duplicate sign rejected"}}}},"/v1/routing":{"get":{"tags":["Provider Routing"],"summary":"Effective provider routing diagnostics","description":"Returns active primary/fallback provider configuration without executing inference.","security":[],"responses":{"200":{"description":"Success"},"400":{"description":"Validation or CSRF error"},"401":{"description":"Unauthenticated"},"403":{"description":"Forbidden"},"404":{"description":"Resource not found or not assigned to caller"},"409":{"description":"Version conflict / duplicate sign rejected"}}}},"/api/v1/emr/auth/csrf":{"get":{"tags":["Authentication"],"summary":"Issue CSRF token","description":"Issues XSRF-TOKEN cookie and JSON request token for state-changing requests.","security":[],"responses":{"200":{"description":"Success"},"400":{"description":"Validation or CSRF error"},"401":{"description":"Unauthenticated"},"403":{"description":"Forbidden"},"404":{"description":"Resource not found or not assigned to caller"},"409":{"description":"Version conflict / duplicate sign rejected"}}}},"/api/v1/emr/auth/dev-session":{"post":{"tags":["Authentication"],"summary":"Development loopback session","description":"Development + DemoMode + localhost loopback only. Returns 403 outside local dev.","security":[],"responses":{"200":{"description":"Success"},"400":{"description":"Validation or CSRF error"},"401":{"description":"Unauthenticated"},"403":{"description":"Forbidden"},"404":{"description":"Resource not found or not assigned to caller"},"409":{"description":"Version conflict / duplicate sign rejected"}}}},"/api/v1/emr/auth/login":{"post":{"tags":["Authentication"],"summary":"Doctor sign-in","description":"Authenticates synthetic doctor credentials with CSRF validation.","security":[],"responses":{"200":{"description":"Success"},"400":{"description":"Validation or CSRF error"},"401":{"description":"Unauthenticated"},"403":{"description":"Forbidden"},"404":{"description":"Resource not found or not assigned to caller"},"409":{"description":"Version conflict / duplicate sign rejected"}}}},"/api/v1/emr/auth/me":{"get":{"tags":["Authentication"],"summary":"Current authenticated clinician","description":"Returns active DoctorProfile; returns 401 when unauthenticated.","security":[{"doctorCookie":[]},{"bearerAuth":[]}],"responses":{"200":{"description":"Success"},"400":{"description":"Validation or CSRF error"},"401":{"description":"Unauthenticated"},"403":{"description":"Forbidden"},"404":{"description":"Resource not found or not assigned to caller"},"409":{"description":"Version conflict / duplicate sign rejected"}}}},"/api/v1/emr/encounters":{"get":{"tags":["Clinical Note Ingestion"],"summary":"List assigned encounters","description":"Returns encounters scoped to the authenticated clinician via emr_encounter_assignments.","security":[{"doctorCookie":[]},{"bearerAuth":[]}],"responses":{"200":{"description":"Success"},"400":{"description":"Validation or CSRF error"},"401":{"description":"Unauthenticated"},"403":{"description":"Forbidden"},"404":{"description":"Resource not found or not assigned to caller"},"409":{"description":"Version conflict / duplicate sign rejected"}}}},"/api/v1/emr/encounters/{id}/notes":{"post":{"tags":["Clinical Note Ingestion"],"summary":"Create draft clinical note","description":"Creates version 1 draft note for an assigned encounter (requires Doctor role + CSRF).","security":[{"doctorCookie":[]},{"bearerAuth":[]}],"responses":{"200":{"description":"Success"},"400":{"description":"Validation or CSRF error"},"401":{"description":"Unauthenticated"},"403":{"description":"Forbidden"},"404":{"description":"Resource not found or not assigned to caller"},"409":{"description":"Version conflict / duplicate sign rejected"}}}},"/api/v1/emr/notes/{id}":{"get":{"tags":["Clinical Note Ingestion"],"summary":"Get clinical note state","description":"Returns current note text, version, status, extraction status, and linked extractionId.","security":[{"doctorCookie":[]},{"bearerAuth":[]}],"responses":{"200":{"description":"Success"},"400":{"description":"Validation or CSRF error"},"401":{"description":"Unauthenticated"},"403":{"description":"Forbidden"},"404":{"description":"Resource not found or not assigned to caller"},"409":{"description":"Version conflict / duplicate sign rejected"}}}},"/api/v1/emr/notes/{id}/corrections":{"post":{"tags":["Clinical Note Ingestion"],"summary":"Create new draft version from signed note","description":"Creates next immutable draft version using optimistic concurrency expectedVersion.","security":[{"doctorCookie":[]},{"bearerAuth":[]}],"responses":{"200":{"description":"Success"},"400":{"description":"Validation or CSRF error"},"401":{"description":"Unauthenticated"},"403":{"description":"Forbidden"},"404":{"description":"Resource not found or not assigned to caller"},"409":{"description":"Version conflict / duplicate sign rejected"}}}},"/api/v1/emr/notes/{id}/sign":{"post":{"tags":["Clinical Note Ingestion"],"summary":"Sign clinical note and enqueue outbox event","description":"Atomically commits immutable emr_note_versions snapshot + emr_outbox_events row. Returns 409 on duplicate version sign.","security":[{"doctorCookie":[]},{"bearerAuth":[]}],"responses":{"200":{"description":"Success"},"400":{"description":"Validation or CSRF error"},"401":{"description":"Unauthenticated"},"403":{"description":"Forbidden"},"404":{"description":"Resource not found or not assigned to caller"},"409":{"description":"Version conflict / duplicate sign rejected"}}}},"/api/v1/queue":{"get":{"tags":["Queue & Polling"],"summary":"List latest extraction submission events (default limit=10)","description":"Read-only PostgreSQL projection returning the latest individual extraction submissions ordered by event time descending (default limit=10, max=100, offset pagination). Never collapses rows by patient and never consumes Azure Service Bus.","security":[{"doctorCookie":[]},{"bearerAuth":[]}],"responses":{"200":{"description":"Success"},"400":{"description":"Validation or CSRF error"},"401":{"description":"Unauthenticated"},"403":{"description":"Forbidden"},"404":{"description":"Resource not found or not assigned to caller"},"409":{"description":"Version conflict / duplicate sign rejected"}}}},"/api/v1/queue/{noteId}":{"get":{"tags":["Queue & Polling"],"summary":"Get patient-scoped note & linked extraction","description":"Returns exact source note + linked extraction for (noteId, version) with optional ?version=&patient= enforcement and within-patient notes only.","security":[{"doctorCookie":[]},{"bearerAuth":[]}],"responses":{"200":{"description":"Success"},"400":{"description":"Validation or CSRF error"},"401":{"description":"Unauthenticated"},"403":{"description":"Forbidden"},"404":{"description":"Resource not found or not assigned to caller"},"409":{"description":"Version conflict / duplicate sign rejected"}}}},"/api/v1/queue/patients/{patientReference}":{"get":{"tags":["Patient Isolation"],"summary":"List notes/versions for one patient","description":"Returns only notes/versions belonging to the specified patient reference assigned to the caller; 404 otherwise.","security":[{"doctorCookie":[]},{"bearerAuth":[]}],"responses":{"200":{"description":"Success"},"400":{"description":"Validation or CSRF error"},"401":{"description":"Unauthenticated"},"403":{"description":"Forbidden"},"404":{"description":"Resource not found or not assigned to caller"},"409":{"description":"Version conflict / duplicate sign rejected"}}}},"/api/v1/extractions":{"post":{"tags":["Direct Extraction"],"summary":"Direct synchronous extraction (Reviewer/Admin)","description":"Restricted from Doctor role (403); available to authorized ClinicalReviewer/Admin sessions.","security":[{"doctorCookie":[]},{"bearerAuth":[]}],"responses":{"200":{"description":"Success"},"400":{"description":"Validation or CSRF error"},"401":{"description":"Unauthenticated"},"403":{"description":"Forbidden"},"404":{"description":"Resource not found or not assigned to caller"},"409":{"description":"Version conflict / duplicate sign rejected"}}}},"/api/v1/extractions/{id}":{"get":{"tags":["Extraction Results"],"summary":"Retrieve persisted extraction run","description":"Returns full medications, investigations, validationSummary, findings, and provider modelMetadata.","security":[{"doctorCookie":[]},{"bearerAuth":[]}],"responses":{"200":{"description":"Success"},"400":{"description":"Validation or CSRF error"},"401":{"description":"Unauthenticated"},"403":{"description":"Forbidden"},"404":{"description":"Resource not found or not assigned to caller"},"409":{"description":"Version conflict / duplicate sign rejected"}}}},"/api/v1/extractions/{id}/fhir":{"get":{"tags":["Extraction Results"],"summary":"Export FHIR R4 Bundle","description":"Generates FHIR R4 MedicationRequest / ServiceRequest bundle for a persisted extraction.","security":[{"doctorCookie":[]},{"bearerAuth":[]}],"responses":{"200":{"description":"Success"},"400":{"description":"Validation or CSRF error"},"401":{"description":"Unauthenticated"},"403":{"description":"Forbidden"},"404":{"description":"Resource not found or not assigned to caller"},"409":{"description":"Version conflict / duplicate sign rejected"}}}}}}'
+tests:
+  - name: OpenAPI 3.0.3 spec is served in Development and documents core routes
+    status: passed
+errors: []

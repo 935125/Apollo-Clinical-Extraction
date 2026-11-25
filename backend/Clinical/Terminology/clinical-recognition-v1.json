@@ -1,0 +1,2460 @@
+{
+  "version": "apollo-clinical-2026-11-25.1",
+  "license": "Apollo-authored recognition phrases and inherited project aliases; standard codes use separately attributed NLM/LOINC snapshots",
+  "entries": [
+    {
+      "category": "MEDICATION",
+      "canonical": "Atorvastatin",
+      "aliases": [
+        "atorvastatin"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Atorvastatin",
+      "aliases": [
+        "atorva"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Atorvastatin",
+      "aliases": [
+        "atorva 10"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Atorvastatin",
+      "aliases": [
+        "atorva 20"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Atorvastatin",
+      "aliases": [
+        "atorva 40"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Atorvastatin",
+      "aliases": [
+        "lipitor"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Levothyroxine",
+      "aliases": [
+        "thyronorm"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Levothyroxine",
+      "aliases": [
+        "eltroxin"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Levothyroxine",
+      "aliases": [
+        "levothyroxine"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Levothyroxine",
+      "aliases": [
+        "synthroid"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Nitrofurantoin",
+      "aliases": [
+        "nitrofurantoin"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Nitrofurantoin",
+      "aliases": [
+        "niftas"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Nitrofurantoin",
+      "aliases": [
+        "furadantin"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Nitrofurantoin",
+      "aliases": [
+        "macrobid"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Metformin",
+      "aliases": [
+        "metformin"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Metformin",
+      "aliases": [
+        "glycomet"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Metformin",
+      "aliases": [
+        "glycomet 500"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Metformin",
+      "aliases": [
+        "glycomet gp"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Metformin",
+      "aliases": [
+        "glucophage"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Telmisartan",
+      "aliases": [
+        "telma"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Telmisartan",
+      "aliases": [
+        "telmisartan"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Telmisartan",
+      "aliases": [
+        "telma 40"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Telmisartan",
+      "aliases": [
+        "telma 80"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Telmisartan",
+      "aliases": [
+        "micardis"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Aspirin",
+      "aliases": [
+        "ecosprin"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Aspirin",
+      "aliases": [
+        "aspirin"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Aspirin",
+      "aliases": [
+        "disprin"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Aspirin",
+      "aliases": [
+        "ecotrin"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Paracetamol",
+      "aliases": [
+        "paracetamol"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Paracetamol",
+      "aliases": [
+        "dolo 650"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Paracetamol",
+      "aliases": [
+        "dolo"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Paracetamol",
+      "aliases": [
+        "crocin"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Paracetamol",
+      "aliases": [
+        "calpol"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Paracetamol",
+      "aliases": [
+        "acetaminophen"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Pantoprazole",
+      "aliases": [
+        "pan 40"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Pantoprazole",
+      "aliases": [
+        "pantocid"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Pantoprazole",
+      "aliases": [
+        "pantoprazole"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Amoxicillin/Clavulanate",
+      "aliases": [
+        "amoxicillin-clavulanate"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Amoxicillin/Clavulanate",
+      "aliases": [
+        "amoxicillin/clavulanate"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Amoxicillin/Clavulanate",
+      "aliases": [
+        "amoxicillin clavulanate"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Amoxicillin/Clavulanate",
+      "aliases": [
+        "co-amoxiclav"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Amoxicillin/Clavulanate",
+      "aliases": [
+        "augmentin"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Amoxicillin",
+      "aliases": [
+        "amoxicillin"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Azithromycin",
+      "aliases": [
+        "azithromycin"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Azithromycin",
+      "aliases": [
+        "azee 500"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Tamsulosin",
+      "aliases": [
+        "tamsulosin"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Tamsulosin/Dutasteride",
+      "aliases": [
+        "combodart"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Warfarin",
+      "aliases": [
+        "warfarin"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Lisinopril",
+      "aliases": [
+        "lisinopril"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Omeprazole",
+      "aliases": [
+        "omeprazole"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Allopurinol",
+      "aliases": [
+        "allopurinol"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Ibuprofen",
+      "aliases": [
+        "ibuprofen"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Ciprofloxacin",
+      "aliases": [
+        "ciprofloxacin"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Losartan",
+      "aliases": [
+        "losartan"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Amlodipine",
+      "aliases": [
+        "amlodipine"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Salbutamol",
+      "aliases": [
+        "salbutamol"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Salbutamol",
+      "aliases": [
+        "albuterol"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Prednisolone",
+      "aliases": [
+        "prednisolone acetate"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Prednisolone",
+      "aliases": [
+        "prednisolone"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Clopidogrel",
+      "aliases": [
+        "clopidogrel"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Ondansetron",
+      "aliases": [
+        "ondansetron"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Cisplatin",
+      "aliases": [
+        "cisplatin"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Pemetrexed",
+      "aliases": [
+        "pemetrexed"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Empagliflozin",
+      "aliases": [
+        "empagliflozin"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Linagliptin",
+      "aliases": [
+        "linagliptin"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Methotrexate",
+      "aliases": [
+        "methotrexate"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Folic Acid",
+      "aliases": [
+        "folic acid"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Clarithromycin",
+      "aliases": [
+        "clarithromycin"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Cephalexin",
+      "aliases": [
+        "cephalexin"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Levetiracetam",
+      "aliases": [
+        "levetiracetam"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Sodium Bicarbonate",
+      "aliases": [
+        "sodium bicarbonate"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Dexamethasone",
+      "aliases": [
+        "dexamethasone"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Metoclopramide",
+      "aliases": [
+        "metoclopramide"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Sacubitril/Valsartan",
+      "aliases": [
+        "sacubitril/valsartan"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Sacubitril",
+      "aliases": [
+        "sacubitril"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Valsartan",
+      "aliases": [
+        "valsartan"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Dapagliflozin",
+      "aliases": [
+        "dapagliflozin"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Bisoprolol",
+      "aliases": [
+        "bisoprolol"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Spironolactone",
+      "aliases": [
+        "spironolactone"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Betamethasone",
+      "aliases": [
+        "betamethasone"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Adalimumab",
+      "aliases": [
+        "adalimumab"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Mirtazapine",
+      "aliases": [
+        "mirtazapine"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Sertraline",
+      "aliases": [
+        "sertraline"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Gabapentin",
+      "aliases": [
+        "gabapentin"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Finasteride",
+      "aliases": [
+        "finasteride"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Moxifloxacin",
+      "aliases": [
+        "moxifloxacin"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Penicillin G",
+      "aliases": [
+        "penicillin g"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Penicillin V",
+      "aliases": [
+        "penicillin v"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "Complete Urine Examination",
+      "aliases": [
+        "cue"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "Complete Urine Examination",
+      "aliases": [
+        "complete urine examination"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "Urinalysis",
+      "aliases": [
+        "urinalysis"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "Urinalysis",
+      "aliases": [
+        "urine routine"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "Urinalysis",
+      "aliases": [
+        "routine urine examination"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "Urine Culture and Sensitivity",
+      "aliases": [
+        "urine culture & sensitivity"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "Urine Culture and Sensitivity",
+      "aliases": [
+        "urine culture and sensitivity"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "Urine Culture",
+      "aliases": [
+        "urine culture"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "Urine Culture and Sensitivity",
+      "aliases": [
+        "urine c/s"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "Renal Function Test",
+      "aliases": [
+        "rft"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "Renal Function Test",
+      "aliases": [
+        "renal function test"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "Renal Function Test",
+      "aliases": [
+        "renal function tests"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "Kidney Function Test",
+      "aliases": [
+        "kft"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "Kidney Function Test",
+      "aliases": [
+        "kidney function test"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "Urea and Electrolytes",
+      "aliases": [
+        "u&e"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "Urea and Electrolytes",
+      "aliases": [
+        "urea and electrolytes"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "Serum Creatinine",
+      "aliases": [
+        "serum creatinine"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "Serum Creatinine",
+      "aliases": [
+        "plasma creatinine"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "Serum Creatinine",
+      "aliases": [
+        "creatinine"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "Lipid Profile",
+      "aliases": [
+        "fasting lipid profile"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "Lipid Profile",
+      "aliases": [
+        "lipid profile"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "Lipid Profile",
+      "aliases": [
+        "lipid panel"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "Lipid Profile",
+      "aliases": [
+        "lipids"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "Complete Blood Count",
+      "aliases": [
+        "complete blood count (cbc)"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "Complete Blood Count",
+      "aliases": [
+        "complete blood count"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "Complete Blood Count",
+      "aliases": [
+        "cbc"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "Complete Blood Count",
+      "aliases": [
+        "hemogram"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "Liver Function Tests",
+      "aliases": [
+        "liver function tests"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "Liver Function Tests",
+      "aliases": [
+        "liver function test"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "Liver Function Tests",
+      "aliases": [
+        "lft"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "Liver Function Tests",
+      "aliases": [
+        "liver panel"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "Hemoglobin A1c",
+      "aliases": [
+        "hba1c"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "Hemoglobin A1c",
+      "aliases": [
+        "glycated hemoglobin"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "Hemoglobin A1c",
+      "aliases": [
+        "hemoglobin a1c"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "Hemoglobin A1c",
+      "aliases": [
+        "a1c"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "Thyroid Stimulating Hormone",
+      "aliases": [
+        "thyroid stimulating hormone"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "Thyroid Stimulating Hormone",
+      "aliases": [
+        "serum tsh"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "Thyroid Stimulating Hormone",
+      "aliases": [
+        "tsh"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "Free T4",
+      "aliases": [
+        "free t4"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "Free T4",
+      "aliases": [
+        "serum free t4"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "C-Reactive Protein",
+      "aliases": [
+        "c-reactive protein (crp)"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "C-Reactive Protein",
+      "aliases": [
+        "c-reactive protein"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "C-Reactive Protein",
+      "aliases": [
+        "crp"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "Erythrocyte Sedimentation Rate",
+      "aliases": [
+        "erythrocyte sedimentation rate"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "Erythrocyte Sedimentation Rate",
+      "aliases": [
+        "esr"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "Electrocardiogram",
+      "aliases": [
+        "12-lead ecg"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "Electrocardiogram",
+      "aliases": [
+        "12 lead ecg"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "Electrocardiogram",
+      "aliases": [
+        "electrocardiogram"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "Electrocardiogram",
+      "aliases": [
+        "ecg"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "Electrocardiogram",
+      "aliases": [
+        "ekg"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "Chest X-Ray PA",
+      "aliases": [
+        "chest x-ray (pa view)"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "Chest X-Ray PA",
+      "aliases": [
+        "follow-up chest x-ray (pa view)"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "Chest X-Ray PA",
+      "aliases": [
+        "chest x-ray pa view"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "Chest X-Ray",
+      "aliases": [
+        "chest x-ray"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "Chest X-Ray",
+      "aliases": [
+        "chest radiograph"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "Chest X-Ray",
+      "aliases": [
+        "x-ray chest"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "Chest X-Ray",
+      "aliases": [
+        "cxr"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "Radiologic Examination",
+      "aliases": [
+        "x-ray"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "2D Echocardiogram",
+      "aliases": [
+        "2d echocardiogram"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "2D Echocardiogram",
+      "aliases": [
+        "2d echo"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "2D Echocardiogram",
+      "aliases": [
+        "echocardiogram"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "2D Echocardiogram",
+      "aliases": [
+        "echo"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "Ultrasound Abdomen",
+      "aliases": [
+        "ultrasound abdomen"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "Ultrasound Abdomen",
+      "aliases": [
+        "usg abdomen"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "Ultrasound Renal",
+      "aliases": [
+        "ultrasound renal"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "Ultrasound Renal",
+      "aliases": [
+        "usg renal"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "Ultrasound",
+      "aliases": [
+        "ultrasound"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "Ultrasound",
+      "aliases": [
+        "usg"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "CT Scan",
+      "aliases": [
+        "ct scan"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "CT Scan",
+      "aliases": [
+        "ncct"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "CT Scan",
+      "aliases": [
+        "cect"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "CT Scan",
+      "aliases": [
+        "ct"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "MRI Study",
+      "aliases": [
+        "mri scan"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "MRI Study",
+      "aliases": [
+        "mri"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "Troponin",
+      "aliases": [
+        "troponin-i"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "Troponin",
+      "aliases": [
+        "troponin t"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "Troponin",
+      "aliases": [
+        "trop-i"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "Troponin",
+      "aliases": [
+        "troponin"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "Fibrin D-dimer",
+      "aliases": [
+        "d-dimer"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "Fibrin D-dimer",
+      "aliases": [
+        "d dimer"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "Serum Electrolytes",
+      "aliases": [
+        "serum electrolytes"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "Serum Electrolytes",
+      "aliases": [
+        "electrolytes"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "Serum Uric Acid",
+      "aliases": [
+        "serum uric acid"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "Serum Uric Acid",
+      "aliases": [
+        "uric acid"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "International Normalized Ratio",
+      "aliases": [
+        "prothrombin time and inr (pt/inr)"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "International Normalized Ratio",
+      "aliases": [
+        "prothrombin time and inr"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "International Normalized Ratio",
+      "aliases": [
+        "pt/inr"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "International Normalized Ratio",
+      "aliases": [
+        "inr"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "Serum Potassium",
+      "aliases": [
+        "serum potassium"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "Serum Potassium",
+      "aliases": [
+        "plasma potassium"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "Serum Potassium",
+      "aliases": [
+        "serum k+"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "Serum Potassium",
+      "aliases": [
+        "potassium"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "Serum Potassium",
+      "aliases": [
+        "k+"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "Serum Sodium",
+      "aliases": [
+        "serum sodium"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "Serum Sodium",
+      "aliases": [
+        "plasma sodium"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "Serum Sodium",
+      "aliases": [
+        "serum na+"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "Serum Sodium",
+      "aliases": [
+        "sodium"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "Serum Sodium",
+      "aliases": [
+        "na+"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "Serum PSA",
+      "aliases": [
+        "serum psa"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "Serum PSA",
+      "aliases": [
+        "psa"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "Quantiferon-TB Gold",
+      "aliases": [
+        "quantiferon-tb gold"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "Hepatitis B Surface Antigen",
+      "aliases": [
+        "hepatitis b surface antigen"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "Hepatitis C Antibody",
+      "aliases": [
+        "hepatitis c antibody"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "Electroencephalogram",
+      "aliases": [
+        "eeg"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "Blood Culture",
+      "aliases": [
+        "blood culture & sensitivity"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "Blood Culture",
+      "aliases": [
+        "blood culture"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "Pulmonary Function Test",
+      "aliases": [
+        "pulmonary function test"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "Pulmonary Function Test",
+      "aliases": [
+        "pft"
+      ],
+      "mapping": "legacy_verified_resolver",
+      "provenance": "Inherited Apollo catalog; standard-code approval remains separately gated"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Cytarabine",
+      "aliases": [
+        "Cytarabine"
+      ],
+      "mapping": "unresolved",
+      "provenance": "Apollo recognition lexicon 2026-11-25; no standard identifier asserted"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Daunorubicin",
+      "aliases": [
+        "Daunorubicin"
+      ],
+      "mapping": "unresolved",
+      "provenance": "Apollo recognition lexicon 2026-11-25; no standard identifier asserted"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Levofloxacin",
+      "aliases": [
+        "Levofloxacin"
+      ],
+      "mapping": "unresolved",
+      "provenance": "Apollo recognition lexicon 2026-11-25; no standard identifier asserted"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Acyclovir",
+      "aliases": [
+        "Acyclovir"
+      ],
+      "mapping": "unresolved",
+      "provenance": "Apollo recognition lexicon 2026-11-25; no standard identifier asserted"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Midostaurin",
+      "aliases": [
+        "Midostaurin"
+      ],
+      "mapping": "unresolved",
+      "provenance": "Apollo recognition lexicon 2026-11-25; no standard identifier asserted"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Meropenem",
+      "aliases": [
+        "Meropenem"
+      ],
+      "mapping": "unresolved",
+      "provenance": "Apollo recognition lexicon 2026-11-25; no standard identifier asserted"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Posaconazole",
+      "aliases": [
+        "Posaconazole"
+      ],
+      "mapping": "unresolved",
+      "provenance": "Apollo recognition lexicon 2026-11-25; no standard identifier asserted"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Benzydamine",
+      "aliases": [
+        "Benzydamine"
+      ],
+      "mapping": "unresolved",
+      "provenance": "Apollo recognition lexicon 2026-11-25; no standard identifier asserted"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Apixaban",
+      "aliases": [
+        "Apixaban"
+      ],
+      "mapping": "unresolved",
+      "provenance": "Apollo recognition lexicon 2026-11-25; no standard identifier asserted"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Rivaroxaban",
+      "aliases": [
+        "Rivaroxaban"
+      ],
+      "mapping": "unresolved",
+      "provenance": "Apollo recognition lexicon 2026-11-25; no standard identifier asserted"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Dabigatran",
+      "aliases": [
+        "Dabigatran"
+      ],
+      "mapping": "unresolved",
+      "provenance": "Apollo recognition lexicon 2026-11-25; no standard identifier asserted"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Enoxaparin",
+      "aliases": [
+        "Enoxaparin"
+      ],
+      "mapping": "unresolved",
+      "provenance": "Apollo recognition lexicon 2026-11-25; no standard identifier asserted"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Heparin",
+      "aliases": [
+        "Heparin"
+      ],
+      "mapping": "unresolved",
+      "provenance": "Apollo recognition lexicon 2026-11-25; no standard identifier asserted"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Vancomycin",
+      "aliases": [
+        "Vancomycin"
+      ],
+      "mapping": "unresolved",
+      "provenance": "Apollo recognition lexicon 2026-11-25; no standard identifier asserted"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Ceftriaxone",
+      "aliases": [
+        "Ceftriaxone"
+      ],
+      "mapping": "unresolved",
+      "provenance": "Apollo recognition lexicon 2026-11-25; no standard identifier asserted"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Cefixime",
+      "aliases": [
+        "Cefixime"
+      ],
+      "mapping": "unresolved",
+      "provenance": "Apollo recognition lexicon 2026-11-25; no standard identifier asserted"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Doxycycline",
+      "aliases": [
+        "Doxycycline"
+      ],
+      "mapping": "unresolved",
+      "provenance": "Apollo recognition lexicon 2026-11-25; no standard identifier asserted"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Clindamycin",
+      "aliases": [
+        "Clindamycin"
+      ],
+      "mapping": "unresolved",
+      "provenance": "Apollo recognition lexicon 2026-11-25; no standard identifier asserted"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Theophylline",
+      "aliases": [
+        "Theophylline"
+      ],
+      "mapping": "unresolved",
+      "provenance": "Apollo recognition lexicon 2026-11-25; no standard identifier asserted"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Metoprolol",
+      "aliases": [
+        "Metoprolol"
+      ],
+      "mapping": "unresolved",
+      "provenance": "Apollo recognition lexicon 2026-11-25; no standard identifier asserted"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Carvedilol",
+      "aliases": [
+        "Carvedilol"
+      ],
+      "mapping": "unresolved",
+      "provenance": "Apollo recognition lexicon 2026-11-25; no standard identifier asserted"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Furosemide",
+      "aliases": [
+        "Furosemide"
+      ],
+      "mapping": "unresolved",
+      "provenance": "Apollo recognition lexicon 2026-11-25; no standard identifier asserted"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Hydrochlorothiazide",
+      "aliases": [
+        "Hydrochlorothiazide"
+      ],
+      "mapping": "unresolved",
+      "provenance": "Apollo recognition lexicon 2026-11-25; no standard identifier asserted"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Insulin",
+      "aliases": [
+        "Insulin"
+      ],
+      "mapping": "unresolved",
+      "provenance": "Apollo recognition lexicon 2026-11-25; no standard identifier asserted"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Insulin glargine",
+      "aliases": [
+        "Insulin glargine"
+      ],
+      "mapping": "unresolved",
+      "provenance": "Apollo recognition lexicon 2026-11-25; no standard identifier asserted"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Vincristine",
+      "aliases": [
+        "Vincristine"
+      ],
+      "mapping": "unresolved",
+      "provenance": "Apollo recognition lexicon 2026-11-25; no standard identifier asserted"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Vinblastine",
+      "aliases": [
+        "Vinblastine"
+      ],
+      "mapping": "unresolved",
+      "provenance": "Apollo recognition lexicon 2026-11-25; no standard identifier asserted"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Cyclophosphamide",
+      "aliases": [
+        "Cyclophosphamide"
+      ],
+      "mapping": "unresolved",
+      "provenance": "Apollo recognition lexicon 2026-11-25; no standard identifier asserted"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Doxorubicin",
+      "aliases": [
+        "Doxorubicin"
+      ],
+      "mapping": "unresolved",
+      "provenance": "Apollo recognition lexicon 2026-11-25; no standard identifier asserted"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Etoposide",
+      "aliases": [
+        "Etoposide"
+      ],
+      "mapping": "unresolved",
+      "provenance": "Apollo recognition lexicon 2026-11-25; no standard identifier asserted"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Paclitaxel",
+      "aliases": [
+        "Paclitaxel"
+      ],
+      "mapping": "unresolved",
+      "provenance": "Apollo recognition lexicon 2026-11-25; no standard identifier asserted"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Carboplatin",
+      "aliases": [
+        "Carboplatin"
+      ],
+      "mapping": "unresolved",
+      "provenance": "Apollo recognition lexicon 2026-11-25; no standard identifier asserted"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Oxaliplatin",
+      "aliases": [
+        "Oxaliplatin"
+      ],
+      "mapping": "unresolved",
+      "provenance": "Apollo recognition lexicon 2026-11-25; no standard identifier asserted"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Capecitabine",
+      "aliases": [
+        "Capecitabine"
+      ],
+      "mapping": "unresolved",
+      "provenance": "Apollo recognition lexicon 2026-11-25; no standard identifier asserted"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Fluorouracil",
+      "aliases": [
+        "Fluorouracil"
+      ],
+      "mapping": "unresolved",
+      "provenance": "Apollo recognition lexicon 2026-11-25; no standard identifier asserted"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Rituximab",
+      "aliases": [
+        "Rituximab"
+      ],
+      "mapping": "unresolved",
+      "provenance": "Apollo recognition lexicon 2026-11-25; no standard identifier asserted"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Trastuzumab",
+      "aliases": [
+        "Trastuzumab"
+      ],
+      "mapping": "unresolved",
+      "provenance": "Apollo recognition lexicon 2026-11-25; no standard identifier asserted"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Imatinib",
+      "aliases": [
+        "Imatinib"
+      ],
+      "mapping": "unresolved",
+      "provenance": "Apollo recognition lexicon 2026-11-25; no standard identifier asserted"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Dasatinib",
+      "aliases": [
+        "Dasatinib"
+      ],
+      "mapping": "unresolved",
+      "provenance": "Apollo recognition lexicon 2026-11-25; no standard identifier asserted"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Hydroxyurea",
+      "aliases": [
+        "Hydroxyurea"
+      ],
+      "mapping": "unresolved",
+      "provenance": "Apollo recognition lexicon 2026-11-25; no standard identifier asserted"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Voriconazole",
+      "aliases": [
+        "Voriconazole"
+      ],
+      "mapping": "unresolved",
+      "provenance": "Apollo recognition lexicon 2026-11-25; no standard identifier asserted"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Fluconazole",
+      "aliases": [
+        "Fluconazole"
+      ],
+      "mapping": "unresolved",
+      "provenance": "Apollo recognition lexicon 2026-11-25; no standard identifier asserted"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Valacyclovir",
+      "aliases": [
+        "Valacyclovir"
+      ],
+      "mapping": "unresolved",
+      "provenance": "Apollo recognition lexicon 2026-11-25; no standard identifier asserted"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Ganciclovir",
+      "aliases": [
+        "Ganciclovir"
+      ],
+      "mapping": "unresolved",
+      "provenance": "Apollo recognition lexicon 2026-11-25; no standard identifier asserted"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Oseltamivir",
+      "aliases": [
+        "Oseltamivir"
+      ],
+      "mapping": "unresolved",
+      "provenance": "Apollo recognition lexicon 2026-11-25; no standard identifier asserted"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Amitriptyline",
+      "aliases": [
+        "Amitriptyline"
+      ],
+      "mapping": "unresolved",
+      "provenance": "Apollo recognition lexicon 2026-11-25; no standard identifier asserted"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Pregabalin",
+      "aliases": [
+        "Pregabalin"
+      ],
+      "mapping": "unresolved",
+      "provenance": "Apollo recognition lexicon 2026-11-25; no standard identifier asserted"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Tramadol",
+      "aliases": [
+        "Tramadol"
+      ],
+      "mapping": "unresolved",
+      "provenance": "Apollo recognition lexicon 2026-11-25; no standard identifier asserted"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Morphine",
+      "aliases": [
+        "Morphine"
+      ],
+      "mapping": "unresolved",
+      "provenance": "Apollo recognition lexicon 2026-11-25; no standard identifier asserted"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Fentanyl",
+      "aliases": [
+        "Fentanyl"
+      ],
+      "mapping": "unresolved",
+      "provenance": "Apollo recognition lexicon 2026-11-25; no standard identifier asserted"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Budesonide",
+      "aliases": [
+        "Budesonide"
+      ],
+      "mapping": "unresolved",
+      "provenance": "Apollo recognition lexicon 2026-11-25; no standard identifier asserted"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Formoterol",
+      "aliases": [
+        "Formoterol"
+      ],
+      "mapping": "unresolved",
+      "provenance": "Apollo recognition lexicon 2026-11-25; no standard identifier asserted"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Montelukast",
+      "aliases": [
+        "Montelukast"
+      ],
+      "mapping": "unresolved",
+      "provenance": "Apollo recognition lexicon 2026-11-25; no standard identifier asserted"
+    },
+    {
+      "category": "MEDICATION",
+      "canonical": "Penicillin",
+      "aliases": [
+        "Penicillin"
+      ],
+      "mapping": "unresolved",
+      "provenance": "Apollo recognition lexicon 2026-11-25; no standard identifier asserted"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "Bone marrow aspirate",
+      "aliases": [
+        "bone marrow aspirate",
+        "bone marrow aspiration"
+      ],
+      "mapping": "unresolved",
+      "provenance": "Apollo authored clinical phrase catalog 2026-11-25; no LOINC identifier asserted"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "Bone marrow biopsy",
+      "aliases": [
+        "bone marrow biopsy"
+      ],
+      "mapping": "unresolved",
+      "provenance": "Apollo authored clinical phrase catalog 2026-11-25; no LOINC identifier asserted"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "Blood culture",
+      "aliases": [
+        "blood cultures"
+      ],
+      "mapping": "unresolved",
+      "provenance": "Apollo authored clinical phrase catalog 2026-11-25; no LOINC identifier asserted"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "Cytogenetics",
+      "aliases": [
+        "cytogenetics",
+        "cytogenetic analysis"
+      ],
+      "mapping": "unresolved",
+      "provenance": "Apollo authored clinical phrase catalog 2026-11-25; no LOINC identifier asserted"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "Flow cytometry",
+      "aliases": [
+        "flow cytometry"
+      ],
+      "mapping": "unresolved",
+      "provenance": "Apollo authored clinical phrase catalog 2026-11-25; no LOINC identifier asserted"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "Molecular mutation testing",
+      "aliases": [
+        "molecular mutation testing",
+        "mutation analysis"
+      ],
+      "mapping": "unresolved",
+      "provenance": "Apollo authored clinical phrase catalog 2026-11-25; no LOINC identifier asserted"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "Renal function panel",
+      "aliases": [
+        "renal function panel",
+        "kidney function panel",
+        "renal panel"
+      ],
+      "mapping": "unresolved",
+      "provenance": "Apollo authored clinical phrase catalog 2026-11-25; no LOINC identifier asserted"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "Liver function panel",
+      "aliases": [
+        "liver function panel",
+        "hepatic function panel",
+        "hepatic panel"
+      ],
+      "mapping": "unresolved",
+      "provenance": "Apollo authored clinical phrase catalog 2026-11-25; no LOINC identifier asserted"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "Renal/liver function panel",
+      "aliases": [
+        "renal/liver function panel"
+      ],
+      "mapping": "unresolved",
+      "provenance": "Apollo authored clinical phrase catalog 2026-11-25; no LOINC identifier asserted"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "Complete blood count",
+      "aliases": [
+        "full blood count",
+        "FBC"
+      ],
+      "mapping": "unresolved",
+      "provenance": "Apollo authored clinical phrase catalog 2026-11-25; no LOINC identifier asserted"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "Hemoglobin",
+      "aliases": [
+        "hemoglobin",
+        "haemoglobin"
+      ],
+      "mapping": "unresolved",
+      "provenance": "Apollo authored clinical phrase catalog 2026-11-25; no LOINC identifier asserted"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "Platelet count",
+      "aliases": [
+        "platelet count",
+        "platelets"
+      ],
+      "mapping": "unresolved",
+      "provenance": "Apollo authored clinical phrase catalog 2026-11-25; no LOINC identifier asserted"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "Differential count",
+      "aliases": [
+        "differential count",
+        "differential leukocyte count"
+      ],
+      "mapping": "unresolved",
+      "provenance": "Apollo authored clinical phrase catalog 2026-11-25; no LOINC identifier asserted"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "Peripheral smear",
+      "aliases": [
+        "peripheral smear",
+        "peripheral blood smear"
+      ],
+      "mapping": "unresolved",
+      "provenance": "Apollo authored clinical phrase catalog 2026-11-25; no LOINC identifier asserted"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "Blood glucose",
+      "aliases": [
+        "blood glucose"
+      ],
+      "mapping": "unresolved",
+      "provenance": "Apollo authored clinical phrase catalog 2026-11-25; no LOINC identifier asserted"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "Culture and sensitivity",
+      "aliases": [
+        "culture and sensitivity",
+        "culture & sensitivity"
+      ],
+      "mapping": "unresolved",
+      "provenance": "Apollo authored clinical phrase catalog 2026-11-25; no LOINC identifier asserted"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "Stool antigen testing",
+      "aliases": [
+        "stool antigen testing",
+        "stool antigen test"
+      ],
+      "mapping": "unresolved",
+      "provenance": "Apollo authored clinical phrase catalog 2026-11-25; no LOINC identifier asserted"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "Echocardiography",
+      "aliases": [
+        "echocardiography"
+      ],
+      "mapping": "unresolved",
+      "provenance": "Apollo authored clinical phrase catalog 2026-11-25; no LOINC identifier asserted"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "Spirometry",
+      "aliases": [
+        "spirometry"
+      ],
+      "mapping": "unresolved",
+      "provenance": "Apollo authored clinical phrase catalog 2026-11-25; no LOINC identifier asserted"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "Histopathology",
+      "aliases": [
+        "histopathology",
+        "histopathological examination"
+      ],
+      "mapping": "unresolved",
+      "provenance": "Apollo authored clinical phrase catalog 2026-11-25; no LOINC identifier asserted"
+    },
+    {
+      "category": "INVESTIGATION",
+      "canonical": "Immunohistochemistry",
+      "aliases": [
+        "immunohistochemistry"
+      ],
+      "mapping": "unresolved",
+      "provenance": "Apollo authored clinical phrase catalog 2026-11-25; no LOINC identifier asserted"
+    }
+  ]
+}

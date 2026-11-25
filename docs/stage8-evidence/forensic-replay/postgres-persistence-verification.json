@@ -1,11 +1,11 @@
 {
-  "verifiedAt": "2026-11-24T09:10:07.4776777+00:00",
-  "isolatedSchema": "foundry_test_277921fd904645529000dab4a8805cb5",
+  "verifiedAt": "2026-11-25T05:25:43.1498288+00:00",
+  "isolatedSchema": "foundry_test_0d5d5d8550b54a5f9d8fff7dc362cba6",
   "extractionRunsCount": 1,
   "extractedMedicationsCount": 7,
   "extractedInvestigationsCount": 10,
   "quarantineItemsCount": 8,
-  "extractionId": "81b16823-4262-4b86-99de-822f8e62dd92",
+  "extractionId": "26f245f3-3477-4ba9-a1a0-5ee8aa04560f",
   "correlationId": "live-final-86985b4aaa88",
   "provider": "foundry",
   "model": "gpt-6.1-sol-2026-09-29",
@@ -19,10 +19,10 @@
   "safetyAlertsMatch": true,
   "restoredExtraction": {
     "schemaVersion": "1.0.0",
-    "extractionId": "81b16823-4262-4b86-99de-822f8e62dd92",
+    "extractionId": "26f245f3-3477-4ba9-a1a0-5ee8aa04560f",
     "correlationId": "live-final-86985b4aaa88",
-    "extractedAt": "2026-11-24T09:10:06\u002B00:00",
-    "executionDurationMs": 1117.5,
+    "extractedAt": "2026-11-25T05:25:42\u002B00:00",
+    "executionDurationMs": 43.95,
     "modelMetadata": {
       "adapterType": "microsoft_foundry",
       "modelDeployment": "gpt-6.1-sol",
@@ -43,7 +43,7 @@
           "deployment": "gpt-6.1-sol",
           "outcome": "accepted",
           "reason": null,
-          "durationMs": 1.83,
+          "durationMs": 1.3,
           "inferenceExecuted": true,
           "promptTokens": 1255,
           "completionTokens": 2305,
@@ -1023,7 +1023,7 @@
     },
     "safetyAlerts": [
       {
-        "alertId": "DDI-97a7995e",
+        "alertId": "DDI-08220890",
         "severity": "HIGH",
         "category": "DRUG_INTERACTION",
         "title": "Major Bleeding Risk: Warfarin \u002B Antiplatelet/NSAID",
@@ -1042,7 +1042,7 @@
         "endChar": 1145
       },
       {
-        "alertId": "DDI-e4d84269",
+        "alertId": "DDI-00d0a755",
         "severity": "MODERATE",
         "category": "DRUG_INTERACTION",
         "title": "QTc Prolongation Risk: Macrolide/Fluoroquinolone \u002B Ondansetron",
@@ -1061,7 +1061,7 @@
         "endChar": 1288
       },
       {
-        "alertId": "ALG-8f559155",
+        "alertId": "ALG-36645884",
         "severity": "MODERATE",
         "category": "ALLERGY_CONFLICT",
         "title": "Documented Drug Allergy Vigilance: Penicillin",
@@ -1079,7 +1079,7 @@
         "endChar": 163
       },
       {
-        "alertId": "ALG-896046ce",
+        "alertId": "ALG-f4fc81ef",
         "severity": "MODERATE",
         "category": "ALLERGY_CONFLICT",
         "title": "Documented Drug Allergy Vigilance: Ibuprofen",
@@ -1097,7 +1097,7 @@
         "endChar": 163
       },
       {
-        "alertId": "LAB-ec9ff073",
+        "alertId": "LAB-d9920214",
         "severity": "CRITICAL",
         "category": "LAB_ANOMALY",
         "title": "Critical Potassium Value (5.7 mEq/L)",
@@ -1115,7 +1115,7 @@
         "endChar": 726
       },
       {
-        "alertId": "LAB-7aae2793",
+        "alertId": "LAB-f979cc4c",
         "severity": "HIGH",
         "category": "LAB_ANOMALY",
         "title": "Elevated Serum Creatinine (1.9 mg/dL)",
@@ -1133,7 +1133,7 @@
         "endChar": 748
       },
       {
-        "alertId": "VIT-5f8bf9f8",
+        "alertId": "VIT-160ce5ba",
         "severity": "MODERATE",
         "category": "LAB_ANOMALY",
         "title": "Historical Admission Finding \u2014 Significant Pyrexia (38.9\u00B0C)",
@@ -1225,8 +1225,8 @@
   },
   "quarantineRecords": [
     {
-      "quarantineId": "34d4e077-7b82-406d-9d0f-ab58a73a7a62",
-      "extractionId": "81b16823-4262-4b86-99de-822f8e62dd92",
+      "quarantineId": "13f4a0b4-10ee-44d7-b875-701171cd4ae3",
+      "extractionId": "26f245f3-3477-4ba9-a1a0-5ee8aa04560f",
       "category": "MEDICATION",
       "mention": "Penicillin",
       "normalizedMention": "penicillin",
@@ -1239,12 +1239,12 @@
       "mappedCode": null,
       "mappedDisplay": null,
       "reviewerNotes": null,
-      "createdAt": "2026-11-24T09:10:06\u002B00:00",
+      "createdAt": "2026-11-25T05:25:43\u002B00:00",
       "reviewedAt": null
     },
     {
-      "quarantineId": "a02e6334-8dfb-4be8-8db1-200466ff0828",
-      "extractionId": "81b16823-4262-4b86-99de-822f8e62dd92",
+      "quarantineId": "198a3765-17d9-4ce1-92a0-716b8b9ab50f",
+      "extractionId": "26f245f3-3477-4ba9-a1a0-5ee8aa04560f",
       "category": "INVESTIGATION",
       "mention": "K\u002B",
       "normalizedMention": "k\u002B",
@@ -1257,12 +1257,12 @@
       "mappedCode": null,
       "mappedDisplay": null,
       "reviewerNotes": null,
-      "createdAt": "2026-11-24T09:10:06\u002B00:00",
+      "createdAt": "2026-11-25T05:25:43\u002B00:00",
       "reviewedAt": null
     },
     {
-      "quarantineId": "481ecd8b-bc1f-4a1b-8f78-eca5c733c854",
-      "extractionId": "81b16823-4262-4b86-99de-822f8e62dd92",
+      "quarantineId": "ca433ddb-10d5-4d90-b8e4-03d7ddca08c8",
+      "extractionId": "26f245f3-3477-4ba9-a1a0-5ee8aa04560f",
       "category": "INVESTIGATION",
       "mention": "Creatinine",
       "normalizedMention": "creatinine",
@@ -1275,12 +1275,12 @@
       "mappedCode": null,
       "mappedDisplay": null,
       "reviewerNotes": null,
-      "createdAt": "2026-11-24T09:10:06\u002B00:00",
+      "createdAt": "2026-11-25T05:25:43\u002B00:00",
       "reviewedAt": null
     },
     {
-      "quarantineId": "1110f09a-5cb7-4efa-bfb1-e8fe5d813ee5",
-      "extractionId": "81b16823-4262-4b86-99de-822f8e62dd92",
+      "quarantineId": "634f8c07-5225-4757-bc83-a3ef180205a3",
+      "extractionId": "26f245f3-3477-4ba9-a1a0-5ee8aa04560f",
       "category": "INVESTIGATION",
       "mention": "Prothrombin time and INR",
       "normalizedMention": "prothrombin time and inr",
@@ -1293,12 +1293,12 @@
       "mappedCode": null,
       "mappedDisplay": null,
       "reviewerNotes": null,
-      "createdAt": "2026-11-24T09:10:06\u002B00:00",
+      "createdAt": "2026-11-25T05:25:43\u002B00:00",
       "reviewedAt": null
     },
     {
-      "quarantineId": "9383c9f6-5102-4895-907a-6eb869a50245",
-      "extractionId": "81b16823-4262-4b86-99de-822f8e62dd92",
+      "quarantineId": "9084f809-1da3-44fd-9215-1ae517afe5aa",
+      "extractionId": "26f245f3-3477-4ba9-a1a0-5ee8aa04560f",
       "category": "INVESTIGATION",
       "mention": "Complete blood count",
       "normalizedMention": "complete blood count",
@@ -1311,12 +1311,12 @@
       "mappedCode": null,
       "mappedDisplay": null,
       "reviewerNotes": null,
-      "createdAt": "2026-11-24T09:10:06\u002B00:00",
+      "createdAt": "2026-11-25T05:25:43\u002B00:00",
       "reviewedAt": null
     },
     {
-      "quarantineId": "39ac05e0-f979-447e-ab3e-beb9d37d0fda",
-      "extractionId": "81b16823-4262-4b86-99de-822f8e62dd92",
+      "quarantineId": "4a6a99ac-1d94-4f49-9a2b-58c5efc41378",
+      "extractionId": "26f245f3-3477-4ba9-a1a0-5ee8aa04560f",
       "category": "INVESTIGATION",
       "mention": "C-reactive protein",
       "normalizedMention": "c-reactive protein",
@@ -1329,12 +1329,12 @@
       "mappedCode": null,
       "mappedDisplay": null,
       "reviewerNotes": null,
-      "createdAt": "2026-11-24T09:10:06\u002B00:00",
+      "createdAt": "2026-11-25T05:25:43\u002B00:00",
       "reviewedAt": null
     },
     {
-      "quarantineId": "6afa2f28-985a-4f1f-bd2c-bacddc94e527",
-      "extractionId": "81b16823-4262-4b86-99de-822f8e62dd92",
+      "quarantineId": "36a46283-68b1-4c2f-ad40-5f7b5e5c9ee7",
+      "extractionId": "26f245f3-3477-4ba9-a1a0-5ee8aa04560f",
       "category": "INVESTIGATION",
       "mention": "chest X-ray",
       "normalizedMention": "chest x-ray",
@@ -1347,12 +1347,12 @@
       "mappedCode": null,
       "mappedDisplay": null,
       "reviewerNotes": null,
-      "createdAt": "2026-11-24T09:10:06\u002B00:00",
+      "createdAt": "2026-11-25T05:25:43\u002B00:00",
       "reviewedAt": null
     },
     {
-      "quarantineId": "3dda31d1-93a3-4b32-a6ce-c9d1d7a9b291",
-      "extractionId": "81b16823-4262-4b86-99de-822f8e62dd92",
+      "quarantineId": "e69ffd83-d9f0-4714-aa4a-e22eb945f8e8",
+      "extractionId": "26f245f3-3477-4ba9-a1a0-5ee8aa04560f",
       "category": "INVESTIGATION",
       "mention": "12-lead ECG",
       "normalizedMention": "12-lead ecg",
@@ -1365,7 +1365,7 @@
       "mappedCode": null,
       "mappedDisplay": null,
       "reviewerNotes": null,
-      "createdAt": "2026-11-24T09:10:06\u002B00:00",
+      "createdAt": "2026-11-25T05:25:43\u002B00:00",
       "reviewedAt": null
     }
   ]

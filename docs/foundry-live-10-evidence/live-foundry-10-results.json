@@ -1,0 +1,740 @@
+{
+  "executedAtUtc": "2026-11-25T05:55:05.456Z",
+  "routing": {
+    "environment": "Development",
+    "requestedPrimaryProvider": "MicrosoftFoundry",
+    "fallbackProvider": "LocalOnnx",
+    "directLocalAuthorized": true,
+    "directLocalReason": "authorized_offline",
+    "foundryDeployment": "gpt-6.1-sol",
+    "targetModel": "gpt-6.1-sol",
+    "authenticationMode": "ApiKey",
+    "configurationError": null,
+    "configurationReady": true,
+    "providerConfigurationSource": "EnvironmentVariablesConfigurationProvider",
+    "readinessScope": "Configuration only; no provider request or token acquisition",
+    "extractionInferenceExecuted": false
+  },
+  "completedCount": 9,
+  "attemptedCount": 10,
+  "totals": {
+    "promptTokens": 8578,
+    "completionTokens": 4386,
+    "totalTokens": 12964,
+    "estimatedCostUsd": 0
+  },
+  "cases": [
+    {
+      "caseId": 1,
+      "title": "Hypertension & Dyslipidaemia Follow-up",
+      "patientReference": "P100234",
+      "encounterReference": "ENC-100567",
+      "noteId": "7b83e7bc-c817-4284-9306-8318b107adbb",
+      "noteVersion": 21,
+      "eventId": "67e7b3d3-0141-4c6e-8c8c-5d8134d70137",
+      "extractionId": "67e7b3d3-0141-4c6e-8c8c-5d8134d70137",
+      "correlationId": "7848e93f-8579-4bc7-9e37-ebb599f888b5",
+      "queueState": "Ready",
+      "error": null,
+      "provider": "foundry",
+      "model": "gpt-6.1-sol-2026-09-29",
+      "azureDeployment": "gpt-6.1-sol",
+      "fallbackTriggered": false,
+      "fallbackReason": null,
+      "promptTokens": 948,
+      "completionTokens": 390,
+      "totalTokens": 1338,
+      "estimatedCostUsd": null,
+      "inferenceDurationMs": 7078.91,
+      "endToEndWallMs": 10167,
+      "medicationCount": 3,
+      "medications": [
+        {
+          "name": "Amlodipine",
+          "strength": "5 mg",
+          "dose": "1",
+          "route": "orally",
+          "frequency": "once daily",
+          "duration": "for 30 days",
+          "assertionStatus": "current_medication",
+          "rxnorm": "17767"
+        },
+        {
+          "name": "Atorvastatin",
+          "strength": "10 mg",
+          "dose": "1",
+          "route": "orally",
+          "frequency": "at bedtime",
+          "duration": "for 30 days",
+          "assertionStatus": "current_medication",
+          "rxnorm": "83367"
+        },
+        {
+          "name": "Telmisartan",
+          "strength": "40 mg",
+          "dose": "half",
+          "route": "orally",
+          "frequency": "once daily in the morning",
+          "duration": "for 14 days",
+          "assertionStatus": "new_order",
+          "rxnorm": "73494"
+        }
+      ],
+      "investigationCount": 2,
+      "investigations": [
+        {
+          "name": "Complete Blood Count automated",
+          "assertionStatus": "new_order",
+          "timing": "tomorrow morning",
+          "loinc": null,
+          "candidateLoinc": null
+        },
+        {
+          "name": "Serum Creatinine",
+          "assertionStatus": "new_order",
+          "timing": "tomorrow morning",
+          "loinc": "2160-0",
+          "candidateLoinc": "2160-0"
+        }
+      ],
+      "warningCount": 0,
+      "errorCount": 0
+    },
+    {
+      "caseId": 2,
+      "title": "Community Acquired Pneumonia",
+      "patientReference": "P100235",
+      "encounterReference": "ENC-100568",
+      "noteId": "748adbb3-578b-471c-abac-5846019ae167",
+      "noteVersion": 12,
+      "eventId": "82f08d30-a029-417a-a5cd-7bc20636cd62",
+      "extractionId": "82f08d30-a029-417a-a5cd-7bc20636cd62",
+      "correlationId": "200384f3-9dec-4e77-a7fa-0ee21b5f9138",
+      "queueState": "Ready",
+      "error": null,
+      "provider": "foundry",
+      "model": "gpt-6.1-sol-2026-09-29",
+      "azureDeployment": "gpt-6.1-sol",
+      "fallbackTriggered": false,
+      "fallbackReason": null,
+      "promptTokens": 960,
+      "completionTokens": 395,
+      "totalTokens": 1355,
+      "estimatedCostUsd": null,
+      "inferenceDurationMs": 5978.41,
+      "endToEndWallMs": 8074,
+      "medicationCount": 3,
+      "medications": [
+        {
+          "name": "Amoxicillin-Clavulanate",
+          "strength": "625 mg",
+          "dose": "1",
+          "route": "orally",
+          "frequency": "three times daily",
+          "duration": "for 7 days",
+          "assertionStatus": "new_order",
+          "rxnorm": null
+        },
+        {
+          "name": "Azithromycin",
+          "strength": "500 mg",
+          "dose": "1",
+          "route": "orally",
+          "frequency": "once daily",
+          "duration": "for 3 days",
+          "assertionStatus": "new_order",
+          "rxnorm": "18631"
+        },
+        {
+          "name": "Paracetamol",
+          "strength": "650 mg",
+          "dose": "1",
+          "route": "orally",
+          "frequency": "as needed",
+          "duration": null,
+          "assertionStatus": "new_order",
+          "rxnorm": "161"
+        }
+      ],
+      "investigationCount": 2,
+      "investigations": [
+        {
+          "name": "Chest X-ray PA view",
+          "assertionStatus": "new_order",
+          "timing": "today",
+          "loinc": null,
+          "candidateLoinc": "24648-8"
+        },
+        {
+          "name": "Complete Blood Count",
+          "assertionStatus": "new_order",
+          "timing": "tomorrow",
+          "loinc": null,
+          "candidateLoinc": "58410-2"
+        }
+      ],
+      "warningCount": 1,
+      "errorCount": 0
+    },
+    {
+      "caseId": 3,
+      "title": "Type 2 Diabetes Escalation & Aspirin Allergy",
+      "patientReference": "P100237",
+      "encounterReference": "ENC-100570",
+      "noteId": "a5abf136-8544-4dae-ae79-f4f55d5ad688",
+      "noteVersion": 17,
+      "eventId": "5e6984a3-375e-4d03-8b4d-2f0a9f643ee1",
+      "extractionId": "5e6984a3-375e-4d03-8b4d-2f0a9f643ee1",
+      "correlationId": "dddaea0e-8e11-4e51-a8ea-9b7d6849b513",
+      "queueState": "Ready",
+      "error": null,
+      "provider": "foundry",
+      "model": "gpt-6.1-sol-2026-09-29",
+      "azureDeployment": "gpt-6.1-sol",
+      "fallbackTriggered": false,
+      "fallbackReason": null,
+      "promptTokens": 954,
+      "completionTokens": 436,
+      "totalTokens": 1390,
+      "estimatedCostUsd": null,
+      "inferenceDurationMs": 6274.98,
+      "endToEndWallMs": 8066,
+      "medicationCount": 3,
+      "medications": [
+        {
+          "name": "Aspirin",
+          "strength": null,
+          "dose": null,
+          "route": null,
+          "frequency": null,
+          "duration": null,
+          "assertionStatus": "allergy",
+          "rxnorm": "1191"
+        },
+        {
+          "name": "Metformin",
+          "strength": "500 mg",
+          "dose": "1",
+          "route": "orally",
+          "frequency": "twice daily",
+          "duration": null,
+          "assertionStatus": "current_medication",
+          "rxnorm": "6809"
+        },
+        {
+          "name": "Sitagliptin",
+          "strength": "100 mg",
+          "dose": "1",
+          "route": "orally",
+          "frequency": "once daily",
+          "duration": "for 30 days",
+          "assertionStatus": "new_order",
+          "rxnorm": null
+        }
+      ],
+      "investigationCount": 3,
+      "investigations": [
+        {
+          "name": "HbA1c",
+          "assertionStatus": "new_order",
+          "timing": "next week",
+          "loinc": "4548-4",
+          "candidateLoinc": "4548-4"
+        },
+        {
+          "name": "Lipid Profile",
+          "assertionStatus": "new_order",
+          "timing": "next week",
+          "loinc": null,
+          "candidateLoinc": "24331-1"
+        },
+        {
+          "name": "Serum Creatinine",
+          "assertionStatus": "conditional",
+          "timing": "if systolic blood pressure exceeds 160 mmHg",
+          "loinc": "2160-0",
+          "candidateLoinc": "2160-0"
+        }
+      ],
+      "warningCount": 1,
+      "errorCount": 0
+    },
+    {
+      "caseId": 4,
+      "title": "Anticoagulation Safety & Discontinuation",
+      "patientReference": "P100234",
+      "encounterReference": "ENC-100567",
+      "noteId": "7b83e7bc-c817-4284-9306-8318b107adbb",
+      "noteVersion": 23,
+      "eventId": "6547cb5e-9e0b-429a-8986-0fd90e4be925",
+      "extractionId": null,
+      "correlationId": null,
+      "queueState": "Failed",
+      "error": "AZURE_INVALID_EVIDENCE",
+      "provider": null,
+      "model": null,
+      "azureDeployment": null,
+      "fallbackTriggered": null,
+      "fallbackReason": null,
+      "promptTokens": null,
+      "completionTokens": null,
+      "totalTokens": null,
+      "estimatedCostUsd": null,
+      "inferenceDurationMs": null,
+      "endToEndWallMs": 18178,
+      "medicationCount": 0,
+      "medications": [],
+      "investigationCount": 0,
+      "investigations": [],
+      "warningCount": null,
+      "errorCount": null
+    },
+    {
+      "caseId": 5,
+      "title": "Asthma Exacerbation & Inhaler Therapy",
+      "patientReference": "P100235",
+      "encounterReference": "ENC-100568",
+      "noteId": "748adbb3-578b-471c-abac-5846019ae167",
+      "noteVersion": 14,
+      "eventId": "48dc9ed4-47a5-4286-9bba-6a67ada136a5",
+      "extractionId": "48dc9ed4-47a5-4286-9bba-6a67ada136a5",
+      "correlationId": "e530ddf9-f3f1-43aa-b252-722429818a6e",
+      "queueState": "Ready",
+      "error": null,
+      "provider": "foundry",
+      "model": "gpt-6.1-sol-2026-09-29",
+      "azureDeployment": "gpt-6.1-sol",
+      "fallbackTriggered": false,
+      "fallbackReason": null,
+      "promptTokens": 962,
+      "completionTokens": 421,
+      "totalTokens": 1383,
+      "estimatedCostUsd": null,
+      "inferenceDurationMs": 6382.08,
+      "endToEndWallMs": 10068,
+      "medicationCount": 3,
+      "medications": [
+        {
+          "name": "Budesonide-Formoterol",
+          "strength": "200/6 mcg",
+          "dose": "2",
+          "route": "inhaled",
+          "frequency": "twice daily",
+          "duration": "for 30 days",
+          "assertionStatus": "new_order",
+          "rxnorm": null
+        },
+        {
+          "name": "Salbutamol",
+          "strength": "100 mcg",
+          "dose": "2",
+          "route": "inhaled",
+          "frequency": "as needed",
+          "duration": null,
+          "assertionStatus": "new_order",
+          "rxnorm": "435"
+        },
+        {
+          "name": "Montelukast",
+          "strength": "10 mg",
+          "dose": "1",
+          "route": "orally",
+          "frequency": "at night",
+          "duration": "for 14 days",
+          "assertionStatus": "new_order",
+          "rxnorm": null
+        }
+      ],
+      "investigationCount": 2,
+      "investigations": [
+        {
+          "name": "Spirometry",
+          "assertionStatus": "conditional",
+          "timing": "if symptoms persist after 1 week",
+          "loinc": null,
+          "candidateLoinc": null
+        },
+        {
+          "name": "Chest X-ray",
+          "assertionStatus": "conditional",
+          "timing": "if symptoms persist after 1 week",
+          "loinc": null,
+          "candidateLoinc": "36643-5"
+        }
+      ],
+      "warningCount": 2,
+      "errorCount": 0
+    },
+    {
+      "caseId": 6,
+      "title": "Hypothyroidism & Iron Deficiency Anaemia",
+      "patientReference": "P100237",
+      "encounterReference": "ENC-100570",
+      "noteId": "a5abf136-8544-4dae-ae79-f4f55d5ad688",
+      "noteVersion": 19,
+      "eventId": "58c4721d-7f76-48b5-b400-5c1bd8012c7c",
+      "extractionId": "58c4721d-7f76-48b5-b400-5c1bd8012c7c",
+      "correlationId": "94fef7ca-4d8b-4f5f-bfd8-64de291e8cbe",
+      "queueState": "Ready",
+      "error": null,
+      "provider": "foundry",
+      "model": "gpt-6.1-sol-2026-09-29",
+      "azureDeployment": "gpt-6.1-sol",
+      "fallbackTriggered": false,
+      "fallbackReason": null,
+      "promptTokens": 945,
+      "completionTokens": 405,
+      "totalTokens": 1350,
+      "estimatedCostUsd": null,
+      "inferenceDurationMs": 5810.36,
+      "endToEndWallMs": 8065,
+      "medicationCount": 2,
+      "medications": [
+        {
+          "name": "Ferrous Sulfate",
+          "strength": "200 mg",
+          "dose": "1",
+          "route": "orally",
+          "frequency": "once daily",
+          "duration": "for 60 days",
+          "assertionStatus": "new_order",
+          "rxnorm": null
+        },
+        {
+          "name": "Levothyroxine",
+          "strength": "50 mcg",
+          "dose": "1",
+          "route": "orally",
+          "frequency": "once daily",
+          "duration": null,
+          "assertionStatus": "current_medication",
+          "rxnorm": "10582"
+        }
+      ],
+      "investigationCount": 3,
+      "investigations": [
+        {
+          "name": "Thyroid Stimulating Hormone",
+          "assertionStatus": "new_order",
+          "timing": "in 6 weeks",
+          "loinc": null,
+          "candidateLoinc": "3016-3"
+        },
+        {
+          "name": "Serum Ferritin",
+          "assertionStatus": "new_order",
+          "timing": "in 6 weeks",
+          "loinc": null,
+          "candidateLoinc": null
+        },
+        {
+          "name": "Complete Blood Count automated",
+          "assertionStatus": "new_order",
+          "timing": "in 6 weeks",
+          "loinc": null,
+          "candidateLoinc": null
+        }
+      ],
+      "warningCount": 1,
+      "errorCount": 0
+    },
+    {
+      "caseId": 7,
+      "title": "Acid Peptic Disease & Negated NSAID",
+      "patientReference": "P100234",
+      "encounterReference": "ENC-100567",
+      "noteId": "7b83e7bc-c817-4284-9306-8318b107adbb",
+      "noteVersion": 25,
+      "eventId": "c1cb5a61-5f02-4a93-b464-ed2927ec454c",
+      "extractionId": "c1cb5a61-5f02-4a93-b464-ed2927ec454c",
+      "correlationId": "585732f1-a4a3-4967-9eb1-ea29a999f0c9",
+      "queueState": "Ready",
+      "error": null,
+      "provider": "foundry",
+      "model": "gpt-6.1-sol-2026-09-29",
+      "azureDeployment": "gpt-6.1-sol",
+      "fallbackTriggered": false,
+      "fallbackReason": null,
+      "promptTokens": 953,
+      "completionTokens": 594,
+      "totalTokens": 1547,
+      "estimatedCostUsd": null,
+      "inferenceDurationMs": 8931.12,
+      "endToEndWallMs": 12109,
+      "medicationCount": 2,
+      "medications": [
+        {
+          "name": "Ibuprofen",
+          "strength": null,
+          "dose": null,
+          "route": null,
+          "frequency": null,
+          "duration": null,
+          "assertionStatus": "negated",
+          "rxnorm": "5640"
+        },
+        {
+          "name": "Pantoprazole",
+          "strength": "40 mg",
+          "dose": "1",
+          "route": "orally",
+          "frequency": "once daily",
+          "duration": "for 14 days",
+          "assertionStatus": "new_order",
+          "rxnorm": "40790"
+        }
+      ],
+      "investigationCount": 2,
+      "investigations": [
+        {
+          "name": "Stool H. pylori antigen test",
+          "assertionStatus": "new_order",
+          "timing": "this week",
+          "loinc": null,
+          "candidateLoinc": null
+        },
+        {
+          "name": "Liver Function Tests",
+          "assertionStatus": "new_order",
+          "timing": "this week",
+          "loinc": null,
+          "candidateLoinc": "24325-3"
+        }
+      ],
+      "warningCount": 0,
+      "errorCount": 0
+    },
+    {
+      "caseId": 8,
+      "title": "Acute Uncomplicated Urinary Tract Infection",
+      "patientReference": "P100235",
+      "encounterReference": "ENC-100568",
+      "noteId": "748adbb3-578b-471c-abac-5846019ae167",
+      "noteVersion": 16,
+      "eventId": "b885cff2-dd0a-4cce-a6b3-3b01925ee3a6",
+      "extractionId": "b885cff2-dd0a-4cce-a6b3-3b01925ee3a6",
+      "correlationId": "69f56f85-3782-4fac-8f88-6f994b5f7d89",
+      "queueState": "Ready",
+      "error": null,
+      "provider": "foundry",
+      "model": "gpt-6.1-sol-2026-09-29",
+      "azureDeployment": "gpt-6.1-sol",
+      "fallbackTriggered": false,
+      "fallbackReason": null,
+      "promptTokens": 936,
+      "completionTokens": 326,
+      "totalTokens": 1262,
+      "estimatedCostUsd": null,
+      "inferenceDurationMs": 5263.51,
+      "endToEndWallMs": 8070,
+      "medicationCount": 2,
+      "medications": [
+        {
+          "name": "Nitrofurantoin",
+          "strength": "100 mg",
+          "dose": "1",
+          "route": "orally",
+          "frequency": "twice daily",
+          "duration": "for 5 days",
+          "assertionStatus": "new_order",
+          "rxnorm": "7454"
+        },
+        {
+          "name": "Potassium Citrate",
+          "strength": null,
+          "dose": "15",
+          "route": "orally",
+          "frequency": "twice daily",
+          "duration": "for 5 days",
+          "assertionStatus": "new_order",
+          "rxnorm": null
+        }
+      ],
+      "investigationCount": 2,
+      "investigations": [
+        {
+          "name": "Urine Routine Examination",
+          "assertionStatus": "new_order",
+          "timing": "prior to first antibiotic dose",
+          "loinc": null,
+          "candidateLoinc": null
+        },
+        {
+          "name": "Urine Culture and Sensitivity",
+          "assertionStatus": "new_order",
+          "timing": "prior to first antibiotic dose",
+          "loinc": null,
+          "candidateLoinc": "630-4"
+        }
+      ],
+      "warningCount": 1,
+      "errorCount": 0
+    },
+    {
+      "caseId": 9,
+      "title": "Stable Angina & Cardiology Workup",
+      "patientReference": "P100237",
+      "encounterReference": "ENC-100570",
+      "noteId": "a5abf136-8544-4dae-ae79-f4f55d5ad688",
+      "noteVersion": 21,
+      "eventId": "47304742-1d92-4095-a95f-daaf34918807",
+      "extractionId": "47304742-1d92-4095-a95f-daaf34918807",
+      "correlationId": "0840c247-e97a-434f-9759-e2130d6dac8a",
+      "queueState": "Ready",
+      "error": null,
+      "provider": "foundry",
+      "model": "gpt-6.1-sol-2026-09-29",
+      "azureDeployment": "gpt-6.1-sol",
+      "fallbackTriggered": false,
+      "fallbackReason": null,
+      "promptTokens": 956,
+      "completionTokens": 686,
+      "totalTokens": 1642,
+      "estimatedCostUsd": null,
+      "inferenceDurationMs": 9284.83,
+      "endToEndWallMs": 10068,
+      "medicationCount": 3,
+      "medications": [
+        {
+          "name": "Rosuvastatin",
+          "strength": "20 mg",
+          "dose": "1",
+          "route": "orally",
+          "frequency": "at night",
+          "duration": null,
+          "assertionStatus": "current_medication",
+          "rxnorm": null
+        },
+        {
+          "name": "Isosorbide Mononitrate",
+          "strength": "30 mg",
+          "dose": "1",
+          "route": "orally",
+          "frequency": "once daily in the morning",
+          "duration": "for 30 days",
+          "assertionStatus": "new_order",
+          "rxnorm": null
+        },
+        {
+          "name": "Clopidogrel",
+          "strength": "75 mg",
+          "dose": "1",
+          "route": "orally",
+          "frequency": "once daily",
+          "duration": null,
+          "assertionStatus": "current_medication",
+          "rxnorm": "32968"
+        }
+      ],
+      "investigationCount": 3,
+      "investigations": [
+        {
+          "name": "12-lead ECG",
+          "assertionStatus": "new_order",
+          "timing": "today",
+          "loinc": null,
+          "candidateLoinc": "11524-6"
+        },
+        {
+          "name": "Echocardiogram",
+          "assertionStatus": "new_order",
+          "timing": null,
+          "loinc": "34552-0",
+          "candidateLoinc": "34552-0"
+        },
+        {
+          "name": "Fasting Lipid Profile",
+          "assertionStatus": "new_order",
+          "timing": null,
+          "loinc": null,
+          "candidateLoinc": "24331-1"
+        }
+      ],
+      "warningCount": 2,
+      "errorCount": 0
+    },
+    {
+      "caseId": 10,
+      "title": "Gout Flare & Historical Allopurinol",
+      "patientReference": "P100234",
+      "encounterReference": "ENC-100567",
+      "noteId": "7b83e7bc-c817-4284-9306-8318b107adbb",
+      "noteVersion": 27,
+      "eventId": "0ab4f6f8-4484-431d-be47-7c244a9f1524",
+      "extractionId": "0ab4f6f8-4484-431d-be47-7c244a9f1524",
+      "correlationId": "afd42b35-1f24-46e2-b572-edca9693bc45",
+      "queueState": "Ready",
+      "error": null,
+      "provider": "foundry",
+      "model": "gpt-6.1-sol-2026-09-29",
+      "azureDeployment": "gpt-6.1-sol",
+      "fallbackTriggered": false,
+      "fallbackReason": null,
+      "promptTokens": 964,
+      "completionTokens": 733,
+      "totalTokens": 1697,
+      "estimatedCostUsd": null,
+      "inferenceDurationMs": 10113.04,
+      "endToEndWallMs": 14124,
+      "medicationCount": 3,
+      "medications": [
+        {
+          "name": "Allopurinol",
+          "strength": "100 mg",
+          "dose": null,
+          "route": null,
+          "frequency": "daily",
+          "duration": null,
+          "assertionStatus": "historical",
+          "rxnorm": "519"
+        },
+        {
+          "name": "Colchicine",
+          "strength": "0.5 mg",
+          "dose": "1",
+          "route": "orally",
+          "frequency": "twice daily",
+          "duration": "for 5 days",
+          "assertionStatus": "new_order",
+          "rxnorm": null
+        },
+        {
+          "name": "Etoricoxib",
+          "strength": "90 mg",
+          "dose": "1",
+          "route": "orally",
+          "frequency": "once daily",
+          "duration": "for 5 days",
+          "assertionStatus": "new_order",
+          "rxnorm": null
+        }
+      ],
+      "investigationCount": 3,
+      "investigations": [
+        {
+          "name": "Serum Uric Acid",
+          "assertionStatus": "new_order",
+          "timing": "tomorrow",
+          "loinc": "3084-1",
+          "candidateLoinc": "3084-1"
+        },
+        {
+          "name": "Serum Creatinine",
+          "assertionStatus": "new_order",
+          "timing": "tomorrow",
+          "loinc": "2160-0",
+          "candidateLoinc": "2160-0"
+        },
+        {
+          "name": "C-Reactive Protein",
+          "assertionStatus": "new_order",
+          "timing": "tomorrow",
+          "loinc": null,
+          "candidateLoinc": "1988-5"
+        }
+      ],
+      "warningCount": 2,
+      "errorCount": 0
+    }
+  ]
+}

@@ -13,32 +13,37 @@ export function apiError(error: unknown): string {
   if (e.status === 401) return 'Your session has expired. Sign in again to continue.';
   return e.error?.detail || 'The operation could not complete. Please reload the latest state and try again.';
 }
-@Injectable({providedIn: 'root'})
+@Injectable({ providedIn: 'root' })
 export class EmrApi {
   private http = inject(HttpClient);
   private base = '/api/v1/emr';
   readonly doctor = signal<Doctor | null>(null);
+  readonly encountersCache = signal<Encounter[]>([]);
   private sessionRequest?: Promise<Doctor | null>;
   async session(): Promise<Doctor | null> {
     if (this.doctor()) return this.doctor();
     return this.sessionRequest ??= firstValueFrom(this.http.get<Doctor>(this.base + '/auth/me'))
-      .then(d => {this.doctor.set(d); return d;}).catch(() => null).finally(() => this.sessionRequest = undefined);
+      .then(d => { this.doctor.set(d); return d; }).catch(() => null).finally(() => this.sessionRequest = undefined);
   }
   async csrf() { await firstValueFrom(this.http.get(this.base + '/auth/csrf')); }
   async login(login: string, password: string) {
     await this.csrf();
-    const d = await firstValueFrom(this.http.post<Doctor>(this.base + '/auth/login', {login, password}));
+    const d = await firstValueFrom(this.http.post<Doctor>(this.base + '/auth/login', { login, password }));
     this.doctor.set(d); await this.csrf(); return d;
   }
-  async logout() { await firstValueFrom(this.http.post(this.base + '/auth/logout', {})); this.doctor.set(null); }
-  encounters() { return firstValueFrom(this.http.get<Encounter[]>(this.base + '/encounters')); }
+  async logout() { await firstValueFrom(this.http.post(this.base + '/auth/logout', {})); this.doctor.set(null); this.encountersCache.set([]); }
+  async encounters() {
+    const list = await firstValueFrom(this.http.get<Encounter[]>(this.base + '/encounters'));
+    this.encountersCache.set(list);
+    return list;
+  }
   encounter(id: string) { return firstValueFrom(this.http.get<Encounter>(this.base + '/encounters/' + id)); }
   note(id: string) { return firstValueFrom(this.http.get<ClinicalNote>(this.base + '/notes/' + id)); }
   versions(id: string) { return firstValueFrom(this.http.get<NoteVersion[]>(this.base + '/notes/' + id + '/versions')); }
-  create(encounter: string, text: string) { return firstValueFrom(this.http.post<ClinicalNote>(this.base + '/encounters/' + encounter + '/notes', {text})); }
-  save(note: ClinicalNote, text: string) { return firstValueFrom(this.http.put<ClinicalNote>(this.base + '/notes/' + note.id, {text, expectedVersion: note.version})); }
-  correct(note: ClinicalNote) { return firstValueFrom(this.http.post<ClinicalNote>(this.base + '/notes/' + note.id + '/corrections', {text: note.text, expectedVersion: note.version})); }
-  sign(note: ClinicalNote) { return firstValueFrom(this.http.post<ClinicalNote>(this.base + '/notes/' + note.id + '/sign', {expectedVersion: note.version})); }
+  create(encounter: string, text: string) { return firstValueFrom(this.http.post<ClinicalNote>(this.base + '/encounters/' + encounter + '/notes', { text })); }
+  save(note: ClinicalNote, text: string) { return firstValueFrom(this.http.put<ClinicalNote>(this.base + '/notes/' + note.id, { text, expectedVersion: note.version })); }
+  correct(note: ClinicalNote) { return firstValueFrom(this.http.post<ClinicalNote>(this.base + '/notes/' + note.id + '/corrections', { text: note.text, expectedVersion: note.version })); }
+  sign(note: ClinicalNote) { return firstValueFrom(this.http.post<ClinicalNote>(this.base + '/notes/' + note.id + '/sign', { expectedVersion: note.version })); }
   upload(note: ClinicalNote, file: File) { const form = new FormData(); form.append('file', file); form.append('expectedVersion', String(note.version)); return firstValueFrom(this.http.post<ClinicalNote>(this.base + '/notes/' + note.id + '/pdf', form)); }
   uploadNew(encounter: string, file: File) { const form = new FormData(); form.append('file', file); return firstValueFrom(this.http.post<ClinicalNote>(this.base + '/encounters/' + encounter + '/pdf', form)); }
 }
@@ -54,7 +59,7 @@ function getXsrfCookie(): string | null {
   return match ? decodeURIComponent(match[1]) : null;
 }
 export const sessionInterceptor: HttpInterceptorFn = (request, next) => {
-  const api = inject(EmrApi), router = inject(Router);
+  const api = inject(EmrApi);
   const method = request.method.toUpperCase();
   if (!['GET', 'HEAD', 'OPTIONS'].includes(method) && !request.headers.has('X-XSRF-TOKEN')) {
     const token = getXsrfCookie();
@@ -65,10 +70,8 @@ export const sessionInterceptor: HttpInterceptorFn = (request, next) => {
     }
   }
   return next(request).pipe(catchError((error: HttpErrorResponse) => {
-    if (error.status === 401 && api.doctor() && !request.url.endsWith('/auth/login')) {
+    if (error.status === 401 && api.doctor() && !request.url.endsWith('/auth/login') && !request.url.endsWith('/auth/dev-session')) {
       api.doctor.set(null);
-      // Leave the editor mounted until the doctor chooses to sign in; unsaved text is retained in memory.
-      if (!router.url.includes('/notes/') && !router.url.includes('/encounters/')) void router.navigate(['/login']);
     }
     return throwError(() => error);
   }));

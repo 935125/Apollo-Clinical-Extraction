@@ -309,13 +309,20 @@ public partial class ClinicalPipelineService
         );
     }
 
-    public ClinicalExtractionResponse ProcessPlatformExtraction(ClinicalExtractionRequest request, string correlationId, OnnxExecutionReceipt? receipt = null)
+    public ClinicalExtractionResponse ProcessPlatformExtraction(
+        ClinicalExtractionRequest request,
+        string correlationId,
+        OnnxExecutionReceipt? receipt = null,
+        bool skipPrivacyValidation = false)
     {
         var sw = Stopwatch.StartNew();
         receipt ??= new OnnxExecutionReceipt();
 
-        // 1. Zero-Leakage PII Validation
-        ZeroLeakageValidator.Validate(request.NoteText);
+        // 1. Zero-Leakage PII Validation (bypassable ONLY via server-verified Development SyntheticDataPrivacyPolicy)
+        if (!skipPrivacyValidation)
+        {
+            ZeroLeakageValidator.Validate(request.NoteText);
+        }
 
         // 2. Sections
         var sections = _contextEngine.SegmentSections(request.NoteText);

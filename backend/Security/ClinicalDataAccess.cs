@@ -27,7 +27,7 @@ public static class ClinicalDataAccessBoundary
         app.Use(async (http, next) =>
         {
             if (!await Apollo.Backend.Emr.EmrAuth.CheckLinkedExtraction(http)) return;
-            if (http.Request.Path.StartsWithSegments("/api/v1/emr") || Apollo.Backend.Emr.EmrAuth.IsDoctorSession(http.User))
+            if (http.Request.Path.StartsWithSegments("/api/v1/emr") || http.Request.Path.StartsWithSegments("/api/v1/queue") || Apollo.Backend.Emr.EmrAuth.IsDoctorSession(http.User))
             { await next(); return; }
             if (ClinicalApiSecurity.IsDemo(app.Configuration, app.Environment) ||
                 http.GetEndpoint()?.Metadata.GetMetadata<Microsoft.AspNetCore.Authorization.IAllowAnonymous>() != null ||

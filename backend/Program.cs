@@ -55,6 +55,7 @@ builder.Services.AddCors(options =>
 // Health Checks
 builder.Services.AddHealthChecks()
     .AddCheck("self", () => HealthCheckResult.Healthy("Backend alive"), tags: ["live"])
+    .AddCheck<PostgresReadinessHealthCheck>("database", tags: ["ready", "db"])
     .AddCheck<OnnxReadinessHealthCheck>("pipeline", tags: ["ready"])
     .AddCheck<ProviderConfigurationHealthCheck>("provider_configuration", tags: ["ready"]);
 
@@ -81,6 +82,8 @@ builder.Services.AddSingleton<FoundryCircuitBreaker>();
 builder.Services.AddHostedService<ProviderStartupDiagnostics>();
 builder.Services.Configure<ExtractionOptions>(builder.Configuration.GetSection(ExtractionOptions.SectionName));
 builder.Services.Configure<FoundryOptions>(builder.Configuration.GetSection(FoundryOptions.SectionName));
+builder.Services.Configure<SyntheticDataPrivacyOptions>(builder.Configuration.GetSection(SyntheticDataPrivacyOptions.SectionName));
+builder.Services.AddSingleton<SyntheticDataPrivacyPolicy>();
 builder.Services.AddSingleton<TokenCredential>(sp =>
 {
     string apolloAz = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "ApolloTools", "AzureCLI", "bin");
@@ -148,11 +151,29 @@ if (Directory.Exists(staticDir))
 }
 
 // ----------------------------------------------------------------------------
-// Health Endpoints
+// Health & Development OpenAPI Endpoints
 // ----------------------------------------------------------------------------
+app.MapGet("/health", () => Results.Ok(new
+{
+    status = "Healthy",
+    service = "Apollo.Backend",
+    version = "2.1.0-dotnet",
+    timestampUtc = DateTimeOffset.UtcNow
+})).AllowAnonymous();
+
 app.MapHealthChecks("/health/live", new HealthCheckOptions
 {
     Predicate = r => r.Tags.Contains("live"),
+    ResponseWriter = async (ctx, report) =>
+    {
+        ctx.Response.ContentType = "application/json";
+        await ctx.Response.WriteAsync(JsonSerializer.Serialize(new { status = report.Status.ToString(), checks = report.Entries.Select(e => new { name=e.Key, status=e.Value.Status.ToString(), description=e.Value.Description }) }));
+    }
+}).AllowAnonymous();
+
+app.MapHealthChecks("/health/db", new HealthCheckOptions
+{
+    Predicate = r => r.Tags.Contains("db"),
     ResponseWriter = async (ctx, report) =>
     {
         ctx.Response.ContentType = "application/json";
@@ -169,6 +190,8 @@ app.MapHealthChecks("/health/ready", new HealthCheckOptions
         await ctx.Response.WriteAsync(JsonSerializer.Serialize(new { status = report.Status.ToString(), checks = report.Entries.Select(e => new { name=e.Key, status=e.Value.Status.ToString(), description=e.Value.Description }) }));
     }
 }).AllowAnonymous();
+
+app.MapDevelopmentOpenApi();
 
 app.MapGet("/v1/routing", (IConfiguration config, IHostEnvironment environment, IOptions<ExtractionOptions> extraction, IOptions<FoundryOptions> foundry) =>
     Results.Ok(ProviderDiagnostics.Snapshot(config, environment, extraction.Value, foundry.Value))).AllowAnonymous();
@@ -762,6 +785,19 @@ if (File.Exists(frontendIndex))
 {
     app.MapFallback(async context =>
     {
+        if (context.Request.Path.StartsWithSegments("/api") ||
+            context.Request.Path.StartsWithSegments("/v1") ||
+            context.Request.Path.StartsWithSegments("/health") ||
+            context.Request.Path.StartsWithSegments("/openapi"))
+        {
+            context.Response.StatusCode = StatusCodes.Status404NotFound;
+            await context.Response.WriteAsJsonAsync(new
+            {
+                code = "ENDPOINT_NOT_FOUND",
+                detail = "The requested API endpoint or resource identifier was not found."
+            });
+            return;
+        }
         context.Response.ContentType = "text/html; charset=utf-8";
         await context.Response.SendFileAsync(frontendIndex);
     }).AllowAnonymous();

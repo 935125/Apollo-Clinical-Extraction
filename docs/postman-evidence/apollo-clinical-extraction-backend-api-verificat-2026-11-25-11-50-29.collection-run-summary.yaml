@@ -1,0 +1,69 @@
+kind: postman-cli-collection-run-summary
+schemaVersion: 1
+runId: e74f881c-66d6-4562-be63-13a9ca12b8dd
+state: completed
+generatedAt: '2026-11-25T06:20:30.819Z'
+files:
+  summary: apollo-clinical-extraction-backend-api-verificat-2026-11-25-11-50-29.collection-run-summary.yaml
+  executions: apollo-clinical-extraction-backend-api-verificat-2026-11-25-11-50-29.collection-run-executions.yaml
+meta:
+  collection:
+    id: dc91bed2-851c-40be-8bb4-96e6cf70bdca
+    name: Apollo Clinical Extraction — Backend API Verification Suite
+    description:
+      content: Headless end-to-end Postman Collection v2.1 verifying Infrastructure, Authentication, Clinical Note Ingestion, Asynchronous Service Bus Processing, Medication & Investigation Extraction, UHID/Patient Isolation, Provider Routing, and Idempotency on ASP.NET Core .NET 10 without Angular.
+      type: text/plain
+  environment:
+    id: 4eb07145-eb9d-4e9a-b170-d21f76945b91
+    name: Apollo Local Development
+  started: '2026-11-25T06:20:30.495Z'
+  completed: '2026-11-25T06:20:30.819Z'
+  durationMs: 324
+environment:
+  cli:
+    version: 1.94.0
+    userAgent: Postman CLI/1.94.0
+    agent: null
+  system:
+    os:
+      type: Windows_NT
+      platform: win32
+      arch: x64
+      release: 10.0.26100
+    hardware:
+      cpus: 12
+      totalMemory: 16856768512
+  isCI: false
+  ci: null
+  git:
+    branch: main
+    commit: e95b22bf368fee9543ee283f9e81e715917ea000
+    commitShort: e95b22b
+    remoteUrl: https://github.com/935125/Apollo-Clinical-Extraction.git
+    dirty: true
+stats:
+  iterations:
+    executed: 1
+    errors: 0
+  executedRequests:
+    executed: 5
+    errors: 0
+  prerequestScripts:
+    executed: 0
+    errors: 0
+  postresponseScripts:
+    executed: 5
+    errors: 0
+  tests:
+    executed: 5
+    failed: 0
+  timeStats:
+    responseAverage: 6.4
+    responseMin: 4
+    responseMax: 13
+    responseStandardDeviation: 3.3226495451672298
+transfers:
+  responseTotal: 12812
+failures: []
+executionsRecorded: 5
+simulation: null

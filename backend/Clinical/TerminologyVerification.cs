@@ -137,6 +137,7 @@ public static class TerminologyVerification
             ("2857-1", "serum psa") => true,
             ("3016-3", "serum tsh") => true,
             ("3024-7", "serum free t4") => true,
+            ("58410-2", "cbc panel - blood by automated count" or "complete blood count automated" or "automated cbc" or "cbc automated") => true,
             _ => false
         };
     }

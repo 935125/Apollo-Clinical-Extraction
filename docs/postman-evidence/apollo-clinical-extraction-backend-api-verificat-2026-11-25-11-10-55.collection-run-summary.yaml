@@ -1,0 +1,85 @@
+kind: postman-cli-collection-run-summary
+schemaVersion: 1
+runId: 88375489-26ba-47fe-b9c8-43f5c4f1ab18
+state: failed
+generatedAt: '2026-11-25T05:41:04.987Z'
+files:
+  summary: apollo-clinical-extraction-backend-api-verificat-2026-11-25-11-10-55.collection-run-summary.yaml
+  executions: apollo-clinical-extraction-backend-api-verificat-2026-11-25-11-10-55.collection-run-executions.yaml
+meta:
+  collection:
+    id: 49c29352-7224-4093-a614-098f5d8dd059
+    name: Apollo Clinical Extraction — Backend API Verification Suite
+    description:
+      content: Headless end-to-end Postman Collection v2.1 verifying Infrastructure, Authentication, Clinical Note Ingestion, Asynchronous Service Bus Processing, Medication & Investigation Extraction, UHID/Patient Isolation, Provider Routing, and Idempotency on ASP.NET Core .NET 10 without Angular.
+      type: text/plain
+  environment:
+    id: 6eaaa735-b536-48df-9d0d-d0d6562d854d
+    name: Apollo Local Development
+  started: '2026-11-25T05:40:56.534Z'
+  completed: '2026-11-25T05:41:04.987Z'
+  durationMs: 8453
+environment:
+  cli:
+    version: 1.94.0
+    userAgent: Postman CLI/1.94.0
+    agent: null
+  system:
+    os:
+      type: Windows_NT
+      platform: win32
+      arch: x64
+      release: 10.0.26100
+    hardware:
+      cpus: 12
+      totalMemory: 16856768512
+  isCI: false
+  ci: null
+  git:
+    branch: main
+    commit: e95b22bf368fee9543ee283f9e81e715917ea000
+    commitShort: e95b22b
+    remoteUrl: https://github.com/935125/Apollo-Clinical-Extraction.git
+    dirty: true
+stats:
+  iterations:
+    executed: 1
+    errors: 0
+  executedRequests:
+    executed: 36
+    errors: 0
+  prerequestScripts:
+    executed: 4
+    errors: 0
+  postresponseScripts:
+    executed: 36
+    errors: 0
+  tests:
+    executed: 41
+    failed: 1
+  timeStats:
+    responseAverage: 15.805555555555559
+    responseMin: 4
+    responseMax: 119
+    responseStandardDeviation: 19.496181170857884
+transfers:
+  responseTotal: 197479
+failures:
+  - at: assertion:0 in test-script
+    source:
+      name: 9.3 Malformed Queue Note Identifier Returns HTTP 404
+      id: 58af908d-fed1-4f74-9f7d-2d138fc4b78c
+    cursor:
+      ref: 1902cb5a-d1b7-4fae-8d93-37c2dd5d6d58
+      iteration: 0
+      position: 31
+      scriptId: cdc6ea33-10be-4d4b-86b7-efa317dc8399
+    error:
+      name: AssertionError
+      message: expected response to have status code 404 but got 200
+      test: Malformed GUID route parameter is rejected cleanly with HTTP 404
+      stack: |-
+        AssertionError: expected response to have status code 404 but got 200
+           at Object.eval sandbox-script.js:1:32)
+executionsRecorded: 36
+simulation: null

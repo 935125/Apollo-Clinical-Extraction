@@ -1,0 +1,67 @@
+{
+  "status": "PASS",
+  "results": [
+    {
+      "name": "Step 1: Direct Load & Minimal Queue Overview (No Login/KPIs/Sidebar/Tabs)",
+      "status": "PASS",
+      "details": "Headers=QUEUE ENTRY | CLINICAL NOTE | RECEIVED | ACTION",
+      "timestamp": "2026-11-24T11:23:15.594Z"
+    },
+    {
+      "name": "Step 2: Legacy EMR/Login/Review/Admin Routes Redirect to /",
+      "status": "PASS",
+      "details": "All 4 legacy paths redirect cleanly",
+      "timestamp": "2026-11-24T11:23:18.057Z"
+    },
+    {
+      "name": "Step 3: Live Note Submitted via Authorized EMR Outbox -> Azure Service Bus",
+      "status": "PASS",
+      "details": "Tag=STAGE12-LIVE-398057",
+      "timestamp": "2026-11-24T11:23:18.345Z"
+    },
+    {
+      "name": "Step 4: Live Automatic Polling Updated Status to Ready (No Manual Refresh)",
+      "status": "PASS",
+      "details": "Polls observed: 5 -> 7",
+      "timestamp": "2026-11-24T11:23:21.817Z"
+    },
+    {
+      "name": "Step 5: Side-by-Side Source Note & Extracted Results + Evidence Highlight",
+      "status": "PASS",
+      "details": "Highlighted=\"Current Medications:\nContinue Amlodipine 5 mg 1 tablet orall\"",
+      "timestamp": "2026-11-24T11:23:22.067Z"
+    },
+    {
+      "name": "Step 6: Local ONNX Disclosure & Deduplicated Warnings Verified",
+      "status": "PASS",
+      "details": "BadgeCount=5, RenderedItems=5",
+      "timestamp": "2026-11-24T11:23:22.499Z"
+    },
+    {
+      "name": "Step 7: Responsive Stacked Layout (768x1024)",
+      "status": "PASS",
+      "details": "HorizontalOverflow=0px",
+      "timestamp": "2026-11-24T11:23:22.871Z"
+    },
+    {
+      "name": "Step 8: Real Historical Foundry Run Provenance Display (Zero Billable API Calls)",
+      "status": "PASS",
+      "details": "PersistedExtractionId=6430f85d-41f5-4dc8-86be-aa208dc34b9d, Model=gpt-6.1-sol-2026-09-29",
+      "timestamp": "2026-11-24T11:23:23.228Z"
+    },
+    {
+      "name": "Step 9: Browser Reload Persistence Verified",
+      "status": "PASS",
+      "details": "Tag=STAGE12-LIVE-398057 still persisted and Ready",
+      "timestamp": "2026-11-24T11:23:23.972Z"
+    },
+    {
+      "name": "Step 10: Zero Console Errors & Zero Unexpected 4xx/5xx API Responses",
+      "status": "PASS",
+      "details": "Clean runtime",
+      "timestamp": "2026-11-24T11:23:23.972Z"
+    }
+  ],
+  "consoleErrors": [],
+  "failedApiRequests": []
+}

@@ -74,9 +74,9 @@ public partial class ZeroLeakageValidator
     // Scan & Validate
     // ========================================================================
 
-    public static void Validate(string text)
+    public static IReadOnlyList<FlaggedPiiItem> Scan(string text)
     {
-        if (string.IsNullOrWhiteSpace(text)) return;
+        if (string.IsNullOrWhiteSpace(text)) return [];
 
         var counts = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
 
@@ -133,13 +133,18 @@ public partial class ZeroLeakageValidator
         }
         Record("AGE>89", overAgeMatches);
 
-        if (counts.Count > 0)
+        return counts.Select(kv => new FlaggedPiiItem(kv.Key, $"[{kv.Key}]", kv.Value)).ToList();
+    }
+
+    public static void Validate(string text)
+    {
+        var flagged = Scan(text);
+        if (flagged.Count > 0)
         {
-            var flagged = counts.Select(kv => new FlaggedPiiItem(kv.Key, $"[{kv.Key}]", kv.Value)).ToList();
-            int totalViolations = counts.Values.Sum();
+            int totalViolations = flagged.Sum(f => f.Count);
             throw new PIILeakageException(
                 $"Direct patient identifiers detected in clinical narrative: {totalViolations} violation(s).",
-                flagged
+                flagged.ToList()
             );
         }
     }

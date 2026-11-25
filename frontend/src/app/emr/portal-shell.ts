@@ -1,40 +1,46 @@
-import { Component, inject, signal } from '@angular/core';
-import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
-import { EmrApi, apiError } from './emr-api';
+import { Component, computed, inject } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
+import { EmrApi } from './emr-api';
 
-@Component({selector:'apollo-brand', standalone:true, template:`<span class="apollo-wordmark">Apollo</span><span class="apollo-hospitals">HOSPITALS</span>`})
-export class ApolloBrand {}
-@Component({selector:'app-root', standalone:true, imports:[RouterOutlet, RouterLink, RouterLinkActive, ApolloBrand], template:`
-  @if (api.doctor(); as doctor) {
-    <header class="portal-header">
-      <a class="portal-brand" routerLink="/emr" aria-label="Apollo Hospitals home"><apollo-brand /></a>
-      <span class="header-rule" aria-hidden="true"></span>
-      <nav aria-label="Main navigation">
-        <a routerLink="/emr" routerLinkActive="selected" [routerLinkActiveOptions]="{exact:true}">OP EMR</a>
-        <a routerLink="/extraction" routerLinkActive="selected">Clinical Extraction</a>
-        <a routerLink="/history" routerLinkActive="selected">History</a>
-      </nav>
-      <div class="doctor-menu">
-        <button class="notification-bell" type="button" aria-label="Notifications" title="Notifications">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-        </button>
-        <button class="profile-button" (click)="profileOpen.set(!profileOpen())" [attr.aria-expanded]="profileOpen()" aria-controls="doctor-profile">
-          <span class="avatar">{{ initials(doctor.displayName) }}</span><span class="profile-name">{{doctor.displayName}}</span><span aria-hidden="true">⌄</span>
-        </button>
-        @if(profileOpen()) {<div class="profile-popover" id="doctor-profile"><strong>{{doctor.displayName}}</strong><span>{{doctor.role}}</span><span>{{doctor.login}}</span><p>Local demonstration session · 30 minutes</p><button class="emr-button secondary" (click)="logout()" [disabled]="busy()">{{busy() ? 'Signing out…' : 'Sign out'}}</button>@if(error()) {<p role="alert">{{error()}}</p>}</div>}
-      </div>
-    </header>
-  }
-  <div [class.portal-clinical-content]="api.doctor() && (router.url.startsWith('/extraction') || router.url.startsWith('/history'))"><router-outlet /></div>
-  @if(api.doctor()) {<footer class="portal-footer"><span>Apollo Clinical Extraction Platform</span><span>Synthetic demonstration data · Local authentication</span></footer>}
-`})
+@Component({
+  selector: 'apollo-brand',
+  standalone: true,
+  template: `
+    <span class="apollo-lockup">
+      <svg class="apollo-emblem" viewBox="0 0 36 36" aria-hidden="true">
+        <path d="M18 3C13 3 9 7 9 12c0 3 1.5 5.4 4 7l-1.5 11.5h13L23 19c2.5-1.6 4-4 4-7 0-5-4-9-9-9Z" fill="currentColor" stroke="none" opacity="0.14"/>
+        <path d="M18 5v24M12 11h12M14 17h8M15 29h6" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"/>
+        <circle cx="18" cy="7.5" r="2.2" fill="currentColor" stroke="none"/>
+      </svg>
+      <span class="apollo-text-stack">
+        <span class="apollo-wordmark">Apollo</span>
+        <span class="apollo-hospitals">Hospitals<sup class="reg-mark">®</sup></span>
+      </span>
+    </span>
+  `,
+})
+export class ApolloBrand { }
+
+/**
+ * Stage 12 minimal root shell: renders the active single-screen workspace directly
+ * without legacy multi-page OP EMR chrome (no 5-tab bar, no left sidebar, no login wall).
+ */
+@Component({
+  selector: 'app-root',
+  standalone: true,
+  imports: [RouterOutlet],
+  template: `<router-outlet />`,
+})
 export class PortalShell {
-  readonly api=inject(EmrApi); readonly router=inject(Router);
-  profileOpen=signal(false); busy=signal(false); error=signal('');
-  initials(name:string) {
-    const parts = name.split(/[\s.]+/).filter(Boolean);
-    if (parts.length >= 2 && /^dr$/i.test(parts[0])) return 'D' + parts[parts.length - 1][0].toUpperCase();
-    return parts.slice(0, 2).map(p => p[0].toUpperCase()).join('');
+  readonly api = inject(EmrApi);
+  readonly isAdmin = computed(() => {
+    const role = this.api.doctor()?.role || '';
+    return ['Administrator', 'ClinicalAdministrator'].includes(role);
+  });
+
+  initials(name: string): string {
+    const parts = name.trim().split(/\s+/);
+    if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
+    return `${parts[0][0] ?? ''}${parts[parts.length - 1][0] ?? ''}`.toUpperCase();
   }
-  async logout() { this.busy.set(true); this.error.set(''); try { await this.api.logout(); this.profileOpen.set(false); await this.router.navigate(['/login']); } catch(e) {this.error.set(apiError(e));} finally {this.busy.set(false);} }
 }

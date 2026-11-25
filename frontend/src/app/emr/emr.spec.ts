@@ -9,6 +9,13 @@ import { DoctorDashboard } from './dashboard';
 import { NoteEditor } from './note-editor';
 import { ExtractionStatus } from './extraction-status';
 import { PortalShell } from './portal-shell';
+import {
+  CLINICAL_SECTIONS,
+  emptySectionValues,
+  parseClinicalNote,
+  populatedSectionsCount,
+  serializeClinicalSections,
+} from './clinical-note-sections';
 
 @Component({ standalone: true, template: '' })
 class DummyComponent {}
@@ -140,5 +147,74 @@ describe('Doctor OP EMR Frontend Suite', () => {
 
     expect(comp.initials('Dr. K. Krishnan')).toBe('DK');
     expect(comp.initials('Dr. Anand Rao')).toBe('DR');
+    expect(comp.isAdmin()).toBe(false);
+  });
+
+  it('Structured clinical note serializer & parser preserve all 12 sections deterministically and keep legacy free-text intact', () => {
+    expect(CLINICAL_SECTIONS.length).toBe(12);
+    const values = emptySectionValues();
+    values['chief_complaint'] = 'Follow-up for hypertension and review of medications.';
+    values['hpi'] = 'Known hypertension for 5 years. Good adherence.';
+    values['current_medications'] = 'Amlodipine 5 mg once daily. Atorvastatin 10 mg at night.';
+    values['assessment'] = 'Hypertension — controlled. Dyslipidaemia.';
+    values['investigations'] = 'Order complete blood count tomorrow.';
+
+    expect(populatedSectionsCount(values)).toBe(5);
+    const serialized = serializeClinicalSections(values);
+    expect(serialized).toContain('Chief Complaint:\nFollow-up for hypertension and review of medications.');
+    expect(serialized).toContain('Current Medications:\nAmlodipine 5 mg once daily. Atorvastatin 10 mg at night.');
+    expect(serialized).not.toContain('Allergies:');
+
+    const parsed = parseClinicalNote(serialized);
+    expect(parsed.isLegacyUnstructured).toBe(false);
+    expect(parsed.values['chief_complaint']).toBe(values['chief_complaint']);
+    expect(parsed.values['hpi']).toBe(values['hpi']);
+    expect(parsed.values['current_medications']).toBe(values['current_medications']);
+    expect(parsed.values['assessment']).toBe(values['assessment']);
+    expect(parsed.values['investigations']).toBe(values['investigations']);
+    expect(parsed.values['allergies']).toBe('');
+
+    // Legacy unstructured note must be preserved verbatim in additional_notes
+    const legacyText = 'Follow-up for hypertension.\nContinue amlodipine 5 mg orally once daily for 7 days.';
+    const parsedLegacy = parseClinicalNote(legacyText);
+    expect(parsedLegacy.isLegacyUnstructured).toBe(true);
+    expect(parsedLegacy.values['additional_notes']).toBe(legacyText);
+  });
+
+  it('NoteEditor synchronizes structured section edits to serialized clinical text', () => {
+    const fixture = TestBed.createComponent(NoteEditor);
+    const comp = fixture.componentInstance;
+    comp.updateSection('chief_complaint', 'Hypertension follow-up');
+    comp.updateSection('medications', 'Continue amlodipine 5 mg daily');
+    expect(comp.completedSectionCount()).toBe(2);
+    expect(comp.text()).toContain('Chief Complaint:\nHypertension follow-up');
+    expect(comp.text()).toContain('Medications:\nContinue amlodipine 5 mg daily');
+    expect(comp.dirty()).toBe(true);
+  });
+
+  it('DoctorDashboard computes all 5 KPIs dynamically from real encounters and supports sorting and status filtering', () => {
+    const fixture = TestBed.createComponent(DoctorDashboard);
+    const comp = fixture.componentInstance;
+    comp.encounters.set([
+      { id: 'e1', reference: 'ENC-100567', patientReference: 'P100234', encounterDate: '2026-01-28', context: 'General medicine · Follow-up', noteId: 'n1', version: 1, noteStatus: 'Signed', extractionStatus: 'Completed', extractionId: 'ext1' },
+      { id: 'e2', reference: 'ENC-100568', patientReference: 'P100235', encounterDate: '2026-01-28', context: 'General medicine · New Consultation', noteId: 'n2', version: 1, noteStatus: 'Draft', extractionStatus: null, extractionId: null },
+      { id: 'e3', reference: 'ENC-100569', patientReference: 'P100236', encounterDate: '2026-01-27', context: 'Internal medicine · Chronic Care', noteId: 'n3', version: 1, noteStatus: 'Signed', extractionStatus: 'Processing', extractionId: null },
+      { id: 'e4', reference: 'ENC-100570', patientReference: 'P100237', encounterDate: '2026-01-26', context: 'Cardiology · Review', noteId: 'n4', version: 1, noteStatus: 'Signed', extractionStatus: 'Needs Review', extractionId: 'ext4' },
+    ]);
+
+    expect(comp.encounters().length).toBe(4);
+    expect(comp.drafts()).toBe(1);
+    expect(comp.signedNotes()).toBe(3);
+    expect(comp.awaitingExtraction()).toBe(1);
+    expect(comp.completed()).toBe(2);
+    expect(comp.patients().length).toBe(4);
+
+    comp.statusFilter.set('Processing');
+    expect(comp.visible().length).toBe(1);
+    expect(comp.visible()[0].patientReference).toBe('P100236');
+
+    comp.clearFilters();
+    comp.toggleSort('patient');
+    expect(comp.visible()[0].patientReference).toBe('P100234');
   });
 });
