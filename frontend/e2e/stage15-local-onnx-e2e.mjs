@@ -2,6 +2,7 @@ import { chromium } from 'playwright';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { randomUUID } from 'node:crypto';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 const evidence = path.join(root, 'docs/stage15-evidence/playwright');
@@ -39,7 +40,8 @@ try {
   };
   const encounters = await get('/api/v1/emr/encounters');
   const encounter = encounters.find(e => e.patientReference === 'P100234');
-  const source = 'Stage 15 isolated browser fixture.\nAllergy History:\nAspirin (anaphylaxis).\nChemotherapy Regimen:\nCytarabine 100 mg/m2 continuous IV infusion (Days 1-7) + Daunorubicin 60 mg/m2 IV push (Days 1-3).\nDischarge Medications:\nAcyclovir 400 mg PO twice daily.\nFollow-Up Plan:\nReport on 01/12/2026 at 09:00 AM for CBC and renal function panel.';
+  const fixtureLabel = `Stage 15 isolated browser fixture ${randomUUID()}`;
+  const source = fixtureLabel + '\nAllergy History:\nAspirin (anaphylaxis).\nChemotherapy Regimen:\nCytarabine 100 mg/m2 continuous IV infusion (Days 1-7) + Daunorubicin 60 mg/m2 IV push (Days 1-3).\nDischarge Medications:\nAcyclovir 400 mg PO twice daily.\nFollow-Up Plan:\nReport on 01/12/2026 at 09:00 AM for CBC and renal function panel.';
   const draft = await post(`/api/v1/emr/encounters/${encounter.id}/notes`, { text: source });
   const signed = await post(`/api/v1/emr/notes/${draft.id}/sign`, { expectedVersion: draft.version });
   for (let attempt = 0; attempt < 25; attempt++) {
@@ -60,7 +62,7 @@ try {
     assert(source.slice(e.start, e.end) === e.quote, `Exact persisted evidence for ${entity.name}`);
   }
   await page.reload({ waitUntil: 'networkidle' });
-  await page.locator('.queue-row', { hasText: `${encounter.reference} · v${signed.version}` }).filter({ hasText: 'Stage 15 isolated browser fixture' }).locator('button:has-text("Open")').click();
+  await page.locator('.queue-row', { hasText: `${encounter.reference} · v${signed.version}` }).filter({ hasText: fixtureLabel }).locator('button:has-text("Open")').click();
   await page.waitForSelector('.medication-table tbody tr', { timeout: 15000 });
   assert(await page.locator('.medication-table tbody tr').count() === result.medications.length, 'Angular medication rows come from the selected persisted extraction');
   assert(await page.locator('.investigation-table tbody tr').count() === result.investigations.length, 'Angular investigation rows come from the selected persisted extraction');

@@ -27,13 +27,13 @@ public static class ProviderRoutingPolicy
     public static string? DirectLocalFault(ExtractionOptions options) =>
         options.AllowDirectLocal && options.DirectLocalReason is "isolated_test" or "authorized_offline" ? null : "DIRECT_LOCAL_NOT_AUTHORIZED";
 
-    public static ClinicalExtractionException Reject(FoundryAttemptException failure) => new(failure.Reason,
+    public static ClinicalExtractionException Reject(FoundryAttemptException failure, ClinicalValidationDiagnosticDto? diagnostic = null) => new(failure.Reason,
         failure.Reason == "AZURE_CREDENTIALS_INVALID" || failure.Reason == "AZURE_CREDENTIALS_MISSING" ? 401 :
         failure.Reason is "AZURE_INVALID_EVIDENCE" or "AZURE_UNUSABLE_JSON" or "AZURE_TRUNCATED" or "AZURE_CONTEXT_LIMIT" ? 422 : 503,
         failure.Reason == "AZURE_INVALID_EVIDENCE"
             ? "Primary extraction evidence was rejected. Clinical review is required; local fallback is prohibited for this failure."
             : $"Microsoft Foundry could not complete ({failure.Reason}). No extraction was accepted.")
-        { Routing = new("MicrosoftFoundry", [failure.Attempt], false, failure.Reason, "failed_requires_review") };
+        { Routing = new("MicrosoftFoundry", [failure.Attempt], false, failure.Reason, "failed_requires_review", diagnostic) };
 }
 
 public sealed class FoundryCircuitBreaker(TimeProvider clock)

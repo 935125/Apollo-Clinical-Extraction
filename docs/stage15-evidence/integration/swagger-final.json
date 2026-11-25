@@ -1,0 +1,10 @@
+{
+  "status": "PASS",
+  "baseUrl": "http://127.0.0.1:5015",
+  "swaggerStatus": 200,
+  "openApiStatus": 200,
+  "openApiVersion": "3.0.3",
+  "pathCount": 20,
+  "extractionInferenceExecuted": false,
+  "scope": "Development HTML and OpenAPI endpoint check; external CDN asset rendering not tested"
+}

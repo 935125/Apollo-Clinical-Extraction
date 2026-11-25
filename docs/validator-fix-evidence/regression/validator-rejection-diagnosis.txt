@@ -1,0 +1,26 @@
+01 heldout-001-geriatric: ACCEPTED
+02 heldout-002-cardiology: ACCEPTED
+03 heldout-003-hematology: ACCEPTED
+04 heldout-004-endocrinology: ACCEPTED
+05 heldout-005-pulmonology: ACCEPTED
+06 heldout-006-rheumatology: ACCEPTED
+07 heldout-007-gastroenterology: REJECTED -> at Apollo.Backend.Clinical.ClinicalResultValidator.Map(ClinicalCandidate candidate, String source, String correlationId) in D:\AI Extraction\backend\Clinical\ClinicalResultValidator.cs:line 437
+   INV [rapid urease test] (status=final, assert=historical, timing=, spec=): at Apollo.Backend.Clinical.ClinicalResultValidator.Map(ClinicalCandidate candidate, String source, String correlationId) in D:\AI Extraction\backend\Clinical\ClinicalResultValidator.cs:line 437
+08 heldout-008-infectious-disease: REJECTED -> at Apollo.Backend.Clinical.ClinicalResultValidator.Map(ClinicalCandidate candidate, String source, String correlationId) in D:\AI Extraction\backend\Clinical\ClinicalResultValidator.cs:line 435
+09 heldout-009-neurology: ACCEPTED
+10 heldout-010-nephrology: ACCEPTED
+11 heldout-011-oncology: ACCEPTED
+12 heldout-012-hfref: ACCEPTED
+13 heldout-013-dermatology: ACCEPTED
+14 heldout-014-psychiatry: ACCEPTED
+15 heldout-015-pain: REJECTED -> at Apollo.Backend.Clinical.ClinicalResultValidator.Map(ClinicalCandidate candidate, String source, String correlationId) in D:\AI Extraction\backend\Clinical\ClinicalResultValidator.cs:line 444
+   INV [Serum Creatinine] (status=unknown, assert=new_order, timing=prior to dose escalation above 900mg/day, spec=Serum): at Apollo.Backend.Clinical.ClinicalResultValidator.Map(ClinicalCandidate candidate, String source, String correlationId) in D:\AI Extraction\backend\Clinical\ClinicalResultValidator.cs:line 444
+16 heldout-016-urology: ACCEPTED
+17 heldout-017-pediatrics: ACCEPTED
+18 heldout-018-ophthalmology: ACCEPTED
+19 heldout-019-thyroid: ACCEPTED
+20 heldout-020-allergy: REJECTED -> at Apollo.Backend.Clinical.ClinicalResultValidator.Map(ClinicalCandidate candidate, String source, String correlationId) in D:\AI Extraction\backend\Clinical\ClinicalResultValidator.cs:line 444
+   MED [penicillin] (act=start, status=new_order, str=, dose=, unit=, route=oral, freq=, dur=, instr=Transfer to ICU for oral penicillin desensitization protocol.): at Apollo.Backend.Clinical.ClinicalResultValidator.Map(ClinicalCandidate candidate, String source, String correlationId) in D:\AI Extraction\backend\Clinical\ClinicalResultValidator.cs:line 222
+   INV [Complete Blood Count] (status=unknown, assert=new_order, timing=baseline; prior to protocol, spec=): at Apollo.Backend.Clinical.ClinicalResultValidator.Map(ClinicalCandidate candidate, String source, String correlationId) in D:\AI Extraction\backend\Clinical\ClinicalResultValidator.cs:line 444
+   INV [Serum Creatinine] (status=unknown, assert=new_order, timing=baseline; prior to protocol, spec=Serum): at Apollo.Backend.Clinical.ClinicalResultValidator.Map(ClinicalCandidate candidate, String source, String correlationId) in D:\AI Extraction\backend\Clinical\ClinicalResultValidator.cs:line 444
+   INV [12-lead ECG] (status=unknown, assert=new_order, timing=baseline; prior to protocol, spec=): at Apollo.Backend.Clinical.ClinicalResultValidator.Map(ClinicalCandidate candidate, String source, String correlationId) in D:\AI Extraction\backend\Clinical\ClinicalResultValidator.cs:line 444

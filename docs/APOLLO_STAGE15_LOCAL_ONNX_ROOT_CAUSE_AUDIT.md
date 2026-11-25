@@ -26,3 +26,20 @@ flowchart LR
 ```
 
 The ONNX format executes inference; the model task, training domain, downstream filtering, and assertion/attribute rules determine clinical coverage. No alternative model has yet been benchmarked. Further measured results and exact AML investigation will be appended after implementation.
+
+## Final forensic addendum — 25 November 2026
+
+The initial audit above is preserved verbatim, including its preliminary medication line estimate. The untouched copy is `stage15-evidence/baseline/root-cause-audit-initial.md`. Precise references below address the frozen `stage15-evidence/baseline/source/backend/Clinical/ClinicalPipelineService.cs`; current source line numbers differ after additions.
+
+| Frozen source location | Confirmed effect |
+|---|---|
+| Lines 91 and 149 | Catalog and neural medication candidates in `LABS` require the narrow prescription prefix; the neural branch also guards serum/plasma/urine analytes. An analyte guard is useful, but a section alone cannot establish that a therapeutic drug is a laboratory finding. |
+| Lines 157–160 | The actual unmatched-neural gate requires both the 0.85 score and `ExplicitRxPrefixRegex`. Failure produces `BELOW_NEURAL_CONFIDENCE_THRESHOLD` or `NO_EXPLICIT_PRESCRIPTION_PREFIX`. This corrects the preliminary 174–187 estimate above. |
+| Line 566 and preceding generated-regex declaration | Prescription cues cover tab/cap/inj/syrup/start/continue/prescribe/add. Dose, IV administration and discharge-list context alone do not satisfy the gate. |
+| Lines 434–438; numeric-result regex at 572 | The whole-line colon-plus-number pattern matches the appointment time `09:00 AM`. Without an order/obtain/check/send/advise verb, the historical branch wins for CBC. Missing follow-up heading recognition contributes. |
+
+In the exact original synthetic AML v33, Cytarabine, Daunorubicin and Levofloxacin have high neural scores and are rejected by the prefix gate. Acyclovir, Midostaurin and Meropenem have **no raw model span** in that run; their omission cannot be attributed to post-filtering. Posaconazole and Ondansetron are retained. Original raw spans, rejection traces and persisted output are frozen separately from all V2 predictions.
+
+The implemented `CandidateV2` path replaces this gate with medication-context classification, independent investigation recognition, scoped attributes and assertions, versioned terminology and an exact-evidence acceptance pass. Full mention tracing stays in private receipts/offline synthetic artifacts, not unrestricted production logs. Existing PostgreSQL provenance/normalization JSON columns now preserve the accepted result on reload. See [architecture](APOLLO_STAGE15_CLINICAL_EXTRACTION_ARCHITECTURE.md), [AML forensics](APOLLO_STAGE15_AML_V33_FORENSICS.md), [measured benchmark](APOLLO_STAGE15_BASELINE_VS_UPGRADED_BENCHMARK.md) and [implementation/verification](APOLLO_STAGE15_IMPLEMENTATION_AND_VERIFICATION.md).
+
+No replacement neural model was deployed. The old window slicing and pipeline remain selectable as `Legacy`, the checked-in default. V2 uses explicit per-window special tokens and real cancellation while preserving the pinned model and tokenizer. A training-manifest tokenizer hash mismatch remains a provenance limitation; artifact integrity verification was retained. Independent clinical adjudication and reference-code evaluation remain outstanding.

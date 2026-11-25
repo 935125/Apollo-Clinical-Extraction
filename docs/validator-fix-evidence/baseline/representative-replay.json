@@ -1,0 +1,147 @@
+{
+  "classification": "Synthetic representative candidates; not the unavailable original rejected GPT response",
+  "conditions": "original validator conditions with diagnostic IDs only",
+  "liveFoundryCalls": 0,
+  "results": [
+    {
+      "id": "exact-source-representative-aml",
+      "status": "REJECTED",
+      "diagnostic": {
+        "ruleId": "MEDICATION_DURATION_UNSUPPORTED",
+        "category": "medication_attribute",
+        "entityType": "medication",
+        "entityIndex": 0,
+        "field": "evidence"
+      }
+    },
+    {
+      "id": "aml-medication-Cytarabine-historical",
+      "status": "REJECTED",
+      "diagnostic": {
+        "ruleId": "MEDICATION_ROUTE_UNSUPPORTED",
+        "category": "medication_attribute",
+        "entityType": "medication",
+        "entityIndex": 0,
+        "field": "evidence"
+      }
+    },
+    {
+      "id": "aml-medication-Daunorubicin-historical",
+      "status": "REJECTED",
+      "diagnostic": {
+        "ruleId": "MEDICATION_STRENGTH_BINDING_MISMATCH",
+        "category": "medication_attribute",
+        "entityType": "medication",
+        "entityIndex": 0,
+        "field": "evidence"
+      }
+    },
+    {
+      "id": "aml-medication-Midostaurin-historical",
+      "status": "PASS",
+      "medications": 1,
+      "investigations": 0
+    },
+    {
+      "id": "aml-medication-Meropenem-historical",
+      "status": "PASS",
+      "medications": 1,
+      "investigations": 0
+    },
+    {
+      "id": "aml-medication-benzydamine-historical",
+      "status": "PASS",
+      "medications": 1,
+      "investigations": 0
+    },
+    {
+      "id": "aml-medication-Posaconazole-current_medication",
+      "status": "PASS",
+      "medications": 1,
+      "investigations": 0
+    },
+    {
+      "id": "aml-medication-Acyclovir-current_medication",
+      "status": "PASS",
+      "medications": 1,
+      "investigations": 0
+    },
+    {
+      "id": "aml-medication-Levofloxacin-current_medication",
+      "status": "PASS",
+      "medications": 1,
+      "investigations": 0
+    },
+    {
+      "id": "aml-medication-Ondansetron-current_medication",
+      "status": "PASS",
+      "medications": 1,
+      "investigations": 0
+    },
+    {
+      "id": "aml-medication-Cytarabine-conditional",
+      "status": "PASS",
+      "medications": 1,
+      "investigations": 0
+    },
+    {
+      "id": "aml-investigation-bone marrow aspirate",
+      "status": "PASS",
+      "medications": 0,
+      "investigations": 1
+    },
+    {
+      "id": "aml-investigation-Cytogenetics",
+      "status": "PASS",
+      "medications": 0,
+      "investigations": 1
+    },
+    {
+      "id": "aml-investigation-Blood cultures",
+      "status": "REJECTED",
+      "diagnostic": {
+        "ruleId": "INVESTIGATION_HISTORICAL_CONTEXT_UNSUPPORTED",
+        "category": "investigation_temporality",
+        "entityType": "investigation",
+        "entityIndex": 0,
+        "field": "evidence"
+      }
+    },
+    {
+      "id": "aml-investigation-Platelets",
+      "status": "PASS",
+      "medications": 0,
+      "investigations": 1
+    },
+    {
+      "id": "aml-investigation-Hemoglobin",
+      "status": "PASS",
+      "medications": 0,
+      "investigations": 1
+    },
+    {
+      "id": "aml-investigation-bone marrow biopsy",
+      "status": "PASS",
+      "medications": 0,
+      "investigations": 1
+    },
+    {
+      "id": "aml-investigation-CBC",
+      "status": "PASS",
+      "medications": 0,
+      "investigations": 1
+    },
+    {
+      "id": "aml-investigation-renal/liver function panel",
+      "status": "PASS",
+      "medications": 0,
+      "investigations": 1
+    },
+    {
+      "id": "oral-mouthwash",
+      "status": "PASS",
+      "medications": 1,
+      "investigations": 0
+    }
+  ]
+}

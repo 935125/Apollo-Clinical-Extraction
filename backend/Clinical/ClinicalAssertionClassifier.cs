@@ -52,7 +52,7 @@ public static class ClinicalAssertionClassifier
         if(old) return A("historical","historical","past");
         var range=LocalClinicalScope.Attributes(source,entity,entities);
         string after=source[entity.End..range.End];
-        bool result=LocalClinicalScope.Has(after,@"^\s*[:=]?\s*\d+(?:[.,]\d+)*(?:\s*(?:g/dL|mg/dL|mmol/L|mEq/L|/uL|%|U/L))?\b|\b(?:showed|shows|grew|confirmed|revealed|result(?:ed)?|(?:was |were |reported )?(?:normal|negative|positive))\b");
+        bool result=LocalClinicalScope.Has(after,@"^\s*(?:(?:was|is|were|of|at|recovered\s+to|rose\s+to|dropped\s+to|fell\s+to|increased\s+to|decreased\s+to|measured(?:\s+at)?|noted\s+at|elevated\s+at)\s+|[:=]\s*)?\d+(?:[.,]\d+)*(?:\s*(?:g/dL|mg/dL|mmol/L|mEq/L|/uL|/µL|%|U/L))?\b|\b(?:showed|shows|grew|confirmed|revealed|result(?:ed)?|(?:was |were |reported )?(?:normal|negative|positive)|normal karyotype)\b");
         if(result && !H(@"\b(?:order|obtain|check|send|report|attend|repeat)\b")) return A("result_documented","historical","past");
         if(H(@"\b(?:performed|done|collected|completed|underwent)\b") || section=="INVESTIGATIONS_PERFORMED") return A("completed","historical","past");
         if(H(@"\b(?:report|attend|appointment|scheduled|booked|return)\b") ||

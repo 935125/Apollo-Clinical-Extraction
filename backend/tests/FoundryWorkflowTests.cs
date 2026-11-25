@@ -107,6 +107,7 @@ public sealed class FoundryFactory : WebApplicationFactory<Program>
     public bool MissingModel;
     public double TimeoutSeconds = 5;
     public int MaxRetries = 0;
+    public int MaxEvidenceRepairRetries = 0;
     public bool AllowFallback = true;
     public bool AllowParsingFallback;
     public bool AllowDirectLocal = true;
@@ -141,6 +142,7 @@ public sealed class FoundryFactory : WebApplicationFactory<Program>
                 o.ApiKey = ApiKeyOverride ?? "synthetic-test-key";
                 o.TimeoutSeconds = TimeoutSeconds;
                 o.MaxRetries = MaxRetries;
+                o.MaxEvidenceRepairRetries = MaxEvidenceRepairRetries;
                 o.RetryBaseDelayMs = 25;
                 o.AllowLocalFallback = AllowFallback;
                 o.AllowParsingFallback = AllowParsingFallback;

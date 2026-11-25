@@ -1,0 +1,14 @@
+{
+  "scope": "Repository backend logs; no unretained console transcript or provider-side logs available",
+  "matches": [
+    {
+      "path": "backend/logs/stage2-backend.log",
+      "rejectionMarkers": [
+        {
+          "line": 20,
+          "safeCode": "AZURE_INVALID_EVIDENCE"
+        }
+      ]
+    }
+  ]
+}

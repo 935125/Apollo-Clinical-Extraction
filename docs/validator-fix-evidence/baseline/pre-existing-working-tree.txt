@@ -1,0 +1,23 @@
+﻿ M backend/tests/Evaluation/stage15-report.py
+ M docs/APOLLO_STAGE15_LOCAL_ONNX_ROOT_CAUSE_AUDIT.md
+ M docs/APOLLO_STAGE15_PERFORMANCE_RESULTS.md
+ M docs/stage15-evidence/integration/isolated-api-process.json
+ M docs/stage15-evidence/integration/isolated-api.stdout.log
+ M docs/stage15-evidence/playwright/stage15-debug-page.png
+ M docs/stage15-evidence/playwright/stage15-local-onnx-results.json
+ M docs/stage15-evidence/playwright/stage15-real-persisted-result.png
+ M docs/stage15-evidence/postman-final-command.log
+ M docs/stage15-evidence/release-build-command.log
+ M frontend/e2e/stage15-local-onnx-e2e.mjs
+?? backend/tests/Evaluation/stage15-verify-evidence.py
+?? docs/APOLLO_STAGE15_FINAL_EVALUATION_REPORT.md
+?? docs/APOLLO_STAGE15_IMPLEMENTATION_AND_VERIFICATION.md
+?? docs/stage15-evidence/evidence-verification-command.log
+?? docs/stage15-evidence/implementation-manifest.json
+?? docs/stage15-evidence/integration/swagger-final.json
+?? docs/stage15-evidence/playwright-stage15-selector-failure-command.log
+?? docs/stage15-evidence/postman/apollo-clinical-extraction-backend-api-verificat-2026-11-25-14-02-11.collection-run-executions.yaml
+?? docs/stage15-evidence/postman/apollo-clinical-extraction-backend-api-verificat-2026-11-25-14-02-11.collection-run-summary.yaml
+?? docs/stage15-evidence/postman/postman-cli-run-20261125-140210.log
+?? docs/stage15-evidence/routing-final-command.log
+?? docs/validator-fix-evidence/

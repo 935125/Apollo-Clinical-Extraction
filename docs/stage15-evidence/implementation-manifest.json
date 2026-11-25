@@ -1,0 +1,549 @@
+{
+  "date": "2026-11-25",
+  "scope": "Current Stage 15 source/evidence hashes; synthetic development engineering verification, not clinical clearance",
+  "baselineSnapshotFilesVerified": 35,
+  "baselineManifest": "docs/stage15-evidence/baseline/source-manifest.json",
+  "sources": [
+    {
+      "path": "Run-Apollo-Postman-Tests.ps1",
+      "sha256": "AA3A9212A336BD8D4372E428FEB3DF0CBC9BA2E10EBD95AD5D04A7D829ACE899",
+      "bytes": 9105
+    },
+    {
+      "path": "Run-Apollo-Stage15-Verification.ps1",
+      "sha256": "71662BCEBB1FF73F5C4EC924CD3C24B2E541311EE4A2AB1BC639C4B3056E8593",
+      "bytes": 1826
+    },
+    {
+      "path": "backend/Apollo.Backend.csproj",
+      "sha256": "58DB5C8BCA900CC5BAD96477E972470498A55CA40C32A3E08D4E0F7F4B08E8DA",
+      "bytes": 1817
+    },
+    {
+      "path": "backend/Clinical/ClinicalAssertionClassifier.cs",
+      "sha256": "87F6CC15194BD9D5CC5D99D0DA28F713C88A4A8895F1729BCA2F3890B84DEC77",
+      "bytes": 6616
+    },
+    {
+      "path": "backend/Clinical/ClinicalPipelineService.UpgradedNer.cs",
+      "sha256": "6059B54F557923C18D03B9C4C335505A4EBD0C1BA5DC79F1734DD35BDB8A4C98",
+      "bytes": 3670
+    },
+    {
+      "path": "backend/Clinical/ClinicalPipelineService.cs",
+      "sha256": "BAD95BB32DD9F54F8762CF29F7997D0AC6ABAEB8F3E77B8FB7889765D183144E",
+      "bytes": 31133
+    },
+    {
+      "path": "backend/Clinical/ClinicalResultValidator.cs",
+      "sha256": "7922AAE8AB093FF16F51E51C32479F258A971F51238778DD5083101005DA65D1",
+      "bytes": 54856
+    },
+    {
+      "path": "backend/Clinical/ClinicalReview.cs",
+      "sha256": "A203BE283C67CCA3DA3B8100CBD5067C7B46EB77B24DF33269CCB8A36AD948E0",
+      "bytes": 5723
+    },
+    {
+      "path": "backend/Clinical/ClinicalSectionDetector.cs",
+      "sha256": "EADAF4556311557505A98F72CB0CB481CA6AD7002B9C76CF06F54207D68EAE47",
+      "bytes": 3764
+    },
+    {
+      "path": "backend/Clinical/InvestigationRecognizer.cs",
+      "sha256": "27ECF71E93E7EAC4FECE667F39F91123B182A784D3A7ED21300F4001BD1D1496",
+      "bytes": 4674
+    },
+    {
+      "path": "backend/Clinical/LocalClinicalPipelineOptions.cs",
+      "sha256": "07CB377908DE2695178C2D3981260FACE3CDEEC689A42BB7ACBF0A3FB2EA4F18",
+      "bytes": 1404
+    },
+    {
+      "path": "backend/Clinical/LocalClinicalScope.cs",
+      "sha256": "3BDD725CF3B7F8446159E2377CFE39FBE3A0B714C952BAD4161B2FCFD12D37CD",
+      "bytes": 2879
+    },
+    {
+      "path": "backend/Clinical/LocalEvidenceValidator.cs",
+      "sha256": "20BAE0FA721AB2315C255227515FC22FC9692C9994B4149B3EF1B7A6CD36730D",
+      "bytes": 2576
+    },
+    {
+      "path": "backend/Clinical/MedicationAttributeExtractor.cs",
+      "sha256": "8DB983B69658375236D8FB0B209734050380DB9FEED4DB55EE5661DE196AEDA9",
+      "bytes": 8015
+    },
+    {
+      "path": "backend/Clinical/MedicationCandidateClassifier.cs",
+      "sha256": "820C170F78DECB4557D4F823BB638E38189A17DBC5108BD4BE7905CA65374FFF",
+      "bytes": 7915
+    },
+    {
+      "path": "backend/Clinical/OnnxClinicalExtractor.cs",
+      "sha256": "F705D4D0981D7AF780137B84F800DED609C35162E854EE6003B81DCB8F926D6D",
+      "bytes": 4050
+    },
+    {
+      "path": "backend/Clinical/ProviderDiagnostics.cs",
+      "sha256": "6186CC888E04B5AE5C7292E29E0366576D48B39616ED4369DDA535A2656C5F66",
+      "bytes": 3867
+    },
+    {
+      "path": "backend/Clinical/Terminology/clinical-recognition-v1.json",
+      "sha256": "DD5D4257D2B5D5308FC83AB8DE7B778CD96C0F81C8251F74593B6B1D1DF36F29",
+      "bytes": 77248
+    },
+    {
+      "path": "backend/Clinical/TerminologyVerification.cs",
+      "sha256": "77EFB406F3D313E1AC5D09429C0739834A79F60523E4BB784F9399033D9EB9A5",
+      "bytes": 10969
+    },
+    {
+      "path": "backend/Clinical/UpgradedClinicalPipeline.cs",
+      "sha256": "C41B6824D8E9ED9EF39FA4C909C4DC328B0A56FD876EFD4EB4C0DABAC6F18A0F",
+      "bytes": 12243
+    },
+    {
+      "path": "backend/Clinical/VersionedClinicalTerminology.cs",
+      "sha256": "FC5411707B9D6BE7EB5A1A8AD7ACA579E5AECE6B7B43FF456BA0F0549BB0BE56",
+      "bytes": 5239
+    },
+    {
+      "path": "backend/Models/Contracts.cs",
+      "sha256": "E8AD4689F1C6878779FEA47C32B3419CE55EAB0D78AE6A6B613F216EEF3E0840",
+      "bytes": 24790
+    },
+    {
+      "path": "backend/Nlp/SlidingWindowOnnxEngine.cs",
+      "sha256": "6D4162E320FD2FFCAF23B2C68BA38E68E7C21688FFBF33781404FC35FE9EC8EF",
+      "bytes": 29445
+    },
+    {
+      "path": "backend/Program.cs",
+      "sha256": "15D4393674144DC7D8880DC7D8286DAE19BCC5DC374641BCCACF260DA6390204",
+      "bytes": 37389
+    },
+    {
+      "path": "backend/Storage/SqlExtractionRepository.cs",
+      "sha256": "E56226CA0F182A03E6E1F7B2567DB1566C0885DB144DCA83D03DE3F1C0C230AA",
+      "bytes": 68174
+    },
+    {
+      "path": "backend/appsettings.json",
+      "sha256": "22A2B8F212183DB7C15026B48D3D75AF537B86BDFE16CA8801DDB7CA8D37F819",
+      "bytes": 1500
+    },
+    {
+      "path": "backend/tests/Evaluation/AuditRemediationTests.cs",
+      "sha256": "24DB7D2417792D84F305AFF95F52CA3938760381A4C40B02669277B380C5DEA6",
+      "bytes": 21172
+    },
+    {
+      "path": "backend/tests/Evaluation/ForensicPipelineAuditTests.cs",
+      "sha256": "B0E94AA909D1367EA8D4528CB5ABE41533B586E52D24D5CF05D215200969FD97",
+      "bytes": 65601
+    },
+    {
+      "path": "backend/tests/Evaluation/HeldOutBenchmarkRunner.cs",
+      "sha256": "25AAACC1F507D57856E663CC06A2C9273000B2DD96D999AFD665344B561D9BDC",
+      "bytes": 24666
+    },
+    {
+      "path": "backend/tests/Evaluation/ReliabilityMeasurementTests.cs",
+      "sha256": "9C980B3FC67BADCB342228E2BC672DA0785AB66580CFDB57F063AE046F2C7A3D",
+      "bytes": 4426
+    },
+    {
+      "path": "backend/tests/Evaluation/Stage15AblationTests.cs",
+      "sha256": "93CB56C7868E4239158A6E56F701BA788B69DE44ACAE6C2D53BD9C2BDF8D348D",
+      "bytes": 10316
+    },
+    {
+      "path": "backend/tests/Evaluation/Stage15BenchmarkTests.cs",
+      "sha256": "056F5F474625993A8BEADA3079D4890CF9B3AB96F292E100A8584784EDAD8392",
+      "bytes": 4157
+    },
+    {
+      "path": "backend/tests/Evaluation/stage15-export-historical.sql",
+      "sha256": "67B0F2E72BDAFF4B1BFF626110DC67EB7A4328CF172E48F17DEA7B8B290416B2",
+      "bytes": 1062
+    },
+    {
+      "path": "backend/tests/Evaluation/stage15-inspect-supplementary.py",
+      "sha256": "2792D5D5D74F116667398BBFDA72CB2C2FF9BA1194121D265E0B6CE3DEF68164",
+      "bytes": 3556
+    },
+    {
+      "path": "backend/tests/Evaluation/stage15-make-fixtures.py",
+      "sha256": "E12965FB50F7204C0A1CEC55085D45A1A2D6EEC67658234A3FC251D03402BAD3",
+      "bytes": 10019
+    },
+    {
+      "path": "backend/tests/Evaluation/stage15-report.py",
+      "sha256": "C69D40982DDBDFFEC3DE8D40E4982000843C0C3435A668C803B90E48721393FC",
+      "bytes": 24651
+    },
+    {
+      "path": "backend/tests/Evaluation/stage15-score.py",
+      "sha256": "FF6C15BF702066CB5A70731A1692E7CDAB33C577C804F1C2132B1491AA8EFD34",
+      "bytes": 10837
+    },
+    {
+      "path": "backend/tests/Evaluation/stage15-verify-evidence.py",
+      "sha256": "52746AB2E65080AF580359BCFE4CE368808326D207DBEF1C055E42DCC64E9E61",
+      "bytes": 8813
+    },
+    {
+      "path": "backend/tests/Evaluation/stage15_frozen_cases.json",
+      "sha256": "4067751A9E249D09E3DF0674F023B6C1E90D39DC3BA01C70179DE7C32E2D4EAD",
+      "bytes": 37309
+    },
+    {
+      "path": "backend/tests/Stage15ClinicalPipelineTests.cs",
+      "sha256": "C393FBCD6E90190761FBA76374457C03420636EFD03B6BB4F4DDF8013A348401",
+      "bytes": 8857
+    },
+    {
+      "path": "backend/tests/Stage15E2EEnvironmentTests.cs",
+      "sha256": "39D08CCBCE6E2B5032A5EF5079812EECC76DDB00ABCB1159840FD64B81987B7C",
+      "bytes": 2934
+    },
+    {
+      "path": "backend/tests/Stage15PostgresTests.cs",
+      "sha256": "F814480FED433E56658007558A25DEFF1F39D859358739C0D47C622F36DB0180",
+      "bytes": 9132
+    },
+    {
+      "path": "backend/tests/Stage15SafetyChallengeTests.cs",
+      "sha256": "465FD6A4989D90E5431228C0ACB226CF258736D17008121C0560EDF1EF7FD9D7",
+      "bytes": 6542
+    },
+    {
+      "path": "backend/tests/Stage9EmrTests.cs",
+      "sha256": "84F1D481FBBB6FB4EAF24605CFC4B42D22F58A50458888139F6EA056282DA3AC",
+      "bytes": 37846
+    },
+    {
+      "path": "backend/tests/Terminology/build-stage15-catalog.py",
+      "sha256": "9B8234E7AA3F86765CB605A6AC45DC5210E24753B67C85945F76CCCB6609ACFE",
+      "bytes": 4586
+    },
+    {
+      "path": "backend/tests/Verification/stage15-start-isolated.ps1",
+      "sha256": "9D81D8DC21DCA5573CC6FC252533FD0B42B9B6FEBBD91BB96F690A8C7C294153",
+      "bytes": 2364
+    },
+    {
+      "path": "frontend/e2e/model-provenance-e2e.mjs",
+      "sha256": "23124E1F3F925BAA53B249B682A7ADE305A954B9743018ECC8DF92AD403B86D6",
+      "bytes": 9269
+    },
+    {
+      "path": "frontend/e2e/queue-page-size-e2e.mjs",
+      "sha256": "77BF9FBFF8D37C8FF5943978EE592662BCBFEEDA4D2836F885550F03EA19F661",
+      "bytes": 12385
+    },
+    {
+      "path": "frontend/e2e/stage12-1-uhid-queue-e2e.mjs",
+      "sha256": "76219FC288D521DEA1EC0CD4AA76E3173A90C05A42A5E2BD5F572BB38BC1E139",
+      "bytes": 18641
+    },
+    {
+      "path": "frontend/e2e/stage13-top10-queue-e2e.mjs",
+      "sha256": "B37B1B6221B8E51C371A8DEEB6CA14D5197530EF3825A739C3DB19031BCD9074",
+      "bytes": 15415
+    },
+    {
+      "path": "frontend/e2e/stage15-local-onnx-e2e.mjs",
+      "sha256": "A0D8B1B2C757D8D9981535FBFCC526F1EBE4EEAA7335AFE434BCFA14F8DE5084",
+      "bytes": 6474
+    },
+    {
+      "path": "frontend/src/app/models/extraction.model.ts",
+      "sha256": "C0C4D15086CEEDF94957C78139C7D613C799D8A98B2ADCB1BB113BFCD2887A2D",
+      "bytes": 7000
+    },
+    {
+      "path": "frontend/src/app/queue/clinical-queue.html",
+      "sha256": "F5C0F688F816DE4148182DA7493D66898B409B1DDB178F320598FBF526576480",
+      "bytes": 24576
+    },
+    {
+      "path": "frontend/src/app/queue/clinical-queue.ts",
+      "sha256": "BE863071D3D794FFDBA90D17F7342AD1797CFB98B5CDB952EB8FD49BB4956FFE",
+      "bytes": 28512
+    }
+  ],
+  "reports": [
+    {
+      "path": "docs/APOLLO_STAGE15_AML_V33_FORENSICS.md",
+      "sha256": "C77428D61BAFBF6FC8326169CB6D4D7AFAA76C19C9B77ECD0C3E287519C6D4AE",
+      "bytes": 5762
+    },
+    {
+      "path": "docs/APOLLO_STAGE15_ASSERTION_AND_TEMPORALITY.md",
+      "sha256": "123F48D0E293E20D7F4D5A206470FE0C06D4E2585CDDD731459FBBF9D65175AD",
+      "bytes": 8616
+    },
+    {
+      "path": "docs/APOLLO_STAGE15_BASELINE_VS_UPGRADED_BENCHMARK.md",
+      "sha256": "B044F21305E21B22B54FABB53A9C9FFF7F1E178C67C7DE5102BF66CFE2CC54A2",
+      "bytes": 9229
+    },
+    {
+      "path": "docs/APOLLO_STAGE15_CLINICAL_EXTRACTION_ARCHITECTURE.md",
+      "sha256": "601B655C05F00F7AC775FE7F857211DEE660C7009FA79755378E5281CD6E95F1",
+      "bytes": 4515
+    },
+    {
+      "path": "docs/APOLLO_STAGE15_CLINICAL_SAFETY_REGRESSION.md",
+      "sha256": "210887F9C59A587E23B1304D3EB39CAEE7E1267A76FDDDE5B4667F83349042A0",
+      "bytes": 2882
+    },
+    {
+      "path": "docs/APOLLO_STAGE15_FINAL_EVALUATION_REPORT.md",
+      "sha256": "40832450387D3101A179713491A8E59F1C1D275FD3B5C18813EA3D56E95BA365",
+      "bytes": 9448
+    },
+    {
+      "path": "docs/APOLLO_STAGE15_IMPLEMENTATION_AND_VERIFICATION.md",
+      "sha256": "469BF7A1FD330F7EE7D02E1BEF5E0C3D8785970D66C54357193389985CB075B4",
+      "bytes": 13751
+    },
+    {
+      "path": "docs/APOLLO_STAGE15_INVESTIGATION_EXTRACTION_REDESIGN.md",
+      "sha256": "C409760AEF77F2C52189A067B80C3E4837245AE416FD98F4986818320127B552",
+      "bytes": 3364
+    },
+    {
+      "path": "docs/APOLLO_STAGE15_LOCAL_MODEL_ASSESSMENT.md",
+      "sha256": "97B8AB9C0A21A5B964E734EFD46054EB87425D5BE9BE3E12954FE31E4954BE9C",
+      "bytes": 4261
+    },
+    {
+      "path": "docs/APOLLO_STAGE15_LOCAL_ONNX_ROOT_CAUSE_AUDIT.md",
+      "sha256": "E51D279ADDCF6F1A5BDC80F97EE67E2DC4A4CAF5CF5B106D98C2779A420E2FEB",
+      "bytes": 7822
+    },
+    {
+      "path": "docs/APOLLO_STAGE15_MEDICATION_EXTRACTION_REDESIGN.md",
+      "sha256": "090EE4901A4C206B3D566E6011E18B23D050E277E13EBD51EB5E348122656853",
+      "bytes": 4353
+    },
+    {
+      "path": "docs/APOLLO_STAGE15_PERFORMANCE_RESULTS.md",
+      "sha256": "496CAF1737405BDAA479FAB4F21890CDD955DAB0303E5939FF9BBA07E3ED9D30",
+      "bytes": 3273
+    },
+    {
+      "path": "docs/APOLLO_STAGE15_TERMINOLOGY_NORMALIZATION.md",
+      "sha256": "702CF424587B9A1B4CB2FE82196EF323F50F90074FD51D377DAD06C35711FB3D",
+      "bytes": 4086
+    }
+  ],
+  "pinnedArtifacts": [
+    {
+      "path": "backend/artifacts/bc5cdr_latest/onnx/model_int8.onnx",
+      "sha256": "59830CA601C97246F068CC265C215D00C1024E2D3AE3549A5D053723F4A65CD0",
+      "bytes": 3246078
+    },
+    {
+      "path": "backend/artifacts/bc5cdr_latest/clinical_tokenizer.json",
+      "sha256": "00A99D2E62F065E43EB57D570E38EE7E814B3044F27E2DA70755E9587FF33C81",
+      "bytes": 474524
+    }
+  ],
+  "testedAssembly": {
+    "path": "backend/bin/Stage15/net10.0/Apollo.Backend.dll",
+    "sha256": "253C68185AC6D1C432268306E4BC280368E7C0427B35A0AC19FF4C434C812282",
+    "bytes": 1382400
+  },
+  "releaseAssembly": {
+    "path": "backend/bin/Release/net10.0/Apollo.Backend.dll",
+    "sha256": "4191D9F8A42B6A42379E8BB1E0B677A57D8B7074A561CD0367BA4424329A5F83",
+    "bytes": 1300480
+  },
+  "artifacts": [
+    {
+      "path": "docs/stage15-evidence/baseline/source-manifest.json",
+      "sha256": "E04218C232954BB23DDA4E2A73059C6097B600E874839A9B542BF8EF26DA9A2D",
+      "bytes": 5834
+    },
+    {
+      "path": "docs/stage15-evidence/baseline/real-local-outputs.json",
+      "sha256": "007E8E4F2B7C6EB23A0336EE8D330D1755AF8DBB364514F40101044E01EA1001",
+      "bytes": 766239
+    },
+    {
+      "path": "docs/stage15-evidence/evaluation/metrics.json",
+      "sha256": "9E05637D11866EB176CC6A2B3839D17B8CEF1DAFE714DC9780E753CDD8F79A53",
+      "bytes": 603875
+    },
+    {
+      "path": "docs/stage15-evidence/evaluation/performance.json",
+      "sha256": "426F79C44DD607E2AF0079AA6A40ABB813F6FB74D9FEE376FB1BADD20686AAD6",
+      "bytes": 2416
+    },
+    {
+      "path": "docs/stage15-evidence/evaluation/dataset-manifest.json",
+      "sha256": "DE5C062021EB4D91C05B5DD83E7A9E21570091B745C454E430A7442819774F6F",
+      "bytes": 495
+    },
+    {
+      "path": "docs/stage15-evidence/evaluation/integrated-adapter.json",
+      "sha256": "C371A8CBC1F31E6C9EE8CA2F30A0A8325A64D06D5F5CF4CED58C74536BC12F92",
+      "bytes": 1730818
+    },
+    {
+      "path": "docs/stage15-evidence/evaluation/supplementary-persisted-inspection.json",
+      "sha256": "C35C41827B18A1445F861E598024A83EFDF8699BCE2373511AC0649CEA3D9AEC",
+      "bytes": 19807
+    },
+    {
+      "path": "docs/stage15-evidence/integration/real-postgres-roundtrip.json",
+      "sha256": "698C79550972437B87ECD78A5AFCFE7523B7726A9BC71E5A5EC85695992225CC",
+      "bytes": 26795
+    },
+    {
+      "path": "docs/stage15-evidence/integration/swagger-final.json",
+      "sha256": "A720E7C3F3A17E83E93298211D91CF026DC37D057DDE9C6ECE735DCB1C60FFD1",
+      "bytes": 296
+    },
+    {
+      "path": "docs/stage15-evidence/final-verification-command.log",
+      "sha256": "6D6816B3EA741BE85651299F38E33D6CC7AEFC8F1D0A68B661BFCEDBB956AED8",
+      "bytes": 15844
+    },
+    {
+      "path": "docs/stage15-evidence/release-build-command.log",
+      "sha256": "0BC2566ED5DE5488D124FD669D7A2E30621BDE8EC0B4C2148D31DBE77FA96DE3",
+      "bytes": 336
+    },
+    {
+      "path": "docs/stage15-evidence/routing-final-command.log",
+      "sha256": "A9C77763FAFD983631C4F0DFB332A0811F5B703FAA4FB45CA12EC4A7B6BB5FFE",
+      "bytes": 1140
+    },
+    {
+      "path": "docs/stage15-evidence/postman-final-command.log",
+      "sha256": "1DF8505C2AB98E0B38E34B2F5A8477AA3AA24CF04249725C48E7313363CE5449",
+      "bytes": 23714
+    },
+    {
+      "path": "docs/stage15-evidence/angular-test-command.log",
+      "sha256": "E70AC569E141988B5A53070BCF66137C29FFE29B28CC6EE05FF2C1CC12609EAD",
+      "bytes": 3340
+    },
+    {
+      "path": "docs/stage15-evidence/angular-build-command.log",
+      "sha256": "2B682540B3B65E44212478EF420471D3891D5278DECE50DFF0F269291C01DD6B",
+      "bytes": 1982
+    },
+    {
+      "path": "docs/stage15-evidence/playwright/stage15-local-onnx-results.json",
+      "sha256": "65224AD68DC508EEB61C364A41423510AF206CFDDA5709D49733BBB1C987C079",
+      "bytes": 31489
+    },
+    {
+      "path": "docs/stage15-evidence/playwright/stage15-real-persisted-result.png",
+      "sha256": "6972C39BCD883D45C6612F653C847F165C5E2166D75CAEE41B6384DA524C659E",
+      "bytes": 108216
+    },
+    {
+      "path": "docs/stage15-evidence/regression/test-results/stage15-full-final.trx",
+      "sha256": "2F166A3A0F39BAFCD79FAA64D339DFC9BF2423D48AA5C590B60C51D02249F166",
+      "bytes": 865546
+    },
+    {
+      "path": "docs/stage15-evidence/evaluation/test-results/stage15-ablation-final.trx",
+      "sha256": "54300E44F30BFBC4F19A6316A6EE54C44F7CD93F8C64A726B2C5F568258355A4",
+      "bytes": 2937
+    }
+  ],
+  "tests": {
+    "backend": {
+      "counters": {
+        "total": "318",
+        "executed": "305",
+        "passed": "305",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "skippedNames": [
+        "Apollo.Backend.Tests.Evaluation.ClinicalSafetyTests.Safety_ConditionalChestXRay_RemainsConditional",
+        "Apollo.Backend.Tests.FoundryLiveSmokeTests.LiveFoundryDeployment_ExtractsFictionalClinicalNote_WithActualMetadata",
+        "Apollo.Backend.Tests.FoundryLiveSmokeTests.LiveFoundryDeployment_ExtractsStage2Note_WithoutFallback",
+        "Apollo.Backend.Tests.Stage8OptionalLiveTests.OptionalSingleAuthorizedGptRequest_NoRetries_NoFallback_NoApplicationDatabase",
+        "Apollo.Backend.Tests.Evaluation.Stage15AblationTests.RealModel_AblationsAndPerformance",
+        "Apollo.Backend.Tests.Evaluation.ClinicalSafetyTests.Safety_NegatedPenicillinAllergy_IsNotRecordedAsConfirmedAllergy",
+        "Apollo.Backend.Tests.Stage15E2EEnvironmentTests.CreateIsolatedRetainedSyntheticFixture",
+        "Apollo.Backend.Tests.Evaluation.ClinicalSafetyTests.Safety_MethotrexateWeekly_NeverExtractedAsDaily",
+        "Apollo.Backend.Tests.FoundryLiveSmokeTests.SingleAuthorizedLivePdfVerification_CapturesRawAndFinalAndPersistsToIsolatedPostgres",
+        "Apollo.Backend.Tests.Evaluation.ClinicalSafetyTests.Safety_PediatricWeightBasedDosing_PreservesExactDoseAndWeightContext",
+        "Apollo.Backend.Tests.Evaluation.HeldOutBenchmarkRunner.Benchmark_MicrosoftFoundry_DevelopmentCases",
+        "Apollo.Backend.Tests.Evaluation.HeldOutBenchmarkRunner.SealedFinalEvaluation_OnceAfterImplementationFreeze",
+        "Apollo.Backend.Tests.Evaluation.ClinicalSafetyTests.Safety_WarfarinAndInr_CorrelatesAnticoagulantWithMonitoring"
+      ]
+    },
+    "ablation": {
+      "counters": {
+        "total": "1",
+        "executed": "1",
+        "passed": "1",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "skippedNames": []
+    }
+  },
+  "browserChecks": {
+    "stage15-local-onnx-results.json": {
+      "status": "PASS",
+      "checks": 19
+    },
+    "model-provenance-e2e-results.json": {
+      "status": "PASS",
+      "checks": 8
+    },
+    "queue-page-size-e2e-results.json": {
+      "status": "PASS",
+      "checks": 6
+    },
+    "stage13-e2e-results.json": {
+      "status": "PASS",
+      "checks": 8
+    }
+  },
+  "liveFoundryCalls": 0,
+  "costEvidence": "Offline local routing and invalid test Foundry endpoint/key; unchanged application adapter counts; not a cloud billing audit",
+  "originalApplicationAdapterCounts": {
+    "microsoft_foundry": 41,
+    "onnx_neurosymbolic_int8": 31
+  },
+  "clinicalDeploymentClearance": "BLOCKED: independent clinical and reference-code adjudication unavailable",
+  "realAzureBrokerSmoke": "NOT TESTED: shared-queue cloud smoke deliberately excluded",
+  "replacementModels": "NOT TESTED locally; researched only"
+}

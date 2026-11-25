@@ -90,8 +90,30 @@ public sealed class ExtractionWorkflow(
                 using var invocation = FoundryInvocationContext.Begin(correlationId);
                 azure = await foundry.ExtractAsync(noteText, ct);
                 capturedAzure = azure;
-                accepted = validator.Map(azure.Candidate, noteText, correlationId);
-                if (accepted.ValidationSummary.HasErrors) throw new InvalidClinicalEvidenceException();
+                var foundryAttempts = new List<ProviderAttemptDto> { azure.Attempt };
+                int maxRepairRetries = Math.Clamp(options.Value.MaxEvidenceRepairRetries, 0, 2);
+                int repairAttempt = 0;
+                while (true)
+                {
+                    try
+                    {
+                        accepted = validator.Map(azure.Candidate, noteText, correlationId);
+                        if (accepted.ValidationSummary.HasErrors) throw new InvalidClinicalEvidenceException(ClinicalValidationRule.VALIDATION_SUMMARY_ERRORS);
+                        break;
+                    }
+                    catch (InvalidClinicalEvidenceException rejection) when (repairAttempt < maxRepairRetries && !string.IsNullOrWhiteSpace(azure.RawStructuredContent))
+                    {
+                        repairAttempt++;
+                        logger.LogWarning(
+                            "Foundry evidence validation failed on attempt {Attempt}; triggering bounded self-repair ({RepairAttempt}/{MaxRepair}): rule={ValidationRuleId}; category={ValidationCategory}; entityType={ValidationEntityType}; entityIndex={ValidationEntityIndex}; field={ValidationField}",
+                            repairAttempt, repairAttempt, maxRepairRetries, rejection.Diagnostic.RuleId, rejection.Diagnostic.Category,
+                            rejection.Diagnostic.EntityType, rejection.Diagnostic.EntityIndex, rejection.Diagnostic.Field);
+                        foundryAttempts[^1] = azure.Attempt with { Outcome = "rejected", Reason = "AZURE_INVALID_EVIDENCE" };
+                        azure = await foundry.RepairAsync(noteText, azure.RawStructuredContent!, rejection.Diagnostic, ct);
+                        capturedAzure = azure;
+                        foundryAttempts.Add(azure.Attempt);
+                    }
+                }
                 circuit.Success();
                 accepted = accepted with
                 {
@@ -99,26 +121,28 @@ public sealed class ExtractionWorkflow(
                         "microsoft_foundry",
                         azure.Attempt.Deployment!,
                         "clinical-v3",
-                        azure.Attempt.PromptTokens,
-                        azure.Attempt.CompletionTokens,
-                        azure.Attempt.TotalTokens,
+                        foundryAttempts.Sum(a => a.PromptTokens ?? 0) is > 0 ? foundryAttempts.Sum(a => a.PromptTokens ?? 0) : azure.Attempt.PromptTokens,
+                        foundryAttempts.Sum(a => a.CompletionTokens ?? 0) is > 0 ? foundryAttempts.Sum(a => a.CompletionTokens ?? 0) : azure.Attempt.CompletionTokens,
+                        foundryAttempts.Sum(a => a.TotalTokens ?? 0) is > 0 ? foundryAttempts.Sum(a => a.TotalTokens ?? 0) : azure.Attempt.TotalTokens,
                         null,
                         "foundry",
                         azure.Attempt.Model,
                         azure.Attempt.Deployment,
                         null,
                         true,
-                        [azure.Attempt],
+                        foundryAttempts,
                         "passed", RoutingMode: "primary", PrimaryInvocationStatus: "accepted", FallbackTriggered: false)
                 };
             }
-            catch (InvalidClinicalEvidenceException)
+            catch (InvalidClinicalEvidenceException rejection)
             {
                 circuit.Success();
-                logger.LogWarning("Clinical evidence rejected: AZURE_INVALID_EVIDENCE");
+                logger.LogWarning("Clinical evidence rejected: {Code}; rule={ValidationRuleId}; category={ValidationCategory}; entityType={ValidationEntityType}; entityIndex={ValidationEntityIndex}; field={ValidationField}",
+                    "AZURE_INVALID_EVIDENCE", rejection.Diagnostic.RuleId, rejection.Diagnostic.Category,
+                    rejection.Diagnostic.EntityType, rejection.Diagnostic.EntityIndex, rejection.Diagnostic.Field);
                 var attempt = azure!.Attempt with { Outcome = "rejected", Reason = "AZURE_INVALID_EVIDENCE" };
                 capturedAzure = azure with { Attempt = attempt };
-                throw ProviderRoutingPolicy.Reject(new("AZURE_INVALID_EVIDENCE", attempt));
+                throw ProviderRoutingPolicy.Reject(new("AZURE_INVALID_EVIDENCE", attempt), rejection.Diagnostic);
             }
             catch (FoundryAttemptException failure)
             {

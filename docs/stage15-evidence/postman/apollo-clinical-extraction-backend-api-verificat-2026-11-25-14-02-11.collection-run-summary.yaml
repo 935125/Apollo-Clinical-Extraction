@@ -1,0 +1,69 @@
+kind: postman-cli-collection-run-summary
+schemaVersion: 1
+runId: 09824e40-602c-4b9b-96ad-d7c67a712b11
+state: completed
+generatedAt: '2026-11-25T08:32:21.665Z'
+files:
+  summary: apollo-clinical-extraction-backend-api-verificat-2026-11-25-14-02-11.collection-run-summary.yaml
+  executions: apollo-clinical-extraction-backend-api-verificat-2026-11-25-14-02-11.collection-run-executions.yaml
+meta:
+  collection:
+    id: 9c324157-3961-4dae-8d9a-c4bb5458f650
+    name: Apollo Clinical Extraction — Backend API Verification Suite
+    description:
+      content: Headless end-to-end Postman Collection v2.1 verifying Infrastructure, Authentication, Clinical Note Ingestion, Asynchronous Service Bus Processing, Medication & Investigation Extraction, UHID/Patient Isolation, Provider Routing, and Idempotency on ASP.NET Core .NET 10 without Angular.
+      type: text/plain
+  environment:
+    id: 23bd6e82-c220-4cae-8150-9863967eecad
+    name: Apollo Local Development
+  started: '2026-11-25T08:32:12.612Z'
+  completed: '2026-11-25T08:32:21.665Z'
+  durationMs: 9053
+environment:
+  cli:
+    version: 1.94.0
+    userAgent: Postman CLI/1.94.0
+    agent: codex
+  system:
+    os:
+      type: Windows_NT
+      platform: win32
+      arch: x64
+      release: 10.0.26100
+    hardware:
+      cpus: 12
+      totalMemory: 16856768512
+  isCI: false
+  ci: null
+  git:
+    branch: main
+    commit: 11e38a74c34ca88ce09e5bd37d87c83ce51658e5
+    commitShort: 11e38a7
+    remoteUrl: https://github.com/935125/Apollo-Clinical-Extraction.git
+    dirty: true
+stats:
+  iterations:
+    executed: 1
+    errors: 0
+  executedRequests:
+    executed: 34
+    errors: 0
+  prerequestScripts:
+    executed: 2
+    errors: 0
+  postresponseScripts:
+    executed: 34
+    errors: 0
+  tests:
+    executed: 41
+    failed: 0
+  timeStats:
+    responseAverage: 151.35294117647058
+    responseMin: 2
+    responseMax: 416
+    responseStandardDeviation: 114.52944197709499
+transfers:
+  responseTotal: 220771
+failures: []
+executionsRecorded: 34
+simulation: null

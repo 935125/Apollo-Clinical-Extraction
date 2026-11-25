@@ -420,4 +420,6 @@ public record ActiveLearningStateDto(
 
 public record SourceReviewCandidateDto(string Name, string Category, double Confidence, EvidenceDto Evidence, string Reason, bool ReviewRequired = true);
 
-public record ExtractionFailureProvenance(string RequestedPrimaryProvider, List<ProviderAttemptDto> Attempts, bool FallbackTriggered, string Reason, string ExtractionStatus);
+public record ClinicalValidationDiagnosticDto(string RuleId, string Category, string EntityType, int? EntityIndex, string Field);
+public record ExtractionFailureProvenance(string RequestedPrimaryProvider, List<ProviderAttemptDto> Attempts, bool FallbackTriggered, string Reason, string ExtractionStatus,
+    ClinicalValidationDiagnosticDto? ValidationDiagnostic = null);

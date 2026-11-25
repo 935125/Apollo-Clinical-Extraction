@@ -1,0 +1,127 @@
+{
+  "classification": "Synthetic representative candidates; not the unavailable original rejected GPT response",
+  "conditions": "upgraded validator",
+  "liveFoundryCalls": 0,
+  "results": [
+    {
+      "id": "exact-source-representative-aml",
+      "status": "PASS",
+      "medications": 10,
+      "investigations": 8
+    },
+    {
+      "id": "aml-medication-Cytarabine-historical",
+      "status": "PASS",
+      "medications": 1,
+      "investigations": 0
+    },
+    {
+      "id": "aml-medication-Daunorubicin-historical",
+      "status": "PASS",
+      "medications": 1,
+      "investigations": 0
+    },
+    {
+      "id": "aml-medication-Midostaurin-historical",
+      "status": "PASS",
+      "medications": 1,
+      "investigations": 0
+    },
+    {
+      "id": "aml-medication-Meropenem-historical",
+      "status": "PASS",
+      "medications": 1,
+      "investigations": 0
+    },
+    {
+      "id": "aml-medication-benzydamine-historical",
+      "status": "PASS",
+      "medications": 1,
+      "investigations": 0
+    },
+    {
+      "id": "aml-medication-Posaconazole-current_medication",
+      "status": "PASS",
+      "medications": 1,
+      "investigations": 0
+    },
+    {
+      "id": "aml-medication-Acyclovir-current_medication",
+      "status": "PASS",
+      "medications": 1,
+      "investigations": 0
+    },
+    {
+      "id": "aml-medication-Levofloxacin-current_medication",
+      "status": "PASS",
+      "medications": 1,
+      "investigations": 0
+    },
+    {
+      "id": "aml-medication-Ondansetron-current_medication",
+      "status": "PASS",
+      "medications": 1,
+      "investigations": 0
+    },
+    {
+      "id": "aml-medication-Cytarabine-conditional",
+      "status": "PASS",
+      "medications": 1,
+      "investigations": 0
+    },
+    {
+      "id": "aml-investigation-bone marrow aspirate",
+      "status": "PASS",
+      "medications": 0,
+      "investigations": 1
+    },
+    {
+      "id": "aml-investigation-Cytogenetics",
+      "status": "PASS",
+      "medications": 0,
+      "investigations": 1
+    },
+    {
+      "id": "aml-investigation-Blood cultures",
+      "status": "PASS",
+      "medications": 0,
+      "investigations": 1
+    },
+    {
+      "id": "aml-investigation-Platelets",
+      "status": "PASS",
+      "medications": 0,
+      "investigations": 1
+    },
+    {
+      "id": "aml-investigation-Hemoglobin",
+      "status": "PASS",
+      "medications": 0,
+      "investigations": 1
+    },
+    {
+      "id": "aml-investigation-bone marrow biopsy",
+      "status": "PASS",
+      "medications": 0,
+      "investigations": 1
+    },
+    {
+      "id": "aml-investigation-CBC",
+      "status": "PASS",
+      "medications": 0,
+      "investigations": 1
+    },
+    {
+      "id": "aml-investigation-renal/liver function panel",
+      "status": "PASS",
+      "medications": 0,
+      "investigations": 1
+    },
+    {
+      "id": "oral-mouthwash",
+      "status": "PASS",
+      "medications": 1,
+      "investigations": 0
+    }
+  ]
+}

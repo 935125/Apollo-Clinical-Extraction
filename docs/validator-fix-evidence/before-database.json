@@ -1,0 +1,138 @@
+{
+  "amlVersions": [
+    {
+      "noteId": "7b83e7bc-c817-4284-9306-8318b107adbb",
+      "source": "HOSPITAL: Apollo Cancer Centre, Teynampet, Chennai\nPATIENT NAME: Rajeshwari Sundaram | UHID: APL-CHN-8849201 | AGE/SEX: 48 / Female\nADMISSION DATE: 02/11/2026 | DISCHARGE DATE: 24/11/2026\nATTENDING ONCOLOGIST: Dr. Karthik Subramanian (Reg. No: TNMC-74912)\nEMERGENCY CONTACT: Venkatraman Sundaram (Spouse) - +91-98401-55219\n\nPRIMARY DIAGNOSIS:\nAcute Myeloid Leukemia (AML) with NPM1 mutation and FLT3-ITD (low allelic ratio 0.22), ELN 2022 Favorable-to-Intermediate Risk.\n\nHOSPITAL COURSE:\nMrs. Rajeshwari Sundaram was admitted for standard \"7+3\" induction chemotherapy plus FLT3 inhibition. Baseline bone marrow aspirate showed 68% myeloblasts (CD34+, CD117+, MPO+). Cytogenetics: 46,XX[20] (normal karyotype).\n- Chemotherapy Administered: Cytarabine 100 mg/m2 continuous IV infusion (Days 1-7) + Daunorubicin 60 mg/m2 IV push (Days 1-3) + Midostaurin 50 mg PO twice daily with food (Days 8-21).\n- Complications: Developed febrile neutropenia on Day 11 (ANC 40/uL, Tmax 39.1 C). Blood cultures grew ESBL-producing Escherichia coli; successfully treated with IV Meropenem 1 g q8h for 10 days. Experienced Grade 2 oral mucositis managed with benzydamine mouthwash and IV hydration.\n- Count Recovery (Day 22): ANC recovered to 1,450/uL; unsupported Platelets 92,000/uL; Hemoglobin 9.6 g/dL. Day 21 bone marrow biopsy confirmed morphologic complete remission (CR) with 2% blasts.\n\nDISCHARGE MEDICATIONS:\n1. Posaconazole delayed-release tablets 300 mg PO once daily (antifungal prophylaxis).\n2. Acyclovir 400 mg PO twice daily (antiviral prophylaxis).\n3. Levofloxacin 500 mg PO once daily until ANC > 1,500/uL on two consecutive checks.\n4. Ondansetron 8 mg PO SOS for nausea.\n\nFOLLOW-UP INSTRUCTIONS:\nReport to Day Care Oncology Wing on 01/12/2026 at 09:00 AM for CBC, renal/liver function panel, and Cycle 1 High-Dose Cytarabine (HiDAC) consolidation planning. Seek immediate ER care at 1066 if temperature >= 38.0 C, chills, or mucosal bleeding occurs.",
+      "eventId": null,
+      "version": 28,
+      "synthetic": true,
+      "sourceHash": "1CDB7B4312F0BCCD0A313B9F926D0D1F68FC1E94ACE7E86CE21CE7C34197F3A1",
+      "extractionId": null,
+      "processingError": null,
+      "processingStatus": null,
+      "publicationStatus": null,
+      "processingAttempts": null
+    },
+    {
+      "noteId": "7b83e7bc-c817-4284-9306-8318b107adbb",
+      "source": "HOSPITAL: Apollo Cancer Centre, Teynampet, Chennai\nPATIENT NAME: Rajeshwari Sundaram | UHID: APL-CHN-8849201 | AGE/SEX: 48 / Female\nADMISSION DATE: 02/11/2026 | DISCHARGE DATE: 24/11/2026\nATTENDING ONCOLOGIST: Dr. Karthik Subramanian (Reg. No: TNMC-74912)\nEMERGENCY CONTACT: Venkatraman Sundaram (Spouse) - +91-98401-55219\n\nPRIMARY DIAGNOSIS:\nAcute Myeloid Leukemia (AML) with NPM1 mutation and FLT3-ITD (low allelic ratio 0.22), ELN 2022 Favorable-to-Intermediate Risk.\n\nHOSPITAL COURSE:\nMrs. Rajeshwari Sundaram was admitted for standard \"7+3\" induction chemotherapy plus FLT3 inhibition. Baseline bone marrow aspirate showed 68% myeloblasts (CD34+, CD117+, MPO+). Cytogenetics: 46,XX[20] (normal karyotype).\n- Chemotherapy Administered: Cytarabine 100 mg/m2 continuous IV infusion (Days 1-7) + Daunorubicin 60 mg/m2 IV push (Days 1-3) + Midostaurin 50 mg PO twice daily with food (Days 8-21).\n- Complications: Developed febrile neutropenia on Day 11 (ANC 40/uL, Tmax 39.1 C). Blood cultures grew ESBL-producing Escherichia coli; successfully treated with IV Meropenem 1 g q8h for 10 days. Experienced Grade 2 oral mucositis managed with benzydamine mouthwash and IV hydration.\n- Count Recovery (Day 22): ANC recovered to 1,450/uL; unsupported Platelets 92,000/uL; Hemoglobin 9.6 g/dL. Day 21 bone marrow biopsy confirmed morphologic complete remission (CR) with 2% blasts.\n\nDISCHARGE MEDICATIONS:\n1. Posaconazole delayed-release tablets 300 mg PO once daily (antifungal prophylaxis).\n2. Acyclovir 400 mg PO twice daily (antiviral prophylaxis).\n3. Levofloxacin 500 mg PO once daily until ANC > 1,500/uL on two consecutive checks.\n4. Ondansetron 8 mg PO SOS for nausea.\n\nFOLLOW-UP INSTRUCTIONS:\nReport to Day Care Oncology Wing on 01/12/2026 at 09:00 AM for CBC, renal/liver function panel, and Cycle 1 High-Dose Cytarabine (HiDAC) consolidation planning. Seek immediate ER care at 1066 if temperature >= 38.0 C, chills, or mucosal bleeding occurs.",
+      "eventId": "e3fbc7f2-21dc-4ee9-98ab-d38da675b27c",
+      "version": 29,
+      "synthetic": true,
+      "sourceHash": "1CDB7B4312F0BCCD0A313B9F926D0D1F68FC1E94ACE7E86CE21CE7C34197F3A1",
+      "extractionId": null,
+      "processingError": "SOURCE_REQUIRES_PRIVACY_REVIEW",
+      "processingStatus": "Failed",
+      "publicationStatus": "Published",
+      "processingAttempts": 1
+    },
+    {
+      "noteId": "7b83e7bc-c817-4284-9306-8318b107adbb",
+      "source": "AGE/SEX: 48 / Female\nADMISSION DATE: 02/11/2026 | DISCHARGE DATE: 24/11/2026\n\nPRIMARY DIAGNOSIS:\nAcute Myeloid Leukemia (AML) with NPM1 mutation and FLT3-ITD (low allelic ratio 0.22), ELN 2022 Favorable-to-Intermediate Risk.\n\nHOSPITAL COURSE:\nThe patient was admitted for standard \"7+3\" induction chemotherapy plus FLT3 inhibition. Baseline bone marrow aspirate showed 68% myeloblasts (CD34+, CD117+, MPO+). Cytogenetics: 46,XX[20] (normal karyotype).\n- Chemotherapy Administered: Cytarabine 100 mg/m2 continuous IV infusion (Days 1-7) + Daunorubicin 60 mg/m2 IV push (Days 1-3) + Midostaurin 50 mg PO twice daily with food (Days 8-21).\n- Complications: Developed febrile neutropenia on Day 11 (ANC 40/uL, Tmax 39.1 C). Blood cultures grew ESBL-producing Escherichia coli; successfully treated with IV Meropenem 1 g q8h for 10 days. Experienced Grade 2 oral mucositis managed with benzydamine mouthwash and IV hydration.\n- Count Recovery (Day 22): ANC recovered to 1,450/uL; unsupported Platelets 92,000/uL; Hemoglobin 9.6 g/dL. Day 21 bone marrow biopsy confirmed morphologic complete remission (CR) with 2% blasts.\n\nDISCHARGE MEDICATIONS:\n1. Posaconazole delayed-release tablets 300 mg PO once daily (antifungal prophylaxis).\n2. Acyclovir 400 mg PO twice daily (antiviral prophylaxis).\n3. Levofloxacin 500 mg PO once daily until ANC > 1,500/uL on two consecutive checks.\n4. Ondansetron 8 mg PO SOS for nausea.\n\nFOLLOW-UP INSTRUCTIONS:\nReport to Day Care Oncology Wing on 01/12/2026 at 09:00 AM for CBC, renal/liver function panel, and Cycle 1 High-Dose Cytarabine (HiDAC) consolidation planning. Seek immediate ER care at 1066 if temperature >= 38.0 C, chills, or mucosal bleeding occurs.",
+      "eventId": null,
+      "version": 30,
+      "synthetic": true,
+      "sourceHash": "A0D04017AEAF05135C7F26D3F67326631D86E5B407D825DB7CBDF2243F9C68A6",
+      "extractionId": null,
+      "processingError": null,
+      "processingStatus": null,
+      "publicationStatus": null,
+      "processingAttempts": null
+    },
+    {
+      "noteId": "7b83e7bc-c817-4284-9306-8318b107adbb",
+      "source": "AGE/SEX: 48 / Female\nADMISSION DATE: 02/11/2026 | DISCHARGE DATE: 24/11/2026\n\nPRIMARY DIAGNOSIS:\nAcute Myeloid Leukemia (AML) with NPM1 mutation and FLT3-ITD (low allelic ratio 0.22), ELN 2022 Favorable-to-Intermediate Risk.\n\nHOSPITAL COURSE:\nThe patient was admitted for standard \"7+3\" induction chemotherapy plus FLT3 inhibition. Baseline bone marrow aspirate showed 68% myeloblasts (CD34+, CD117+, MPO+). Cytogenetics: 46,XX[20] (normal karyotype).\n- Chemotherapy Administered: Cytarabine 100 mg/m2 continuous IV infusion (Days 1-7) + Daunorubicin 60 mg/m2 IV push (Days 1-3) + Midostaurin 50 mg PO twice daily with food (Days 8-21).\n- Complications: Developed febrile neutropenia on Day 11 (ANC 40/uL, Tmax 39.1 C). Blood cultures grew ESBL-producing Escherichia coli; successfully treated with IV Meropenem 1 g q8h for 10 days. Experienced Grade 2 oral mucositis managed with benzydamine mouthwash and IV hydration.\n- Count Recovery (Day 22): ANC recovered to 1,450/uL; unsupported Platelets 92,000/uL; Hemoglobin 9.6 g/dL. Day 21 bone marrow biopsy confirmed morphologic complete remission (CR) with 2% blasts.\n\nDISCHARGE MEDICATIONS:\n1. Posaconazole delayed-release tablets 300 mg PO once daily (antifungal prophylaxis).\n2. Acyclovir 400 mg PO twice daily (antiviral prophylaxis).\n3. Levofloxacin 500 mg PO once daily until ANC > 1,500/uL on two consecutive checks.\n4. Ondansetron 8 mg PO SOS for nausea.\n\nFOLLOW-UP INSTRUCTIONS:\nReport to Day Care Oncology Wing on 01/12/2026 at 09:00 AM for CBC, renal/liver function panel, and Cycle 1 High-Dose Cytarabine (HiDAC) consolidation planning. Seek immediate ER care at 1066 if temperature >= 38.0 C, chills, or mucosal bleeding occurs.",
+      "eventId": "fac3c454-e373-4d40-8286-084cef971510",
+      "version": 31,
+      "synthetic": true,
+      "sourceHash": "A0D04017AEAF05135C7F26D3F67326631D86E5B407D825DB7CBDF2243F9C68A6",
+      "extractionId": "fac3c454-e373-4d40-8286-084cef971510",
+      "processingError": null,
+      "processingStatus": "Needs Review",
+      "publicationStatus": "Published",
+      "processingAttempts": 1
+    },
+    {
+      "noteId": "7b83e7bc-c817-4284-9306-8318b107adbb",
+      "source": "HOSPITAL: Apollo Cancer Centre, Teynampet, Chennai\nPATIENT NAME: Rajeshwari Sundaram | UHID: APL-CHN-8849201 | AGE/SEX: 48 / Female\nADMISSION DATE: 02/11/2026 | DISCHARGE DATE: 24/11/2026\nATTENDING ONCOLOGIST: Dr. Karthik Subramanian (Reg. No: TNMC-74912)\nEMERGENCY CONTACT: Venkatraman Sundaram (Spouse) - +91-98401-55219\n\nPRIMARY DIAGNOSIS:\nAcute Myeloid Leukemia (AML) with NPM1 mutation and FLT3-ITD (low allelic ratio 0.22), ELN 2022 Favorable-to-Intermediate Risk.\n\nHOSPITAL COURSE:\nMrs. Rajeshwari Sundaram was admitted for standard \"7+3\" induction chemotherapy plus FLT3 inhibition. Baseline bone marrow aspirate showed 68% myeloblasts (CD34+, CD117+, MPO+). Cytogenetics: 46,XX[20] (normal karyotype).\n- Chemotherapy Administered: Cytarabine 100 mg/m2 continuous IV infusion (Days 1-7) + Daunorubicin 60 mg/m2 IV push (Days 1-3) + Midostaurin 50 mg PO twice daily with food (Days 8-21).\n- Complications: Developed febrile neutropenia on Day 11 (ANC 40/uL, Tmax 39.1 C). Blood cultures grew ESBL-producing Escherichia coli; successfully treated with IV Meropenem 1 g q8h for 10 days. Experienced Grade 2 oral mucositis managed with benzydamine mouthwash and IV hydration.\n- Count Recovery (Day 22): ANC recovered to 1,450/uL; unsupported Platelets 92,000/uL; Hemoglobin 9.6 g/dL. Day 21 bone marrow biopsy confirmed morphologic complete remission (CR) with 2% blasts.\n\nDISCHARGE MEDICATIONS:\n1. Posaconazole delayed-release tablets 300 mg PO once daily (antifungal prophylaxis).\n2. Acyclovir 400 mg PO twice daily (antiviral prophylaxis).\n3. Levofloxacin 500 mg PO once daily until ANC > 1,500/uL on two consecutive checks.\n4. Ondansetron 8 mg PO SOS for nausea.\n\nFOLLOW-UP INSTRUCTIONS:\nReport to Day Care Oncology Wing on 01/12/2026 at 09:00 AM for CBC, renal/liver function panel, and Cycle 1 High-Dose Cytarabine (HiDAC) consolidation planning. Seek immediate ER care at 1066 if temperature >= 38.0 C, chills, or mucosal bleeding occurs.",
+      "eventId": null,
+      "version": 32,
+      "synthetic": true,
+      "sourceHash": "1CDB7B4312F0BCCD0A313B9F926D0D1F68FC1E94ACE7E86CE21CE7C34197F3A1",
+      "extractionId": null,
+      "processingError": null,
+      "processingStatus": null,
+      "publicationStatus": null,
+      "processingAttempts": null
+    },
+    {
+      "noteId": "7b83e7bc-c817-4284-9306-8318b107adbb",
+      "source": "HOSPITAL: Apollo Cancer Centre, Teynampet, Chennai\nPATIENT NAME: Rajeshwari Sundaram | UHID: APL-CHN-8849201 | AGE/SEX: 48 / Female\nADMISSION DATE: 02/11/2026 | DISCHARGE DATE: 24/11/2026\nATTENDING ONCOLOGIST: Dr. Karthik Subramanian (Reg. No: TNMC-74912)\nEMERGENCY CONTACT: Venkatraman Sundaram (Spouse) - +91-98401-55219\n\nPRIMARY DIAGNOSIS:\nAcute Myeloid Leukemia (AML) with NPM1 mutation and FLT3-ITD (low allelic ratio 0.22), ELN 2022 Favorable-to-Intermediate Risk.\n\nHOSPITAL COURSE:\nMrs. Rajeshwari Sundaram was admitted for standard \"7+3\" induction chemotherapy plus FLT3 inhibition. Baseline bone marrow aspirate showed 68% myeloblasts (CD34+, CD117+, MPO+). Cytogenetics: 46,XX[20] (normal karyotype).\n- Chemotherapy Administered: Cytarabine 100 mg/m2 continuous IV infusion (Days 1-7) + Daunorubicin 60 mg/m2 IV push (Days 1-3) + Midostaurin 50 mg PO twice daily with food (Days 8-21).\n- Complications: Developed febrile neutropenia on Day 11 (ANC 40/uL, Tmax 39.1 C). Blood cultures grew ESBL-producing Escherichia coli; successfully treated with IV Meropenem 1 g q8h for 10 days. Experienced Grade 2 oral mucositis managed with benzydamine mouthwash and IV hydration.\n- Count Recovery (Day 22): ANC recovered to 1,450/uL; unsupported Platelets 92,000/uL; Hemoglobin 9.6 g/dL. Day 21 bone marrow biopsy confirmed morphologic complete remission (CR) with 2% blasts.\n\nDISCHARGE MEDICATIONS:\n1. Posaconazole delayed-release tablets 300 mg PO once daily (antifungal prophylaxis).\n2. Acyclovir 400 mg PO twice daily (antiviral prophylaxis).\n3. Levofloxacin 500 mg PO once daily until ANC > 1,500/uL on two consecutive checks.\n4. Ondansetron 8 mg PO SOS for nausea.\n\nFOLLOW-UP INSTRUCTIONS:\nReport to Day Care Oncology Wing on 01/12/2026 at 09:00 AM for CBC, renal/liver function panel, and Cycle 1 High-Dose Cytarabine (HiDAC) consolidation planning. Seek immediate ER care at 1066 if temperature >= 38.0 C, chills, or mucosal bleeding occurs.",
+      "eventId": "f0ee1284-6b16-4ad7-918e-6df369eccc34",
+      "version": 33,
+      "synthetic": true,
+      "sourceHash": "1CDB7B4312F0BCCD0A313B9F926D0D1F68FC1E94ACE7E86CE21CE7C34197F3A1",
+      "extractionId": "f0ee1284-6b16-4ad7-918e-6df369eccc34",
+      "processingError": null,
+      "processingStatus": "Needs Review",
+      "publicationStatus": "Published",
+      "processingAttempts": 1
+    },
+    {
+      "noteId": "7b83e7bc-c817-4284-9306-8318b107adbb",
+      "source": "HOSPITAL: Apollo Cancer Centre, Teynampet, Chennai\nPATIENT NAME: Rajeshwari Sundaram | UHID: APL-CHN-8849201 | AGE/SEX: 48 / Female\nADMISSION DATE: 02/11/2026 | DISCHARGE DATE: 24/11/2026\nATTENDING ONCOLOGIST: Dr. Karthik Subramanian (Reg. No: TNMC-74912)\nEMERGENCY CONTACT: Venkatraman Sundaram (Spouse) - +91-98401-55219\n\nPRIMARY DIAGNOSIS:\nAcute Myeloid Leukemia (AML) with NPM1 mutation and FLT3-ITD (low allelic ratio 0.22), ELN 2022 Favorable-to-Intermediate Risk.\n\nHOSPITAL COURSE:\nMrs. Rajeshwari Sundaram was admitted for standard \"7+3\" induction chemotherapy plus FLT3 inhibition. Baseline bone marrow aspirate showed 68% myeloblasts (CD34+, CD117+, MPO+). Cytogenetics: 46,XX[20] (normal karyotype).\n- Chemotherapy Administered: Cytarabine 100 mg/m2 continuous IV infusion (Days 1-7) + Daunorubicin 60 mg/m2 IV push (Days 1-3) + Midostaurin 50 mg PO twice daily with food (Days 8-21).\n- Complications: Developed febrile neutropenia on Day 11 (ANC 40/uL, Tmax 39.1 C). Blood cultures grew ESBL-producing Escherichia coli; successfully treated with IV Meropenem 1 g q8h for 10 days. Experienced Grade 2 oral mucositis managed with benzydamine mouthwash and IV hydration.\n- Count Recovery (Day 22): ANC recovered to 1,450/uL; unsupported Platelets 92,000/uL; Hemoglobin 9.6 g/dL. Day 21 bone marrow biopsy confirmed morphologic complete remission (CR) with 2% blasts.\n\nDISCHARGE MEDICATIONS:\n1. Posaconazole delayed-release tablets 300 mg PO once daily (antifungal prophylaxis).\n2. Acyclovir 400 mg PO twice daily (antiviral prophylaxis).\n3. Levofloxacin 500 mg PO once daily until ANC > 1,500/uL on two consecutive checks.\n4. Ondansetron 8 mg PO SOS for nausea.\n\nFOLLOW-UP INSTRUCTIONS:\nReport to Day Care Oncology Wing on 01/12/2026 at 09:00 AM for CBC, renal/liver function panel, and Cycle 1 High-Dose Cytarabine (HiDAC) consolidation planning. Seek immediate ER care at 1066 if temperature >= 38.0 C, chills, or mucosal bleeding occurs.",
+      "eventId": null,
+      "version": 34,
+      "synthetic": true,
+      "sourceHash": "1CDB7B4312F0BCCD0A313B9F926D0D1F68FC1E94ACE7E86CE21CE7C34197F3A1",
+      "extractionId": null,
+      "processingError": null,
+      "processingStatus": null,
+      "publicationStatus": null,
+      "processingAttempts": null
+    },
+    {
+      "noteId": "7b83e7bc-c817-4284-9306-8318b107adbb",
+      "source": "HOSPITAL: Apollo Cancer Centre, Teynampet, Chennai\nPATIENT NAME: Rajeshwari Sundaram | UHID: APL-CHN-8849201 | AGE/SEX: 48 / Female\nADMISSION DATE: 02/11/2026 | DISCHARGE DATE: 24/11/2026\nATTENDING ONCOLOGIST: Dr. Karthik Subramanian (Reg. No: TNMC-74912)\nEMERGENCY CONTACT: Venkatraman Sundaram (Spouse) - +91-98401-55219\n\nPRIMARY DIAGNOSIS:\nAcute Myeloid Leukemia (AML) with NPM1 mutation and FLT3-ITD (low allelic ratio 0.22), ELN 2022 Favorable-to-Intermediate Risk.\n\nHOSPITAL COURSE:\nMrs. Rajeshwari Sundaram was admitted for standard \"7+3\" induction chemotherapy plus FLT3 inhibition. Baseline bone marrow aspirate showed 68% myeloblasts (CD34+, CD117+, MPO+). Cytogenetics: 46,XX[20] (normal karyotype).\n- Chemotherapy Administered: Cytarabine 100 mg/m2 continuous IV infusion (Days 1-7) + Daunorubicin 60 mg/m2 IV push (Days 1-3) + Midostaurin 50 mg PO twice daily with food (Days 8-21).\n- Complications: Developed febrile neutropenia on Day 11 (ANC 40/uL, Tmax 39.1 C). Blood cultures grew ESBL-producing Escherichia coli; successfully treated with IV Meropenem 1 g q8h for 10 days. Experienced Grade 2 oral mucositis managed with benzydamine mouthwash and IV hydration.\n- Count Recovery (Day 22): ANC recovered to 1,450/uL; unsupported Platelets 92,000/uL; Hemoglobin 9.6 g/dL. Day 21 bone marrow biopsy confirmed morphologic complete remission (CR) with 2% blasts.\n\nDISCHARGE MEDICATIONS:\n1. Posaconazole delayed-release tablets 300 mg PO once daily (antifungal prophylaxis).\n2. Acyclovir 400 mg PO twice daily (antiviral prophylaxis).\n3. Levofloxacin 500 mg PO once daily until ANC > 1,500/uL on two consecutive checks.\n4. Ondansetron 8 mg PO SOS for nausea.\n\nFOLLOW-UP INSTRUCTIONS:\nReport to Day Care Oncology Wing on 01/12/2026 at 09:00 AM for CBC, renal/liver function panel, and Cycle 1 High-Dose Cytarabine (HiDAC) consolidation planning. Seek immediate ER care at 1066 if temperature >= 38.0 C, chills, or mucosal bleeding occurs.",
+      "eventId": "406297f1-8251-454d-a357-1a9fee948e05",
+      "version": 35,
+      "synthetic": true,
+      "sourceHash": "1CDB7B4312F0BCCD0A313B9F926D0D1F68FC1E94ACE7E86CE21CE7C34197F3A1",
+      "extractionId": null,
+      "processingError": "AZURE_INVALID_EVIDENCE",
+      "processingStatus": "Failed",
+      "publicationStatus": "Published",
+      "processingAttempts": 1
+    }
+  ],
+  "fingerprints": {
+    "extraction_runs": {
+      "rows": 72,
+      "fingerprint": "34f13a223c4de125dbebc2ff9f7bc500"
+    },
+    "emr_note_versions": {
+      "rows": 73,
+      "fingerprint": "96fecf2ed9c692aa02d5b2ae80b465bc"
+    },
+    "emr_outbox_events": {
+      "rows": 32,
+      "fingerprint": "4906179f9c4d9489b68b5930edd49b76"
+    },
+    "emr_extraction_links": {
+      "rows": 26,
+      "fingerprint": "007564234acab2c264de619a295f8858"
+    },
+    "extracted_medications": {
+      "rows": 173,
+      "fingerprint": "b1b22ab72ddd394355c45c00337e0c2c"
+    },
+    "emr_processed_messages": {
+      "rows": 26,
+      "fingerprint": "c103702ccf3fd15eb81667ca6148071a"
+    },
+    "extracted_investigations": {
+      "rows": 206,
+      "fingerprint": "16dc2385648d712a7aab152e0edaac59"
+    }
+  }
+}

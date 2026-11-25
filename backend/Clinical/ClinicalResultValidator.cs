@@ -105,24 +105,30 @@ public sealed class ClinicalResultValidator
 
     public ClinicalExtractionResponse Map(ClinicalCandidate candidate, string source, string correlationId)
     {
-        if (candidate.Medications == null || candidate.Investigations == null || candidate.Medications.Count + candidate.Investigations.Count > 1000) throw new InvalidClinicalEvidenceException();
+        ClinicalValidationEntity currentEntity = ClinicalValidationEntity.document;
+        int? currentIndex = null;
+        try
+        {
+        if (candidate == null || candidate.Medications == null || candidate.Investigations == null || candidate.Medications.Count + candidate.Investigations.Count > 1000) throw new InvalidClinicalEvidenceException(ClinicalValidationRule.CANDIDATE_COLLECTION_INVALID);
             bool isMultiEntityCandidate = candidate.Medications.Count + candidate.Investigations.Count > 1;
-            var rawSections = context.SegmentSections(source);
+            var rawSections = ClinicalSectionDetector.Detect(source);
             var spans = new List<(int Start, int End)>();
             var invSpans = new List<(int Start, int End)>();
             var quarantinedEntityWarnings = new List<FindingDto>();
-            foreach (var med in candidate.Medications)
+            foreach (var (med, entityIndex) in candidate.Medications.Select((entity, index) => (entity, index)))
             {
-                if (med == null) throw new InvalidClinicalEvidenceException();
+                currentEntity = ClinicalValidationEntity.medication; currentIndex = entityIndex;
+                if (med == null) throw new InvalidClinicalEvidenceException(ClinicalValidationRule.CANDIDATE_ENTITY_NULL);
                 var ev = Verify(source, med.Name, med.Evidence);
                 int start = FindName(source, med.Name, ev);
                 if (isMultiEntityCandidate && NonFormularyClassTerms.Contains(med.Name.Trim()))
                     continue;
                 spans.Add((start, start + med.Name.Length));
             }
-            foreach (var inv in candidate.Investigations)
+            foreach (var (inv, entityIndex) in candidate.Investigations.Select((entity, index) => (entity, index)))
             {
-                if (inv == null) throw new InvalidClinicalEvidenceException();
+                currentEntity = ClinicalValidationEntity.investigation; currentIndex = entityIndex;
+                if (inv == null) throw new InvalidClinicalEvidenceException(ClinicalValidationRule.CANDIDATE_ENTITY_NULL);
                 var ev = Verify(source, inv.Name, inv.Evidence);
                 int start = FindName(source, inv.Name, ev);
                 if (isMultiEntityCandidate && NonDiagnosticMonitoringTerms.Contains(inv.Name.Trim()))
@@ -130,20 +136,32 @@ public sealed class ClinicalResultValidator
                 spans.Add((start, start + inv.Name.Length));
                 invSpans.Add((start, start + inv.Name.Length));
             }
+            var boundaries = FoundryClinicalSupport.Boundaries(source, spans);
             var medications = new List<ExtractedMedicationDto>();
             var investigations = new List<ExtractedInvestigationDto>();
-            foreach (var m in candidate.Medications)
+            foreach (var (m, entityIndex) in candidate.Medications.Select((entity, index) => (entity, index)))
             {
-                if (m == null) throw new InvalidClinicalEvidenceException();
+                currentEntity = ClinicalValidationEntity.medication; currentIndex = entityIndex;
+                if (m == null) throw new InvalidClinicalEvidenceException(ClinicalValidationRule.CANDIDATE_ENTITY_NULL);
                 var evidence = Verify(source, m.Name, m.Evidence);
                 var nameStart = FindName(source, m.Name, evidence);
                 if (isMultiEntityCandidate && ShouldSkipNonOrderMedicationMention(m, source, nameStart, rawSections, candidate.Medications))
                     continue;
-                string scope = ClinicalScope.ForEntity(source, nameStart, nameStart + m.Name.Length, spans);
-                string attributes = ClinicalScope.AttributesForEntity(source, nameStart, nameStart + m.Name.Length, spans);
+                var entity = new LocalEntitySpan("MEDICATION", nameStart, nameStart + m.Name.Length, m.Name, null, "foundry");
+                var attributeRange = FoundryClinicalSupport.AttributeBounds(source, entity, boundaries, evidence);
+                string attributes = source[attributeRange.Start..attributeRange.End];
+                string scope = LocalClinicalScope.AssertionScope(source, entity, boundaries);
                 string sectionCode = context.DetermineSection(nameStart, rawSections);
-                string documentedAction = ClinicalScope.Action(scope);
-                var bound = posology.Bind(source, nameStart, nameStart + m.Name.Length, spans);
+                string documentedAction = ClinicalScope.Action(Regex.Replace(scope, @"\bcontinuous\b", "", RegexOptions.IgnoreCase));
+                var bound = posology.Bind(attributes, nameStart - attributeRange.Start, nameStart + m.Name.Length - attributeRange.Start, []);
+                var sourceAssertion = ClinicalAssertionClassifier.Classify(source, entity, boundaries, rawSections);
+                bool relativeDose = FoundryClinicalSupport.RelativeDose(attributes);
+                if (relativeDose && (FoundryClinicalSupport.RelativeDose(m.Dose ?? "") ||
+                    FoundryClinicalSupport.RelativeDose(m.Strength ?? "") || FoundryClinicalSupport.RelativeDose(m.DoseUnit ?? "")))
+                {
+                    var relative = Regex.Match(attributes, @"\b\d+(?:\.\d+)?\s*(?:mg|mcg|g)\s*/\s*(?:m2|m²|kg)(?:/\w+)?\b", RegexOptions.IgnoreCase);
+                    if (relative.Success) bound = bound with { Strength = null, Dose = relative.Value };
+                }
                 bool isPlanSection = sectionCode is "PLAN" or "ASSESSMENT_PLAN";
                 bool isDischargeMedsSection = sectionCode == "MEDICATIONS" &&
                     rawSections.Any(s => s.Code == "MEDICATIONS" && nameStart >= s.Start && nameStart < s.End &&
@@ -154,6 +172,12 @@ public sealed class ClinicalResultValidator
 
                 string effectiveAction = m.Action;
                 string effectiveAssertion = m.AssertionStatus;
+                if (sourceAssertion.LegacyStatus == "historical" && effectiveAssertion is "new_order" or "current_medication")
+                    throw new InvalidClinicalEvidenceException(ClinicalValidationRule.MEDICATION_HISTORICAL_ASSERTION_MISMATCH, ClinicalValidationField.assertionStatus);
+                if (sourceAssertion.LegacyStatus is "allergy" or "discontinued" or "held" && effectiveAssertion is "new_order" or "current_medication")
+                    throw new InvalidClinicalEvidenceException(ClinicalValidationRule.MEDICATION_INACTIVE_ASSERTION_MISMATCH, ClinicalValidationField.assertionStatus);
+                if (sourceAssertion.LegacyStatus == "negated" && effectiveAssertion is not ("negated" or "uncertain"))
+                    throw new InvalidClinicalEvidenceException(ClinicalValidationRule.MEDICATION_NEGATION_ASSERTION_MISMATCH, ClinicalValidationField.assertionStatus);
                 // Discharge medications without an explicit initiation verb ("Start"/"Prescribe") represent the active
                 // discharge regimen ("current_medication", action = "none") rather than newly started orders unless initiation is stated.
                 if (isDischargeMedsSection && documentedAction == "none" &&
@@ -188,9 +212,9 @@ public sealed class ClinicalResultValidator
                 }
 
                 if (ClinicalScope.Conditional(scope) && effectiveAssertion is not ("conditional" or "uncertain" or "negated"))
-                    throw new InvalidClinicalEvidenceException();
+                    throw new InvalidClinicalEvidenceException(ClinicalValidationRule.MEDICATION_CONDITIONAL_ASSERTION_MISMATCH);
                 if (ClinicalScope.Negated(scope) && documentedAction is "none" or "allergy" && effectiveAssertion is not ("negated" or "uncertain"))
-                    throw new InvalidClinicalEvidenceException();
+                    throw new InvalidClinicalEvidenceException(ClinicalValidationRule.MEDICATION_NEGATION_ASSERTION_MISMATCH);
                 if (effectiveAction != "none" && effectiveAction != documentedAction && !ClinicalReview.IsComplex(scope))
                 {
                     if (isMultiEntityCandidate && documentedAction == "none")
@@ -199,16 +223,16 @@ public sealed class ClinicalResultValidator
                             $"Quarantined unsupported action '{effectiveAction}' on '{m.Name}' for clinical review without discarding valid sibling entities."));
                         continue;
                     }
-                    throw new InvalidClinicalEvidenceException();
+                    throw new InvalidClinicalEvidenceException(ClinicalValidationRule.MEDICATION_ACTION_UNSUPPORTED);
                 }
                 if (documentedAction is "stop" or "hold" or "allergy" && effectiveAssertion is "new_order" or "current_medication")
-                    throw new InvalidClinicalEvidenceException();
+                    throw new InvalidClinicalEvidenceException(ClinicalValidationRule.MEDICATION_INACTIVE_ASSERTION_MISMATCH);
                 if (effectiveAssertion == "negated")
                 {
                     if (effectiveAction != "none")
-                        throw new InvalidClinicalEvidenceException();
+                        throw new InvalidClinicalEvidenceException(ClinicalValidationRule.MEDICATION_NEGATED_ACTION_CONFLICT);
                     if (!ClinicalScope.Negated(scope) && !ClinicalScope.Negated(evidence.Quote))
-                        throw new InvalidClinicalEvidenceException();
+                        throw new InvalidClinicalEvidenceException(ClinicalValidationRule.MEDICATION_NEGATION_UNSUPPORTED);
                 }
                 else
                 {
@@ -223,60 +247,71 @@ public sealed class ClinicalResultValidator
                     if (actionConflict ||
                         effectiveAction is not ("start" or "continue" or "hold" or "stop" or "increase" or "decrease" or "allergy" or "none") ||
                         effectiveAssertion is not ("new_order" or "current_medication" or "held" or "discontinued" or "conditional" or "historical" or "allergy" or "uncertain"))
-                        throw new InvalidClinicalEvidenceException();
+                        throw new InvalidClinicalEvidenceException(ClinicalValidationRule.MEDICATION_ACTION_ASSERTION_INVALID);
                     if ((effectiveAction == "stop" && effectiveAssertion is not ("discontinued" or "conditional" or "historical")) ||
                         (effectiveAction == "hold" && effectiveAssertion != "held" && effectiveAssertion != "conditional") ||
                         (effectiveAction == "allergy" && effectiveAssertion != "allergy") ||
                         (effectiveAssertion == "discontinued" && documentedAction != "stop" && documentedAction != "none" && documentedAction != "decrease") ||
                         (effectiveAssertion == "held" && documentedAction != "hold" && documentedAction != "none") ||
                         (effectiveAssertion == "allergy" && documentedAction != "allergy" && documentedAction != "none"))
-                        throw new InvalidClinicalEvidenceException();
+                        throw new InvalidClinicalEvidenceException(ClinicalValidationRule.MEDICATION_ACTION_ASSERTION_CONFLICT);
                     if (!ClinicalScope.Conditional(scope) && !ClinicalScope.Historical(scope) && effectiveAssertion != "uncertain" &&
                         (effectiveAction == "start" && effectiveAssertion != "new_order" ||
                          (effectiveAction == "continue" && effectiveAssertion != "current_medication" &&
                           !(isPlanSection && effectiveAssertion == "new_order"))))
-                        throw new InvalidClinicalEvidenceException();
+                        throw new InvalidClinicalEvidenceException(ClinicalValidationRule.MEDICATION_ACTION_TEMPORAL_CONFLICT);
                 }
-            foreach (var value in new[] { m.Strength, m.Dose, m.Formulation, m.DoseUnit })
-                if (!Supported(value, attributes)) throw new InvalidClinicalEvidenceException();
-            if (m.Duration != null && !Supported(m.Duration, attributes) && !Supported(m.Duration, scope))
-                throw new InvalidClinicalEvidenceException();
-            if (m.Instructions != null && !Supported(m.Instructions, attributes) && !Supported(m.Instructions, scope))
-                throw new InvalidClinicalEvidenceException();
+            foreach (var field in new[] { (ClinicalValidationField.strength, m.Strength), (ClinicalValidationField.dose, m.Dose),
+                (ClinicalValidationField.formulation, m.Formulation), (ClinicalValidationField.doseUnit, m.DoseUnit) })
+                if (!Supported(field.Item2, attributes)) throw new InvalidClinicalEvidenceException(ClinicalValidationRule.MEDICATION_ATTRIBUTE_UNSUPPORTED, field.Item1);
+            if (FoundryClinicalSupport.TruncatesRelativeDose(m.Dose, attributes) || FoundryClinicalSupport.TruncatesRelativeDose(m.Strength, attributes))
+                throw new InvalidClinicalEvidenceException(ClinicalValidationRule.MEDICATION_RELATIVE_DOSE_TRUNCATED, ClinicalValidationField.dose);
+            if (m.Duration != null && !Supported(m.Duration, attributes))
+                throw new InvalidClinicalEvidenceException(ClinicalValidationRule.MEDICATION_DURATION_UNSUPPORTED, ClinicalValidationField.duration);
+            if (m.Instructions != null && !Supported(m.Instructions, attributes))
+                throw new InvalidClinicalEvidenceException(ClinicalValidationRule.MEDICATION_INSTRUCTIONS_UNSUPPORTED, ClinicalValidationField.instructions);
             string? effectiveStrength = m.Strength;
             string? effectiveDose = m.Dose;
             string? effectiveDoseUnit = m.DoseUnit;
+            // A BSA/weight-relative expression is a documented dose, never a product strength.
+            if (m.Strength != null && FoundryClinicalSupport.RelativeDose(m.Strength) && m.Dose == null)
+            {
+                effectiveDose = m.Strength; effectiveStrength = null;
+                effectiveDoseUnit = Regex.Match(m.Strength, @"(?:mg|mcg|g)\s*/\s*(?:m2|m²|kg)(?:/\w+)?", RegexOptions.IgnoreCase).Value;
+            }
             if (m.Dose != null && m.DoseUnit != null)
             {
                 string doseWithUnit = (" " + Normalize(m.Dose)).EndsWith(" " + Normalize(m.DoseUnit), StringComparison.Ordinal)
                     ? m.Dose : m.Dose + " " + m.DoseUnit;
-                if (!Supported(doseWithUnit, attributes)) throw new InvalidClinicalEvidenceException();
-                if (bound.Dose != null && Normalize(doseWithUnit) != Normalize(bound.Dose)) throw new InvalidClinicalEvidenceException();
-                if (effectiveStrength == null && bound.Strength != null && bound.Dose == null &&
+                if (!Supported(doseWithUnit, attributes)) throw new InvalidClinicalEvidenceException(ClinicalValidationRule.MEDICATION_DOSE_UNIT_UNSUPPORTED);
+                if (bound.Dose != null && Normalize(doseWithUnit) != Normalize(bound.Dose)) throw new InvalidClinicalEvidenceException(ClinicalValidationRule.MEDICATION_DOSE_BINDING_MISMATCH);
+                bool retainAdministeredMass = relativeDose || bound.Route is "IV" or "IM" or "SC";
+                if (!retainAdministeredMass && effectiveStrength == null && bound.Strength != null && bound.Dose == null &&
                     Normalize(doseWithUnit) == Normalize(bound.Strength))
                 {
                     effectiveStrength = bound.Strength;
                     effectiveDose = null;
                     effectiveDoseUnit = null;
                 }
-                else if (effectiveStrength == null && bound.Dose == null &&
+                else if (!retainAdministeredMass && effectiveStrength == null && bound.Dose == null &&
                          Regex.IsMatch(m.DoseUnit.Trim(), @"^(?:mg|mcg|µg|ug|g|gm|mEq|%)\b", RegexOptions.IgnoreCase))
                 {
-                    effectiveStrength = m.Dose.Trim() + m.DoseUnit.Trim();
+                    effectiveStrength = doseWithUnit;
                     effectiveDose = null;
                     effectiveDoseUnit = null;
                 }
             }
             if (m.Route != null && string.IsNullOrWhiteSpace(m.Route) || m.Frequency != null && string.IsNullOrWhiteSpace(m.Frequency))
-                throw new InvalidClinicalEvidenceException();
-            if (!SupportedRoute(m.Route, attributes) && CanonicalRoute(m.Route) != CanonicalRoute(bound.Route) ||
-                !ClinicalAttributeGrounding.SupportsFrequency(m.Frequency, attributes))
-                throw new InvalidClinicalEvidenceException();
+                throw new InvalidClinicalEvidenceException(ClinicalValidationRule.MEDICATION_EMPTY_ROUTE_OR_FREQUENCY);
+            if (!SupportedRoute(m.Route, attributes) && !FoundryClinicalSupport.SupportsRoute(m.Route, attributes) && CanonicalRoute(m.Route) != CanonicalRoute(bound.Route))
+                throw new InvalidClinicalEvidenceException(ClinicalValidationRule.MEDICATION_ROUTE_UNSUPPORTED, ClinicalValidationField.route);
+            if (!ClinicalAttributeGrounding.SupportsFrequency(m.Frequency, attributes) && !FoundryClinicalSupport.SupportsContinuousFrequency(m.Frequency, attributes))
+                throw new InvalidClinicalEvidenceException(ClinicalValidationRule.MEDICATION_FREQUENCY_UNSUPPORTED, ClinicalValidationField.frequency);
             // Explicitly scoped deterministic bindings catch cross-drug attachment.
             if (effectiveStrength != null && bound.Strength != null &&
                 Normalize(effectiveStrength) != Normalize(bound.Strength) &&
                 !ClinicalReview.IsComplex(scope))
-                throw new InvalidClinicalEvidenceException();
+                throw new InvalidClinicalEvidenceException(ClinicalValidationRule.MEDICATION_STRENGTH_BINDING_MISMATCH);
             string? effectiveFrequency = m.Frequency;
             if (effectiveFrequency != null && bound.Frequency != null &&
                 Regex.IsMatch(effectiveFrequency, @"\b(?:qds|qid|tds|tid|bd|bid)\s+prn\b", RegexOptions.IgnoreCase))
@@ -307,6 +342,9 @@ public sealed class ClinicalResultValidator
                 effectiveRoute = "eye drops";
             }
             var match = ontology.ResolveMedication(m.Name, effectiveStrength);
+            if (match.Status == "matched" && !TerminologyVerification.DocumentedIngredientMatches(m.Name, match.StandardId))
+                match = match with { Status = "uncertain", StandardId = null, CandidateCode = match.StandardId, SemanticStatus = "broader",
+                    DisplayName = m.Name, MappingNote = "Documented ingredient/salt/ester does not exactly match the verified candidate; code withheld." };
             var (flags, findings) = Findings(match, true);
             if (effectiveStrength == null && effectiveDose == null && effectiveAction is not ("allergy" or "stop" or "hold") && effectiveAssertion != "negated")
             {
@@ -343,6 +381,9 @@ public sealed class ClinicalResultValidator
                 : confirmedByRule ? "LLM_AND_RULE_CONFIRMED"
                 : "LLM_EXTRACTED";
 
+            var sourceAttributes = MedicationAttributeExtractor.Extract(source, entity, boundaries);
+            var clinicalContext = FoundryClinicalSupport.Context(source, entity, sourceAssertion, rawSections, sourceAttributes.Evidence) with
+            { Administration = sourceAttributes.Administration, AdministrationSchedule = sourceAttributes.Schedule };
             medications.Add(new(
                 m.Name,
                 effectiveStrength,
@@ -367,38 +408,53 @@ public sealed class ClinicalResultValidator
                     RuleModified: modifications.Count > 0,
                     Modifications: modifications.Count > 0 ? modifications : null,
                     UncertaintyReason: uncertaintyReason,
-                    Quarantined: match.Status != "matched")));
+                    Quarantined: match.Status != "matched", ClinicalContext: clinicalContext)));
         }
-        foreach (var i in candidate.Investigations)
+        foreach (var (i, entityIndex) in candidate.Investigations.Select((entity, index) => (entity, index)))
         {
-            if (i == null) throw new InvalidClinicalEvidenceException();
+                currentEntity = ClinicalValidationEntity.investigation; currentIndex = entityIndex;
+            if (i == null) throw new InvalidClinicalEvidenceException(ClinicalValidationRule.CANDIDATE_ENTITY_NULL);
             var evidence = Verify(source, i.Name, i.Evidence);
             var nameStart = FindName(source, i.Name, evidence);
             if (isMultiEntityCandidate && ShouldSkipNonOrderInvestigationMention(i, source, nameStart, rawSections))
                 continue;
-            var scope = ClinicalScope.ForEntity(source, nameStart, nameStart + i.Name.Length, spans);
-            var attributes = ClinicalScope.AttributesForEntity(source, nameStart, nameStart + i.Name.Length, spans);
+            var entity = new LocalEntitySpan("INVESTIGATION", nameStart, nameStart + i.Name.Length, i.Name, null, "foundry");
+            var scope = LocalClinicalScope.AssertionScope(source, entity, boundaries);
+            var attributeRange = FoundryClinicalSupport.AttributeBounds(source, entity, boundaries, evidence);
+            var attributes = source[attributeRange.Start..attributeRange.End];
+            var sourceAssertion = FoundryClinicalSupport.InvestigationAssertion(source, entity, boundaries, rawSections);
+            bool conditional = sourceAssertion.LegacyStatus == "conditional";
+            bool resultDocumented = FoundryClinicalSupport.HasResult(source, entity, boundaries);
             if (i.AssertionStatus is not ("new_order" or "conditional" or "historical" or "uncertain" or "negated") || i.Status is not ("preliminary" or "final" or "unknown"))
-                throw new InvalidClinicalEvidenceException();
+                throw new InvalidClinicalEvidenceException(ClinicalValidationRule.INVESTIGATION_ASSERTION_STATUS_INVALID);
             string effectiveInvAssertion = i.AssertionStatus;
-            if (ClinicalScope.Conditional(scope) && effectiveInvAssertion == "new_order" &&
+            if (conditional && effectiveInvAssertion == "new_order" &&
                 Regex.IsMatch(scope, @"\bprior to (?:initiating|dose escalation)\b", RegexOptions.IgnoreCase))
             {
                 effectiveInvAssertion = "conditional";
             }
-            if (ClinicalScope.Conditional(scope) && effectiveInvAssertion != "conditional")
-                throw new InvalidClinicalEvidenceException();
-            if (effectiveInvAssertion == "conditional" && !ClinicalScope.Conditional(scope))
-                throw new InvalidClinicalEvidenceException();
-            if (effectiveInvAssertion == "historical" && !ClinicalScope.Historical(scope) && !ClinicalScope.Historical(evidence.Quote))
-                throw new InvalidClinicalEvidenceException();
-            if (i.Status == "final" && !ClinicalScope.Historical(scope) && !ClinicalScope.Historical(evidence.Quote)) throw new InvalidClinicalEvidenceException();
-            if (ClinicalScope.Negated(scope) && effectiveInvAssertion is not ("negated" or "uncertain") ||
-                effectiveInvAssertion == "negated" && !ClinicalScope.Negated(scope)) throw new InvalidClinicalEvidenceException();
-            if (!SupportedInvestigationTiming(i.Timing, attributes, scope, source, invSpans))
-                throw new InvalidClinicalEvidenceException();
-            if (!Supported(i.Specimen, attributes) && !Supported(i.Specimen, scope) && !Supported(i.Specimen, evidence.Quote))
-                throw new InvalidClinicalEvidenceException();
+            if (conditional && effectiveInvAssertion is not ("conditional" or "uncertain"))
+                throw new InvalidClinicalEvidenceException(ClinicalValidationRule.INVESTIGATION_CONDITIONAL_ASSERTION_MISMATCH, ClinicalValidationField.assertionStatus);
+            if (effectiveInvAssertion == "conditional" && !conditional)
+                throw new InvalidClinicalEvidenceException(ClinicalValidationRule.INVESTIGATION_CONDITION_UNSUPPORTED, ClinicalValidationField.assertionStatus);
+            if (effectiveInvAssertion == "historical" && sourceAssertion.LegacyStatus != "historical")
+                throw new InvalidClinicalEvidenceException(ClinicalValidationRule.INVESTIGATION_HISTORICAL_CONTEXT_UNSUPPORTED, ClinicalValidationField.assertionStatus);
+            if (i.Status == "final" && (!resultDocumented || sourceAssertion.LegacyStatus is "new_order" or "conditional" or "negated"))
+                throw new InvalidClinicalEvidenceException(ClinicalValidationRule.INVESTIGATION_FINAL_RESULT_UNSUPPORTED, ClinicalValidationField.status);
+            if (sourceAssertion.LegacyStatus == "negated" && effectiveInvAssertion is not ("negated" or "uncertain") ||
+                effectiveInvAssertion == "negated" && sourceAssertion.LegacyStatus != "negated")
+                throw new InvalidClinicalEvidenceException(ClinicalValidationRule.INVESTIGATION_NEGATION_ASSERTION_MISMATCH, ClinicalValidationField.assertionStatus);
+            if (effectiveInvAssertion == "new_order" && sourceAssertion.LegacyStatus == "historical")
+                throw new InvalidClinicalEvidenceException(ClinicalValidationRule.INVESTIGATION_TEMPORAL_ASSERTION_MISMATCH, ClinicalValidationField.assertionStatus);
+            var sentence = LocalClinicalScope.Sentence(source, entity.Start, entity.End);
+            bool sentenceHasOtherTest = invSpans.Any(s => (s.Start != entity.Start || s.End != entity.End) && s.Start >= sentence.Start && s.End <= sentence.End);
+            string timingScope = sentenceHasOtherTest
+                ? source[sentence.Start..attributeRange.End]
+                : source[sentence.Start..sentence.End];
+            if (!SupportedInvestigationTiming(i.Timing, attributes, timingScope, source, invSpans))
+                throw new InvalidClinicalEvidenceException(ClinicalValidationRule.INVESTIGATION_TIMING_UNSUPPORTED, ClinicalValidationField.timing);
+            if (!Supported(i.Specimen, attributes))
+                throw new InvalidClinicalEvidenceException(ClinicalValidationRule.INVESTIGATION_SPECIMEN_UNSUPPORTED, ClinicalValidationField.specimen);
             string cleanInvName = StripRedundantParentheticalAlias(i.Name);
             var match = ontology.ResolveInvestigation(cleanInvName);
             if ((cleanInvName.Equals("chest x-ray", StringComparison.OrdinalIgnoreCase) ||
@@ -424,7 +480,7 @@ public sealed class ClinicalResultValidator
             if (effectiveInvAssertion != i.AssertionStatus)
                 invModifications.Add($"assertionStatus normalized from '{i.AssertionStatus}' to '{effectiveInvAssertion}'");
 
-            string? extractedResultVal = ExtractNumericResultFromQuote(evidence.Quote, cleanInvName);
+            string? extractedResultVal = resultDocumented ? FoundryClinicalSupport.DocumentedResult(source, entity, boundaries) : null;
             string invCategory = ClassifyInvestigationCategory(cleanInvName);
             bool invConfirmedByRule = IndianOntologyResolver.KnownLabTerms.Contains(cleanInvName, StringComparer.OrdinalIgnoreCase);
             string invOrigin = effectiveInvAssertion == "uncertain" ? "HUMAN_REVIEW_REQUIRED"
@@ -455,7 +511,7 @@ public sealed class ClinicalResultValidator
                     RuleModified: invModifications.Count > 0,
                     Modifications: invModifications.Count > 0 ? invModifications : null,
                     UncertaintyReason: invUncertaintyReason,
-                    Quarantined: match.Status != "matched")));
+                    Quarantined: match.Status != "matched", ClinicalContext: FoundryClinicalSupport.Context(source, entity, sourceAssertion, rawSections))));
         }
 
         // Second-pass deterministic completeness check: compare recognized formulary and pattern-based
@@ -475,6 +531,12 @@ public sealed class ClinicalResultValidator
             new(all.Any(f => f.Severity == "error"), all.Count(f => f.Severity == "error"), all.Count(f => f.Severity == "warning"), dimensions),
             safetyAlerts,
             ClinicalEmbeddingGenerator.GenerateEmbedding(source), source));
+        }
+        catch (InvalidClinicalEvidenceException rejection)
+        {
+            rejection.At(currentEntity, currentIndex);
+            throw;
+        }
     }
 
     public static (List<FindingDto> Findings, List<ClinicalSafetyAlertDto> Alerts) CheckFormularyMedicationCompleteness(
@@ -782,7 +844,7 @@ public sealed class ClinicalResultValidator
     public static EvidenceDto Verify(string source, string name, CandidateEvidence evidence)
     {
         if (string.IsNullOrWhiteSpace(name) || evidence == null || string.IsNullOrEmpty(evidence.Quote) || evidence.Occurrence < 1 || evidence.Occurrence > 1000)
-            throw new InvalidClinicalEvidenceException();
+            throw new InvalidClinicalEvidenceException(ClinicalValidationRule.EVIDENCE_CONTRACT_INVALID);
         int start = -1, search = 0;
         for (int n = 0; n < evidence.Occurrence; n++)
         {
@@ -802,7 +864,7 @@ public sealed class ClinicalResultValidator
             evidence.Quote.Split((char[]?)null, StringSplitOptions.RemoveEmptyEntries).Select(Regex.Escape));
         var matches = Regex.Matches(source, flexPattern);
         if (matches.Count < evidence.Occurrence)
-            throw new InvalidClinicalEvidenceException();
+            throw new InvalidClinicalEvidenceException(evidence.Occurrence > 1 ? ClinicalValidationRule.EVIDENCE_OCCURRENCE_NOT_FOUND : ClinicalValidationRule.EVIDENCE_QUOTE_NOT_IN_SOURCE);
         var m = matches[evidence.Occurrence - 1];
         var flexVerified = new EvidenceDto(source[m.Index..(m.Index + m.Length)], true, m.Index, m.Index + m.Length);
         _ = FindName(source, name, flexVerified);
@@ -816,7 +878,7 @@ public sealed class ClinicalResultValidator
         var match = Regex.Match(evidence.Quote, @"(?<![\p{L}\p{N}])" + pattern + rightBoundary, RegexOptions.IgnoreCase);
         if (!match.Success)
         {
-            throw new InvalidClinicalEvidenceException();
+            throw new InvalidClinicalEvidenceException(ClinicalValidationRule.ENTITY_NAME_NOT_IN_EVIDENCE, ClinicalValidationField.name);
         }
         return evidence.Start!.Value + match.Index;
     }
@@ -837,7 +899,8 @@ public sealed class ClinicalResultValidator
     }
     private static string Normalize(string? value)
     {
-        string text = (value ?? "").ToLowerInvariant();
+        string text = (value ?? "").ToLowerInvariant().Replace("m²", "m2", StringComparison.Ordinal);
+        text = Regex.Replace(text, @"(?<=\d),(?=\d{3}\b)", "");
         string[] words = ["one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"];
         for (int n = 0; n < words.Length; n++) text = Regex.Replace(text, @"\b" + words[n] + @"\b", (n + 1).ToString());
         text = Regex.Replace(text, @"\b(tablets|tabs|tab)\b", "tablet");

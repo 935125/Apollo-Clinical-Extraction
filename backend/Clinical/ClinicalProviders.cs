@@ -31,8 +31,9 @@ public sealed class FoundryOptions
     public string? AuthenticationMode { get; set; }
     public string Authentication { get; set; } = "EntraId";
     public string? ApiKey { get; set; }
-    public double TimeoutSeconds { get; set; } = 45;
+    public double TimeoutSeconds { get; set; } = 90;
     public int MaxRetries { get; set; } = 2;
+    public int MaxEvidenceRepairRetries { get; set; } = 0;
     public int RetryBaseDelayMs { get; set; } = 250;
     public int MaxCompletionTokens { get; set; } = 16000;
     public bool AllowLocalFallback { get; set; } = true;
@@ -94,6 +95,11 @@ public interface IClinicalExtractionProvider
 public interface IFoundryClinicalExtractor
 {
     Task<FoundryExtraction> ExtractAsync(string source, CancellationToken ct);
+    Task<FoundryExtraction> RepairAsync(
+        string source,
+        string priorStructuredJson,
+        ClinicalValidationDiagnosticDto diagnostic,
+        CancellationToken ct) => ExtractAsync(source, ct);
 }
 public interface ILocalClinicalExtractor : IClinicalExtractionProvider
 {
@@ -116,5 +122,3 @@ public class ClinicalExtractionException(string code, int status, string safeMes
 }
 public sealed class PersistenceFailureException() : ClinicalExtractionException(
     "PERSISTENCE_FAILED", 503, "The extraction could not be saved. Your source note is retained.");
-// Do not retain source-bearing diagnostic strings in exception objects or traces.
-public sealed class InvalidClinicalEvidenceException() : Exception("Unsupported clinical evidence");

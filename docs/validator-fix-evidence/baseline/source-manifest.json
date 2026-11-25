@@ -1,0 +1,22 @@
+﻿[
+    {
+        "sha256":  "7922AAE8AB093FF16F51E51C32479F258A971F51238778DD5083101005DA65D1",
+        "path":  "backend/Clinical/ClinicalResultValidator.cs"
+    },
+    {
+        "sha256":  "10C32ACEA6C71E0A379C4F292DA033787BF4DEFA615D46D52C75810B9B1F443D",
+        "path":  "backend/Clinical/ClinicalProviders.cs"
+    },
+    {
+        "sha256":  "F645CDA68590F05C67841AE010DEE3AD5219647D1AAFB368DAF9F04C15BC361B",
+        "path":  "backend/Clinical/FoundryClinicalExtractor.cs"
+    },
+    {
+        "sha256":  "A92B5E4E428B7C65A7413863EEAD35C07944FFD5844900A6F5A2268B7529362A",
+        "path":  "backend/Clinical/ExtractionWorkflow.cs"
+    },
+    {
+        "sha256":  "21145F50168CE86AD596A0F35BE3D0D345C453234E146DF9E525B6CC049C9454",
+        "path":  "backend/Clinical/ClinicalAttributeGrounding.cs"
+    }
+]
