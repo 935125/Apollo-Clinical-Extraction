@@ -97,7 +97,9 @@ public sealed class ExtractionWorkflow(
                 {
                     try
                     {
-                        accepted = validator.Map(azure.Candidate, noteText, correlationId);
+                        accepted = inputType.Equals("emr", StringComparison.OrdinalIgnoreCase)
+                            ? validator.MapResilient(azure.Candidate, noteText, correlationId, logger)
+                            : validator.Map(azure.Candidate, noteText, correlationId);
                         if (accepted.ValidationSummary.HasErrors) throw new InvalidClinicalEvidenceException(ClinicalValidationRule.VALIDATION_SUMMARY_ERRORS);
                         break;
                     }

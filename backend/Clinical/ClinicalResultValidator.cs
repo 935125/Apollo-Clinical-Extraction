@@ -448,7 +448,8 @@ public sealed class ClinicalResultValidator
                 throw new InvalidClinicalEvidenceException(ClinicalValidationRule.INVESTIGATION_TEMPORAL_ASSERTION_MISMATCH, ClinicalValidationField.assertionStatus);
             var sentence = LocalClinicalScope.Sentence(source, entity.Start, entity.End);
             bool sentenceHasOtherTest = invSpans.Any(s => (s.Start != entity.Start || s.End != entity.End) && s.Start >= sentence.Start && s.End <= sentence.End);
-            string timingScope = sentenceHasOtherTest
+            bool entityHasOwnTiming = Regex.IsMatch(attributes, @"\b(?:today|tomorrow|stat|urgent|now|tonight|morning|evening|next\s+\w+|in\s+\d+\s+\w+|\d{1,2}/\d{1,2}/\d{4})\b", RegexOptions.IgnoreCase);
+            string timingScope = sentenceHasOtherTest && entityHasOwnTiming
                 ? source[sentence.Start..attributeRange.End]
                 : source[sentence.Start..sentence.End];
             if (!SupportedInvestigationTiming(i.Timing, attributes, timingScope, source, invSpans))
@@ -536,6 +537,307 @@ public sealed class ClinicalResultValidator
         {
             rejection.At(currentEntity, currentIndex);
             throw;
+        }
+    }
+
+    /// <summary>
+    /// Resilient single-pass Foundry mapper for complex real-world EMR clinical notes.
+    /// First runs strict <see cref="Map"/>; if a secondary regex/attribute/temporality heuristic
+    /// disagrees with GPT-6.1 Sol on a verbatim-grounded entity, preserves every verbatim-grounded
+    /// entity with clinical review warnings instead of discarding the entire extraction.
+    /// Never accepts fabricated/non-verbatim quotes and never converts allergy/negated/stopped meds into active orders.
+    /// </summary>
+    public ClinicalExtractionResponse MapResilient(
+        ClinicalCandidate candidate,
+        string source,
+        string correlationId,
+        ILogger? logger = null)
+    {
+        try
+        {
+            return Map(candidate, source, correlationId);
+        }
+        catch (InvalidClinicalEvidenceException strictRejection)
+        {
+            if (candidate.Medications == null || candidate.Investigations == null ||
+                candidate.Medications.Count + candidate.Investigations.Count > 1000)
+                throw;
+
+            int proposedTotal = candidate.Medications.Count + candidate.Investigations.Count;
+            if (proposedTotal == 0)
+                throw;
+
+            logger?.LogWarning(
+                "Strict Foundry validator triggered {RuleId} ({EntityType}[{EntityIndex}].{Field}); applying verbatim-grounded resilient reconciliation without extra provider calls.",
+                strictRejection.Diagnostic.RuleId,
+                strictRejection.Diagnostic.EntityType,
+                strictRejection.Diagnostic.EntityIndex,
+                strictRejection.Diagnostic.Field);
+
+            var rawSections = context.SegmentSections(source);
+            var spans = new List<(int Start, int End)>();
+            var medAnchors = new List<(CandidateMedication Med, EvidenceDto Evidence, int NameStart)>();
+            var invAnchors = new List<(CandidateInvestigation Inv, EvidenceDto Evidence, int NameStart)>();
+            var quarantinedWarnings = new List<FindingDto>();
+
+            foreach (var med in candidate.Medications)
+            {
+                if (med == null) continue;
+                if (TryAnchorEntity(source, med.Name, med.Evidence, out var ev, out int start))
+                {
+                    if (proposedTotal > 1 && NonFormularyClassTerms.Contains(med.Name.Trim()))
+                        continue;
+                    spans.Add((start, Math.Min(source.Length, start + Math.Max(1, med.Name.Length))));
+                    medAnchors.Add((med, ev, start));
+                }
+                else
+                {
+                    quarantinedWarnings.Add(new("ENTITY_QUARANTINED_FOR_REVIEW", "warning", "medications",
+                        "Omitted ungrounded medication candidate whose quote/name was not verbatim in source text."));
+                }
+            }
+
+            foreach (var inv in candidate.Investigations)
+            {
+                if (inv == null) continue;
+                if (TryAnchorEntity(source, inv.Name, inv.Evidence, out var ev, out int start))
+                {
+                    if (proposedTotal > 1 && NonDiagnosticMonitoringTerms.Contains(inv.Name.Trim()))
+                        continue;
+                    spans.Add((start, Math.Min(source.Length, start + Math.Max(1, inv.Name.Length))));
+                    invAnchors.Add((inv, ev, start));
+                }
+                else
+                {
+                    quarantinedWarnings.Add(new("ENTITY_QUARANTINED_FOR_REVIEW", "warning", "investigations",
+                        "Omitted ungrounded investigation candidate whose quote/name was not verbatim in source text."));
+                }
+            }
+
+            // Fail closed if ZERO entities were verbatim-grounded in source text (pure hallucination payload).
+            if (medAnchors.Count == 0 && invAnchors.Count == 0)
+                throw;
+
+            var boundaries = FoundryClinicalSupport.Boundaries(source, spans);
+            var medications = new List<ExtractedMedicationDto>();
+            var investigations = new List<ExtractedInvestigationDto>();
+
+            foreach (var (m, evidence, nameStart) in medAnchors)
+            {
+                if (proposedTotal > 1 && ShouldSkipNonOrderMedicationMention(m, source, nameStart, rawSections, candidate.Medications))
+                    continue;
+
+                var entity = new LocalEntitySpan("MEDICATION", nameStart, Math.Min(source.Length, nameStart + m.Name.Length), m.Name, null, "foundry");
+                var sourceAssertion = ClinicalAssertionClassifier.Classify(source, entity, boundaries, rawSections);
+                var modifications = new List<string>();
+
+                string effectiveAction = m.Action is "start" or "continue" or "hold" or "stop" or "increase" or "decrease" or "allergy" or "none"
+                    ? m.Action : "none";
+                string effectiveAssertion = m.AssertionStatus is "new_order" or "current_medication" or "held" or "discontinued" or "conditional" or "historical" or "allergy" or "uncertain" or "negated"
+                    ? m.AssertionStatus : "uncertain";
+
+                // Hard patient-safety guard: never let allergy/negated/discontinued/held mentions become active orders.
+                if (sourceAssertion.LegacyStatus == "allergy" && effectiveAssertion is "new_order" or "current_medication")
+                {
+                    modifications.Add($"assertionStatus safety-normalized from '{effectiveAssertion}' to 'allergy'");
+                    effectiveAssertion = "allergy";
+                    effectiveAction = "allergy";
+                }
+                else if (sourceAssertion.LegacyStatus == "negated" && effectiveAssertion is "new_order" or "current_medication")
+                {
+                    modifications.Add($"assertionStatus safety-normalized from '{effectiveAssertion}' to 'negated'");
+                    effectiveAssertion = "negated";
+                    effectiveAction = "none";
+                }
+                else if (sourceAssertion.LegacyStatus == "discontinued" && effectiveAssertion is "new_order" or "current_medication")
+                {
+                    modifications.Add($"assertionStatus safety-normalized from '{effectiveAssertion}' to 'discontinued'");
+                    effectiveAssertion = "discontinued";
+                    effectiveAction = "stop";
+                }
+                else if (sourceAssertion.LegacyStatus == "held" && effectiveAssertion is "new_order" or "current_medication")
+                {
+                    modifications.Add($"assertionStatus safety-normalized from '{effectiveAssertion}' to 'held'");
+                    effectiveAssertion = "held";
+                    effectiveAction = "hold";
+                }
+
+                string? effectiveStrength = m.Strength;
+                string? effectiveDose = m.Dose;
+                string? effectiveDoseUnit = m.DoseUnit;
+                if (effectiveStrength != null && FoundryClinicalSupport.RelativeDose(effectiveStrength) && effectiveDose == null)
+                {
+                    effectiveDose = effectiveStrength;
+                    effectiveStrength = null;
+                    effectiveDoseUnit = Regex.Match(effectiveDose, @"(?:mg|mcg|g)\s*/\s*(?:m2|m²|kg)(?:/\w+)?", RegexOptions.IgnoreCase).Value;
+                }
+
+                var match = ontology.ResolveMedication(m.Name, effectiveStrength);
+                if (match.Status == "matched" && !TerminologyVerification.DocumentedIngredientMatches(m.Name, match.StandardId))
+                    match = match with
+                    {
+                        Status = "uncertain",
+                        StandardId = null,
+                        CandidateCode = match.StandardId,
+                        SemanticStatus = "broader",
+                        DisplayName = m.Name,
+                        MappingNote = "Documented ingredient/salt/ester does not exactly match the verified candidate; code withheld."
+                    };
+
+                var (flags, findings) = Findings(match, true);
+                if (effectiveStrength == null && effectiveDose == null && effectiveAction is not ("allergy" or "stop" or "hold") && effectiveAssertion != "negated")
+                {
+                    flags.Add("DOSE_UNIT_MISSING");
+                    findings.Add(new("DOSE_UNIT_MISSING", "warning", "dose", "No dose or product strength was documented."));
+                }
+
+                var sourceAttributes = MedicationAttributeExtractor.Extract(source, entity, boundaries);
+                var clinicalContext = FoundryClinicalSupport.Context(source, entity, sourceAssertion, rawSections, sourceAttributes.Evidence) with
+                {
+                    Administration = sourceAttributes.Administration,
+                    AdministrationSchedule = sourceAttributes.Schedule
+                };
+                string origin = match.Status == "matched" ? "LLM_AND_RULE_CONFIRMED" : "LLM_EXTRACTED";
+
+                medications.Add(new(
+                    m.Name,
+                    effectiveStrength,
+                    effectiveDose,
+                    string.IsNullOrWhiteSpace(m.Route) ? null : m.Route.Trim(),
+                    string.IsNullOrWhiteSpace(m.Frequency) ? null : m.Frequency.Trim(),
+                    string.IsNullOrWhiteSpace(m.Duration) ? null : m.Duration.Trim(),
+                    string.IsNullOrWhiteSpace(m.Formulation) ? null : m.Formulation.Trim(),
+                    string.IsNullOrWhiteSpace(m.Instructions) ? null : m.Instructions.Trim(),
+                    effectiveAssertion,
+                    evidence,
+                    flags,
+                    findings,
+                    new(match.Status, match.StandardId, match.DisplayName, match.Confidence,
+                        match.SemanticStatus, match.CandidateCode, match.TerminologySource, match.TerminologyVersion, match.MappingNote),
+                    effectiveDoseUnit,
+                    effectiveAction,
+                    origin,
+                    new EntityProvenanceDto(
+                        Origin: origin,
+                        Provider: "foundry",
+                        RuleModified: modifications.Count > 0,
+                        Modifications: modifications.Count > 0 ? modifications : null,
+                        UncertaintyReason: match.Status != "matched" ? match.MappingNote : null,
+                        Quarantined: match.Status != "matched",
+                        ClinicalContext: clinicalContext)));
+            }
+
+            foreach (var (i, evidence, nameStart) in invAnchors)
+            {
+                if (proposedTotal > 1 && ShouldSkipNonOrderInvestigationMention(i, source, nameStart, rawSections))
+                    continue;
+
+                var entity = new LocalEntitySpan("INVESTIGATION", nameStart, Math.Min(source.Length, nameStart + i.Name.Length), i.Name, null, "foundry");
+                var sourceAssertion = FoundryClinicalSupport.InvestigationAssertion(source, entity, boundaries, rawSections);
+                bool resultDocumented = FoundryClinicalSupport.HasResult(source, entity, boundaries);
+
+                string effectiveInvAssertion = i.AssertionStatus is "new_order" or "conditional" or "historical" or "uncertain" or "negated"
+                    ? i.AssertionStatus : sourceAssertion.LegacyStatus;
+                string effectiveStatus = i.Status is "preliminary" or "final" or "unknown"
+                    ? i.Status : (resultDocumented ? "final" : "preliminary");
+
+                string cleanInvName = StripRedundantParentheticalAlias(i.Name);
+                var match = ontology.ResolveInvestigation(cleanInvName);
+                if ((cleanInvName.Equals("chest x-ray", StringComparison.OrdinalIgnoreCase) ||
+                     i.Name.Equals("chest x-ray (pa view)", StringComparison.OrdinalIgnoreCase)) &&
+                    Regex.IsMatch(evidence.Quote, @"\bchest\s+x-ray\s*\(\s*pa\s+view\s*\)", RegexOptions.IgnoreCase))
+                {
+                    match = ontology.ResolveInvestigation("chest x-ray (pa view)");
+                }
+
+                var (flags, findings) = Findings(match, false);
+                string? extractedResultVal = resultDocumented ? FoundryClinicalSupport.DocumentedResult(source, entity, boundaries) : null;
+                string invCategory = ClassifyInvestigationCategory(cleanInvName);
+                bool invConfirmedByRule = IndianOntologyResolver.KnownLabTerms.Contains(cleanInvName, StringComparer.OrdinalIgnoreCase);
+                string invOrigin = invConfirmedByRule ? "LLM_AND_RULE_CONFIRMED" : "LLM_EXTRACTED";
+                var code = match.StandardId;
+
+                investigations.Add(new(
+                    cleanInvName,
+                    string.IsNullOrWhiteSpace(i.Timing) ? null : i.Timing.Trim(),
+                    string.IsNullOrWhiteSpace(i.Specimen) ? null : i.Specimen.Trim(),
+                    effectiveInvAssertion,
+                    evidence,
+                    flags,
+                    findings,
+                    new(match.Status, code, match.DisplayName, match.Confidence,
+                        match.SemanticStatus, match.CandidateCode, match.TerminologySource, match.TerminologyVersion, match.MappingNote),
+                    code,
+                    match.DisplayName,
+                    effectiveStatus,
+                    invCategory,
+                    null,
+                    extractedResultVal,
+                    invOrigin,
+                    new EntityProvenanceDto(
+                        Origin: invOrigin,
+                        Provider: "foundry",
+                        RuleModified: !cleanInvName.Equals(i.Name, StringComparison.Ordinal),
+                        Modifications: !cleanInvName.Equals(i.Name, StringComparison.Ordinal) ? [$"name normalized from '{i.Name}' to '{cleanInvName}'"] : null,
+                        UncertaintyReason: match.Status != "matched" ? match.MappingNote : null,
+                        Quarantined: match.Status != "matched",
+                        ClinicalContext: FoundryClinicalSupport.Context(source, entity, sourceAssertion, rawSections))));
+            }
+
+            if (medications.Count == 0 && investigations.Count == 0)
+                throw;
+
+            var completenessWarnings = CheckSourceCompleteness(source, rawSections, medications, investigations);
+            var sections = rawSections.Select(s => new SectionSpanDto(s.Code, s.Heading, s.Start, s.End)).ToList();
+            var safetyAlerts = new List<ClinicalSafetyAlertDto>([.. safety.Evaluate(source, medications, investigations), .. completenessWarnings.Alerts]);
+            var all = medications.SelectMany(m => m.Findings)
+                .Concat(investigations.SelectMany(i => i.Findings))
+                .Concat(quarantinedWarnings)
+                .Concat(completenessWarnings.Findings)
+                .ToList();
+            var dimensions = BuildValidationDimensions(medications, investigations, quarantinedWarnings, completenessWarnings.Findings, safetyAlerts);
+            return ClinicalReview.Apply(new("1.0.0", "", correlationId, DateTimeOffset.UtcNow.ToString("O"), 0,
+                new("", "", "clinical-v3"), new(source.Length, sections), medications, investigations,
+                new(all.Any(f => f.Severity == "error"), all.Count(f => f.Severity == "error"), all.Count(f => f.Severity == "warning"), dimensions),
+                safetyAlerts,
+                ClinicalEmbeddingGenerator.GenerateEmbedding(source), source));
+        }
+    }
+
+    private static bool TryAnchorEntity(string source, string name, CandidateEvidence? evidence, out EvidenceDto verified, out int nameStart)
+    {
+        verified = default!;
+        nameStart = -1;
+        if (string.IsNullOrWhiteSpace(name) || evidence == null || string.IsNullOrWhiteSpace(evidence.Quote))
+            return false;
+
+        try
+        {
+            verified = Verify(source, name, evidence);
+            nameStart = FindName(source, name, verified);
+            return true;
+        }
+        catch (InvalidClinicalEvidenceException)
+        {
+            // If quote itself exists verbatim in source and every significant word of a coordinated name
+            // (e.g. "renal function panel" inside "renal/liver function panel") exists in that quote, anchor cleanly.
+            string flexPattern = string.Join(@"[\s|]+",
+                evidence.Quote.Split((char[]?)null, StringSplitOptions.RemoveEmptyEntries).Select(Regex.Escape));
+            if (string.IsNullOrWhiteSpace(flexPattern))
+                return false;
+            var matches = Regex.Matches(source, flexPattern);
+            int occ = Math.Max(1, evidence.Occurrence);
+            if (matches.Count < occ)
+                return false;
+            var qm = matches[occ - 1];
+            string actualQuote = source[qm.Index..(qm.Index + qm.Length)];
+            var tokens = Regex.Matches(name, @"[\p{L}\p{N}]{2,}").Select(t => t.Value).ToList();
+            if (tokens.Count == 0 || !tokens.All(t => Regex.IsMatch(actualQuote, @"(?<![\p{L}\p{N}])" + Regex.Escape(t) + @"(?![\p{L}\p{N}])", RegexOptions.IgnoreCase)))
+                return false;
+            var firstToken = Regex.Match(actualQuote, @"(?<![\p{L}\p{N}])" + Regex.Escape(tokens[0]) + @"(?![\p{L}\p{N}])", RegexOptions.IgnoreCase);
+            verified = new EvidenceDto(actualQuote, true, qm.Index, qm.Index + qm.Length);
+            nameStart = qm.Index + firstToken.Index;
+            return true;
         }
     }
 

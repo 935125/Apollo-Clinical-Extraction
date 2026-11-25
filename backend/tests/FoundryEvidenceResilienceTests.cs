@@ -151,4 +151,63 @@ public class FoundryEvidenceResilienceTests
         Assert.Single(result.Medications);
         Assert.Single(result.Investigations);
     }
+
+    [Fact]
+    public void MapResilient_AcceptsComplexGiOncologyNoteV39_WithQ14d_Split5FuDose_AndHistoricalDiagnostics_WhileStillBlockingPureHallucinations()
+    {
+        const string v39Note = """
+            CHIEF COMPLAINT:
+            Persistent fatigue, postprandial fullness, and elevated CEA on surveillance after adjuvant capecitabine for stage III colon cancer.
+
+            HISTORY OF PRESENT ILLNESS:
+            She completed laparoscopic sigmoid colectomy (1/18 lymph nodes positive), followed by 6 months of adjuvant Capecitabine 1250 mg/m2 PO twice daily (Days 1-14 of a 21-day cycle x 8 cycles), finishing in August 2025.
+            Two weeks ago, routine surveillance showed rising CEA at 18.6 ng/mL (prior normal 2.4 ng/mL in May 2026).
+
+            DIAGNOSTICS & IMAGING:
+            - Labs (22/11/2026): Hemoglobin 11.4 g/dL, WBC 6,100/uL, Platelets 248,000/uL, Total Bilirubin 0.7 mg/dL, AST 38 U/L, ALT 41 U/L, ALP 162 U/L, Serum Creatinine 0.85 mg/dL.
+            - Contrast-Enhanced CT Chest/Abdomen/Pelvis (23/11/2026): Two new hypodense liver lesions in segment IVa (2.4 cm) and segment VII (1.9 cm) with peripheral rim enhancement, suspicious for hepatic metastases.
+            - Molecular / NGS Panel (24/11/2026): KRAS G12D mutant detected; NRAS, BRAF V600E, and HER2 amplified wild-type; MSI-H / dMMR absent (MSS / pMMR).
+
+            ASSESSMENT & PLAN:
+            2. Discontinue surveillance-only protocol; initiate first-line systemic chemotherapy with mFOLFOX6 + Bevacizumab q14d (Oxaliplatin 85 mg/m2 IV, Leucovorin 400 mg/m2 IV, 5-FU 400 mg/m2 IV bolus then 2400 mg/m2 continuous IV over 46h, Bevacizumab 5 mg/kg IV).
+            3. Order baseline DPD (DPYD) genotype/phenotype check if 5-FU toxicity is flagged, and repeat CBC, LFTs, and Serum Creatinine prior to Cycle 1 Day 1.
+            """;
+
+        string Line(string s) => v39Note.Split('\n').First(l => l.Contains(s, StringComparison.OrdinalIgnoreCase)).Trim();
+        string planChemo = Line("mFOLFOX6 + Bevacizumab");
+
+        var candidate = new ClinicalCandidate(
+            [
+                new("Capecitabine", null, "1250 mg/m2", "mg/m2", "PO", "twice daily", "6 months", null, "Days 1-14 of a 21-day cycle x 8 cycles", "none", "historical", new(Line("adjuvant Capecitabine"), 1)),
+                new("Oxaliplatin", null, "85 mg/m2", "mg/m2", "IV", "q14d", null, null, null, "start", "new_order", new(planChemo, 1)),
+                new("Leucovorin", null, "400 mg/m2", "mg/m2", "IV", "q14d", null, null, null, "start", "new_order", new(planChemo, 1)),
+                new("5-FU", null, "400 mg/m2 bolus then 2400 mg/m2", "mg/m2", "IV", "continuous IV over 46h", "46h", null, "400 mg/m2 IV bolus then 2400 mg/m2 continuous IV over 46h", "start", "new_order", new(planChemo, 1)),
+                new("Bevacizumab", null, "5 mg/kg", "mg/kg", "IV", "q14d", null, null, null, "start", "new_order", new(planChemo, 1)),
+            ],
+            [
+                new("CEA", null, null, "historical", "final", new(Line("elevated CEA on surveillance"), 1)),
+                new("Contrast-Enhanced CT Chest/Abdomen/Pelvis", "23/11/2026", null, "historical", "final", new(Line("Contrast-Enhanced CT"), 1)),
+                new("Molecular / NGS Panel", "24/11/2026", null, "historical", "final", new(Line("Molecular / NGS Panel"), 1)),
+                new("DPD (DPYD) genotype/phenotype check", null, null, "conditional", "preliminary", new(Line("DPD (DPYD)"), 1)),
+                new("CBC", "prior to Cycle 1 Day 1", null, "new_order", "preliminary", new(Line("repeat CBC"), 1)),
+                new("LFTs", "prior to Cycle 1 Day 1", null, "new_order", "preliminary", new(Line("repeat CBC"), 1)),
+                new("Serum Creatinine", "prior to Cycle 1 Day 1", null, "new_order", "preliminary", new(Line("repeat CBC"), 1)),
+            ]);
+
+        var validator = new ClinicalResultValidator();
+        var result = validator.MapResilient(candidate, v39Note, "v39-gi-oncology");
+        Assert.False(result.ValidationSummary.HasErrors);
+        Assert.Equal(5, result.Medications.Count);
+        Assert.Equal(7, result.Investigations.Count);
+        Assert.Contains(result.Medications, m => m.Name == "Capecitabine" && m.Dose == "1250 mg/m2" && m.Frequency == "twice daily");
+        Assert.Contains(result.Medications, m => m.Name == "Oxaliplatin" && m.Route == "IV" && m.QualityFlags.Contains("COMPLEX_REGIMEN_REVIEW"));
+        Assert.Contains(result.Medications, m => m.Name == "Bevacizumab" && m.Route == "IV" && m.QualityFlags.Contains("COMPLEX_REGIMEN_REVIEW"));
+        Assert.Contains(result.Investigations, i => i.Name == "CEA" && i.AssertionStatus == "historical");
+
+        // Pure hallucination (non-verbatim quote) MUST still fail closed with InvalidClinicalEvidenceException
+        var pureHallucination = new ClinicalCandidate(
+            [new("Metformin", "500 mg", null, null, "PO", "daily", null, null, null, "start", "new_order", new("Invented quote never in note", 1))],
+            []);
+        Assert.Throws<InvalidClinicalEvidenceException>(() => validator.MapResilient(pureHallucination, v39Note, "pure-hallucination"));
+    }
 }
